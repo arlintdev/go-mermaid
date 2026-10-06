@@ -8,12 +8,12 @@
     <line x1="413" y1="66.2" x2="413" y2="1209.2" stroke="#9370DB"/>
     <line x1="587" y1="66.2" x2="587" y2="1209.2" stroke="#9370DB"/>
     <rect x="408" y="152.6" width="10" height="285.4" fill="#f4f4f4" stroke="#666666"/>
-    <rect x="234" y="108.4" width="10" height="970.4" fill="#f4f4f4" stroke="#666666"/>
-    <rect x="222" y="214.8" width="382" height="243.2" fill="none" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <rect x="234" y="108.4" width="10" height="1088.8" fill="#f4f4f4" stroke="#666666"/>
+    <rect x="222" y="214.8" width="385" height="243.2" fill="none" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
     <polygon points="222,214.8 256.78,214.8 256.78,232 249.78,239 222,239" fill="#ECECFF" stroke="#9370DB"/>
     <text x="237.39" y="231.8" fill="#333333" text-anchor="middle" font-weight="bold">alt</text>
     <text x="264.78" y="231.8" fill="#333333" text-anchor="start">[signed in]</text>
-    <line x1="222" y1="381.6" x2="604" y2="381.6" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <line x1="222" y1="381.6" x2="607" y2="381.6" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
     <text x="264.78" y="397.6" fill="#333333" text-anchor="start">[not signed in]</text>
     <rect x="222" y="468" width="208" height="80.4" fill="none" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
     <polygon points="222,468 268.46,468 268.46,485.2 261.46,492.2 222,492.2" fill="#ECECFF" stroke="#9370DB"/>
@@ -29,13 +29,13 @@
     <text x="96.23" y="685.8" fill="#333333" text-anchor="start">[to API]</text>
     <line x1="48" y1="747.2" x2="430" y2="747.2" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
     <text x="96.23" y="763.2" fill="#333333" text-anchor="start">[to user]</text>
-    <rect x="396" y="833.6" width="208" height="174.8" fill="none" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
-    <polygon points="396,833.6 455.66,833.6 455.66,850.8 448.66,857.8 396,857.8" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="423.83" y="850.6" fill="#333333" text-anchor="middle" font-weight="bold">critical</text>
-    <text x="463.66" y="850.6" fill="#333333" text-anchor="start">[write]</text>
-    <line x1="396" y1="912" x2="604" y2="912" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
-    <text x="463.66" y="928" fill="#333333" text-anchor="start">[conflict]</text>
-    <rect x="222" y="1018.4" width="208" height="80.4" fill="none" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <rect x="390.77" y="833.6" width="213.23" height="174.8" fill="none" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <polygon points="390.77,833.6 450.43,833.6 450.43,850.8 443.43,857.8 390.77,857.8" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="418.6" y="850.6" fill="#333333" text-anchor="middle" font-weight="bold">critical</text>
+    <text x="458.43" y="850.6" fill="#333333" text-anchor="start">[write]</text>
+    <line x1="390.77" y1="912" x2="604" y2="912" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <text x="458.43" y="928" fill="#333333" text-anchor="start">[conflict]</text>
+    <rect x="222" y="1018.4" width="213.23" height="80.4" fill="none" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
     <polygon points="222,1018.4 277.01,1018.4 277.01,1035.6 270.01,1042.6 222,1042.6" fill="#ECECFF" stroke="#9370DB"/>
     <text x="247.51" y="1035.4" fill="#333333" text-anchor="middle" font-weight="bold">break</text>
     <text x="285.01" y="1035.4" fill="#333333" text-anchor="start">[on failure]</text>

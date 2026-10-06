@@ -1,26 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="510" height="304.6" viewBox="0 0 510 304.6" font-family="sans-serif" font-size="14">
+<svg xmlns="http://www.w3.org/2000/svg" width="510" height="314.6" viewBox="0 0 510 314.6" font-family="sans-serif" font-size="14">
   <defs><marker id="ms8my4z-seq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker><marker id="ms8my4z-seq-open" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#333333" stroke-width="1.5"/></marker></defs>
   <rect width="100%" height="100%" fill="#ffffff"/>
   <g transform="translate(16,16)">
-    <line x1="65" y1="48" x2="65" y2="224.6" stroke="#9370DB"/>
-    <line x1="239" y1="48" x2="239" y2="224.6" stroke="#9370DB"/>
-    <line x1="413" y1="158.4" x2="413" y2="202.6" stroke="#9370DB"/>
-    <line x1="65" y1="90.2" x2="239" y2="90.2" stroke="#333333" stroke-width="1.5" marker-end="url(#ms8my4z-seq-arrow)"/>
-    <text x="152" y="80.7" fill="#333333" text-anchor="middle">x</text>
-    <line x1="239" y1="134.4" x2="348" y2="134.4" stroke="#333333" stroke-width="1.5" marker-end="url(#ms8my4z-seq-arrow)"/>
-    <text x="293.5" y="124.9" fill="#333333" text-anchor="middle">y</text>
-    <line x1="413" y1="202.6" x2="239" y2="202.6" stroke="#333333" stroke-width="1.5" marker-end="url(#ms8my4z-seq-arrow)"/>
-    <text x="326" y="193.1" fill="#333333" text-anchor="middle">z</text>
-    <rect x="0" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="65" y="28.9" fill="#333333" text-anchor="middle">A</text>
-    <rect x="0" y="224.6" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="65" y="253.5" fill="#333333" text-anchor="middle">A</text>
-    <rect x="174" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="239" y="28.9" fill="#333333" text-anchor="middle">B</text>
-    <rect x="174" y="224.6" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="239" y="253.5" fill="#333333" text-anchor="middle">B</text>
-    <rect x="348" y="110.4" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="413" y="139.3" fill="#333333" text-anchor="middle">C</text>
-    <path d="M405,194.6 L421,210.6 M405,210.6 L421,194.6" stroke="#333333" stroke-width="2"/>
+    <line x1="65" y1="52" x2="65" y2="230.6" stroke="#9370DB"/>
+    <line x1="239" y1="52" x2="239" y2="230.6" stroke="#9370DB"/>
+    <line x1="413" y1="164.4" x2="413" y2="208.6" stroke="#9370DB"/>
+    <line x1="65" y1="94.2" x2="239" y2="94.2" stroke="#333333" stroke-width="1.5" marker-end="url(#ms8my4z-seq-arrow)"/>
+    <text x="152" y="84.7" fill="#333333" text-anchor="middle">x</text>
+    <line x1="239" y1="138.4" x2="348" y2="138.4" stroke="#333333" stroke-width="1.5" marker-end="url(#ms8my4z-seq-arrow)"/>
+    <text x="293.5" y="128.9" fill="#333333" text-anchor="middle">y</text>
+    <line x1="413" y1="208.6" x2="239" y2="208.6" stroke="#333333" stroke-width="1.5" marker-end="url(#ms8my4z-seq-arrow)"/>
+    <text x="326" y="199.1" fill="#333333" text-anchor="middle">z</text>
+    <rect x="0" y="0" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="65" y="30.9" fill="#333333" text-anchor="middle">A</text>
+    <rect x="0" y="230.6" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="65" y="261.5" fill="#333333" text-anchor="middle">A</text>
+    <rect x="174" y="0" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="239" y="30.9" fill="#333333" text-anchor="middle">B</text>
+    <rect x="174" y="230.6" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="239" y="261.5" fill="#333333" text-anchor="middle">B</text>
+    <rect x="348" y="112.4" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="413" y="143.3" fill="#333333" text-anchor="middle">C</text>
+    <path d="M405,200.6 L421,216.6 M405,216.6 L421,200.6" stroke="#333333" stroke-width="2"/>
   </g>
 </svg>

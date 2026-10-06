@@ -1,22 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="361" height="274.6" viewBox="0 0 361 274.6" font-family="sans-serif" font-size="14">
+<svg xmlns="http://www.w3.org/2000/svg" width="361" height="282.6" viewBox="0 0 361 282.6" font-family="sans-serif" font-size="14">
   <defs><marker id="m1qwleu2-seq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker><marker id="m1qwleu2-seq-open" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#333333" stroke-width="1.5"/></marker></defs>
   <rect width="100%" height="100%" fill="#ffffff"/>
   <g transform="translate(41,16)">
-    <line x1="65" y1="48" x2="65" y2="194.6" stroke="#9370DB"/>
-    <line x1="239" y1="48" x2="239" y2="194.6" stroke="#9370DB"/>
-    <rect x="-25" y="66" width="80" height="32.2" fill="#fff5ad" stroke="#aaaa33"/>
-    <text x="15" y="87" fill="#333333" text-anchor="middle">l</text>
-    <rect x="75" y="108.2" width="80" height="32.2" fill="#fff5ad" stroke="#aaaa33"/>
-    <text x="115" y="129.2" fill="#333333" text-anchor="middle">r</text>
-    <rect x="41" y="150.4" width="222" height="32.2" fill="#fff5ad" stroke="#aaaa33"/>
-    <text x="152" y="171.4" fill="#333333" text-anchor="middle">o</text>
-    <rect x="0" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="65" y="28.9" fill="#333333" text-anchor="middle">A</text>
-    <rect x="0" y="194.6" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="65" y="223.5" fill="#333333" text-anchor="middle">A</text>
-    <rect x="174" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="239" y="28.9" fill="#333333" text-anchor="middle">B</text>
-    <rect x="174" y="194.6" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="239" y="223.5" fill="#333333" text-anchor="middle">B</text>
+    <line x1="65" y1="52" x2="65" y2="198.6" stroke="#9370DB"/>
+    <line x1="239" y1="52" x2="239" y2="198.6" stroke="#9370DB"/>
+    <rect x="-25" y="70" width="80" height="32.2" fill="#fff5ad" stroke="#aaaa33"/>
+    <text x="15" y="91" fill="#333333" text-anchor="middle">l</text>
+    <rect x="75" y="112.2" width="80" height="32.2" fill="#fff5ad" stroke="#aaaa33"/>
+    <text x="115" y="133.2" fill="#333333" text-anchor="middle">r</text>
+    <rect x="41" y="154.4" width="222" height="32.2" fill="#fff5ad" stroke="#aaaa33"/>
+    <text x="152" y="175.4" fill="#333333" text-anchor="middle">o</text>
+    <rect x="0" y="0" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="65" y="30.9" fill="#333333" text-anchor="middle">A</text>
+    <rect x="0" y="198.6" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="65" y="229.5" fill="#333333" text-anchor="middle">A</text>
+    <rect x="174" y="0" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="239" y="30.9" fill="#333333" text-anchor="middle">B</text>
+    <rect x="174" y="198.6" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="239" y="229.5" fill="#333333" text-anchor="middle">B</text>
   </g>
 </svg>

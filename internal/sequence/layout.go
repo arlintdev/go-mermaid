@@ -40,7 +40,7 @@ func newMetrics(o Options) metrics {
 	k := fs / 14
 	return metrics{
 		fs: fs, k: k, lineH: fs * 1.3, face: svgutil.FaceFor(o.FontFace),
-		actorMinW: 130 * k, actorPadX: 14 * k, actorH: 48 * k, actorGap: 44 * k,
+		actorMinW: 130 * k, actorPadX: 14 * k, actorH: 52 * k, actorGap: 44 * k,
 		figH:  40 * k,
 		wrapW: 210 * k, msgPad: 16 * k, numR: 8 * k,
 		loopW: 34 * k, loopH: 20 * k,
@@ -342,7 +342,11 @@ func vertical(lay *Layout) {
 				msg.X2 = edge(to, to.X+1)
 				bottom := y + m.loopH
 				labelR := from.X + selfLabelOffset(m, msg) + widest(msg.Lines, m.face, m.fs)
-				addExt(from.X-m.barW/2, max(msg.X1+m.loopW, labelR))
+				lo := from.X - m.barW/2
+				if msg.Num > 0 {
+					lo = min(lo, msg.X1-numRadius(m, msg.Num))
+				}
+				addExt(lo, max(msg.X1+m.loopW, labelR))
 				if msg.Deactivate {
 					pop(from.ID, bottom)
 				}
@@ -370,7 +374,12 @@ func vertical(lay *Layout) {
 			for _, id := range msg.Destroys {
 				d.participant(id).LifeEnd = y
 			}
-			addExt(min(from.X, to.X)-m.barW/2, max(from.X, to.X)+m.barW/2)
+			lo, hi := min(from.X, to.X)-m.barW/2, max(from.X, to.X)+m.barW/2
+			if msg.Num > 0 {
+				r := numRadius(m, msg.Num)
+				lo, hi = min(lo, msg.X1-r), max(hi, msg.X1+r)
+			}
+			addExt(lo, hi)
 			lastY = y
 			cursor = y + 10*k
 			if created != nil {
@@ -395,6 +404,7 @@ func vertical(lay *Layout) {
 			}
 			addExt(n.X, n.X+n.W)
 			cursor = n.Y + n.H
+			lastY = cursor
 		case itFrameStart:
 			f := it.frame
 			f.Depth = len(frames)
