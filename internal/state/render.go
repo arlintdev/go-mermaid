@@ -387,17 +387,17 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		c.writeState(&b, s, n)
 	}
 	for _, pn := range notes {
-		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" fill="#fff5ad" stroke="#aaaa33"/>`+"\n",
-			svgutil.Num(pn.x), svgutil.Num(pn.y), svgutil.Num(pn.w), svgutil.Num(pn.h))
-		c.lines(&b, pn.lines, pn.x+pn.w/2, pn.y+pn.h/2, c.fs*0.9, "#333333", "")
+		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"/>`+"\n",
+			svgutil.Num(pn.x), svgutil.Num(pn.y), svgutil.Num(pn.w), svgutil.Num(pn.h), svgutil.Esc(c.pal.NoteFill), svgutil.Esc(c.pal.NoteStroke))
+		c.lines(&b, pn.lines, pn.x+pn.w/2, pn.y+pn.h/2, c.fs*0.9, svgutil.Esc(c.pal.NoteText), "")
 	}
 	for _, de := range drawn {
 		if de.lines == nil {
 			continue
 		}
 		tw, th := c.textBlock(de.lines, c.fs*0.9)
-		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>`+"\n",
-			svgutil.Num(de.lx-tw/2-4), svgutil.Num(de.ly-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4))
+		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s" fill-opacity="0.85"/>`+"\n",
+			svgutil.Num(de.lx-tw/2-4), svgutil.Num(de.ly-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4), svgutil.Esc(c.pal.RelationLabel))
 		c.lines(&b, de.lines, de.lx, de.ly, c.fs*0.9, svgutil.Esc(c.pal.Text), "")
 	}
 	b.WriteString("</g>\n")
@@ -528,7 +528,7 @@ func (c *ctx) composite(comp *Composite, dir domain.Direction) (block, error) {
 				rh = ch
 			}
 			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s" stroke-dasharray="6 4"/>`+"\n",
-				n(rx), n(ry), n(rw), n(rh), mix(c.pal.NodeFill, c.pal.Background, 0.5, fill), stroke)
+				n(rx), n(ry), n(rw), n(rh), theme.Mix(c.pal.NodeFill, c.pal.Background, 0.5, fill), stroke)
 			rx += (rw - r.w) / 2
 			ry += (rh - r.h) / 2
 		} else {
@@ -579,16 +579,8 @@ func (c *ctx) writeState(b *strings.Builder, s *State, n *domain.Node) {
 			num(n.Pos.X), num(n.Pos.Y), num(n.Size.W), num(n.Size.H), edge)
 	default:
 		st := c.style(s)
-		fill, stroke, text := svgutil.Esc(c.pal.NodeFill), svgutil.Esc(c.pal.NodeStroke), svgutil.Esc(c.pal.Text)
-		if st.Fill != "" {
-			fill = svgutil.Esc(st.Fill)
-		}
-		if st.Stroke != "" {
-			stroke = svgutil.Esc(st.Stroke)
-		}
-		if st.Color != "" {
-			text = svgutil.Esc(st.Color)
-		}
+		fill, stroke, text := c.pal.Node(st.Fill, st.Stroke, st.Color)
+		fill, stroke, text = svgutil.Esc(fill), svgutil.Esc(stroke), svgutil.Esc(text)
 		extra := ""
 		if st.StrokeWidth != "" {
 			extra += ` stroke-width="` + svgutil.Esc(st.StrokeWidth) + `"`
@@ -647,21 +639,4 @@ func (c *ctx) svg(root block) []byte {
 	fmt.Fprintf(&b, `  <g transform="translate(%s,%s)">`+"\n%s  </g>\n", svgutil.Num((w-root.w)/2), svgutil.Num(pad+titleH), root.body)
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
-}
-
-// mix blends hex colour a toward hex colour b by t (0 keeps a). When either
-// is not a #rrggbb colour it returns fallback.
-func mix(a, b string, t float64, fallback string) string {
-	var ra, ga, ba, rb, gb, bb int
-	if len(a) != 7 || len(b) != 7 {
-		return fallback
-	}
-	if _, err := fmt.Sscanf(strings.ToLower(a), "#%02x%02x%02x", &ra, &ga, &ba); err != nil {
-		return fallback
-	}
-	if _, err := fmt.Sscanf(strings.ToLower(b), "#%02x%02x%02x", &rb, &gb, &bb); err != nil {
-		return fallback
-	}
-	c := func(x, y int) int { return x + int(float64(y-x)*t+0.5) }
-	return fmt.Sprintf("#%02x%02x%02x", c(ra, rb), c(ga, gb), c(ba, bb))
 }
