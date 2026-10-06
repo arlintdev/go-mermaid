@@ -16,10 +16,13 @@ type RenderOptions struct {
 	FontSize float64
 	Padding  float64
 	Title    string
+	// IDPrefix starts every id in the picture; empty derives one from the
+	// source (see svgid.For).
+	IDPrefix string
 }
 
 const (
-	colW     = 180.0 // a period column, box included
+	minColW  = 180.0 // a period column, box included, unless a word needs more
 	colGap   = 12.0
 	boxPadX  = 12.0
 	boxPadY  = 9.0
@@ -37,7 +40,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	if o.Title == "" {
 		o.Title = d.Title
 	}
-	return svg(d, o, svgid.Prefix(src)), nil
+	return svg(d, o, svgid.For(o.IDPrefix, src)), nil
 }
 
 func svg(d *Diagram, o RenderOptions, id string) []byte {
@@ -50,6 +53,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	}
 	face := svgutil.FaceFor(o.FontFace)
 	lh := fs * 1.25
+	colW := columnWidth(d, face, fs)
 	textW := colW - 2*boxPadX
 	boxH := func(lines int) float64 { return float64(lines)*lh + 2*boxPadY }
 
@@ -179,4 +183,23 @@ func drawBox(b *strings.Builder, x, y, w, h float64, fill, accent, text string, 
 		fmt.Fprintf(b, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(x+w/2), svgutil.Num(ty+float64(i)*lh), svgutil.Esc(ln))
 	}
 	b.WriteString("</text>\n")
+}
+
+// columnWidth returns the width of every period column: minColW, or more when
+// a word that cannot be broken would not fit, so no text leaves its box.
+func columnWidth(d *Diagram, face svgutil.Face, fs float64) float64 {
+	w := minColW
+	for _, s := range d.Sections {
+		for _, p := range s.Periods {
+			w = max(w, face.MinWidth(p.Time, fs)+2*boxPadX)
+			for _, ev := range p.Events {
+				w = max(w, face.MinWidth(ev, fs)+2*boxPadX)
+			}
+		}
+		if s.Name != "" && len(s.Periods) > 0 {
+			n := float64(len(s.Periods))
+			w = max(w, (face.MinWidth(s.Name, fs)+2*boxPadX+colGap)/n-colGap)
+		}
+	}
+	return w
 }

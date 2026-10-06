@@ -1,6 +1,7 @@
 package sequence
 
 import (
+	"math"
 	"strconv"
 
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
@@ -95,6 +96,12 @@ func Compute(d *Diagram, opts Options) *Layout {
 
 	xs := place(d, m, nil)
 	cons := measure(d, m, xs)
+	for _, b := range d.Boxes {
+		if len(b.Members) > 0 {
+			b.X0, b.X1 = boxSpan(d, b, m, xs)
+			b.grow = boxGrow(b, m)
+		}
+	}
 	xs = place(d, m, cons)
 	measure(d, m, xs)
 	for i, p := range ps {
@@ -106,18 +113,35 @@ func Compute(d *Diagram, opts Options) *Layout {
 		if len(b.Members) == 0 {
 			continue
 		}
-		b.X0, b.X1 = b.Members[0].X, b.Members[0].X
-		for _, p := range b.Members {
-			b.X0 = min(b.X0, p.X-p.Width/2-m.boxPad)
-			b.X1 = max(b.X1, p.X+p.Width/2+m.boxPad)
-		}
-		b.Lines = wrap(b.Label, b.X1-b.X0-16*m.k, m.face, m.fs)
+		b.X0, b.X1 = boxSpan(d, b, m, xs)
+		g := boxGrow(b, m)
+		b.X0, b.X1 = b.X0-g, b.X1+g
 		boxLabelH = max(boxLabelH, m.boxPad, float64(len(b.Lines))*m.lineH+10*m.k)
 	}
 	lay.HeadTop = boxLabelH
 	vertical(lay)
 	lay.bounds()
 	return lay
+}
+
+// boxSpan returns the left and right edges of a box around its members at
+// the lifeline positions xs.
+func boxSpan(d *Diagram, b *Box, m metrics, xs []float64) (x0, x1 float64) {
+	x0, x1 = math.Inf(1), math.Inf(-1)
+	for _, p := range b.Members {
+		x := xs[d.index[p.ID]]
+		x0 = min(x0, x-p.Width/2-m.boxPad)
+		x1 = max(x1, x+p.Width/2+m.boxPad)
+	}
+	return x0, x1
+}
+
+// boxGrow wraps a box's label to the box's width and returns how far the box
+// must grow on each side to hold it: a word wider than the box stays whole.
+func boxGrow(b *Box, m metrics) float64 {
+	inner := b.X1 - b.X0 - 16*m.k
+	b.Lines = wrap(b.Label, inner, m.face, m.fs)
+	return max(0, widest(b.Lines, m.face, m.fs)-inner) / 2
 }
 
 // place returns lifeline x positions, left to right, honouring the header
@@ -133,7 +157,7 @@ func place(d *Diagram, m metrics, cons []constraint) []float64 {
 		if j == 0 {
 			xs[0] = p.Width / 2
 			if p.Box != nil {
-				xs[0] += m.boxPad
+				xs[0] += m.boxPad + p.Box.grow
 			}
 			continue
 		}
@@ -141,10 +165,10 @@ func place(d *Diagram, m metrics, cons []constraint) []float64 {
 		gap := prev.Width/2 + p.Width/2 + m.actorGap
 		if prev.Box != p.Box {
 			if prev.Box != nil {
-				gap += m.boxPad
+				gap += m.boxPad + prev.Box.grow
 			}
 			if p.Box != nil {
-				gap += m.boxPad
+				gap += m.boxPad + p.Box.grow
 			}
 		}
 		x := xs[j-1] + gap

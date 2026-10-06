@@ -1,0 +1,27 @@
+flowchart RL
+N0[alpha 0]
+subgraph S750_1[Group 1]
+N1[delta-epsilon 1]
+N2[a much longer label that wraps 2]
+end
+subgraph S750_3[Group 3]
+N3[alpha 3]
+subgraph S750_4[Group 4]
+N4[delta-epsilon 4]
+end
+N5[beta gamma 5]
+N6[a much longer label that wraps 6]
+subgraph S750_7[Group 7]
+N7[delta-epsilon 7]
+end
+end
+N7 --- N7
+N3 ==> N6
+N4 --o N4
+N4 <--> N5
+N2 ==> N7
+N4 --- N1
+N6 ---|a much longer label that wraps| N6
+N1 <--> N5
+N7 ==> N6
+N2 --> N6

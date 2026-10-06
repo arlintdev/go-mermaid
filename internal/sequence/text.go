@@ -14,8 +14,9 @@ const maxLines = 200
 const maxText = 8000
 
 // wrap splits text on explicit breaks (<br>, \n) and then word-wraps each
-// line so no line is wider than width. A word longer than width is broken
-// between characters. Empty text yields no lines. When a label needs more
+// line at its spaces so no line is wider than width. A word wider than width
+// stays whole on a line of its own, and the lifelines move apart to fit it,
+// as mermaid.js draws it. Empty text yields no lines. When a label needs more
 // than one line, the lines are balanced: the narrowest width that still
 // gives the same number of lines is used, so no lone word is left over.
 func wrap(text string, width float64, face svgutil.Face, fs float64) []string {
@@ -54,15 +55,6 @@ func greedy(text string, width float64, face svgutil.Face, fs float64) []string 
 			if len(out) >= maxLines {
 				break
 			}
-			for len(out) < maxLines && face.Width(w, fs) > width && len([]rune(w)) > 1 {
-				if line != "" {
-					out = append(out, line)
-					line = ""
-				}
-				head, tail := breakWord(w, width, face, fs)
-				out = append(out, head)
-				w = tail
-			}
 			switch {
 			case line == "":
 				line = w
@@ -85,17 +77,6 @@ func greedy(text string, width float64, face svgutil.Face, fs float64) []string 
 		out = out[:maxLines]
 	}
 	return out
-}
-
-// breakWord returns the longest prefix of w (at least one rune) that fits in
-// width, and the rest.
-func breakWord(w string, width float64, face svgutil.Face, fs float64) (string, string) {
-	rs := []rune(w)
-	n := 1
-	for n < len(rs) && face.Width(string(rs[:n+1]), fs) <= width {
-		n++
-	}
-	return string(rs[:n]), string(rs[n:])
 }
 
 // widest returns the width of the widest line.

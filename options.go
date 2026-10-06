@@ -180,9 +180,10 @@ func WithTransparentBackground() Option {
 	return func(c *config) { c.bgTransparent = true; c.bgColor = "" }
 }
 
-// WithIDPrefix sets the prefix of every id in a flowchart's SVG (its
-// markers), so pictures inlined on one page never share an id. Without it
-// the prefix is derived from a hash of the source. The prefix must start
+// WithIDPrefix sets the prefix of every id in the SVG (its markers), for
+// every diagram type, so pictures inlined on one page never share an id,
+// even two drawings of the same source (say a light and a dark copy, one
+// hidden). Without it the prefix is derived from a hash of the source. The prefix must start
 // with a letter and hold only letters, digits, '-' and '_'; any other value
 // is replaced by "m".
 func WithIDPrefix(prefix string) Option {

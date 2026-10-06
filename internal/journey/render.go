@@ -18,10 +18,13 @@ type RenderOptions struct {
 	FontSize float64
 	Padding  float64
 	Title    string
+	// IDPrefix starts every id in the picture; empty derives one from the
+	// source (see svgid.For).
+	IDPrefix string
 }
 
 const (
-	taskW     = 150.0
+	minTaskW  = 150.0
 	taskGap   = 50.0
 	minBoxH   = 50.0
 	faceR     = 15.0
@@ -37,7 +40,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	if o.Title == "" {
 		o.Title = d.Title
 	}
-	return svg(d, o, svgid.Prefix(src)), nil
+	return svg(d, o, svgid.For(o.IDPrefix, src)), nil
 }
 
 func svg(d *Diagram, o RenderOptions, id string) []byte {
@@ -75,12 +78,22 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 		legendW += 24
 	}
 
-	// Box heights fit the longest wrapped label.
+	// Every task box is as wide as the widest word that cannot be broken
+	// needs, and as tall as the longest wrapped label.
+	taskW := minTaskW
+	for _, t := range tasks {
+		taskW = math.Max(taskW, face.MinWidth(t.Name, fs)+16)
+	}
+	for _, s := range d.Sections {
+		if n := float64(len(s.Tasks)); n > 0 {
+			taskW = math.Max(taskW, (face.MinWidth(s.Name, fs)+16+taskGap)/n-taskGap)
+		}
+	}
 	inner := taskW - 16
 	boxH := minBoxH
 	taskLines := make([][]string, len(tasks))
 	for i, t := range tasks {
-		taskLines[i] = face.Wrap(t.Name, fs, inner)
+		taskLines[i] = face.WrapHard(t.Name, fs, inner)
 		boxH = math.Max(boxH, float64(len(taskLines[i]))*lh+26)
 	}
 	secLines := make([][]string, len(d.Sections))
@@ -89,7 +102,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	for i, s := range d.Sections {
 		n := float64(len(s.Tasks))
 		w := n*taskW + (n-1)*taskGap
-		secLines[i] = face.Wrap(s.Name, fs, w-16)
+		secLines[i] = face.WrapHard(s.Name, fs, w-16)
 		secH = math.Max(secH, float64(len(secLines[i]))*lh+16)
 	}
 

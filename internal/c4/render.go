@@ -21,6 +21,9 @@ type RenderOptions struct {
 	FontSize float64
 	Padding  float64
 	Title    string
+	// IDPrefix starts every id in the picture; empty derives one from the
+	// source (see svgid.For).
+	IDPrefix string
 }
 
 const (
@@ -160,7 +163,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		return nil, err
 	}
 	c.place(d.Root, 0, 0)
-	return c.svg(o, w, h, svgid.Prefix(src)), nil
+	return c.svg(o, w, h, svgid.For(o.IDPrefix, src)), nil
 }
 
 func childID(it any) string {

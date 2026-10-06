@@ -10,11 +10,11 @@ package render
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/domain"
 	"github.com/arlintdev/go-mermaid/internal/layout"
+	"github.com/arlintdev/go-mermaid/internal/svgid"
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
 	"github.com/arlintdev/go-mermaid/internal/theme"
 )
@@ -36,10 +36,8 @@ type Options struct {
 	IDPrefix string
 }
 
-var idPrefixRe = regexp.MustCompile(`^[A-Za-z][A-Za-z0-9_-]{0,63}$`)
-
 func (o Options) prefix() string {
-	if idPrefixRe.MatchString(o.IDPrefix) {
+	if svgid.Valid(o.IDPrefix) {
 		return o.IDPrefix
 	}
 	return "m"

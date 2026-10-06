@@ -231,7 +231,9 @@ func (f *flowGraph) routeSelf(e *fedge) {
 			total += ps + 4
 		}
 	}
-	p := n.p - total/2
+	// Keep the stack inside the node's layer band (which placePrimary made
+	// deep enough for it), off the edges in the gaps on either side.
+	p := math.Max(n.p-total/2, f.bandTop[n.rank])
 	maxOut := n.loopRoom
 	for _, o := range mine {
 		ps, cs := f.toRank(o.e.LabelSize)

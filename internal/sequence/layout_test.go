@@ -6,8 +6,18 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/arlintdev/go-mermaid/internal/svgutil"
 	. "github.com/smartystreets/goconvey/convey"
 )
+
+// words returns the words of lines, in order.
+func words(lines []string) []string {
+	var out []string
+	for _, l := range lines {
+		out = append(out, strings.Fields(l)...)
+	}
+	return out
+}
 
 func layoutOf(src string) *Layout {
 	return Compute(mustParse(src), Options{FontSize: 14, FontFace: "sans-serif"})
@@ -74,6 +84,28 @@ func TestLayoutCorpus(t *testing.T) {
 					So(f.Y1, ShouldBeLessThan, lay.BottomY)
 				}
 			})
+			Convey(name+": labels wrap only at spaces", func() {
+				for _, msg := range d.Messages {
+					So(words(msg.Lines), ShouldResemble, words(svgutil.SplitLines(msg.Text)))
+				}
+				for _, n := range d.Notes {
+					So(words(n.Lines), ShouldResemble, words(svgutil.SplitLines(n.Text)))
+				}
+				for _, p := range d.Participants {
+					So(words(p.Lines), ShouldResemble, words(svgutil.SplitLines(p.Label)))
+				}
+				for _, b := range d.Boxes {
+					So(words(b.Lines), ShouldResemble, words(svgutil.SplitLines(b.Label)))
+				}
+			})
+			Convey(name+": a box holds its label", func() {
+				for _, b := range d.Boxes {
+					if len(b.Members) > 0 {
+						So(widest(b.Lines, m.face, m.fs)+16*m.k, ShouldBeLessThanOrEqualTo, b.X1-b.X0+0.01)
+						So(inCanvas(b.X0, b.X1), ShouldBeTrue)
+					}
+				}
+			})
 			Convey(name+": a nested frame sits inside its parent", func() {
 				var stack []*Frame
 				for _, it := range d.items {
@@ -96,6 +128,24 @@ func TestLayoutCorpus(t *testing.T) {
 }
 
 func TestLayout(t *testing.T) {
+	Convey("Given a message holding a path wider than the wrap width", t, func() {
+		const path = "/.well-known/oauth-protected-resource"
+		lay := layoutOf("sequenceDiagram\nA-->>B: 401, WWW-Authenticate points to " + path)
+		msg, m := lay.Diagram.Messages[0], lay.m
+		Convey("Then the path stays whole on one line", func() {
+			So(msg.Lines, ShouldContain, path)
+		})
+		Convey("Then the lifelines move apart to fit it", func() {
+			So(lay.Diagram.Participants[1].X-lay.Diagram.Participants[0].X, ShouldBeGreaterThan, m.face.Width(path, m.fs))
+		})
+	})
+	Convey("Given one word wider than any wrap width", t, func() {
+		word := strings.Repeat("x", 120)
+		lines := wrap("a "+word+" b", 50, svgutil.FaceSans, 14)
+		Convey("Then it is never cut", func() {
+			So(lines, ShouldResemble, []string{"a", word, "b"})
+		})
+	})
 	Convey("Given a long message between neighbours", t, func() {
 		lay := layoutOf("sequenceDiagram\nA->>B: " + strings.Repeat("word ", 60))
 		msg := lay.Diagram.Messages[0]

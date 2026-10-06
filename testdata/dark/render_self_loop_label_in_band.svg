@@ -1,0 +1,44 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="761.75" height="673.22" viewBox="0 0 761.75 673.22" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m6i49ah-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#bbbbbb"/></marker>
+    <marker id="m6i49ah-circle-1" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><circle cx="5" cy="5" r="4.5" fill="#bbbbbb"/></marker>
+  </defs>
+  <g transform="translate(16,16)">
+    <rect x="275.75" y="464.22" width="436" height="168" fill="#2a2a33" stroke="#77775a"/>
+    <rect x="0" y="66" width="729.75" height="344.22" fill="#2a2a33" stroke="#77775a"/>
+    <rect x="523.75" y="129.09" width="188" height="262.91" fill="#2a2a33" stroke="#77775a"/>
+    <rect x="275.75" y="186.22" width="188" height="140" fill="#2a2a33" stroke="#77775a"/>
+    <path d="M407.75,288.22 L407.75,301.22 Q407.75,306.22 402.75,306.22 L336.75,306.22 Q331.75,306.22 331.75,301.22 L331.75,288.22" fill="none" stroke="#bbbbbb" stroke-width="1.5"/>
+    <path d="M293.75,368.22 L225.75,368.22 Q220.75,368.22 220.75,363.22 L220.75,296.72 Q220.75,292.22 216.25,292.22 L211.75,292.22" fill="none" stroke="#bbbbbb" stroke-width="3.5" marker-end="url(#m6i49ah-arrow-0)"/>
+    <path d="M655.75,322.22 L655.75,335.22 Q655.75,340.22 650.75,340.22 L582.25,340.22 Q579.75,340.22 579.75,337.72 L579.75,335.22" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m6i49ah-circle-1)"/>
+    <path d="M530.75,282.22 L518.75,282.22 Q513.75,282.22 513.75,277.22 L513.75,182.22 Q513.75,177.22 508.75,177.22 L245.75,177.22 Q240.75,177.22 240.75,172.22 L240.75,151.22 Q240.75,146.22 235.75,146.22 L211.75,146.22" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-start="url(#m6i49ah-arrow-0)" marker-end="url(#m6i49ah-arrow-0)"/>
+    <path d="M541.75,526.22 L518.75,526.22 Q513.75,526.22 513.75,521.22 L513.75,442.22 Q513.75,437.22 508.75,437.22 L488.75,437.22 Q483.75,437.22 483.75,432.22 L483.75,285.22 Q483.75,280.22 478.75,280.22 L456.75,280.22" fill="none" stroke="#bbbbbb" stroke-width="3.5" marker-end="url(#m6i49ah-arrow-0)"/>
+    <path d="M541.75,314.22 L518.75,314.22 Q513.75,314.22 513.75,319.22 L513.75,414.22 Q513.75,419.22 508.75,419.22 L478.75,419.22 Q473.75,419.22 473.75,424.22 L473.75,521.22 Q473.75,526.22 468.75,526.22 L445.75,526.22" fill="none" stroke="#bbbbbb" stroke-width="1.5"/>
+    <path d="M162.75,314.22 L162.75,327.22 Q162.75,332.22 157.75,332.22 L91.75,332.22 Q86.75,332.22 86.75,327.22 L86.75,314.22" fill="none" stroke="#bbbbbb" stroke-width="1.5"/>
+    <path d="M282.75,542.22 L235.75,542.22 Q230.75,542.22 230.75,537.22 L230.75,165.22 Q230.75,160.22 225.75,160.22 L211.75,160.22" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-start="url(#m6i49ah-arrow-0)" marker-end="url(#m6i49ah-arrow-0)"/>
+    <path d="M293.75,264.22 L211.75,264.22" fill="none" stroke="#bbbbbb" stroke-width="3.5" marker-end="url(#m6i49ah-arrow-0)"/>
+    <path d="M541.75,540.22 L508.75,540.22 Q503.75,540.22 503.75,535.22 L503.75,460.22 Q503.75,455.22 498.75,455.22 L488.75,455.22 Q483.75,455.22 483.75,460.22 L483.75,636.22 Q483.75,641.22 478.75,641.22 L215.75,641.22 Q210.75,641.22 210.75,636.22 L210.75,306.72 Q210.75,306.22 210.25,306.22 L209.75,306.22" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m6i49ah-arrow-0)"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="550.66" y="487.82">Group 1</tspan></text>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="364.88" y="89.6">Group 3</tspan></text>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="617.75" y="152.69">Group 4</tspan></text>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="369.75" y="209.82">Group 7</tspan></text>
+    <rect x="20" y="340.22" width="178.75" height="52" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="109.38" y="359.82">a much longer label that</tspan><tspan x="109.38" y="383.82">wraps</tspan></text>
+    <rect x="541.75" y="0" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="617.75" y="29.6">alpha 0</tspan></text>
+    <rect x="293.75" y="518.22" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="369.75" y="547.82">delta-epsilon 1</tspan></text>
+    <rect x="541.75" y="518.22" width="152" height="96" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="617.75" y="547.82">a much longer</tspan><tspan x="617.75" y="571.82">label that wraps</tspan><tspan x="617.75" y="595.82">2</tspan></text>
+    <rect x="293.75" y="344.22" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="369.75" y="373.82">alpha 3</tspan></text>
+    <rect x="541.75" y="274.22" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="617.75" y="303.82">delta-epsilon 4</tspan></text>
+    <rect x="48.75" y="120.22" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="124.75" y="149.82">beta gamma 5</tspan></text>
+    <rect x="48.75" y="218.22" width="152" height="96" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="124.75" y="247.82">a much longer</tspan><tspan x="124.75" y="271.82">label that wraps</tspan><tspan x="124.75" y="295.82">6</tspan></text>
+    <rect x="293.75" y="240.22" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="369.75" y="269.82">delta-epsilon 7</tspan></text>
+  </g>
+</svg>

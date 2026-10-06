@@ -20,6 +20,9 @@ type RenderOptions struct {
 	FontSize float64
 	Padding  float64
 	Title    string
+	// IDPrefix starts every id in the picture; empty derives one from the
+	// source (see svgid.For).
+	IDPrefix string
 }
 
 const (
@@ -252,10 +255,32 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 		for _, p := range e.Points {
 			bd.Add(p.X, p.Y)
 		}
-		if lines != nil {
-			bd.AddRect(lx-tw/2-4, ly-th/2-2, tw+8, th+4)
-		}
 		rels = append(rels, drawn{r, sh, lx, ly, lines})
+	}
+	// Move a label that would hide another line along its own line.
+	shapes := make([]curve.Shape, len(rels))
+	var labels []curve.Label
+	var at []int
+	for i, de := range rels {
+		shapes[i] = de.sh
+		if de.lines == nil {
+			continue
+		}
+		tw, th := textSize(m.face, de.lines, lfs)
+		line := i
+		if de.r.From == de.r.To {
+			line = -1 // a loop's label stays beside its loop
+		}
+		labels = append(labels, curve.Label{Line: line, W: tw + 8, H: th + 4, X: de.lx, Y: de.ly})
+		at = append(at, i)
+	}
+	var boxes []curve.Box
+	for _, n := range g.Nodes {
+		boxes = append(boxes, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
+	}
+	curve.PlaceLabels(shapes, labels, boxes)
+	for k, l := range labels {
+		rels[at[k]].lx, rels[at[k]].ly = l.X, l.Y
 	}
 	// Nudge labels apart where two would overlap.
 	type lb struct{ x0, y0, x1, y1 float64 }
@@ -347,14 +372,14 @@ func selfShape(n *domain.Node, vert bool, tw, th float64) (curve.Shape, float64,
 		x, cy := n.Pos.X+n.Size.W, n.Pos.Y+n.Size.H/2
 		a, z := domain.Point{X: x, Y: cy - 14}, domain.Point{X: x, Y: cy + 14}
 		c1, c2 := domain.Point{X: x + selfLoop, Y: cy - 14 - selfLoop*0.6}, domain.Point{X: x + selfLoop, Y: cy + 14 + selfLoop*0.6}
-		sh := curve.Shape{Start: a, End: z, Curved: true, StartDir: curve.UnitTo(a, c1, z), EndDir: curve.UnitTo(z, c2, a),
+		sh := curve.Shape{Start: a, End: z, Curved: true, StartDir: curve.UnitTo(a, c1, z), EndDir: curve.UnitTo(z, c2, a), Pts: curve.Bezier(a, c1, c2, z),
 			D: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(a.X), num(a.Y), num(c1.X), num(c1.Y), num(c2.X), num(c2.Y), num(z.X), num(z.Y))}
 		return sh, x + selfLoop*0.75 + 8 + tw/2, cy
 	}
 	cx, y := n.Pos.X+n.Size.W/2, n.Pos.Y
 	a, z := domain.Point{X: cx - 14, Y: y}, domain.Point{X: cx + 14, Y: y}
 	c1, c2 := domain.Point{X: cx - 14 - selfLoop*0.6, Y: y - selfLoop}, domain.Point{X: cx + 14 + selfLoop*0.6, Y: y - selfLoop}
-	sh := curve.Shape{Start: a, End: z, Curved: true, StartDir: curve.UnitTo(a, c1, z), EndDir: curve.UnitTo(z, c2, a),
+	sh := curve.Shape{Start: a, End: z, Curved: true, StartDir: curve.UnitTo(a, c1, z), EndDir: curve.UnitTo(z, c2, a), Pts: curve.Bezier(a, c1, c2, z),
 		D: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(a.X), num(a.Y), num(c1.X), num(c1.Y), num(c2.X), num(c2.Y), num(z.X), num(z.Y))}
 	return sh, cx, y - selfLoop*0.75 - th/2 - 4
 }

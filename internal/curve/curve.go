@@ -22,6 +22,9 @@ type Shape struct {
 	StartDir, EndDir [2]float64   // unit vectors from each tip back along the line
 	Mid              domain.Point // halfway along
 	Curved           bool
+	// Pts is the drawn line as a polyline (a curve sampled finely enough
+	// to test what it passes through).
+	Pts []domain.Point
 }
 
 // Box is an obstacle: a laid-out node's rectangle.
@@ -65,7 +68,7 @@ func Edge(pts []domain.Point, vertical bool, obstacles []Box, trimStart, trimEnd
 		}
 	}
 	if clear {
-		s := Shape{Start: a, End: z, Curved: true, Mid: bez(0.5)}
+		s := Shape{Start: a, End: z, Curved: true, Mid: bez(0.5), Pts: Bezier(a, c1, c2, z)}
 		s.StartDir = UnitTo(a, c1, z)
 		s.EndDir = UnitTo(z, c2, a)
 		a2 := domain.Point{X: a.X + s.StartDir[0]*trimStart, Y: a.Y + s.StartDir[1]*trimStart}
@@ -74,7 +77,7 @@ func Edge(pts []domain.Point, vertical bool, obstacles []Box, trimStart, trimEnd
 		s.D = fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", n(a2.X), n(a2.Y), n(c1.X), n(c1.Y), n(c2.X), n(c2.Y), n(z2.X), n(z2.Y))
 		return s
 	}
-	s := Shape{Start: a, End: z, Mid: domain.PolylineMidpoint(pts)}
+	s := Shape{Start: a, End: z, Mid: domain.PolylineMidpoint(pts), Pts: append([]domain.Point(nil), pts...)}
 	s.StartDir = UnitTo(a, pts[1], z)
 	s.EndDir = UnitTo(z, pts[len(pts)-2], a)
 	q := append([]domain.Point(nil), pts...)
@@ -82,6 +85,23 @@ func Edge(pts []domain.Point, vertical bool, obstacles []Box, trimStart, trimEnd
 	q[len(q)-1] = domain.Point{X: z.X + s.EndDir[0]*trimEnd, Y: z.Y + s.EndDir[1]*trimEnd}
 	s.D = Path(q)
 	return s
+}
+
+// bezierSteps is how many straight pieces stand for one curve.
+const bezierSteps = 24
+
+// Bezier samples the cubic curve a-c1-c2-z as a polyline.
+func Bezier(a, c1, c2, z domain.Point) []domain.Point {
+	pts := make([]domain.Point, 0, bezierSteps+1)
+	for i := 0; i <= bezierSteps; i++ {
+		t := float64(i) / bezierSteps
+		u := 1 - t
+		pts = append(pts, domain.Point{
+			X: u*u*u*a.X + 3*u*u*t*c1.X + 3*u*t*t*c2.X + t*t*t*z.X,
+			Y: u*u*u*a.Y + 3*u*u*t*c1.Y + 3*u*t*t*c2.Y + t*t*t*z.Y,
+		})
+	}
+	return pts
 }
 
 // bendy reports whether a routed polyline is only the layout's way around

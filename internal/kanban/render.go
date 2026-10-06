@@ -16,10 +16,13 @@ type RenderOptions struct {
 	FontSize float64
 	Padding  float64
 	Title    string
+	// IDPrefix starts every id in the picture; empty derives one from the
+	// source (see svgid.For).
+	IDPrefix string
 }
 
 const (
-	colW      = 200.0
+	minColW   = 200.0
 	colGap    = 6.0
 	cardInset = 7.5
 	cardGap   = 6.0
@@ -52,6 +55,13 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	metaFs := math.Round(fs * 0.86)
 	lh := fs * 1.3
 	pad := o.Padding
+	colW := minColW
+	for _, col := range d.Columns {
+		colW = math.Max(colW, face.MinWidth(col.Title, fs)+16)
+		for _, c := range col.Cards {
+			colW = math.Max(colW, face.MinWidth(c.Text, fs)+20+2*cardInset)
+		}
+	}
 	cardW := colW - 2*cardInset
 	textW := cardW - 20
 
@@ -67,10 +77,10 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	colTitles := make([][]string, len(d.Columns))
 	colH := 0.0
 	for ci, col := range d.Columns {
-		colTitles[ci] = face.Wrap(col.Title, fs, colW-16)
+		colTitles[ci] = face.WrapHard(col.Title, fs, colW-16)
 		h := headH + float64(len(colTitles[ci])-1)*lh
 		for _, c := range col.Cards {
-			cl := cardLayout{lines: face.Wrap(c.Text, fs, textW), meta: c.Ticket != "" || c.Assigned != ""}
+			cl := cardLayout{lines: face.WrapHard(c.Text, fs, textW), meta: c.Ticket != "" || c.Assigned != ""}
 			cl.h = float64(len(cl.lines))*lh + 20
 			if cl.meta {
 				cl.h += metaFs*1.3 + 2
