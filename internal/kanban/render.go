@@ -18,19 +18,11 @@ type RenderOptions struct {
 	Title    string
 }
 
-// columnFills are Mermaid's kanban section colours; the first column takes
-// the second, as Mermaid numbers columns from one.
-var columnFills = []string{"#ffffab", "#e8ffb9", "#dcb9ff", "#ffb9ff", "#ffb9dc", "#ffb9b9", "#ffdcb9", "#dcffb9", "#b9ffdc", "#b9ffff", "#b9dcff"}
-
-// priorityStroke colours a card's left edge by its priority, as Mermaid does.
-var priorityStroke = map[string]string{"Very High": "#ff0000", "High": "#ffa500", "Low": "#0000ff", "Very Low": "#add8e6"}
-
 const (
 	colW       = 200.0
 	colGap     = 6.0
 	cardInset  = 7.5
 	cardGap    = 6.0
-	cardStroke = "#9370db"
 )
 
 // Render parses and renders kanban source to SVG.
@@ -52,7 +44,9 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	pal := theme.For(o.Theme)
+	pal := theme.For(o.Theme).Escaped()
+	kc := pal.Kanban
+	priority := map[string]string{"Very High": kc.VeryHigh, "High": kc.High, "Low": kc.Low, "Very Low": kc.VeryLow}
 	face := svgutil.FaceFor(o.FontFace)
 	fs := o.FontSize
 	metaFs := math.Round(fs * 0.86)
@@ -109,18 +103,18 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 	for ci, col := range d.Columns {
 		x := pad + float64(ci)*(colW+colGap)
-		fill := columnFills[(ci+1)%len(columnFills)]
+		fill := kc.Columns[(ci+1)%len(kc.Columns)]
 		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="5" fill="%s" stroke="%s"/>`+"\n",
 			svgutil.Num(x), svgutil.Num(top), svgutil.Num(colW), svgutil.Num(colH), fill, fill)
-		svgutil.MultilineText(&b, colTitles[ci], x+colW/2, top+6+lh/2+fs*0.35+float64(len(colTitles[ci])-1)*lh/2, lh, "#333333", "")
+		svgutil.MultilineText(&b, colTitles[ci], x+colW/2, top+6+lh/2+fs*0.35+float64(len(colTitles[ci])-1)*lh/2, lh, kc.ColumnText, "")
 		b.WriteByte('\n')
 		cy := top + headH + headMax
 		for k, c := range col.Cards {
 			cl := layouts[ci][k]
 			cx := x + cardInset
-			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="5" fill="#ffffff" stroke="%s"/>`+"\n",
-				svgutil.Num(cx), svgutil.Num(cy), svgutil.Num(cardW), svgutil.Num(cl.h), cardStroke)
-			if s, ok := priorityStroke[c.Priority]; ok {
+			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="5" fill="%s" stroke="%s"/>`+"\n",
+				svgutil.Num(cx), svgutil.Num(cy), svgutil.Num(cardW), svgutil.Num(cl.h), kc.CardFill, kc.CardStroke)
+			if s, ok := priority[c.Priority]; ok {
 				fmt.Fprintf(&b, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s" stroke-width="4"/>`+"\n",
 					svgutil.Num(cx+2), svgutil.Num(cy+2), svgutil.Num(cx+2), svgutil.Num(cy+cl.h-2), s)
 			}
