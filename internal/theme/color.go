@@ -113,3 +113,17 @@ func (p Palette) Node(fill, stroke, text string) (string, string, string) {
 	}
 	return f, s, t
 }
+
+// LineOn returns c for a thin line or an outline drawn on page, darkened
+// when c is too pale to see on a light page. Mermaid's first series colors
+// are that pale.
+func LineOn(c, page string) string {
+	if IsDark(page) {
+		return c
+	}
+	r, g, b, ok := cssval.RGB(c)
+	if !ok || (0.2126*float64(r)+0.7152*float64(g)+0.0722*float64(b))/255 <= 0.8 {
+		return c
+	}
+	return Darken(c)
+}

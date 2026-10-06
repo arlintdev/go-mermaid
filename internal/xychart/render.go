@@ -273,7 +273,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 			fmt.Fprintf(&p, "%s%s,%s ", cmd, svgutil.Num(x), svgutil.Num(y))
 		}
 		fmt.Fprintf(&b, `<path d="%s" fill="none" stroke="%s" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`+"\n",
-			strings.TrimSpace(p.String()), lineColor(series[seriesIdx(d, s)%len(series)], pal.Background))
+			strings.TrimSpace(p.String()), theme.LineOn(series[seriesIdx(d, s)%len(series)], pal.Background))
 	}
 
 	axis := func(x1, y1, x2, y2 float64) {
@@ -368,24 +368,6 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	}
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
-}
-
-// lineColor keeps a palette colour for a line unless it is too pale to see
-// as a thin stroke on a light page (Mermaid's first colour is), in which
-// case it is darkened.
-func lineColor(c, page string) string {
-	if theme.IsDark(page) {
-		return c
-	}
-	v, err := strconv.ParseUint(strings.TrimPrefix(c, "#"), 16, 32)
-	if err != nil {
-		return c
-	}
-	lum := (0.2126*float64(v>>16&0xff) + 0.7152*float64(v>>8&0xff) + 0.0722*float64(v&0xff)) / 255
-	if lum > 0.8 {
-		return theme.Darken(c)
-	}
-	return c
 }
 
 func seriesIdx(d *Diagram, s *Series) int {
