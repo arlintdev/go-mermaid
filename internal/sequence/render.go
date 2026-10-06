@@ -35,29 +35,27 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	return svg(lay, o, svgid.Prefix(src)), nil
 }
 
-// colours are the fixed colours of a sequence diagram beyond the palette.
+// colours are the escaped colours of a sequence diagram.
 type colours struct {
-	theme.Palette
-	noteFill, noteStroke, noteText string
-	barFill, barStroke             string
-	lifeline                       string
-	badgeText                      string
+	Background, NodeFill, NodeStroke, Text, Edge string
+	noteFill, noteStroke, noteText               string
+	barFill, barStroke                           string
+	lifeline                                     string
+	badgeText                                    string
+	text                                         string // Text, unescaped
 }
 
 func coloursFor(name string) colours {
-	pal := theme.For(name)
-	c := colours{
-		Palette:  pal,
-		noteFill: "#fff5ad", noteStroke: "#aaaa33", noteText: "#333333",
-		barFill: "#f4f4f4", barStroke: "#666666",
-		lifeline:  pal.NodeStroke,
-		badgeText: "#ffffff",
+	p := theme.For(name)
+	e := svgutil.Esc
+	return colours{
+		Background: e(p.Background), NodeFill: e(p.NodeFill), NodeStroke: e(p.NodeStroke), Text: e(p.Text), Edge: e(p.Edge),
+		noteFill: e(p.NoteFill), noteStroke: e(p.NoteStroke), noteText: e(p.NoteText),
+		barFill: e(p.Sequence.ActivationFill), barStroke: e(p.Sequence.ActivationStroke),
+		lifeline:  e(p.NodeStroke),
+		badgeText: e(p.Sequence.NumberText),
+		text:      p.Text,
 	}
-	if name == "dark" {
-		c.barFill, c.barStroke = pal.NodeFill, pal.NodeStroke
-		c.badgeText = pal.Background
-	}
-	return c
 }
 
 type writer struct {
@@ -213,14 +211,23 @@ func (w *writer) box(x *Box) {
 	if len(x.Members) == 0 {
 		return
 	}
-	fill := "none"
+	fill, op := "none", ""
 	if x.Color != "" {
-		fill = svgutil.Esc(x.Color)
+		fill, op = svgutil.Esc(x.Color), w.backdrop(x.Color)
 	}
 	y1 := w.lay.BottomY + w.lay.HeadH + w.m.boxPad
-	w.f(`<rect x="%s" y="0" width="%s" height="%s" fill="%s" stroke="%s" stroke-opacity="0.6"/>`,
-		num(x.X0), num(x.X1-x.X0), num(y1), fill, w.c.NodeStroke)
+	w.f(`<rect x="%s" y="0" width="%s" height="%s" fill="%s"%s stroke="%s" stroke-opacity="0.6"/>`,
+		num(x.X0), num(x.X1-x.X0), num(y1), fill, op, w.c.NodeStroke)
 	w.lines(x.Lines, (x.X0+x.X1)/2, 4*w.m.k+w.m.fs, "middle", w.c.Text, "")
+}
+
+// backdrop returns the fill-opacity attribute for a background colour the
+// source chose, or nothing when the theme's text reads on it as it is.
+func (w *writer) backdrop(color string) string {
+	if op := theme.BackdropOpacity(color, w.c.text); op < 1 {
+		return ` fill-opacity="` + num(op) + `"`
+	}
+	return ""
 }
 
 func (w *writer) rect(f *Frame) {
@@ -229,7 +236,7 @@ func (w *writer) rect(f *Frame) {
 	}
 	fill, op := w.c.NodeFill, ` fill-opacity="0.5"`
 	if f.Color != "" {
-		fill, op = svgutil.Esc(f.Color), ""
+		fill, op = svgutil.Esc(f.Color), w.backdrop(f.Color)
 	}
 	w.f(`<rect x="%s" y="%s" width="%s" height="%s" fill="%s"%s/>`,
 		num(f.X0), num(f.Y0), num(f.X1-f.X0), num(f.Y1-f.Y0), fill, op)
