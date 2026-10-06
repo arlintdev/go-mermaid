@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="545" height="814.64" viewBox="0 0 545 814.64" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><marker id="mswjupw-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#444444"/></marker></defs>
+  <text x="16" y="34.2" fill="#333333" font-size="18.2" font-weight="bold">Container diagram for Internet Banking System</text>
+  <g transform="translate(16,49.48)">
+    <rect x="0" y="376" width="513" height="373.16" rx="4" fill="none" stroke="#444444" stroke-dasharray="7 7"/>
+    <text x="10.8" y="398" fill="#333333" font-weight="bold">Internet Banking</text>
+    <text x="10.8" y="412.56" fill="#333333" font-size="11.2">[System]</text>
+    <path d="M222.4,296 L146.28,432.16" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#mswjupw-arrow)"/>
+    <path d="M256.5,296 L256.5,668.66 L222,668.66" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#mswjupw-arrow)"/>
+    <path d="M383.5,606.16 C383.5,562.16 383.5,562.16 383.5,518.16" fill="none" stroke="#444444" stroke-width="1.2" marker-start="url(#mswjupw-arrow)"/>
+    <path d="M120,526.16 C120,570.16 120,570.16 120,614.16" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#mswjupw-arrow)"/>
+    <path d="M256.5,94 C256.5,134 256.5,134 256.5,174" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#mswjupw-arrow)"/>
+    <rect x="144.5" y="202" width="224" height="94" rx="14" fill="#08427b" stroke="#073b6f"/>
+    <circle cx="256.5" cy="191.5" r="17.5" fill="#08427b" stroke="#073b6f"/>
+    <text x="256.5" y="227.63" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Customer</text>
+    <text x="256.5" y="242.91" fill="#ffffff" font-size="10.92" text-anchor="middle">[Person]</text>
+    <text x="256.5" y="264.03" fill="#ffffff" font-size="11.9" text-anchor="middle">A customer of the bank, with personal</text>
+    <text x="256.5" y="279.5" fill="#ffffff" font-size="11.9" text-anchor="middle">bank accounts</text>
+    <rect x="18" y="614.16" width="204" height="109" rx="4" fill="#438dd5" stroke="#3c7fc0"/>
+    <text x="120" y="639.56" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Single-Page App</text>
+    <text x="120" y="654.83" fill="#ffffff" font-size="10.92" text-anchor="middle">[Container: JavaScript, Angular]</text>
+    <text x="120" y="675.96" fill="#ffffff" font-size="11.9" text-anchor="middle">Provides all the Internet banking</text>
+    <text x="120" y="691.43" fill="#ffffff" font-size="11.9" text-anchor="middle">functionality to customers via their</text>
+    <text x="120" y="706.9" fill="#ffffff" font-size="11.9" text-anchor="middle">web browser</text>
+    <rect x="18" y="432.16" width="204" height="94" rx="4" fill="#438dd5" stroke="#3c7fc0"/>
+    <text x="120" y="457.79" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Web Application</text>
+    <text x="120" y="473.07" fill="#ffffff" font-size="10.92" text-anchor="middle">[Container: Java, Spring MVC]</text>
+    <text x="120" y="494.19" fill="#ffffff" font-size="11.9" text-anchor="middle">Delivers the static content and the</text>
+    <text x="120" y="509.66" fill="#ffffff" font-size="11.9" text-anchor="middle">Internet banking SPA</text>
+    <path d="M272,614.16 A111.5,8 0 0 1 495,614.16 V723.16 A111.5,8 0 0 1 272,723.16 Z" fill="#438dd5" stroke="#3c7fc0"/>
+    <path d="M272,614.16 A111.5,8 0 0 0 495,614.16" fill="none" stroke="#3c7fc0"/>
+    <text x="383.5" y="647.56" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Database</text>
+    <text x="383.5" y="662.83" fill="#ffffff" font-size="10.92" text-anchor="middle">[Container: SQL Database]</text>
+    <text x="383.5" y="683.96" fill="#ffffff" font-size="11.9" text-anchor="middle">Stores user registration information,</text>
+    <text x="383.5" y="699.43" fill="#ffffff" font-size="11.9" text-anchor="middle">hashed auth credentials, access logs,</text>
+    <text x="383.5" y="714.9" fill="#ffffff" font-size="11.9" text-anchor="middle">etc.</text>
+    <rect x="287" y="440.16" width="193" height="78" rx="4" fill="#85bbf0" stroke="#78a8d8"/>
+    <text x="383.5" y="465.53" fill="#000000" font-size="14" text-anchor="middle" font-weight="bold">Sign In Controller</text>
+    <text x="383.5" y="480.8" fill="#000000" font-size="10.92" text-anchor="middle">[Component: MVC Rest Controller]</text>
+    <text x="383.5" y="501.93" fill="#000000" font-size="11.9" text-anchor="middle">Allows users to sign in</text>
+    <rect x="159" y="0" width="195" height="94" rx="4" fill="#999999" stroke="#8a8a8a"/>
+    <text x="256.5" y="25.63" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">E-Mail System</text>
+    <text x="256.5" y="40.91" fill="#ffffff" font-size="10.92" text-anchor="middle">[External System]</text>
+    <text x="256.5" y="62.03" fill="#ffffff" font-size="11.9" text-anchor="middle">The internal Microsoft Exchange</text>
+    <text x="256.5" y="77.5" fill="#ffffff" font-size="11.9" text-anchor="middle">system</text>
+    <rect x="160.21" y="347.52" width="48.26" height="33.12" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="184.34" y="360.82" fill="#333333" font-size="11.9" text-anchor="middle">Uses</text>
+    <text x="184.34" y="374.96" fill="#333333" font-size="10.5" text-anchor="middle" font-style="italic">[HTTPS]</text>
+    <rect x="232.37" y="483.02" width="48.26" height="33.12" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="256.5" y="496.32" fill="#333333" font-size="11.9" text-anchor="middle">Uses</text>
+    <text x="256.5" y="510.46" fill="#333333" font-size="10.5" text-anchor="middle" font-style="italic">[HTTPS]</text>
+    <rect x="313.37" y="545.6" width="140.27" height="33.12" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="383.5" y="558.91" fill="#333333" font-size="11.9" text-anchor="middle">Reads from and writes to</text>
+    <text x="383.5" y="573.05" fill="#333333" font-size="10.5" text-anchor="middle" font-style="italic">[JDBC]</text>
+    <rect x="94.51" y="560.42" width="50.97" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="120" y="573.73" fill="#333333" font-size="11.9" text-anchor="middle">Delivers</text>
+    <rect x="208.19" y="124.27" width="96.62" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="256.5" y="137.57" fill="#333333" font-size="11.9" text-anchor="middle">Sends e-mails to</text>
+  </g>
+</svg>

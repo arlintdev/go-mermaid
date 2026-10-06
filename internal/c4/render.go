@@ -2,10 +2,13 @@ package c4
 
 import (
 	"fmt"
+	"math"
+	"regexp"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/domain"
 	"github.com/arlintdev/go-mermaid/internal/layout"
+	"github.com/arlintdev/go-mermaid/internal/svgid"
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
 	"github.com/arlintdev/go-mermaid/internal/theme"
 )
@@ -19,19 +22,120 @@ type RenderOptions struct {
 	Title    string
 }
 
-// kindFill maps an element kind to a fill color.
-func kindFill(kind string) string {
-	switch {
-	case strings.HasPrefix(kind, "Person"):
-		if strings.Contains(kind, "_Ext") {
-			return "#686868"
+const (
+	minW      = 170.0
+	maxTextW  = 200.0
+	boxPad    = 12.0
+	bPad      = 18.0 // inside a boundary, around its contents
+	labelMaxW = 180.0
+)
+
+// look is an element kind's colours and its [type] wording, after
+// Mermaid's C4 defaults.
+type look struct{ fill, stroke, text, typ string }
+
+func lookFor(e *Element) look {
+	ext := strings.HasSuffix(e.Kind, "_Ext")
+	base := strings.TrimSuffix(e.Kind, "_Ext")
+	techn := func(t string) string {
+		if e.Techn != "" {
+			return t + ": " + e.Techn
 		}
-		return "#08427b"
-	case strings.Contains(kind, "_Ext"):
-		return "#999999"
-	default:
-		return "#1168bd"
+		return t
 	}
+	var l look
+	switch {
+	case base == "Person":
+		l = look{"#08427b", "#073b6f", "#ffffff", "Person"}
+		if ext {
+			l = look{"#686868", "#8a8a8a", "#ffffff", "External Person"}
+		}
+	case strings.HasPrefix(base, "System"):
+		l = look{"#1168bd", "#3c7fc0", "#ffffff", "Software System"}
+		if ext {
+			l = look{"#999999", "#8a8a8a", "#ffffff", "External System"}
+		}
+	case strings.HasPrefix(base, "Container"):
+		l = look{"#438dd5", "#3c7fc0", "#ffffff", techn("Container")}
+		if ext {
+			l = look{"#b3b3b3", "#a6a6a6", "#ffffff", techn("External Container")}
+		}
+	default:
+		l = look{"#85bbf0", "#78a8d8", "#000000", techn("Component")}
+		if ext {
+			l = look{"#cccccc", "#bfbfbf", "#000000", techn("External Component")}
+		}
+	}
+	if e.Style.Fill != "" {
+		l.fill = svgutil.Esc(e.Style.Fill)
+	}
+	if e.Style.Stroke != "" {
+		l.stroke = svgutil.Esc(e.Style.Stroke)
+	}
+	if e.Style.Text != "" {
+		l.text = svgutil.Esc(e.Style.Text)
+	}
+	return l
+}
+
+type metrics struct {
+	face svgutil.Face
+	fs   float64
+	ff   string // the font family the layout measures with
+}
+
+func (m metrics) lines(s string, size, maxW float64) []string { return wrap(m.face, s, size, maxW) }
+
+// elementText is an element's label, [type] and description lines.
+func elementText(e *Element, m metrics) (label, typ, descr []string) {
+	return m.lines(e.Label, m.fs, maxTextW), m.lines("["+lookFor(e).typ+"]", m.fs*0.78, maxTextW), m.lines(e.Descr, m.fs*0.85, maxTextW)
+}
+
+func headR(m metrics) float64 { return m.fs * 1.25 }
+
+func isPerson(e *Element) bool { return strings.HasPrefix(e.Kind, "Person") }
+
+func elementSize(e *Element, m metrics) (float64, float64) {
+	label, typ, descr := elementText(e, m)
+	w := 0.0
+	for _, l := range label {
+		w = max(w, m.face.Width(l, m.fs)*1.07)
+	}
+	for _, l := range typ {
+		w = max(w, m.face.Width(l, m.fs*0.78))
+	}
+	for _, l := range descr {
+		w = max(w, m.face.Width(l, m.fs*0.85))
+	}
+	h := 2*boxPad + float64(len(label))*m.fs*1.3 + float64(len(typ))*m.fs*0.78*1.3
+	if e.Descr != "" {
+		h += 6 + float64(len(descr))*m.fs*0.85*1.3
+	}
+	switch {
+	case isPerson(e):
+		h += headR(m) * 1.6
+	case strings.Contains(e.Kind, "Db"):
+		h += 16
+	case strings.Contains(e.Kind, "Queue"):
+		w += 24
+	}
+	return math.Ceil(max(w+2*boxPad, minW)), math.Ceil(h)
+}
+
+type rect struct{ x, y, w, h float64 }
+
+type ctx struct {
+	d     *Diagram
+	m     metrics
+	pal   theme.Palette
+	rects map[string]rect   // absolute boxes of elements and boundaries
+	local map[*Boundary]sub // each boundary's own layout
+}
+
+type sub struct {
+	g      *domain.Graph
+	w, h   float64
+	ox, oy float64 // where the layout's origin sits inside the boundary
 }
 
 // Render parses and renders C4 source to SVG.
@@ -40,169 +144,585 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	g := &domain.Graph{Direction: domain.TopBottom}
-	for _, e := range d.Elements {
-		n := &domain.Node{ID: e.ID, Label: e.Label, Shape: domain.ShapeRect}
-		n.Size = elementSize(e, svgutil.FaceFor(o.FontFace), o.FontSize)
-		g.Nodes = append(g.Nodes, n)
+	fs := o.FontSize
+	if fs <= 0 {
+		fs = 14
 	}
-	for _, r := range d.Rels {
-		g.Edges = append(g.Edges, &domain.Edge{From: r.From, To: r.To, Label: r.Label})
+	if o.Title == "" {
+		o.Title = d.Title
 	}
-	res, err := layout.Compute(g, layout.Options{NodeSep: 60, RankSep: 100, FontSize: o.FontSize, FontFace: o.FontFace})
+	c := &ctx{d: d, m: metrics{face: svgutil.FaceFor(o.FontFace), fs: fs, ff: o.FontFace}, pal: theme.For(o.Theme),
+		rects: map[string]rect{}, local: map[*Boundary]sub{}}
+	w, h, err := c.layout(d.Root, true)
 	if err != nil {
 		return nil, err
 	}
-	return svg(d, g, res, o), nil
+	c.place(d.Root, 0, 0)
+	return c.svg(o, w, h, svgid.Prefix(src)), nil
 }
 
-func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions) []byte {
-	pal := theme.For(o.Theme)
-	pad := o.Padding
-	titleH := svgutil.TitleHeight(o.Title, o.FontSize)
-	w := res.Width + pad*2
-	h := res.Height + titleH + pad*2
-
-	var b strings.Builder
-	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`,
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(o.FontSize))
-	b.WriteByte('\n')
-	fmt.Fprintf(&b, `  <defs><marker id="c4-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="%s"/></marker></defs>`, pal.Edge)
-	b.WriteByte('\n')
-	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`, pal.Background)
-	b.WriteByte('\n')
-	if o.Title != "" {
-		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle" font-weight="bold">%s</text>`,
-			svgutil.Num(w/2), svgutil.Num(pad+o.FontSize), pal.Text, svgutil.Esc(o.Title))
-		b.WriteByte('\n')
+func childID(it any) string {
+	switch v := it.(type) {
+	case *Element:
+		return v.ID
+	case *Boundary:
+		return v.ID
 	}
-	fmt.Fprintf(&b, `  <g transform="translate(%s,%s)">`, svgutil.Num(pad), svgutil.Num(pad+titleH))
-	b.WriteByte('\n')
-
-	for i, r := range d.Rels {
-		writeRel(&b, r, g.Edges[i], pal, o)
-	}
-	for _, e := range d.Elements {
-		writeElement(&b, e, g.NodeByID(e.ID), o)
-	}
-
-	b.WriteString("  </g>\n</svg>\n")
-	return []byte(b.String())
+	return ""
 }
 
-func writeElement(b *strings.Builder, e *Element, n *domain.Node, o RenderOptions) {
-	if n == nil {
+// lift returns the child of b that is or contains id, or "".
+func (c *ctx) lift(id string, b *Boundary) string {
+	var parentOf func(cur *Boundary) string
+	parentOf = func(cur *Boundary) string {
+		for _, it := range cur.Children {
+			if childID(it) == id {
+				return id
+			}
+			if nb, ok := it.(*Boundary); ok {
+				if parentOf(nb) != "" {
+					return nb.ID
+				}
+			}
+		}
+		return ""
+	}
+	return parentOf(b)
+}
+
+// boundaryHead is the height of a boundary's label and [type].
+func (c *ctx) boundaryHead(b *Boundary) float64 {
+	h := c.m.fs * 1.4
+	if b.Type != "" {
+		h += c.m.fs * 0.8 * 1.3
+	}
+	return h + 4
+}
+
+// layout lays out the children of b and returns its size.
+func (c *ctx) layout(b *Boundary, root bool) (float64, float64, error) {
+	g := &domain.Graph{Direction: domain.TopBottom}
+	for _, it := range b.Children {
+		var w, h float64
+		switch v := it.(type) {
+		case *Element:
+			w, h = elementSize(v, c.m)
+		case *Boundary:
+			var err error
+			if w, h, err = c.layout(v, false); err != nil {
+				return 0, 0, err
+			}
+		}
+		g.Nodes = append(g.Nodes, &domain.Node{ID: childID(it), Label: " ", Shape: domain.ShapeRect, Size: domain.Size{W: w, H: h}})
+	}
+	labelled := false
+	for _, r := range c.d.Rels {
+		from, to := c.lift(r.From, b), c.lift(r.To, b)
+		if from == "" || to == "" || from == to {
+			continue
+		}
+		if r.Kind == "Rel_U" || r.Kind == "Rel_Up" || r.Kind == "Rel_Back" {
+			from, to = to, from
+		}
+		e := &domain.Edge{From: from, To: to}
+		if r.Label != "" || r.Tech != "" {
+			labelled = true
+			e.Label = strings.Join(c.relLines(r), "\n")
+		}
+		g.Edges = append(g.Edges, e)
+	}
+	var w, h float64
+	if len(g.Nodes) > 0 {
+		rankSep := 60.0
+		if labelled {
+			rankSep = 80
+		}
+		_, err := layout.Compute(g, layout.Options{NodeSep: 50, RankSep: rankSep, FontSize: c.m.fs * 0.85, FontFace: c.m.ff})
+		if err != nil {
+			return 0, 0, err
+		}
+		var bd svgutil.Bounds
+		for _, n := range g.Nodes {
+			bd.AddRect(n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H)
+		}
+		for _, e := range g.Edges {
+			for _, p := range e.Points {
+				bd.Add(p.X, p.Y)
+			}
+		}
+		ox, oy := bd.Offset()
+		w, h = bd.Size()
+		s := sub{g: g, w: w, h: h, ox: ox, oy: oy}
+		if !root {
+			s.ox += bPad
+			s.oy += bPad + c.boundaryHead(b)
+		}
+		c.local[b] = s
+	}
+	if root {
+		return w, h, nil
+	}
+	lw := c.m.face.Width(b.Label, c.m.fs) * 1.07
+	return max(w, lw, 120) + 2*bPad, h + 2*bPad + c.boundaryHead(b), nil
+}
+
+// place records absolute boxes for b's children, with b's top-left at
+// (x, y).
+func (c *ctx) place(b *Boundary, x, y float64) {
+	s, ok := c.local[b]
+	if !ok {
 		return
 	}
-	x, y, w, h := n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H
-	fill := kindFill(e.Kind)
-	rx := 4.0
-	if strings.HasPrefix(e.Kind, "Person") {
-		rx = 16
-	}
-	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="%s" fill="%s" stroke="%s"/>`,
-		svgutil.Num(x), svgutil.Num(y), svgutil.Num(w), svgutil.Num(h), svgutil.Num(rx), fill, fill)
-	b.WriteByte('\n')
-	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="#ffffff" text-anchor="middle" font-weight="bold">%s</text>`,
-		svgutil.Num(x+w/2), svgutil.Num(y+o.FontSize+4), svgutil.Esc(e.Label))
-	b.WriteByte('\n')
-	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="#e6e6e6" text-anchor="middle" font-size="%s">[%s]</text>`,
-		svgutil.Num(x+w/2), svgutil.Num(y+o.FontSize*2), svgutil.Num(o.FontSize*0.8), svgutil.Esc(kindShort(e.Kind)))
-	b.WriteByte('\n')
-	if e.Descr != "" {
-		for j, ln := range svgutil.SplitLines(wrapText(e.Descr, 26)) {
-			fmt.Fprintf(b, `    <text x="%s" y="%s" fill="#f0f0f0" text-anchor="middle" font-size="%s">%s</text>`,
-				svgutil.Num(x+w/2), svgutil.Num(y+o.FontSize*3+float64(j)*(o.FontSize)), svgutil.Num(o.FontSize*0.8), svgutil.Esc(ln))
-			b.WriteByte('\n')
+	for _, it := range b.Children {
+		n := s.g.NodeByID(childID(it))
+		if n == nil {
+			continue
+		}
+		r := rect{x + s.ox + n.Pos.X, y + s.oy + n.Pos.Y, n.Size.W, n.Size.H}
+		c.rects[childID(it)] = r
+		if nb, ok := it.(*Boundary); ok {
+			c.place(nb, r.x, r.y)
 		}
 	}
 }
 
-func writeRel(b *strings.Builder, r *Rel, e *domain.Edge, pal theme.Palette, o RenderOptions) {
-	if len(e.Points) < 2 {
+// relLines is a relationship's label lines and its [technology] line.
+func (c *ctx) relLines(r *Rel) []string {
+	var out []string
+	if r.Label != "" {
+		out = append(out, c.m.lines(r.Label, c.m.fs*0.85, labelMaxW)...)
+	}
+	if r.Tech != "" {
+		out = append(out, c.m.lines("["+r.Tech+"]", c.m.fs*0.75, labelMaxW)...)
+	}
+	return out
+}
+
+type drawnRel struct {
+	r      *Rel
+	sh     edgeShape
+	lx, ly float64
+}
+
+// route draws a relationship from its scope's layout when both ends are
+// laid out together, else as a straight line between the two boxes.
+func (c *ctx) route(r *Rel) (drawnRel, bool) {
+	fr, ok1 := c.rects[r.From]
+	tr, ok2 := c.rects[r.To]
+	if !ok1 || !ok2 || r.From == r.To {
+		return drawnRel{}, false
+	}
+	// Find the scope that lays out both ends directly.
+	var scope *Boundary
+	var walk func(b *Boundary)
+	walk = func(b *Boundary) {
+		if scope != nil {
+			return
+		}
+		f, t := c.lift(r.From, b), c.lift(r.To, b)
+		if f == r.From && t == r.To {
+			scope = b
+			return
+		}
+		for _, it := range b.Children {
+			if nb, ok := it.(*Boundary); ok {
+				walk(nb)
+			}
+		}
+	}
+	walk(c.d.Root)
+	if scope != nil {
+		s := c.local[scope]
+		var bx, by float64
+		if scope != c.d.Root {
+			br := c.rects[scope.ID]
+			bx, by = br.x, br.y
+		}
+		for _, e := range s.g.Edges {
+			if !(e.From == r.From && e.To == r.To || e.From == r.To && e.To == r.From) || len(e.Points) < 2 {
+				continue
+			}
+			pts := make([]domain.Point, len(e.Points))
+			for i, p := range e.Points {
+				pts[i] = domain.Point{X: p.X + bx + s.ox, Y: p.Y + by + s.oy}
+			}
+			if e.From != r.From {
+				for i, j := 0, len(pts)-1; i < j; i, j = i+1, j-1 {
+					pts[i], pts[j] = pts[j], pts[i]
+				}
+			}
+			var obs []box
+			for id, rr := range c.rects {
+				if id != r.From && id != r.To && c.d.element(id) != nil {
+					obs = append(obs, box{rr.x, rr.y, rr.w, rr.h})
+				}
+			}
+			sh := shapeEdge(pts, true, obs, 0, 0)
+			lx, ly := sh.mid.X, sh.mid.Y
+			if !sh.curved {
+				lx, ly = e.LabelPos.X+bx+s.ox, e.LabelPos.Y+by+s.oy-c.m.fs*0.3
+			}
+			return drawnRel{r, sh, lx, ly}, true
+		}
+	}
+	// Ends laid out in different boundaries: a straight line, or a right
+	// angle around the boxes in between, with the label where no box is.
+	a := domain.Point{X: fr.x + fr.w/2, Y: fr.y + fr.h/2}
+	z := domain.Point{X: tr.x + tr.w/2, Y: tr.y + tr.h/2}
+	var obs []rect
+	for id, rr := range c.rects {
+		if id != r.From && id != r.To && c.d.element(id) != nil {
+			obs = append(obs, rr)
+		}
+	}
+	hits := func(p, q domain.Point) bool {
+		for _, o := range obs {
+			if segHitsRect(p, q, o) {
+				return true
+			}
+		}
+		return false
+	}
+	pts := []domain.Point{clipRect(fr, a, z), clipRect(tr, z, a)}
+	if hits(pts[0], pts[1]) {
+		for _, corner := range []domain.Point{{X: z.X, Y: a.Y}, {X: a.X, Y: z.Y}} {
+			if inside(fr, corner) || inside(tr, corner) {
+				continue
+			}
+			p0, p2 := clipRect(fr, a, corner), clipRect(tr, z, corner)
+			if !hits(p0, corner) && !hits(corner, p2) {
+				pts = []domain.Point{p0, corner, p2}
+				break
+			}
+		}
+	}
+	sh := edgeShape{start: pts[0], end: pts[len(pts)-1], d: path(pts)}
+	tw, th := c.textBox(c.relLines(r))
+	best := domain.PolylineMidpoint(pts)
+	total := domain.PolylineLength(pts)
+	for _, f := range []float64{0.5, 0.4, 0.6, 0.3, 0.7, 0.2, 0.8} {
+		p := domain.PolylinePointAt(pts, total*f)
+		lr := rect{p.X - tw/2 - 4, p.Y - th/2 - 2, tw + 8, th + 4}
+		clear := true
+		for _, o := range obs {
+			if lr.x < o.x+o.w && lr.x+lr.w > o.x && lr.y < o.y+o.h && lr.y+lr.h > o.y {
+				clear = false
+				break
+			}
+		}
+		if clear {
+			best = p
+			break
+		}
+	}
+	sh.mid = best
+	return drawnRel{r, sh, best.X, best.Y}, true
+}
+
+func inside(r rect, p domain.Point) bool {
+	return p.X > r.x && p.X < r.x+r.w && p.Y > r.y && p.Y < r.y+r.h
+}
+
+// segHitsRect reports whether segment p-q passes through the inside of r.
+func segHitsRect(p, q domain.Point, r rect) bool {
+	const in = 2.0
+	x0, y0, x1, y1 := r.x+in, r.y+in, r.x+r.w-in, r.y+r.h-in
+	t0, t1 := 0.0, 1.0
+	dx, dy := q.X-p.X, q.Y-p.Y
+	for _, c := range [4][2]float64{{-dx, p.X - x0}, {dx, x1 - p.X}, {-dy, p.Y - y0}, {dy, y1 - p.Y}} {
+		if c[0] == 0 {
+			if c[1] < 0 {
+				return false
+			}
+			continue
+		}
+		t := c[1] / c[0]
+		if c[0] < 0 {
+			t0 = max(t0, t)
+		} else {
+			t1 = min(t1, t)
+		}
+		if t0 > t1 {
+			return false
+		}
+	}
+	return true
+}
+
+// clipRect moves p (the centre of r) to r's border toward q.
+func clipRect(r rect, p, q domain.Point) domain.Point {
+	dx, dy := q.X-p.X, q.Y-p.Y
+	t := 1.0
+	if dx != 0 {
+		t = min(t, math.Abs(r.w/2/dx))
+	}
+	if dy != 0 {
+		t = min(t, math.Abs(r.h/2/dy))
+	}
+	return domain.Point{X: p.X + dx*t, Y: p.Y + dy*t}
+}
+
+func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
+	pad := o.Padding
+	fs := c.m.fs
+	titleH := 0.0
+	if o.Title != "" {
+		titleH = fs*1.3*1.4 + 8
+	}
+	var rels []drawnRel
+	var bd svgutil.Bounds
+	bd.AddRect(0, 0, cw, ch)
+	for _, r := range c.d.Rels {
+		dr, ok := c.route(r)
+		if !ok {
+			continue
+		}
+		bd.Add(dr.sh.start.X, dr.sh.start.Y)
+		bd.Add(dr.sh.end.X, dr.sh.end.Y)
+		lines := c.relLines(r)
+		tw, th := c.textBox(lines)
+		bd.AddRect(dr.lx-tw/2-4, dr.ly-th/2-2, tw+8, th+4)
+		rels = append(rels, dr)
+	}
+	// Nudge labels apart where two would overlap.
+	type lb struct{ x0, y0, x1, y1 float64 }
+	boxOf := func(dr drawnRel) lb {
+		tw, th := c.textBox(c.relLines(dr.r))
+		return lb{dr.lx - tw/2 - 4, dr.ly - th/2 - 2, dr.lx + tw/2 + 4, dr.ly + th/2 + 2}
+	}
+	for i := range rels {
+		for pass := 0; pass < 4; pass++ {
+			moved := false
+			a := boxOf(rels[i])
+			for j := 0; j < i; j++ {
+				o := boxOf(rels[j])
+				if a.x0 < o.x1 && a.x1 > o.x0 && a.y0 < o.y1 && a.y1 > o.y0 {
+					if rels[i].ly >= rels[j].ly {
+						rels[i].ly += o.y1 - a.y0 + 2
+					} else {
+						rels[i].ly -= a.y1 - o.y0 + 2
+					}
+					moved = true
+					a = boxOf(rels[i])
+				}
+			}
+			if !moved {
+				break
+			}
+		}
+		a := boxOf(rels[i])
+		bd.AddRect(a.x0, a.y0, a.x1-a.x0, a.y1-a.y0)
+	}
+	sx, sy := bd.Offset()
+	w0, h0 := bd.Size()
+	w := w0 + 2*pad
+	h := h0 + 2*pad + titleH
+	if o.Title != "" {
+		w = max(w, c.m.face.Width(o.Title, fs*1.3)*1.07+2*pad)
+	}
+
+	var b strings.Builder
+	edge := "#444444"
+	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(o.FontFace)), svgutil.Num(fs))
+	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(c.pal.Background))
+	fmt.Fprintf(&b, `  <defs><marker id="%s-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="%s"/></marker></defs>`+"\n", id, edge)
+	if o.Title != "" {
+		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" font-size="%s" font-weight="bold">%s</text>`+"\n",
+			svgutil.Num(pad), svgutil.Num(pad+fs*1.3), svgutil.Esc(c.pal.Text), svgutil.Num(fs*1.3), svgutil.Esc(o.Title))
+	}
+	fmt.Fprintf(&b, `  <g transform="translate(%s,%s)">`+"\n", svgutil.Num(pad+sx), svgutil.Num(pad+titleH+sy))
+	for _, bo := range c.d.Boundaries {
+		c.writeBoundary(&b, bo)
+	}
+	for _, dr := range rels {
+		col := edge
+		if dr.r.Style.Stroke != "" {
+			col = svgutil.Esc(dr.r.Style.Stroke)
+		}
+		markers := ""
+		switch dr.r.Kind {
+		case "Rel_Back":
+			markers = fmt.Sprintf(` marker-start="url(#%s-arrow)"`, id)
+		case "BiRel":
+			markers = fmt.Sprintf(` marker-start="url(#%s-arrow)" marker-end="url(#%s-arrow)"`, id, id)
+		default:
+			markers = fmt.Sprintf(` marker-end="url(#%s-arrow)"`, id)
+		}
+		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.2"%s/>`+"\n", dr.sh.d, col, markers)
+	}
+	for _, e := range c.d.Elements {
+		c.writeElement(&b, e)
+	}
+	for _, dr := range rels {
+		lines := c.relLines(dr.r)
+		if len(lines) == 0 {
+			continue
+		}
+		tw, th := c.textBox(lines)
+		text := svgutil.Esc(c.pal.Text)
+		if dr.r.Style.Text != "" {
+			text = svgutil.Esc(dr.r.Style.Text)
+		}
+		fmt.Fprintf(&b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s" fill-opacity="0.85"/>`+"\n",
+			svgutil.Num(dr.lx-tw/2-4), svgutil.Num(dr.ly-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4), svgutil.Esc(c.pal.Background))
+		y := dr.ly - th/2
+		nLabel := len(c.m.lines(dr.r.Label, fs*0.85, labelMaxW))
+		if dr.r.Label == "" {
+			nLabel = 0
+		}
+		for i, l := range lines {
+			size, style := fs*0.85, ""
+			if i >= nLabel {
+				size, style = fs*0.75, ` font-style="italic"`
+			}
+			y += size * 1.3
+			fmt.Fprintf(&b, `    <text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="middle"%s>%s</text>`+"\n",
+				svgutil.Num(dr.lx), svgutil.Num(y-size*0.35), text, svgutil.Num(size), style, svgutil.Esc(l))
+		}
+	}
+	b.WriteString("  </g>\n</svg>\n")
+	return []byte(b.String())
+}
+
+func (c *ctx) textBox(lines []string) (float64, float64) {
+	w, h := 0.0, 0.0
+	for _, l := range lines {
+		size := c.m.fs * 0.85
+		if strings.HasPrefix(l, "[") {
+			size = c.m.fs * 0.75
+		}
+		w = max(w, c.m.face.Width(l, size))
+		h += size * 1.3
+	}
+	return w, h
+}
+
+func (c *ctx) writeBoundary(b *strings.Builder, bo *Boundary) {
+	r, ok := c.rects[bo.ID]
+	if !ok {
 		return
 	}
+	n := svgutil.Num
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="none" stroke="#444444" stroke-dasharray="7 7"/>`+"\n",
+		n(r.x), n(r.y), n(r.w), n(r.h))
+	y := r.y + 8 + c.m.fs
+	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" font-weight="bold">%s</text>`+"\n", n(r.x+bPad*0.6), n(y), svgutil.Esc(c.pal.Text), svgutil.Esc(bo.Label))
+	if bo.Type != "" {
+		y += c.m.fs * 0.8 * 1.3
+		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" font-size="%s">%s</text>`+"\n", n(r.x+bPad*0.6), n(y), svgutil.Esc(c.pal.Text), n(c.m.fs*0.8), svgutil.Esc("["+bo.Type+"]"))
+	}
+}
+
+func (c *ctx) writeElement(b *strings.Builder, e *Element) {
+	r, ok := c.rects[e.ID]
+	if !ok {
+		return
+	}
+	l := lookFor(e)
+	n := svgutil.Num
+	x, y, w, h := r.x, r.y, r.w, r.h
+	attrs := fmt.Sprintf(`fill="%s" stroke="%s"`, l.fill, l.stroke)
+	switch {
+	case isPerson(e):
+		hr := headR(c.m)
+		top := y + hr*1.6
+		fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="14" %s/>`+"\n", n(x), n(top), n(w), n(y+h-top), attrs)
+		fmt.Fprintf(b, `    <circle cx="%s" cy="%s" r="%s" %s/>`+"\n", n(x+w/2), n(y+hr), n(hr), attrs)
+		y, h = top, y+h-top
+	case strings.Contains(e.Kind, "Db"):
+		ry := 8.0
+		fmt.Fprintf(b, `    <path d="M%s,%s A%s,%s 0 0 1 %s,%s V%s A%s,%s 0 0 1 %s,%s Z" %s/>`+"\n",
+			n(x), n(y+ry), n(w/2), n(ry), n(x+w), n(y+ry), n(y+h-ry), n(w/2), n(ry), n(x), n(y+h-ry), attrs)
+		fmt.Fprintf(b, `    <path d="M%s,%s A%s,%s 0 0 0 %s,%s" fill="none" stroke="%s"/>`+"\n", n(x), n(y+ry), n(w/2), n(ry), n(x+w), n(y+ry), l.stroke)
+		y, h = y+ry*2, h-ry*2
+	case strings.Contains(e.Kind, "Queue"):
+		rx := 12.0
+		fmt.Fprintf(b, `    <path d="M%s,%s H%s A%s,%s 0 0 1 %s,%s H%s A%s,%s 0 0 1 %s,%s Z" %s/>`+"\n",
+			n(x+rx), n(y), n(x+w-rx), n(rx), n(h/2), n(x+w-rx), n(y+h), n(x+rx), n(rx), n(h/2), n(x+rx), n(y), attrs)
+		fmt.Fprintf(b, `    <path d="M%s,%s A%s,%s 0 0 0 %s,%s" fill="none" stroke="%s"/>`+"\n", n(x+w-rx), n(y), n(rx), n(h/2), n(x+w-rx), n(y+h), l.stroke)
+		w -= rx
+	default:
+		fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="4" %s/>`+"\n", n(x), n(y), n(w), n(h), attrs)
+	}
+	label, typ, descr := elementText(e, c.m)
+	total := float64(len(label))*c.m.fs*1.3 + float64(len(typ))*c.m.fs*0.78*1.3
+	if e.Descr != "" {
+		total += 6 + float64(len(descr))*c.m.fs*0.85*1.3
+	}
+	ty := y + h/2 - total/2
+	cx := x + w/2
+	write := func(lines []string, size float64, extra string) {
+		for _, ln := range lines {
+			ty += size * 1.3
+			fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="middle"%s>%s</text>`+"\n",
+				n(cx), n(ty-size*0.35), l.text, n(size), extra, svgutil.Esc(ln))
+		}
+	}
+	write(label, c.m.fs, ` font-weight="bold"`)
+	write(typ, c.m.fs*0.78, "")
+	if e.Descr != "" {
+		ty += 6
+		write(descr, c.m.fs*0.85, "")
+	}
+}
+
+// wrap breaks s into lines no wider than maxW, at spaces where it can and
+// inside a word only when the word alone is too wide.
+func wrap(face svgutil.Face, s string, size, maxW float64) []string {
+	var lines []string
+	for _, para := range svgutil.SplitLines(s) {
+		cur := ""
+		for _, wd := range strings.Fields(para) {
+			for face.Width(wd, size) > maxW && len([]rune(wd)) > 1 {
+				if cur != "" {
+					lines = append(lines, cur)
+					cur = ""
+				}
+				r := []rune(wd)
+				k := len(r) - 1
+				for k > 1 && face.Width(string(r[:k]), size) > maxW {
+					k--
+				}
+				lines = append(lines, string(r[:k]))
+				wd = string(r[k:])
+			}
+			try := wd
+			if cur != "" {
+				try = cur + " " + wd
+			}
+			if cur != "" && face.Width(try, size) > maxW {
+				lines = append(lines, cur)
+				cur = wd
+				continue
+			}
+			cur = try
+		}
+		lines = append(lines, cur)
+	}
+	return lines
+}
+
+func path(pts []domain.Point) string {
 	var d strings.Builder
-	for i, p := range e.Points {
+	for i, p := range pts {
 		cmd := "L"
 		if i == 0 {
 			cmd = "M"
 		}
 		fmt.Fprintf(&d, "%s%s,%s ", cmd, svgutil.Num(p.X), svgutil.Num(p.Y))
 	}
-	fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s" stroke-dasharray="4,3" marker-end="url(#c4-arrow)"/>`,
-		strings.TrimSpace(d.String()), pal.Edge)
-	b.WriteByte('\n')
-	if r.Tech != "" {
-		mid := e.LabelPos
-		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" font-size="%s">%s</text>`,
-			svgutil.Num(mid.X), svgutil.Num(mid.Y+o.FontSize), pal.Text,
-			svgutil.Num(o.FontSize-2), svgutil.Esc("["+r.Tech+"]"))
-		b.WriteByte('\n')
-	}
-	if r.Label != "" {
-		mid := e.LabelPos
-		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" dy="-2">%s</text>`,
-			svgutil.Num(mid.X), svgutil.Num(mid.Y), pal.Text, svgutil.Esc(r.Label))
-		b.WriteByte('\n')
-	}
+	return strings.TrimSpace(d.String())
 }
 
-func elementSize(e *Element, face svgutil.Face, fontSize float64) domain.Size {
-	maxW := face.Width(e.Label, fontSize)
-	if l := len([]rune(e.Descr)); l < 28 {
-		if wd := face.Width(e.Descr, fontSize); wd > maxW {
-			maxW = wd
-		}
-	}
-	w := maxW + 24
-	if w < 120 {
-		w = 120
-	}
-	if w > 200 {
-		w = 200
-	}
-	h := fontSize*3 + 8
-	if e.Descr != "" {
-		lines := len(svgutil.SplitLines(wrapText(e.Descr, 26)))
-		h += float64(lines) * fontSize
-	}
-	return domain.Size{W: w, H: h}
-}
+var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
 
-// kindShort returns a short label for the element kind tag.
-func kindShort(kind string) string {
-	switch {
-	case strings.HasPrefix(kind, "Person"):
-		return "Person"
-	case strings.HasPrefix(kind, "System"):
-		return "System"
-	case strings.HasPrefix(kind, "Container"):
-		return "Container"
-	case strings.HasPrefix(kind, "Component"):
-		return "Component"
+// fontFamily returns face when it is a plain font list, else sans-serif:
+// a font option is written into an attribute, so it must carry nothing else.
+func fontFamily(face string) string {
+	l := strings.ToLower(face)
+	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
+		return "sans-serif"
 	}
-	return kind
-}
-
-// wrapText inserts <br> roughly every width runes at word boundaries.
-func wrapText(s string, width int) string {
-	words := strings.Fields(s)
-	var lines []string
-	var cur strings.Builder
-	for _, w := range words {
-		if cur.Len() > 0 && cur.Len()+1+len(w) > width {
-			lines = append(lines, cur.String())
-			cur.Reset()
-		}
-		if cur.Len() > 0 {
-			cur.WriteByte(' ')
-		}
-		cur.WriteString(w)
-	}
-	if cur.Len() > 0 {
-		lines = append(lines, cur.String())
-	}
-	return strings.Join(lines, "<br>")
+	return face
 }
