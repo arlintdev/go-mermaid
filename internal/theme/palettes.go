@@ -235,7 +235,7 @@ var darkPalette = Palette{
 	},
 	Packet: PacketColors{Fill: "#333333", Stroke: "#cccccc", Text: "#e6e6e6"},
 	Radar: RadarColors{
-		Curves: []string{"#8686ff", "#ffff78", "#d7ff86", "#c286ff", "#ff86ff", "#ff86c2", "#ff8686", "#ffc286", "#c2ff86", "#86ffc2", "#86ffff", "#86c2ff"},
+		Curves: []string{"#6a6ae0", "#dbdb57", "#afdb57", "#9857db", "#db57db", "#db5798", "#db5757", "#db9857", "#98db57", "#57db98", "#57dbdb", "#5798db"},
 		Grid:   "#5a5a5a",
 		Axis:   "#cccccc",
 	},
