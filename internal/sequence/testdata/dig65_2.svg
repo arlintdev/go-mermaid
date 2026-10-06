@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="944.13" height="413.2" viewBox="0 0 944.13 413.2" font-family="sans-serif" font-size="14">
+  <defs><marker id="myeggm7-seq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker><marker id="myeggm7-seq-open" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#333333" stroke-width="1.5"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(16,16)">
+    <line x1="65" y1="48" x2="65" y2="333.2" stroke="#9370DB"/>
+    <line x1="262.61" y1="48" x2="262.61" y2="333.2" stroke="#9370DB"/>
+    <line x1="499.13" y1="48" x2="499.13" y2="333.2" stroke="#9370DB"/>
+    <line x1="673.13" y1="48" x2="673.13" y2="333.2" stroke="#9370DB"/>
+    <line x1="847.13" y1="48" x2="847.13" y2="333.2" stroke="#9370DB"/>
+    <line x1="65" y1="90.2" x2="262.61" y2="90.2" stroke="#333333" stroke-width="1.5" marker-end="url(#myeggm7-seq-arrow)"/>
+    <text x="163.81" y="80.7" fill="#333333" text-anchor="middle">PATCH /api/v1/issues/12</text>
+    <line x1="262.61" y1="134.4" x2="499.13" y2="134.4" stroke="#333333" stroke-width="1.5" marker-end="url(#myeggm7-seq-arrow)"/>
+    <text x="380.87" y="124.9" fill="#333333" text-anchor="middle">inTx: update, audit row, commit</text>
+    <line x1="262.61" y1="178.6" x2="673.13" y2="178.6" stroke="#333333" stroke-width="1.5" marker-end="url(#myeggm7-seq-arrow)"/>
+    <text x="467.87" y="169.1" fill="#333333" text-anchor="middle">publish(audience, &quot;issue&quot;, {id, projectId})</text>
+    <line x1="673.13" y1="222.8" x2="847.13" y2="222.8" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#myeggm7-seq-arrow)"/>
+    <text x="760.13" y="213.3" fill="#333333" text-anchor="middle">event: issue</text>
+    <line x1="847.13" y1="267" x2="262.61" y2="267" stroke="#333333" stroke-width="1.5" marker-end="url(#myeggm7-seq-arrow)"/>
+    <text x="554.87" y="257.5" fill="#333333" text-anchor="middle">GET /api/v1/issues/12 (access-checked)</text>
+    <line x1="262.61" y1="311.2" x2="847.13" y2="311.2" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#myeggm7-seq-arrow)"/>
+    <text x="554.87" y="301.7" fill="#333333" text-anchor="middle">the issue as B may see it</text>
+    <rect x="0" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="65" y="28.9" fill="#333333" text-anchor="middle">Tab A</text>
+    <rect x="0" y="333.2" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="65" y="362.1" fill="#333333" text-anchor="middle">Tab A</text>
+    <rect x="192.97" y="0" width="139.27" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="262.61" y="28.9" fill="#333333" text-anchor="middle">Handler and store</text>
+    <rect x="192.97" y="333.2" width="139.27" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="262.61" y="362.1" fill="#333333" text-anchor="middle">Handler and store</text>
+    <rect x="434.13" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="499.13" y="28.9" fill="#333333" text-anchor="middle">PostgreSQL</text>
+    <rect x="434.13" y="333.2" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="499.13" y="362.1" fill="#333333" text-anchor="middle">PostgreSQL</text>
+    <rect x="608.13" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="673.13" y="28.9" fill="#333333" text-anchor="middle">Hub</text>
+    <rect x="608.13" y="333.2" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="673.13" y="362.1" fill="#333333" text-anchor="middle">Hub</text>
+    <rect x="782.13" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="847.13" y="28.9" fill="#333333" text-anchor="middle">Tab B</text>
+    <rect x="782.13" y="333.2" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="847.13" y="362.1" fill="#333333" text-anchor="middle">Tab B</text>
+  </g>
+</svg>

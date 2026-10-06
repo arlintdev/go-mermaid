@@ -1,7 +1,7 @@
 package sequence
 
 import (
-	"fmt"
+	"strconv"
 
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
 )
@@ -13,185 +13,546 @@ type Options struct {
 	FontFace string // CSS font-family the SVG will ask for; picks the metrics
 }
 
-// face returns the metric table matching the font family the renderer names.
-func (o Options) face() svgutil.Face { return svgutil.FaceFor(o.FontFace) }
+// metrics are the sizes the layout works in, scaled with the font size so a
+// larger font gets proportionally roomier boxes and gaps.
+type metrics struct {
+	fs, k, lineH float64
+	face         svgutil.Face
+
+	actorMinW, actorPadX, actorH, actorGap float64
+	figH                                   float64 // stick figure height
+	wrapW                                  float64 // width labels wrap at when there is no more room
+	msgPad                                 float64 // room either side of a message label
+	numR                                   float64 // autonumber badge radius
+	loopW, loopH                           float64 // self-message loop
+	barW                                   float64 // activation bar width
+	noteMargin, notePadX, notePadY         float64
+	noteMinW                               float64
+	boxPad                                 float64
+	frameMargin, tabH                      float64
+}
+
+func newMetrics(o Options) metrics {
+	fs := o.FontSize
+	if fs <= 0 {
+		fs = 14
+	}
+	k := fs / 14
+	return metrics{
+		fs: fs, k: k, lineH: fs * 1.3, face: svgutil.FaceFor(o.FontFace),
+		actorMinW: 130 * k, actorPadX: 14 * k, actorH: 48 * k, actorGap: 44 * k,
+		figH:  40 * k,
+		wrapW: 210 * k, msgPad: 16 * k, numR: 8 * k,
+		loopW: 34 * k, loopH: 20 * k,
+		barW:       10 * k,
+		noteMargin: 10 * k, notePadX: 10 * k, notePadY: 7 * k, noteMinW: 80 * k,
+		boxPad:      10 * k,
+		frameMargin: 12 * k, tabH: fs*1.3 + 6*k,
+	}
+}
 
 // Layout holds computed geometry for rendering.
 type Layout struct {
-	Diagram      *Diagram
-	Width        float64
-	Height       float64
-	HeaderHeight float64 // height of the participant header boxes
-	LifelineTop  float64 // y where lifelines start (header bottom)
-	LifelineEnd  float64 // y where lifelines stop
-
-	// OffsetX is the horizontal shift the renderer must apply so that
-	// content reaching left of the first lifeline stays on the canvas.
-	// A note placed left of the first participant, and the frame boxes,
-	// both start at a negative x before this shift.
+	Diagram *Diagram
+	Width   float64
+	Height  float64
+	// OffsetX shifts the drawing right so content left of the first
+	// lifeline (a left note, a frame) stays on the canvas.
 	OffsetX float64
+
+	HeadH   float64 // participant header height
+	HeadTop float64 // y of the top headers
+	BottomY float64 // y of the mirrored bottom headers
+
+	m metrics
 }
 
-const (
-	headerPadX   = 16.0 // horizontal padding inside a participant box
-	headerHeight = 32.0 // participant box height
-	colGap       = 40.0 // minimum gap between participant boxes
-	msgGap       = 36.0 // vertical gap between messages
-	frameInset   = 10.0 // how far a frame box sits outside the outer lifelines
-	selfLabelGap = 6.0  // gap between a self-loop and its label
-	topMargin    = 12.0 // gap between header and first message
-	selfLoopW    = 44.0 // width of a self-message loop
-)
+type constraint struct {
+	i, j int
+	d    float64
+}
 
-// Compute assigns positions to participants and messages.
+// Compute assigns positions to everything in the diagram.
 func Compute(d *Diagram, opts Options) *Layout {
-	face := opts.face()
-	// Participant header widths and X centers, left to right.
-	var x float64
-	for _, p := range d.Participants {
-		w := face.Width(p.Label, opts.FontSize) + headerPadX*2
-		if w < 60 {
-			w = 60
+	m := newMetrics(opts)
+	lay := &Layout{Diagram: d, m: m}
+	ps := d.Participants
+
+	lay.HeadH = m.actorH
+	for _, p := range ps {
+		p.Lines = wrap(p.Label, m.wrapW, m.face, m.fs)
+		if len(p.Lines) == 0 {
+			p.Lines = []string{""}
 		}
-		p.Width = w
-		p.X = x + w/2
-		x += w + colGap
+		p.Width = max(m.actorMinW, widest(p.Lines, m.face, m.fs)+2*m.actorPadX)
+		n := float64(len(p.Lines))
+		h := n*m.lineH + 24*m.k
+		if p.Kind == KindActor {
+			h = m.figH + n*m.lineH + 8*m.k
+		}
+		lay.HeadH = max(lay.HeadH, h)
 	}
 
-	lifelineTop := headerHeight
-	firstY := lifelineTop + topMargin + msgGap/2
-	for _, m := range d.Messages {
-		m.Y = firstY + float64(m.Row)*msgGap
-	}
-	for _, n := range d.Notes {
-		n.Y = firstY + float64(n.Row)*msgGap
+	xs := place(d, m, nil)
+	cons := measure(d, m, xs)
+	xs = place(d, m, cons)
+	measure(d, m, xs)
+	for i, p := range ps {
+		p.X = xs[i]
 	}
 
-	rows := d.rows
-	if rows == 0 {
-		rows = 1
+	boxLabelH := 0.0
+	for _, b := range d.Boxes {
+		if len(b.Members) == 0 {
+			continue
+		}
+		b.X0, b.X1 = b.Members[0].X, b.Members[0].X
+		for _, p := range b.Members {
+			b.X0 = min(b.X0, p.X-p.Width/2-m.boxPad)
+			b.X1 = max(b.X1, p.X+p.Width/2+m.boxPad)
+		}
+		b.Lines = wrap(b.Label, b.X1-b.X0-16*m.k, m.face, m.fs)
+		boxLabelH = max(boxLabelH, m.boxPad, float64(len(b.Lines))*m.lineH+10*m.k)
 	}
-	height := lifelineTop + topMargin + float64(rows)*msgGap + msgGap/2
+	lay.HeadTop = boxLabelH
+	vertical(lay)
+	lay.bounds()
+	return lay
+}
 
-	// Collect every horizontal extent, including the ones that reach left of
-	// the origin. The vertical extent stays row-driven above, so only the X
-	// axis of the bounds is consumed here.
-	var bd svgutil.Bounds
-	bd.Add(0, 0)
-	if right := x - colGap; right > 0 { // drop trailing gap after the last participant
-		bd.Add(right, 0)
+// place returns lifeline x positions, left to right, honouring the header
+// widths and every constraint (a minimum distance between two lifelines).
+func place(d *Diagram, m metrics, cons []constraint) []float64 {
+	ps := d.Participants
+	xs := make([]float64, len(ps))
+	byJ := map[int][]constraint{}
+	for _, c := range cons {
+		byJ[c.j] = append(byJ[c.j], c)
 	}
-	// Message labels extend past the arrow they belong to. A self-message
-	// draws its label to the right of the loop; a normal message centers it
-	// between the two lifelines.
-	for _, m := range d.Messages {
-		lw := face.Width(MessageLabel(m), opts.FontSize)
-		if m.From == m.To {
-			if p := d.participant(m.From); p != nil {
-				bd.Add(p.X+selfLoopW+selfLabelGap+lw, 0)
+	for j, p := range ps {
+		if j == 0 {
+			xs[0] = p.Width / 2
+			if p.Box != nil {
+				xs[0] += m.boxPad
 			}
 			continue
 		}
-		from, to := d.participant(m.From), d.participant(m.To)
-		if from == nil || to == nil {
+		prev := ps[j-1]
+		gap := prev.Width/2 + p.Width/2 + m.actorGap
+		if prev.Box != p.Box {
+			if prev.Box != nil {
+				gap += m.boxPad
+			}
+			if p.Box != nil {
+				gap += m.boxPad
+			}
+		}
+		x := xs[j-1] + gap
+		for _, c := range byJ[j] {
+			x = max(x, xs[c.i]+c.d)
+		}
+		xs[j] = x
+	}
+	return xs
+}
+
+// measure wraps every message and note label for the lifeline positions xs
+// and returns the distances the labels need between lifelines.
+func measure(d *Diagram, m metrics, xs []float64) []constraint {
+	var cons []constraint
+	n := len(xs)
+	idx := d.index
+	for _, msg := range d.Messages {
+		i, j := idx[msg.From], idx[msg.To]
+		label := msg.Text
+		numW := 0.0
+		if msg.Num > 0 {
+			numW = numRadius(m, msg.Num) + 4*m.k
+		}
+		if i == j {
+			off := selfLabelOffset(m, msg)
+			avail := 0.0
+			if i+1 < n {
+				avail = xs[i+1] - xs[i] - off - m.msgPad
+			}
+			msg.Lines = wrap(label, max(avail, m.wrapW), m.face, m.fs)
+			if i+1 < n {
+				need := max(off+widest(msg.Lines, m.face, m.fs)+m.msgPad, m.loopW+m.barW+m.msgPad)
+				cons = append(cons, constraint{i, i + 1, need})
+			}
 			continue
 		}
-		mid := (from.X + to.X) / 2
-		bd.Add(mid-lw/2, 0)
-		bd.Add(mid+lw/2, 0)
-	}
-	// A note can sit left of the first lifeline or right of the last.
-	for _, n := range d.Notes {
-		nx, nw := noteBox(d, n, face, opts.FontSize)
-		bd.Add(nx, 0)
-		bd.Add(nx+nw, 0)
-	}
-	// Frame boxes sit outside the outer lifelines on both sides.
-	if len(d.Frames) > 0 {
-		lo, hi := participantSpan(d)
-		bd.Add(lo-frameInset, 0)
-		bd.Add(hi+frameInset, 0)
-	}
-	offsetX, _ := bd.Offset()
-	width, _ := bd.Size()
-
-	return &Layout{
-		Diagram:      d,
-		Width:        width,
-		Height:       height,
-		HeaderHeight: headerHeight,
-		LifelineTop:  lifelineTop,
-		LifelineEnd:  height,
-		OffsetX:      offsetX,
-	}
-}
-
-// participantSpan returns the left and right edges of the outer participant
-// boxes. It returns zeroes when the diagram has no participants.
-func participantSpan(d *Diagram) (lo, hi float64) {
-	ps := d.Participants
-	if len(ps) == 0 {
-		return 0, 0
-	}
-	lo, hi = ps[0].X-ps[0].Width/2, ps[0].X+ps[0].Width/2
-	for _, p := range ps {
-		if l := p.X - p.Width/2; l < lo {
-			lo = l
+		lo, hi := min(i, j), max(i, j)
+		avail := xs[hi] - xs[lo] - 2*m.msgPad - 2*numW - m.barW
+		msg.Lines = wrap(label, max(avail, m.wrapW), m.face, m.fs)
+		need := widest(msg.Lines, m.face, m.fs) + 2*m.msgPad + 2*numW + m.barW
+		if msg.Creates != "" {
+			if c := d.participant(msg.Creates); c != nil {
+				need += c.Width / 2
+			}
 		}
-		if r := p.X + p.Width/2; r > hi {
-			hi = r
+		cons = append(cons, constraint{lo, hi, need})
+	}
+	for _, note := range d.Notes {
+		i := idx[note.Of[0]]
+		j := idx[note.Of[len(note.Of)-1]]
+		pad := 2 * m.notePadX
+		switch {
+		case note.Pos == NoteRight:
+			avail := 0.0
+			if i+1 < n {
+				avail = xs[i+1] - xs[i] - 2*m.noteMargin - m.barW
+			}
+			note.Lines = wrap(note.Text, max(avail, m.wrapW+pad)-pad, m.face, m.fs)
+			note.W = max(widest(note.Lines, m.face, m.fs)+pad, m.noteMinW)
+			if i+1 < n {
+				cons = append(cons, constraint{i, i + 1, note.W + 2*m.noteMargin + m.barW})
+			}
+		case note.Pos == NoteLeft:
+			avail := 0.0
+			if i > 0 {
+				avail = xs[i] - xs[i-1] - 2*m.noteMargin - m.barW
+			}
+			note.Lines = wrap(note.Text, max(avail, m.wrapW+pad)-pad, m.face, m.fs)
+			note.W = max(widest(note.Lines, m.face, m.fs)+pad, m.noteMinW)
+			if i > 0 {
+				cons = append(cons, constraint{i - 1, i, note.W + 2*m.noteMargin + m.barW})
+			}
+		case i == j:
+			note.Lines = wrap(note.Text, m.wrapW, m.face, m.fs)
+			note.W = max(widest(note.Lines, m.face, m.fs)+pad, m.noteMinW)
+			if i > 0 {
+				cons = append(cons, constraint{i - 1, i, note.W/2 + m.noteMargin})
+			}
+			if i+1 < n {
+				cons = append(cons, constraint{i, i + 1, note.W/2 + m.noteMargin})
+			}
+		default:
+			lo, hi := min(i, j), max(i, j)
+			span := xs[hi] - xs[lo] + 2*overhang(m)
+			note.Lines = wrap(note.Text, max(span, m.wrapW+pad)-pad, m.face, m.fs)
+			note.W = max(widest(note.Lines, m.face, m.fs)+pad, span)
 		}
 	}
-	return lo, hi
+	return cons
 }
 
-// rowY returns the vertical center of a row (matching message Y).
-func rowY(lay *Layout, row int) float64 {
-	return lay.LifelineTop + topMargin + msgGap/2 + float64(row)*msgGap
+// overhang is how far a note over several participants reaches past the
+// outer lifelines.
+func overhang(m metrics) float64 { return 24 * m.k }
+
+// selfLabelOffset is where a self-message's label starts, right of the
+// lifeline, clear of the autonumber badge.
+func selfLabelOffset(m metrics, msg *Message) float64 {
+	off := m.barW + 6*m.k
+	if msg.Num > 0 {
+		off = max(off, numRadius(m, msg.Num)+6*m.k)
+	}
+	return off
 }
 
-// noteWidth estimates a note box width from its text.
-func noteWidth(text string, face svgutil.Face, fontSize float64) float64 {
-	w := face.Width(text, fontSize) + 20
-	if w < 60 {
-		w = 60
+// numRadius is the autonumber badge radius, wide enough for its digits.
+func numRadius(m metrics, n int) float64 {
+	w := m.face.Width(strconv.Itoa(n), m.fs*0.8)
+	return max(m.numR, w/2+4*m.k)
+}
+
+// frameExt accumulates the horizontal extent of what a frame encloses.
+type frameExt struct {
+	lo, hi float64
+	set    bool
+}
+
+func (e *frameExt) add(lo, hi float64) {
+	if !e.set {
+		e.lo, e.hi, e.set = lo, hi, true
+		return
+	}
+	e.lo, e.hi = min(e.lo, lo), max(e.hi, hi)
+}
+
+// vertical walks the statements top to bottom, placing each below the last.
+func vertical(lay *Layout) {
+	d, m := lay.Diagram, lay.m
+	k := m.k
+	for _, p := range d.Participants {
+		p.TopY = lay.HeadTop
+		p.LifeStart = lay.HeadTop + lay.HeadH
+		p.LifeEnd = -1
+	}
+	cursor := lay.HeadTop + lay.HeadH + 8*k
+	lastY := cursor
+	stacks := map[string][]float64{}
+	var frames []*Frame
+	var exts []frameExt
+
+	addExt := func(lo, hi float64) {
+		if n := len(exts); n > 0 {
+			exts[n-1].add(lo, hi)
+		}
+	}
+	// edge is where a line meets participant p's lifeline or its top
+	// activation bar, on the side facing x.
+	edge := func(p *Participant, x float64) float64 {
+		depth := len(stacks[p.ID])
+		if depth == 0 {
+			return p.X
+		}
+		left := p.X - m.barW/2 + float64(depth-1)*m.barW/2
+		if x < p.X {
+			return left
+		}
+		return left + m.barW
+	}
+	push := func(id string, y float64) {
+		stacks[id] = append(stacks[id], y)
+	}
+	pop := func(id string, y float64) {
+		st := stacks[id]
+		if len(st) == 0 {
+			return
+		}
+		y1 := st[len(st)-1]
+		stacks[id] = st[:len(st)-1]
+		d.Bars = append(d.Bars, &Bar{Participant: id, Depth: len(st) - 1, Y1: y1, Y2: max(y, y1+m.lineH)})
+	}
+
+	for _, it := range d.items {
+		switch it.kind {
+		case itMessage:
+			msg := it.msg
+			from, to := d.participant(msg.From), d.participant(msg.To)
+			textH := float64(len(msg.Lines)) * m.lineH
+			y := cursor + 10*k + textH + 6*k
+			if msg.Num > 0 {
+				y = max(y, cursor+10*k+numRadius(m, msg.Num))
+			}
+			created := d.participant(msg.Creates)
+			if created != nil {
+				y = max(y, cursor+lay.HeadH/2+6*k)
+				created.TopY = y - lay.HeadH/2
+				created.LifeStart = created.TopY + lay.HeadH
+			}
+			msg.Y = y
+			if from == to {
+				msg.X1 = edge(from, from.X+1)
+				if msg.Activate {
+					push(to.ID, y)
+				}
+				msg.X2 = edge(to, to.X+1)
+				bottom := y + m.loopH
+				labelR := from.X + selfLabelOffset(m, msg) + widest(msg.Lines, m.face, m.fs)
+				addExt(from.X-m.barW/2, max(msg.X1+m.loopW, labelR))
+				if msg.Deactivate {
+					pop(from.ID, bottom)
+				}
+				for _, id := range msg.Destroys {
+					d.participant(id).LifeEnd = bottom
+				}
+				lastY = bottom
+				cursor = bottom + 10*k
+				continue
+			}
+			if msg.Activate {
+				push(to.ID, y)
+			}
+			msg.X1 = edge(from, to.X)
+			msg.X2 = edge(to, from.X)
+			if created == to {
+				msg.X2 = to.X - sign(to.X-from.X)*to.Width/2
+			}
+			if created == from {
+				msg.X1 = from.X + sign(to.X-from.X)*from.Width/2
+			}
+			if msg.Deactivate {
+				pop(from.ID, y)
+			}
+			for _, id := range msg.Destroys {
+				d.participant(id).LifeEnd = y
+			}
+			addExt(min(from.X, to.X)-m.barW/2, max(from.X, to.X)+m.barW/2)
+			lastY = y
+			cursor = y + 10*k
+			if created != nil {
+				cursor = max(cursor, y+lay.HeadH/2+10*k)
+			}
+		case itNote:
+			n := it.note
+			n.H = float64(len(n.Lines))*m.lineH + 2*m.notePadY
+			if len(n.Lines) == 0 {
+				n.H = m.lineH + 2*m.notePadY
+			}
+			n.Y = cursor + 10*k
+			p := d.participant(n.Of[0])
+			switch n.Pos {
+			case NoteRight:
+				n.X = edge(p, p.X+1) + m.noteMargin
+			case NoteLeft:
+				n.X = edge(p, p.X-1) - m.noteMargin - n.W
+			default:
+				q := d.participant(n.Of[len(n.Of)-1])
+				n.X = (p.X+q.X)/2 - n.W/2
+			}
+			addExt(n.X, n.X+n.W)
+			cursor = n.Y + n.H
+		case itFrameStart:
+			f := it.frame
+			f.Depth = len(frames)
+			frames = append(frames, f)
+			exts = append(exts, frameExt{})
+			if f.Kind == "rect" {
+				f.Y0 = cursor + 6*k
+				cursor = f.Y0 + 2*k
+				continue
+			}
+			f.Y0 = cursor + 10*k
+			if f.Label != "" {
+				f.Lines = wrap("["+f.Label+"]", m.wrapW*1.4, m.face, m.fs)
+			}
+			cursor = f.Y0 + max(m.tabH, float64(len(f.Lines))*m.lineH+8*k)
+		case itSection:
+			s := it.section
+			s.Y = cursor + 8*k
+			if s.Label != "" {
+				s.Lines = wrap("["+s.Label+"]", m.wrapW*1.4, m.face, m.fs)
+			}
+			cursor = s.Y + float64(len(s.Lines))*m.lineH + 4*k
+		case itFrameEnd:
+			n := len(frames)
+			if n == 0 || frames[n-1] != it.frame {
+				continue
+			}
+			f := it.frame
+			e := exts[n-1]
+			frames, exts = frames[:n-1], exts[:n-1]
+			if !e.set {
+				e = allSpan(d)
+			}
+			margin := m.frameMargin
+			if f.Kind == "rect" {
+				margin = 8 * k
+			}
+			f.X0, f.X1 = e.lo-margin, e.hi+margin
+			if w := frameMinWidth(f, m); f.X1-f.X0 < w {
+				f.X1 = f.X0 + w
+			}
+			if f.Kind == "rect" {
+				f.Y1 = cursor + 6*k
+			} else {
+				f.Y1 = cursor + 10*k
+			}
+			cursor = f.Y1
+			addExt(f.X0, f.X1)
+		case itActivate:
+			if p := d.participant(it.who); p != nil {
+				push(p.ID, lastY)
+			}
+		case itDeactivate:
+			pop(it.who, lastY)
+		case itDestroy:
+			if p := d.participant(it.who); p != nil {
+				p.LifeEnd = cursor + 6*k
+				cursor += 14 * k
+			}
+		}
+	}
+
+	end := cursor + 12*k
+	for _, p := range d.Participants {
+		if p.LifeEnd < 0 {
+			p.LifeEnd = end
+		}
+	}
+	for _, p := range d.Participants {
+		for len(stacks[p.ID]) > 0 {
+			pop(p.ID, end-6*k)
+		}
+	}
+	lay.BottomY = end
+	lay.Height = end + lay.HeadH
+	if len(d.Boxes) > 0 {
+		lay.Height += m.boxPad
+	}
+}
+
+func sign(v float64) float64 {
+	if v < 0 {
+		return -1
+	}
+	return 1
+}
+
+// allSpan is the extent of an empty frame: every lifeline.
+func allSpan(d *Diagram) frameExt {
+	var e frameExt
+	for _, p := range d.Participants {
+		e.add(p.X, p.X)
+	}
+	return e
+}
+
+// tabWidth is the width of a frame's keyword tab.
+func tabWidth(f *Frame, m metrics) float64 {
+	return m.face.Width(f.Kind, m.fs) + 20*m.k
+}
+
+// frameMinWidth is the narrowest a frame may be and still hold its tab,
+// condition and section labels.
+func frameMinWidth(f *Frame, m metrics) float64 {
+	if f.Kind == "rect" {
+		return 0
+	}
+	textX := tabWidth(f, m) + 8*m.k
+	w := textX + widest(f.Lines, m.face, m.fs) + 12*m.k
+	for _, s := range f.Sections {
+		w = max(w, textX+widest(s.Lines, m.face, m.fs)+12*m.k)
 	}
 	return w
 }
 
-// noteBox returns the left x and width of a note's box.
-func noteBox(d *Diagram, n *Note, face svgutil.Face, fontSize float64) (x, w float64) {
-	w = noteWidth(n.Text, face, fontSize)
-	switch n.Pos {
-	case NoteRight:
-		if p := d.participant(n.Of[0]); p != nil {
-			x = p.X + 12
-		}
-	case NoteLeft:
-		if p := d.participant(n.Of[0]); p != nil {
-			x = p.X - 12 - w
-		}
-	default: // NoteOver
-		p1 := d.participant(n.Of[0])
-		p2 := d.participant(n.Of[len(n.Of)-1])
-		if p1 == nil || p2 == nil {
-			return x, w
-		}
-		lo, hi := min(p1.X, p2.X), max(p1.X, p2.X)
-		if span := hi - lo + 40; span > w {
-			w = span
-		}
-		x = (lo+hi)/2 - w/2
+// bounds sizes the canvas to everything drawn and shifts content that
+// reaches left of x=0 back onto it.
+func (lay *Layout) bounds() {
+	d, m := lay.Diagram, lay.m
+	var b svgutil.Bounds
+	b.Add(0, 0)
+	for _, p := range d.Participants {
+		b.Add(p.X-p.Width/2, 0)
+		b.Add(p.X+p.Width/2, 0)
 	}
-	return x, w
-}
-
-// MessageLabel returns the text drawn for a message, including the autonumber
-// prefix when numbering is on. The layout measures it and the renderer draws
-// it, so both must derive it the same way.
-func MessageLabel(m *Message) string {
-	if m.Num > 0 {
-		return fmt.Sprintf("%d. %s", m.Num, m.Text)
+	for _, x := range d.Boxes {
+		if len(x.Members) > 0 {
+			b.Add(x.X0, 0)
+			b.Add(x.X1, 0)
+		}
 	}
-	return m.Text
+	for _, n := range d.Notes {
+		b.Add(n.X, 0)
+		b.Add(n.X+n.W, 0)
+	}
+	for _, f := range d.Frames {
+		if f.X1 > f.X0 {
+			b.Add(f.X0, 0)
+			b.Add(f.X1, 0)
+		}
+	}
+	for _, msg := range d.Messages {
+		w := widest(msg.Lines, m.face, m.fs)
+		if msg.From == msg.To {
+			p := d.participant(msg.From)
+			b.Add(msg.X1+m.loopW+2*m.k, 0)
+			b.Add(p.X+selfLabelOffset(m, msg)+w, 0)
+			continue
+		}
+		mid := (msg.X1 + msg.X2) / 2
+		b.Add(mid-w/2, 0)
+		b.Add(mid+w/2, 0)
+		if msg.Num > 0 {
+			r := numRadius(m, msg.Num)
+			b.Add(msg.X1-r, 0)
+			b.Add(msg.X1+r, 0)
+		}
+	}
+	lay.OffsetX, _ = b.Offset()
+	lay.Width, _ = b.Size()
 }

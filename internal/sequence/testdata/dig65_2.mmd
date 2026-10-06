@@ -1,0 +1,12 @@
+sequenceDiagram
+  participant T as Tab A
+  participant S as Handler and store
+  participant DB as PostgreSQL
+  participant H as Hub
+  participant U as Tab B
+  T->>S: PATCH /api/v1/issues/12
+  S->>DB: inTx: update, audit row, commit
+  S->>H: publish(audience, "issue", {id, projectId})
+  H-->>U: event: issue
+  U->>S: GET /api/v1/issues/12 (access-checked)
+  S-->>U: the issue as B may see it
