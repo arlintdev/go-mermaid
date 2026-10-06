@@ -74,7 +74,7 @@ func TestRender(t *testing.T) {
 				So(svg, ShouldStartWith, "<svg")
 				So(svg, ShouldContainSubstring, "<circle")
 				So(svg, ShouldContainSubstring, ">Still<")
-				So(svg, ShouldContainSubstring, "marker-end=\"url(#st-arrow)\"")
+				So(svg, ShouldContainSubstring, "-arrow)\"")
 			})
 		})
 	})

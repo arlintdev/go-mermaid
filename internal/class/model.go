@@ -1,7 +1,8 @@
 // Package class parses and renders Mermaid class diagrams to SVG. It reuses
 // the shared layered layout engine for positioning and edge routing, drawing
-// UML class boxes (name / attributes / methods compartments) and relationship
-// markers (inheritance, composition, aggregation, association, dependency).
+// UML class boxes (name / attributes / methods compartments), relationship
+// markers (inheritance, composition, aggregation, association, dependency,
+// lollipop), multiplicities, namespaces and notes.
 package class
 
 // Class is a UML class with attribute and method members.
@@ -11,23 +12,47 @@ type Class struct {
 	Methods    []string
 
 	// Display is the name as written, generic parameters included, such as
-	// "Box~T~". It falls back to Name when the source used no generics.
+	// "Box~T~", or the label given as class A["Label"]. It falls back to
+	// Name when neither was given.
 	Display string
 
 	// Annotation is a stereotype written as <<interface>> or <<abstract>>
-	// inside the class body, without the angle brackets.
+	// (in the body or on its own line), without the angle brackets.
 	Annotation string
 
 	// Namespace is the name of the enclosing namespace block, or empty.
 	Namespace string
+
+	// Style is set by style lines; Classes names classDef styles applied
+	// with class A:::name or cssClass.
+	Style   Style
+	Classes []string
 }
 
-// Label returns the name to draw for the class.
+// Label returns the name to draw for the class, with generics shown in
+// angle brackets as Mermaid draws them.
 func (c *Class) Label() string {
 	if c.Display != "" {
-		return c.Display
+		return generics(c.Display)
 	}
 	return c.Name
+}
+
+// Style is a validated look from a style or classDef line; an empty field
+// means "not set".
+type Style struct {
+	Fill, Stroke, StrokeWidth, Dash, Color string
+}
+
+func (s Style) over(base Style) Style {
+	pick := func(a, b string) string {
+		if a != "" {
+			return a
+		}
+		return b
+	}
+	return Style{pick(s.Fill, base.Fill), pick(s.Stroke, base.Stroke), pick(s.StrokeWidth, base.StrokeWidth),
+		pick(s.Dash, base.Dash), pick(s.Color, base.Color)}
 }
 
 // headKind is a relationship line-end decoration.
@@ -39,6 +64,7 @@ const (
 	headTriangle      // inheritance / realization (hollow triangle)
 	headDiamondFilled // composition
 	headDiamondHollow // aggregation
+	headLollipop      // provided interface, ()
 )
 
 // Relation is a relationship between two classes.
@@ -62,11 +88,19 @@ type Namespace struct {
 	Members []string
 }
 
+// Note is a note attached to a class (For set) or standing alone.
+type Note struct {
+	For  string
+	Text string
+}
+
 // Diagram is a parsed class diagram.
 type Diagram struct {
 	Classes    []*Class
 	Relations  []*Relation
 	Namespaces []*Namespace
+	Notes      []*Note
+	ClassDefs  map[string]Style
 
 	// Direction is the layout direction requested by a `direction` line.
 	Direction string

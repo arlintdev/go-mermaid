@@ -3,6 +3,8 @@
 // [*] start/end pseudostates render as filled and ringed circles.
 package state
 
+import "strconv"
+
 const (
 	startID = "__start__"
 	endID   = "__end__"
@@ -32,8 +34,19 @@ type State struct {
 	Kind  Kind
 
 	// Parent is the ID of the composite state that encloses this one, or
-	// the empty string at the top level.
+	// the empty string at the top level. Region is which of the parent's
+	// concurrent regions (split by --) it is in.
 	Parent string
+	Region int
+
+	// Classes names classDef styles applied with class or :::.
+	Classes []string
+}
+
+// Style is a validated look from a classDef line; an empty field means
+// "not set".
+type Style struct {
+	Fill, Stroke, StrokeWidth, Dash, Color, FontWeight string
 }
 
 // Transition is an arrow between two states.
@@ -66,6 +79,10 @@ type Composite struct {
 	ID      string
 	Label   string
 	Members []string
+
+	// Regions is the number of concurrent regions, one more than the --
+	// separators in its body.
+	Regions int
 }
 
 // Diagram is a parsed state diagram.
@@ -74,6 +91,7 @@ type Diagram struct {
 	Transitions []*Transition
 	Notes       []*Note
 	Composites  []*Composite
+	ClassDefs   map[string]Style
 
 	// Direction is the layout direction requested by a `direction` line.
 	// It is empty when the source does not ask for one.
@@ -111,7 +129,11 @@ func (d *Diagram) composite(id string) *Composite {
 // pseudoID names the start or end pseudostate belonging to a scope. Mermaid
 // scopes [*] to the enclosing composite, so a nested machine gets its own
 // entry and exit rather than sharing the diagram's.
-func pseudoID(parent string, end bool) string {
+func pseudoID(parent string, end bool) string { return regionPseudoID(parent, 0, end) }
+
+// regionPseudoID names the start or end pseudostate of one concurrent
+// region of a composite; each region has its own.
+func regionPseudoID(parent string, region int, end bool) string {
 	base := startID
 	if end {
 		base = endID
@@ -119,17 +141,20 @@ func pseudoID(parent string, end bool) string {
 	if parent == "" {
 		return base
 	}
+	if region > 0 {
+		return base + parent + "\x00" + strconv.Itoa(region)
+	}
 	return base + parent
 }
 
 // ensurePseudo returns the start or end pseudostate for a scope, creating it
 // once.
-func (d *Diagram) ensurePseudo(parent string, end bool) *State {
-	id := pseudoID(parent, end)
+func (d *Diagram) ensurePseudo(parent string, region int, end bool) *State {
+	id := regionPseudoID(parent, region, end)
 	if s := d.state(id); s != nil {
 		return s
 	}
-	s := &State{ID: id, Start: !end, End: end, Parent: parent}
+	s := &State{ID: id, Start: !end, End: end, Parent: parent, Region: region}
 	d.States = append(d.States, s)
 	return s
 }

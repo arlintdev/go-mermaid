@@ -1,0 +1,9 @@
+gitGraph
+  commit id: "init"
+  branch feature
+  commit id: "add-api" type: HIGHLIGHT
+  commit type: REVERSE
+  checkout main
+  commit tag: "v0.2"
+  cherry-pick id: "add-api"
+  merge feature tag: "v1.0"

@@ -1,0 +1,13 @@
+erDiagram
+  direction LR
+  "Customer Account"["Account"] only one to zero or more ORDER : places
+  ORDER one or more optionally to one or zero SHIPMENT : "ships in"
+  ORDER {
+    int id PK
+    List~Item~ items
+    string ref UK, FK "external reference"
+  }
+  classDef warm fill:#fff3e0,stroke:#e65100
+  class SHIPMENT warm
+  style ORDER stroke-width:2px
+  ORDER ||--o{ ORDER : amends

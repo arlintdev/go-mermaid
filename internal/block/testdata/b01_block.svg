@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="356.32" height="240" viewBox="0 0 356.32 240" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><marker id="m102ar0h-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
+  <rect x="16" y="16" width="324.32" height="40" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="178.16" y="40.9">Frontend</tspan></text>
+  <rect x="16" y="92" width="84.11" height="56" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="58.05" y="124.9">API</tspan></text>
+  <rect x="136.11" y="92" width="84.11" height="56" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="178.16" y="124.9">Workers</tspan></text>
+  <path d="M256.22,100 A42.05,8 0 0 1 340.32,100 V140 A42.05,8 0 0 1 256.22,140 Z" fill="#ECECFF" stroke="#9370DB"/>
+  <path d="M256.22,100 A42.05,8 0 0 0 340.32,100" fill="none" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="298.27" y="128.9">DB</tspan></text>
+  <rect x="136.11" y="184" width="84.11" height="40" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="178.16" y="208.9">Cache</tspan></text>
+  <path d="M58.05,148 L58.05,166 L298.27,166 L298.27,148" fill="none" stroke="#333333" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#m102ar0h-arrow)"/>
+  <path d="M220.22,120 L256.22,120" fill="none" stroke="#333333" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#m102ar0h-arrow)"/>
+  <path d="M98.09,148 L149.56,184" fill="none" stroke="#333333" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#m102ar0h-arrow)"/>
+</svg>
