@@ -24,14 +24,22 @@ func TestParse(t *testing.T) {
 		})
 	})
 
-	Convey("Given a malformed period line", t, func() {
-		Convey("When parsing", func() {
-			_, err := Parse("timeline\nsection S\n2002 no colon")
+	Convey("Given a period with no events and an event before any period", t, func() {
+		d, err := Parse("timeline\nsection S\n2002 no colon")
+		So(err, ShouldBeNil)
+		So(d.Sections[0].Periods[0].Time, ShouldEqual, "2002 no colon")
+		So(d.Sections[0].Periods[0].Events, ShouldBeEmpty)
+		_, err = Parse("timeline\n: orphan")
+		So(err, ShouldNotBeNil)
+	})
 
-			Convey("Then it returns an error", func() {
-				So(err, ShouldNotBeNil)
-			})
-		})
+	Convey("Given continuation lines under a period", t, func() {
+		d, err := Parse("timeline\n2024 : Started\n     : First users\n2025 : PostgreSQL\n  : More : Still more")
+		So(err, ShouldBeNil)
+		ps := d.Periods()
+		So(len(ps), ShouldEqual, 2)
+		So(ps[0].Events, ShouldResemble, []string{"Started", "First users"})
+		So(ps[1].Events, ShouldResemble, []string{"PostgreSQL", "More", "Still more"})
 	})
 
 	Convey("Given no header", t, func() {
@@ -56,7 +64,7 @@ func TestRender(t *testing.T) {
 			So(svg, ShouldStartWith, "<svg")
 			So(svg, ShouldContainSubstring, ">2002<")
 			So(svg, ShouldContainSubstring, ">LinkedIn<")
-			So(svg, ShouldContainSubstring, "<circle")
+			So(svg, ShouldContainSubstring, "marker-end")
 		})
 	})
 }
