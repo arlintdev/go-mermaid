@@ -1,0 +1,21 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="184" height="712" viewBox="0 0 184 712" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m116yy91-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#bbbbbb"/></marker>
+  </defs>
+  <g transform="translate(16,16)">
+    <path d="M76,72 L76,111" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m116yy91-arrow-0)"/>
+    <path d="M76,194 L76,233" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m116yy91-arrow-0)"/>
+    <path d="M76,316 L76,355" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m116yy91-arrow-0)"/>
+    <path d="M76,438 L76,477" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m116yy91-arrow-0)"/>
+    <rect x="0" y="0" width="152" height="72" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="76" y="29.6">Line one</tspan><tspan x="76" y="53.6">line two</tspan></text>
+    <rect x="0" y="122" width="152" height="72" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="76" y="151.6">Ünïcödé — ✓</tspan><tspan x="76" y="175.6">日本語</tspan></text>
+    <rect x="0" y="244" width="152" height="72" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="76" y="273.6">Markdown string</tspan><tspan x="76" y="297.6">with emphasis</tspan></text>
+    <rect x="0" y="366" width="152" height="72" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="76" y="395.6">Quotes &quot;inside&quot;</tspan><tspan x="76" y="419.6">and &amp; entity</tspan></text>
+    <rect x="0" y="488" width="152" height="192" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="76" y="517.6">A very long label</tspan><tspan x="76" y="541.6">that goes on and</tspan><tspan x="76" y="565.6">on to see how</tspan><tspan x="76" y="589.6">the renderer</tspan><tspan x="76" y="613.6">wraps or does</tspan><tspan x="76" y="637.6">not wrap long</tspan><tspan x="76" y="661.6">text in a node</tspan></text>
+  </g>
+</svg>

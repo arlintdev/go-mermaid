@@ -1,0 +1,34 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="492.93" height="335.2" viewBox="0 0 492.93 335.2" font-family="sans-serif" font-size="14">
+<text x="246.47" y="34" fill="#e6e6e6" font-size="18" text-anchor="middle">Many small slices</text>
+<path d="M201.23,184.2 L201.23,51.2 A133,133 0 1 1 74.74,143.1 Z" fill="#6a6ad0" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<path d="M201.23,184.2 L74.74,143.1 A133,133 0 0 1 77.57,135.24 Z" fill="#c2b84a" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<path d="M201.23,184.2 L77.57,135.24 A133,133 0 0 1 82.73,123.82 Z" fill="#86c23a" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<path d="M201.23,184.2 L82.73,123.82 A133,133 0 0 1 91.23,109.44 Z" fill="#9a7ae0" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<path d="M201.23,184.2 L91.23,109.44 A133,133 0 0 1 113.28,84.44 Z" fill="#d6b83a" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<path d="M201.23,184.2 L113.28,84.44 A133,133 0 0 1 201.23,51.2 Z" fill="#5aa830" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<circle cx="201.23" cy="184.2" r="134" fill="none" stroke="#1e1e1e" stroke-width="2"/>
+<text x="257.52" y="266.57" fill="#e6e6e6" text-anchor="middle">80%</text>
+<polyline points="76.09,139.15 56.23,140.47 50.23,140.47" fill="none" stroke="#e6e6e6" stroke-width="1"/>
+<text x="47.23" y="145.37" fill="#e6e6e6" text-anchor="end">1%</text>
+<polyline points="80.01,129.47 56.23,122.47 50.23,122.47" fill="none" stroke="#e6e6e6" stroke-width="1"/>
+<text x="47.23" y="127.37" fill="#e6e6e6" text-anchor="end">2%</text>
+<polyline points="86.75,116.5 56.23,104.47 50.23,104.47" fill="none" stroke="#e6e6e6" stroke-width="1"/>
+<text x="47.23" y="109.37" fill="#e6e6e6" text-anchor="end">2%</text>
+<polyline points="101.47,96.25 56.23,82.09 50.23,82.09" fill="none" stroke="#e6e6e6" stroke-width="1"/>
+<text x="47.23" y="86.99" fill="#e6e6e6" text-anchor="end">4%</text>
+<text x="167.38" y="99.52" fill="#e6e6e6" text-anchor="middle">12%</text>
+<rect x="364.23" y="109.2" width="18" height="18" fill="#6a6ad0" stroke="#6a6ad0"/>
+<text x="388.23" y="123.1" fill="#e6e6e6">Big one [80]</text>
+<rect x="364.23" y="131.2" width="18" height="18" fill="#c2b84a" stroke="#c2b84a"/>
+<text x="388.23" y="145.1" fill="#e6e6e6">Tiny A [1]</text>
+<rect x="364.23" y="153.2" width="18" height="18" fill="#86c23a" stroke="#86c23a"/>
+<text x="388.23" y="167.1" fill="#e6e6e6">Tiny B [1.5]</text>
+<rect x="364.23" y="175.2" width="18" height="18" fill="#9a7ae0" stroke="#9a7ae0"/>
+<text x="388.23" y="189.1" fill="#e6e6e6">Tiny C [2]</text>
+<rect x="364.23" y="197.2" width="18" height="18" fill="#d6b83a" stroke="#d6b83a"/>
+<text x="388.23" y="211.1" fill="#e6e6e6">Small D [4]</text>
+<rect x="364.23" y="219.2" width="18" height="18" fill="#5aa830" stroke="#5aa830"/>
+<text x="388.23" y="233.1" fill="#e6e6e6">Medium [11.5]</text>
+<rect x="364.23" y="241.2" width="18" height="18" fill="#c26ac2" stroke="#c26ac2"/>
+<text x="388.23" y="255.1" fill="#e6e6e6">Zero [0]</text>
+</svg>

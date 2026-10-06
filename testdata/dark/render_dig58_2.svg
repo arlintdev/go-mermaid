@@ -1,0 +1,48 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="1053.94" height="768.31" viewBox="0 0 1053.94 768.31" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="mwv53a3-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#bbbbbb"/></marker>
+  </defs>
+  <g transform="translate(16,16)">
+    <rect x="0" y="0" width="1021.94" height="736.31" fill="#2a2a33" stroke="#77775a"/>
+    <rect x="18" y="224" width="188" height="368.87" fill="#2a2a33" stroke="#77775a"/>
+    <path d="M722,350 L722,458.77 Q722,463.77 717,463.77 L612.96,463.77 Q608.83,463.77 608.83,467.9 L608.83,472.03" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#mwv53a3-arrow-0)"/>
+    <path d="M449.5,126 L449.5,132.67 Q449.5,137.67 454.5,137.67 L607,137.67 Q612,137.67 612,142.67 L612,447.1 Q612,452.1 607,452.1 L599.83,452.1 Q594.83,452.1 594.83,457.1 L594.83,468.5" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#mwv53a3-arrow-0)"/>
+    <path d="M540.83,574.87 L540.83,642.87" fill="none" stroke="#bbbbbb" stroke-width="1.5"/>
+    <path d="M435.5,126 L435.5,144.33 Q435.5,149.33 440.5,149.33 L497,149.33 Q502,149.33 502,154.33 L502,267" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#mwv53a3-arrow-0)"/>
+    <path d="M327.5,126 L327.5,144.33 Q327.5,149.33 322.5,149.33 L305,149.33 Q300,149.33 300,154.33 L300,267" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#mwv53a3-arrow-0)"/>
+    <path d="M313.5,126 L313.5,132.67 Q313.5,137.67 308.5,137.67 L117,137.67 Q112,137.67 112,142.67 L112,267" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#mwv53a3-arrow-0)"/>
+    <path d="M180,350 L180,389.94 Q180,394.94 185,394.94 L283.48,394.94 Q288.48,394.94 288.48,399.94 L288.48,447.1 Q288.48,452.1 293.48,452.1 L467.83,452.1 Q472.83,452.1 472.83,457.1 L472.83,472.03" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#mwv53a3-arrow-0)"/>
+    <path d="M112,350 L112,464.44" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#mwv53a3-arrow-0)"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="510.97" y="23.6">The app&#39;s host: one compose project</tspan></text>
+    <rect x="43.53" y="230" width="136.94" height="24" rx="2" fill="#2a2a33"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="112" y="247.6">The anchor signer</tspan></text>
+    <rect x="672.2" y="412.44" width="99.6" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="722" y="432.04">as the owner</tspan></text>
+    <rect x="560.86" y="161" width="102.27" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="612" y="180.6">owns nothing</tspan></text>
+    <rect x="474.43" y="161" width="55.14" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="502" y="180.6">sealed</tspan></text>
+    <rect x="55.98" y="161" width="112.05" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="112" y="180.6">why an anchor</tspan></text>
+    <rect x="224" y="412.44" width="128.96" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="288.48" y="432.04">the audit log only</tspan></text>
+    <rect x="73.76" y="412.44" width="76.48" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="112" y="432.04">signed tip</tspan></text>
+    <rect x="305.5" y="54" width="152" height="72" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="381.5" y="83.6">digin: port 3000,</tspan><tspan x="381.5" y="107.6">from the proxy</tspan></text>
+    <rect x="646" y="278" width="152" height="72" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="722" y="307.6">migrate: once,</tspan><tspan x="722" y="331.6">before the app</tspan></text>
+    <path d="M464.83,489.16 A76,13.72 0 0 1 616.83,489.16 L616.83,561.16 A76,13.72 0 0 1 464.83,561.16 Z" fill="#2b2b40" stroke="#8888bb"/><path d="M464.83,489.16 A76,13.72 0 0 0 616.83,489.16" fill="none" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="540.83" y="525.61">digin-db:</tspan><tspan x="540.83" y="549.61">PostgreSQL 17</tspan></text>
+    <path d="M464.83,656.59 A76,13.72 0 0 1 616.83,656.59 L616.83,704.59 A76,13.72 0 0 1 464.83,704.59 Z" fill="#2b2b40" stroke="#8888bb"/><path d="M464.83,656.59 A76,13.72 0 0 0 616.83,656.59" fill="none" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="540.83" y="693.05">digin-pgdata</tspan></text>
+    <path d="M426,291.72 A76,13.72 0 0 1 578,291.72 L578,363.72 A76,13.72 0 0 1 426,363.72 Z" fill="#2b2b40" stroke="#8888bb"/><path d="M426,291.72 A76,13.72 0 0 0 578,291.72" fill="none" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="502" y="328.18">digin-data:</tspan><tspan x="502" y="352.18">sealed files</tspan></text>
+    <rect x="224" y="278" width="152" height="72" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="300" y="307.6">Malware</tspan><tspan x="300" y="331.6">scanner</tspan></text>
+    <rect x="36" y="278" width="152" height="72" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="112" y="307.6">anchor-signer:</tspan><tspan x="112" y="331.6">holds the key</tspan></text>
+    <path d="M36,489.16 A76,13.72 0 0 1 188,489.16 L188,561.16 A76,13.72 0 0 1 36,561.16 Z" fill="#2b2b40" stroke="#8888bb"/><path d="M36,489.16 A76,13.72 0 0 0 188,489.16" fill="none" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="112" y="525.61">Anchor file:</tspan><tspan x="112" y="549.61">append-only</tspan></text>
+  </g>
+</svg>

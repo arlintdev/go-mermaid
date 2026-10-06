@@ -1,0 +1,95 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="524.25" height="560" viewBox="0 0 524.25 560" font-family="sans-serif" font-size="14">
+  <g transform="translate(16,16)">
+    <path d="M187.92,112 C187.92,160 87,160 87,208" fill="none" stroke="#bbbbbb" stroke-width="1.3"/>
+    <path d="M87,320 C87,368 74,368 74,416" fill="none" stroke="#bbbbbb" stroke-width="1.3"/>
+    <path d="M440.75,78.5 L440.75,171.25 L224.5,171.25 L224.5,264 L224.5,340 L100,340 L100,416" fill="none" stroke="#bbbbbb" stroke-width="1.3"/>
+    <path d="M263.58,112 C263.58,176.75 364.5,176.75 364.5,241.5" fill="none" stroke="#bbbbbb" stroke-width="1.3" stroke-dasharray="6 4"/>
+    <rect x="112.25" y="0" width="227" height="112" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="225.75" y="21">CUSTOMER</tspan></text>
+    <rect x="112.75" y="32.2" width="226" height="26.6" fill="#1e1e1e"/>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="120.65" y="50.15">string</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="169.97" y="50.15">id</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="220.03" y="50.15">PK</tspan></text>
+    <rect x="112.75" y="58.8" width="226" height="26.6" fill="#25252e"/>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="120.65" y="76.75">string</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="169.97" y="76.75">name</tspan></text>
+    <rect x="112.75" y="85.4" width="226" height="26.6" fill="#1e1e1e"/>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="120.65" y="103.35">string</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="169.97" y="103.35">email</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="220.03" y="103.35">UK</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="255.31" y="103.35">unique email</tspan></text>
+    <line x1="112.25" y1="32.2" x2="339.25" y2="32.2" stroke="#8888bb"/>
+    <line x1="112.25" y1="58.8" x2="339.25" y2="58.8" stroke="#8888bb" stroke-opacity="0.35"/>
+    <line x1="112.25" y1="85.4" x2="339.25" y2="85.4" stroke="#8888bb" stroke-opacity="0.35"/>
+    <line x1="161.57" y1="32.2" x2="161.57" y2="112" stroke="#8888bb" stroke-opacity="0.35"/>
+    <line x1="211.63" y1="32.2" x2="211.63" y2="112" stroke="#8888bb" stroke-opacity="0.35"/>
+    <line x1="246.91" y1="32.2" x2="246.91" y2="112" stroke="#8888bb" stroke-opacity="0.35"/>
+    <rect x="112.25" y="0" width="227" height="112" fill="none" stroke="#8888bb"/>
+    <rect x="0" y="208" width="174" height="112" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="87" y="229">ORDER</tspan></text>
+    <rect x="0.5" y="240.2" width="173" height="26.6" fill="#1e1e1e"/>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="8.4" y="258.15">int</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="57.72" y="258.15">id</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="146.95" y="258.15">PK</tspan></text>
+    <rect x="0.5" y="266.8" width="173" height="26.6" fill="#25252e"/>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="8.4" y="284.75">string</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="57.72" y="284.75">customer_id</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="146.95" y="284.75">FK</tspan></text>
+    <rect x="0.5" y="293.4" width="173" height="26.6" fill="#1e1e1e"/>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="8.4" y="311.36">date</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="57.72" y="311.36">placed_at</tspan></text>
+    <line x1="0" y1="240.2" x2="174" y2="240.2" stroke="#8888bb"/>
+    <line x1="0" y1="266.8" x2="174" y2="266.8" stroke="#8888bb" stroke-opacity="0.35"/>
+    <line x1="0" y1="293.4" x2="174" y2="293.4" stroke="#8888bb" stroke-opacity="0.35"/>
+    <line x1="49.32" y1="240.2" x2="49.32" y2="320" stroke="#8888bb" stroke-opacity="0.35"/>
+    <line x1="138.55" y1="240.2" x2="138.55" y2="320" stroke="#8888bb" stroke-opacity="0.35"/>
+    <rect x="0" y="208" width="174" height="112" fill="none" stroke="#8888bb"/>
+    <rect x="15" y="416" width="144" height="112" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="87" y="437">LINE_ITEM</tspan></text>
+    <rect x="15.5" y="448.2" width="143" height="26.6" fill="#1e1e1e"/>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="23.4" y="466.15">int</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="54.24" y="466.15">order_id</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="133.14" y="466.15">FK</tspan></text>
+    <rect x="15.5" y="474.8" width="143" height="26.6" fill="#25252e"/>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="23.4" y="492.75">int</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="54.24" y="492.75">product_id</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="133.14" y="492.75">FK</tspan></text>
+    <rect x="15.5" y="501.4" width="143" height="26.6" fill="#1e1e1e"/>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="23.4" y="519.36">int</tspan></text>
+    <text fill="#e6e6e6" font-size="13.3" text-anchor="start"><tspan x="54.24" y="519.36">quantity</tspan></text>
+    <line x1="15" y1="448.2" x2="159" y2="448.2" stroke="#8888bb"/>
+    <line x1="15" y1="474.8" x2="159" y2="474.8" stroke="#8888bb" stroke-opacity="0.35"/>
+    <line x1="15" y1="501.4" x2="159" y2="501.4" stroke="#8888bb" stroke-opacity="0.35"/>
+    <line x1="45.84" y1="448.2" x2="45.84" y2="528" stroke="#8888bb" stroke-opacity="0.35"/>
+    <line x1="124.74" y1="448.2" x2="124.74" y2="528" stroke="#8888bb" stroke-opacity="0.35"/>
+    <rect x="15" y="416" width="144" height="112" fill="none" stroke="#8888bb"/>
+    <rect x="389.25" y="33.5" width="103" height="45" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="440.75" y="60.9">PRODUCT</tspan></text>
+    <rect x="275" y="241.5" width="179" height="45" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="364.5" y="268.9">DELIVERY_ADDRESS</tspan></text>
+    <line x1="180.92" y1="120" x2="194.92" y2="120" stroke="#bbbbbb" stroke-width="1.3"/>
+    <line x1="180.92" y1="126" x2="194.92" y2="126" stroke="#bbbbbb" stroke-width="1.3"/>
+    <path d="M95,208 L87,194 M79,208 L87,194 M87,208 L87,194" fill="none" stroke="#bbbbbb" stroke-width="1.3"/>
+    <circle cx="87" cy="185" r="5" fill="#1e1e1e" stroke="#bbbbbb" stroke-width="1.3"/>
+    <line x1="80" y1="328" x2="94" y2="328" stroke="#bbbbbb" stroke-width="1.3"/>
+    <line x1="80" y1="334" x2="94" y2="334" stroke="#bbbbbb" stroke-width="1.3"/>
+    <path d="M82,416 L74,402 M66,416 L74,402 M74,416 L74,402" fill="none" stroke="#bbbbbb" stroke-width="1.3"/>
+    <line x1="81" y1="397" x2="67" y2="397" stroke="#bbbbbb" stroke-width="1.3"/>
+    <line x1="433.75" y1="86.5" x2="447.75" y2="86.5" stroke="#bbbbbb" stroke-width="1.3"/>
+    <line x1="433.75" y1="92.5" x2="447.75" y2="92.5" stroke="#bbbbbb" stroke-width="1.3"/>
+    <path d="M108,416 L100,402 M92,416 L100,402 M100,416 L100,402" fill="none" stroke="#bbbbbb" stroke-width="1.3"/>
+    <circle cx="100" cy="393" r="5" fill="#1e1e1e" stroke="#bbbbbb" stroke-width="1.3"/>
+    <path d="M255.58,112 L263.58,126 M271.58,112 L263.58,126 M263.58,112 L263.58,126" fill="none" stroke="#bbbbbb" stroke-width="1.3"/>
+    <line x1="256.58" y1="131" x2="270.58" y2="131" stroke="#bbbbbb" stroke-width="1.3"/>
+    <path d="M372.5,241.5 L364.5,227.5 M356.5,241.5 L364.5,227.5 M364.5,241.5 L364.5,227.5" fill="none" stroke="#bbbbbb" stroke-width="1.3"/>
+    <line x1="371.5" y1="222.5" x2="357.5" y2="222.5" stroke="#bbbbbb" stroke-width="1.3"/>
+    <rect x="115.25" y="149.81" width="44.41" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="137.46" y="164.41">places</tspan></text>
+    <rect x="53.04" y="357.81" width="54.92" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="80.5" y="372.41">contains</tspan></text>
+    <rect x="192.14" y="193.91" width="64.73" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="224.5" y="208.5">ordered in</tspan></text>
+    <rect x="296.74" y="166.56" width="34.61" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="314.04" y="181.16">uses</tspan></text>
+  </g>
+</svg>
