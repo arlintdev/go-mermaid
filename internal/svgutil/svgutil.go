@@ -85,6 +85,13 @@ const (
 	FaceMono
 )
 
+// boldFace marks a Face that measures bold text (see Face.Bold).
+const boldFace Face = 8
+
+// Bold returns f measuring text drawn with font-weight bold, for use with
+// Width, Wrap and the other measuring methods.
+func (f Face) Bold() Face { return f | boldFace }
+
 // FaceFor maps a CSS font-family value to the closest metric table. It reads
 // the first family in the list and falls back to FaceSans, which is what an
 // unknown family most often resolves to.
@@ -174,6 +181,9 @@ const zeroWidthJoiner = 0x200D
 
 // Width estimates the rendered width of s at the given font size.
 func (f Face) Width(s string, fontSize float64) float64 {
+	if f&boldFace != 0 {
+		return (f &^ boldFace).BoldWidth(s, fontSize)
+	}
 	var em float64
 	joined := false
 	for _, r := range s {
@@ -193,6 +203,7 @@ func (f Face) Width(s string, fontSize float64) float64 {
 // Sans text is measured with Helvetica Bold; Courier Bold keeps the regular
 // pitch; serif and non-ASCII text are taken as 6% wider than regular.
 func (f Face) BoldWidth(s string, fontSize float64) float64 {
+	f &^= boldFace
 	switch f {
 	case FaceMono:
 		return f.Width(s, fontSize)

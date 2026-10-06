@@ -53,17 +53,23 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	}
 	face := svgutil.FaceFor(o.FontFace)
 	lh := fs * 1.25
-	colW := columnWidth(d, face, fs)
-	textW := colW - 2*boxPadX
-	boxH := func(lines int) float64 { return float64(lines)*lh + 2*boxPadY }
-
-	periods := d.Periods()
 	sectioned := false
 	for _, s := range d.Sections {
 		if s.Name != "" {
 			sectioned = true
 		}
 	}
+	// Section names are drawn bold, and so are periods when there are no
+	// sections; measure them so.
+	secFace, perFace := face.Bold(), face
+	if !sectioned {
+		perFace = face.Bold()
+	}
+	colW := columnWidth(d, face, secFace, perFace, fs)
+	textW := colW - 2*boxPadX
+	boxH := func(lines int) float64 { return float64(lines)*lh + 2*boxPadY }
+
+	periods := d.Periods()
 
 	// Row heights: every box in a row is as tall as the tallest, as Mermaid
 	// draws them.
@@ -71,11 +77,11 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	for _, s := range d.Sections {
 		if s.Name != "" {
 			span := float64(len(s.Periods))*(colW+colGap) - colGap
-			secLines = max(secLines, len(face.WrapHard(s.Name, fs, max(span, colW)-2*boxPadX)))
+			secLines = max(secLines, len(secFace.WrapHard(s.Name, fs, max(span, colW)-2*boxPadX)))
 		}
 	}
 	for _, p := range periods {
-		perLines = max(perLines, len(face.WrapHard(p.Time, fs, textW)))
+		perLines = max(perLines, len(perFace.WrapHard(p.Time, fs, textW)))
 	}
 
 	titleSize := fs * 1.6
@@ -150,9 +156,9 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 			x := colX(idx)
 			if sectioned && pi == 0 && sec.Name != "" {
 				span := float64(len(sec.Periods))*(colW+colGap) - colGap
-				drawBox(&b, x, secY, span, boxH(secLines), c.Fill, c.Accent, c.Text, face.WrapHard(sec.Name, fs, span-2*boxPadX), true, lh, fs)
+				drawBox(&b, x, secY, span, boxH(secLines), c.Fill, c.Accent, c.Text, secFace.WrapHard(sec.Name, fs, span-2*boxPadX), true, lh, fs)
 			}
-			drawBox(&b, x, perY, colW, boxH(perLines), c.Fill, c.Accent, c.Text, face.WrapHard(p.Time, fs, textW), !sectioned, lh, fs)
+			drawBox(&b, x, perY, colW, boxH(perLines), c.Fill, c.Accent, c.Text, perFace.WrapHard(p.Time, fs, textW), !sectioned, lh, fs)
 			ey := evTop
 			for _, ls := range evLines[idx] {
 				drawBox(&b, x, ey, colW, boxH(len(ls)), c.Light, c.Fill, c.Text, ls, false, lh, fs)
@@ -187,18 +193,18 @@ func drawBox(b *strings.Builder, x, y, w, h float64, fill, accent, text string, 
 
 // columnWidth returns the width of every period column: minColW, or more when
 // a word that cannot be broken would not fit, so no text leaves its box.
-func columnWidth(d *Diagram, face svgutil.Face, fs float64) float64 {
+func columnWidth(d *Diagram, face, secFace, perFace svgutil.Face, fs float64) float64 {
 	w := minColW
 	for _, s := range d.Sections {
 		for _, p := range s.Periods {
-			w = max(w, face.MinWidth(p.Time, fs)+2*boxPadX)
+			w = max(w, perFace.MinWidth(p.Time, fs)+2*boxPadX)
 			for _, ev := range p.Events {
 				w = max(w, face.MinWidth(ev, fs)+2*boxPadX)
 			}
 		}
 		if s.Name != "" && len(s.Periods) > 0 {
 			n := float64(len(s.Periods))
-			w = max(w, (face.MinWidth(s.Name, fs)+2*boxPadX+colGap)/n-colGap)
+			w = max(w, (secFace.MinWidth(s.Name, fs)+2*boxPadX+colGap)/n-colGap)
 		}
 	}
 	return w
