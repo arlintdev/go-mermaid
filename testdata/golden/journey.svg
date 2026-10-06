@@ -1,24 +1,55 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="582" height="275.6" viewBox="0 0 582 275.6" font-family="sans-serif" font-size="14">
-  <rect width="100%" height="100%" fill="#ffffff"/>
-  <text x="291" y="30" fill="#333333" text-anchor="middle" font-weight="bold">My working day</text>
-  <rect x="16" y="47.6" width="330" height="22" fill="#e74c3c" fill-opacity="0.25"/>
-  <text x="181" y="63" fill="#333333" text-anchor="middle">Go to work</text>
-  <rect x="346" y="47.6" width="220" height="22" fill="#e67e22" fill-opacity="0.25"/>
-  <text x="456" y="63" fill="#333333" text-anchor="middle">Go home</text>
-  <path d="M71,69.6 L181,144.6 L291,219.6 L401,69.6 L511,144.6" fill="none" stroke="#333333" stroke-width="2"/>
-  <circle cx="71" cy="69.6" r="9" fill="#27ae60" stroke="#9370DB"/>
-  <text x="71" y="233.6" fill="#333333" text-anchor="middle">Make tea</text>
-  <text x="71" y="247.6" fill="#333333" text-anchor="middle" font-size="11.2">Me</text>
-  <circle cx="181" cy="144.6" r="9" fill="#f1c40f" stroke="#9370DB"/>
-  <text x="181" y="233.6" fill="#333333" text-anchor="middle">Go upstairs</text>
-  <text x="181" y="247.6" fill="#333333" text-anchor="middle" font-size="11.2">Me</text>
-  <circle cx="291" cy="219.6" r="9" fill="#e74c3c" stroke="#9370DB"/>
-  <text x="291" y="233.6" fill="#333333" text-anchor="middle">Do work</text>
-  <text x="291" y="247.6" fill="#333333" text-anchor="middle" font-size="11.2">Me, Cat</text>
-  <circle cx="401" cy="69.6" r="9" fill="#27ae60" stroke="#9370DB"/>
-  <text x="401" y="233.6" fill="#333333" text-anchor="middle">Go downstairs</text>
-  <text x="401" y="247.6" fill="#333333" text-anchor="middle" font-size="11.2">Me</text>
-  <circle cx="511" cy="144.6" r="9" fill="#f1c40f" stroke="#9370DB"/>
-  <text x="511" y="233.6" fill="#333333" text-anchor="middle">Sit down</text>
-  <text x="511" y="247.6" fill="#333333" text-anchor="middle" font-size="11.2">Me</text>
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="1105.78" height="445.4" viewBox="0 0 1105.78 445.4" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<defs><marker id="m7zg7eb-arrowhead" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M0,0 V4 L6,2 Z" fill="#333333"/></marker></defs>
+<text x="85.78" y="38" fill="#333333" font-size="22" font-weight="bold">My working day</text>
+<circle cx="23" cy="64.4" r="7" fill="#8fbc8f" stroke="#000000"/>
+<text x="40" y="69.3" fill="#333333">Cat</text>
+<circle cx="23" cy="84.4" r="7" fill="#7cfc00" stroke="#000000"/>
+<text x="40" y="89.3" fill="#333333">Me</text>
+<rect x="85.78" y="54.4" width="550" height="50" rx="3" fill="#ececff" stroke="#666666"/>
+<text fill="#333333" text-anchor="middle"><tspan x="360.78" y="84.3">Go to work</tspan></text>
+<line x1="160.78" y1="164.4" x2="160.78" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
+<circle cx="160.78" cy="279.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="155.78" cy="274.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="165.78" cy="274.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M154.28,281.4 A7.5,7.5 0 0 0 167.28,281.4" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="85.78" y="114.4" width="150" height="50" rx="3" fill="#ececff" stroke="#666666"/>
+<circle cx="99.78" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Me</title></circle>
+<text fill="#333333" text-anchor="middle"><tspan x="160.78" y="144.3">Make tea</tspan></text>
+<line x1="360.78" y1="164.4" x2="360.78" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
+<circle cx="360.78" cy="339.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="355.78" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="365.78" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<line x1="355.78" y1="346.4" x2="365.78" y2="346.4" stroke="#666666"/>
+<rect x="285.78" y="114.4" width="150" height="50" rx="3" fill="#ececff" stroke="#666666"/>
+<circle cx="299.78" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Me</title></circle>
+<text fill="#333333" text-anchor="middle"><tspan x="360.78" y="144.3">Go upstairs</tspan></text>
+<line x1="560.78" y1="164.4" x2="560.78" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
+<circle cx="560.78" cy="399.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="555.78" cy="394.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="565.78" cy="394.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M554.28,408.4 A7.5,7.5 0 0 1 567.28,408.4" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="485.78" y="114.4" width="150" height="50" rx="3" fill="#ececff" stroke="#666666"/>
+<circle cx="499.78" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Me</title></circle>
+<circle cx="509.78" cy="114.4" r="7" fill="#8fbc8f" stroke="#000000"><title>Cat</title></circle>
+<text fill="#333333" text-anchor="middle"><tspan x="560.78" y="144.3">Do work</tspan></text>
+<rect x="685.78" y="54.4" width="350" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
+<text fill="#333333" text-anchor="middle"><tspan x="860.78" y="84.3">Go home</tspan></text>
+<line x1="760.78" y1="164.4" x2="760.78" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
+<circle cx="760.78" cy="279.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="755.78" cy="274.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="765.78" cy="274.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M754.28,281.4 A7.5,7.5 0 0 0 767.28,281.4" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="685.78" y="114.4" width="150" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
+<circle cx="699.78" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Me</title></circle>
+<text fill="#333333" text-anchor="middle"><tspan x="760.78" y="144.3">Go downstairs</tspan></text>
+<line x1="960.78" y1="164.4" x2="960.78" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
+<circle cx="960.78" cy="339.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="955.78" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="965.78" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<line x1="955.78" y1="346.4" x2="965.78" y2="346.4" stroke="#666666"/>
+<rect x="885.78" y="114.4" width="150" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
+<circle cx="899.78" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Me</title></circle>
+<text fill="#333333" text-anchor="middle"><tspan x="960.78" y="144.3">Sit down</tspan></text>
+<line x1="85.78" y1="204.4" x2="1081.78" y2="204.4" stroke="#333333" stroke-width="4" marker-end="url(#m7zg7eb-arrowhead)"/>
 </svg>

@@ -18,8 +18,6 @@ type RenderOptions struct {
 	FontSize float64
 	Padding  float64
 	Title    string
-	// ID seeds the marker id; empty derives it from the source.
-	ID string
 }
 
 // Mermaid's default journey colours.
@@ -48,13 +46,10 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	if o.Title == "" {
 		o.Title = d.Title
 	}
-	if o.ID == "" {
-		o.ID = svgid.Prefix(src)
-	}
-	return svg(d, o), nil
+	return svg(d, o, svgid.Prefix(src)), nil
 }
 
-func svg(d *Diagram, o RenderOptions) []byte {
+func svg(d *Diagram, o RenderOptions, id string) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
@@ -128,7 +123,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
 		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(fs))
 	fmt.Fprintf(&b, `<rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(pal.Background))
-	marker := svgutil.Esc(o.ID) + "-arrowhead"
+	marker := id + "-arrowhead"
 	fmt.Fprintf(&b, `<defs><marker id="%s" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M0,0 V4 L6,2 Z" fill="%s"/></marker></defs>`+"\n",
 		marker, pal.Text)
 	if o.Title != "" {
