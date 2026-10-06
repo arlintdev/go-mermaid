@@ -1,0 +1,27 @@
+stateDiagram-v2
+  [*] --> Idle
+  Idle --> Working : start
+  state Working {
+    [*] --> Fetch
+    Fetch --> Parse
+    Parse --> Check
+    state Check <<choice>>
+    Check --> Fetch : retry
+    Check --> [*] : ok
+  }
+  Working --> Done : finished
+  state fork_state <<fork>>
+  Done --> fork_state
+  fork_state --> Notify
+  fork_state --> Archive
+  state join_state <<join>>
+  Notify --> join_state
+  Archive --> join_state
+  join_state --> [*]
+  note right of Idle : Waits for work
+  state Concurrent {
+    [*] --> A1
+    --
+    [*] --> B1
+  }
+  Done --> Concurrent

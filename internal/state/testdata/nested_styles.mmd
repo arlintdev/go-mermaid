@@ -1,0 +1,22 @@
+stateDiagram-v2
+  direction LR
+  classDef bad fill:#ffcdd2,stroke:#c62828,color:#b71c1c,font-weight:bold
+  [*] --> Off
+  Off --> On : power
+  On --> On : tick
+  state On {
+    [*] --> Low
+    Low --> High : boost
+    state High {
+      [*] --> Warm
+      Warm --> Hot
+    }
+    High --> Low : cool
+  }
+  On --> Failed:::bad : fault
+  state "Waiting for a technician to visit" as Failed
+  note left of Off
+    Starts here after
+    a power cut
+  end note
+  Failed --> [*]
