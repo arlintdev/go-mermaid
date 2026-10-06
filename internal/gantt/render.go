@@ -23,23 +23,8 @@ type RenderOptions struct {
 // page; a fixed width keeps one day as wide as the next across charts.
 const chartW = 720.0
 
-// Mermaid's default gantt colours.
-const (
-	taskFill, taskStroke         = "#8a90dd", "#534fbc"
-	activeFill                   = "#bfc7ff"
-	doneFill, doneStroke         = "#d3d3d3", "#808080"
-	critFill, critStroke         = "#ff0000", "#ff8888"
-	excludeFill                  = "#eeeeee"
-	gridStroke                   = "#d3d3d3"
-	vertStroke                   = "#000080"
-	sectionTitleMaxW     float64 = 150
-)
+const sectionTitleMaxW = 150.0
 
-// sectionBands are Mermaid's four alternating row backgrounds.
-var sectionBands = []struct {
-	fill    string
-	opacity float64
-}{{"#6666ff", 0.1}, {"#ffffff", 0.2}, {"#fff400", 0.2}, {"#ffffff", 0.2}}
 
 // Render parses and renders gantt source to SVG.
 func Render(src string, o RenderOptions) ([]byte, error) {
@@ -74,7 +59,8 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	pal := theme.For(o.Theme)
+	pal := theme.For(o.Theme).Escaped()
+	gc := pal.Gantt
 	l := &layout{o: o, face: svgutil.FaceFor(o.FontFace), fs: o.FontSize}
 	l.taskFs = math.Round(o.FontSize * 0.86)
 	l.tickFs = math.Round(o.FontSize * 0.79)
@@ -156,7 +142,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 			x1, x2 := l.x(maxTime(runStart, l.lo)), l.x(minTime(end, l.hi))
 			if x2 > x1 {
 				fmt.Fprintf(&body, `<rect x="%s" y="%s" width="%s" height="%s" fill="%s"/>`+"\n",
-					svgutil.Num(x1), svgutil.Num(gridTop), svgutil.Num(x2-x1), svgutil.Num(gridBottom-gridTop), excludeFill)
+					svgutil.Num(x1), svgutil.Num(gridTop), svgutil.Num(x2-x1), svgutil.Num(gridBottom-gridTop), gc.ExcludeFill)
 			}
 		}
 		for ; day.Before(l.hi); day = day.AddDate(0, 0, 1) {
@@ -177,7 +163,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	for i, t := range ticks {
 		x := l.x(t)
 		fmt.Fprintf(&body, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s" stroke-opacity="0.8"/>`+"\n",
-			svgutil.Num(x), svgutil.Num(gridTop), svgutil.Num(x), svgutil.Num(gridBottom), gridStroke)
+			svgutil.Num(x), svgutil.Num(gridTop), svgutil.Num(x), svgutil.Num(gridBottom), gc.Grid)
 		if i%labelEvery != 0 {
 			continue
 		}
@@ -197,17 +183,17 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	// Bars, milestones and their labels.
 	for i, t := range rows {
 		cy := rowsTop + float64(i)*rowH + rowH/2
-		fill, stroke, inText := taskFill, taskStroke, "#ffffff"
+		fill, stroke, inText := gc.TaskFill, gc.TaskStroke, gc.TaskText
 		switch {
 		case t.Done:
-			fill, stroke, inText = doneFill, doneStroke, "#000000"
+			fill, stroke, inText = gc.DoneFill, gc.DoneStroke, gc.DoneText
 		case t.Active:
-			fill, inText = activeFill, "#000000"
+			fill, inText = gc.ActiveFill, gc.ActiveText
 		case t.Crit:
-			fill = critFill
+			fill = gc.CritFill
 		}
 		if t.Crit {
-			stroke = critStroke
+			stroke = gc.CritStroke
 		}
 		tw := l.face.Width(t.Name, l.taskFs)
 		var x1, x2 float64
@@ -247,9 +233,9 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	for _, t := range verts {
 		x := l.x(t.Start)
 		fmt.Fprintf(&body, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s" stroke-width="2"/>`+"\n",
-			svgutil.Num(x), svgutil.Num(gridTop), svgutil.Num(x), svgutil.Num(gridBottom), vertStroke)
+			svgutil.Num(x), svgutil.Num(gridTop), svgutil.Num(x), svgutil.Num(gridBottom), gc.Marker)
 		fmt.Fprintf(&body, `<text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="middle">%s</text>`+"\n",
-			svgutil.Num(x), svgutil.Num(vertLabelY), vertStroke, svgutil.Num(l.tickFs), svgutil.Esc(t.Name))
+			svgutil.Num(x), svgutil.Num(vertLabelY), gc.Marker, svgutil.Num(l.tickFs), svgutil.Esc(t.Name))
 		maxRight = math.Max(maxRight, x+l.face.Width(t.Name, l.tickFs)/2)
 	}
 
@@ -280,10 +266,10 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	w := math.Ceil(maxRight + pad)
 	var bands strings.Builder
 	for i, t := range rows {
-		band := sectionBands[max(t.Section, 0)%len(sectionBands)]
+		band := gc.Bands[max(t.Section, 0)%len(gc.Bands)]
 		fmt.Fprintf(&bands, `<rect x="%s" y="%s" width="%s" height="%s" fill="%s" fill-opacity="%s"/>`+"\n",
 			svgutil.Num(pad), svgutil.Num(rowsTop+float64(i)*rowH), svgutil.Num(w-2*pad), svgutil.Num(rowH),
-			band.fill, svgutil.Num(band.opacity))
+			svgutil.Esc(band.Fill), svgutil.Num(band.Opacity))
 	}
 	h := math.Ceil(labelY + 4 + pad)
 	if len(ticks) == 0 {

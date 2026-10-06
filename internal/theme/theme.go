@@ -7,6 +7,8 @@ package theme
 import (
 	"reflect"
 	"sync"
+
+	"github.com/arlintdev/go-mermaid/internal/svgutil"
 )
 
 // Palette holds the colors used to render a diagram. The first group is
@@ -243,4 +245,33 @@ func For(name string) Palette {
 		base = palettes["dark"]
 	}
 	return p.complete(base)
+}
+
+// Escaped returns p with every color escaped for an SVG attribute value, so
+// a renderer can write the fields as they are. A built-in color needs no
+// escaping; a palette a caller registered might.
+func (p Palette) Escaped() Palette {
+	escape(reflect.ValueOf(&p).Elem())
+	return p
+}
+
+func escape(v reflect.Value) {
+	switch v.Kind() {
+	case reflect.Struct:
+		for i := 0; i < v.NumField(); i++ {
+			escape(v.Field(i))
+		}
+	case reflect.String:
+		v.SetString(svgutil.Esc(v.String()))
+	case reflect.Slice:
+		if v.Len() == 0 {
+			return
+		}
+		c := reflect.MakeSlice(v.Type(), v.Len(), v.Len())
+		reflect.Copy(c, v)
+		for i := 0; i < c.Len(); i++ {
+			escape(c.Index(i))
+		}
+		v.Set(c)
+	}
 }
