@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="947.03" height="445.4" viewBox="0 0 947.03 445.4" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<defs><marker id="m1o9xkg0-arrowhead" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M0,0 V4 L6,2 Z" fill="#333333"/></marker></defs>
+<text x="127.03" y="38" fill="#333333" font-size="22" font-weight="bold">Signing up</text>
+<circle cx="23" cy="64.4" r="7" fill="#8fbc8f" stroke="#000000"/>
+<text x="40" y="69.3" fill="#333333">Admin</text>
+<circle cx="23" cy="84.4" r="7" fill="#7cfc00" stroke="#000000"/>
+<text x="40" y="89.3" fill="#333333">Colleague</text>
+<circle cx="23" cy="104.4" r="7" fill="#00ffff" stroke="#000000"/>
+<text x="40" y="109.3" fill="#333333">Visitor</text>
+<rect x="127.03" y="54.4" width="350" height="50" rx="3" fill="#ececff" stroke="#666666"/>
+<text fill="#333333" text-anchor="middle"><tspan x="302.03" y="84.3">Discover</tspan></text>
+<line x1="202.03" y1="164.4" x2="202.03" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
+<circle cx="202.03" cy="309.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="197.03" cy="304.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="207.03" cy="304.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M195.53,311.4 A7.5,7.5 0 0 0 208.53,311.4" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="127.03" y="114.4" width="150" height="50" rx="3" fill="#ececff" stroke="#666666"/>
+<circle cx="141.03" cy="114.4" r="7" fill="#00ffff" stroke="#000000"><title>Visitor</title></circle>
+<text fill="#333333" text-anchor="middle"><tspan x="202.03" y="147.3">Read the site</tspan></text>
+<line x1="402.03" y1="164.4" x2="402.03" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
+<circle cx="402.03" cy="339.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="397.03" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="407.03" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<line x1="397.03" y1="346.4" x2="407.03" y2="346.4" stroke="#666666"/>
+<rect x="327.03" y="114.4" width="150" height="50" rx="3" fill="#ececff" stroke="#666666"/>
+<circle cx="341.03" cy="114.4" r="7" fill="#00ffff" stroke="#000000"><title>Visitor</title></circle>
+<circle cx="351.03" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Colleague</title></circle>
+<text fill="#333333" text-anchor="middle"><tspan x="402.03" y="147.3">Ask a colleague</tspan></text>
+<rect x="527.03" y="54.4" width="350" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
+<text fill="#333333" text-anchor="middle"><tspan x="702.03" y="84.3">Join</tspan></text>
+<line x1="602.03" y1="164.4" x2="602.03" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
+<circle cx="602.03" cy="279.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="597.03" cy="274.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="607.03" cy="274.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M595.53,281.4 A7.5,7.5 0 0 0 608.53,281.4" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="527.03" y="114.4" width="150" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
+<circle cx="541.03" cy="114.4" r="7" fill="#00ffff" stroke="#000000"><title>Visitor</title></circle>
+<text fill="#333333" text-anchor="middle"><tspan x="602.03" y="147.3">Sign in with SSO</tspan></text>
+<line x1="802.03" y1="164.4" x2="802.03" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
+<circle cx="802.03" cy="399.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="797.03" cy="394.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="807.03" cy="394.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M795.53,408.4 A7.5,7.5 0 0 1 808.53,408.4" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="727.03" y="114.4" width="150" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
+<circle cx="741.03" cy="114.4" r="7" fill="#00ffff" stroke="#000000"><title>Visitor</title></circle>
+<circle cx="751.03" cy="114.4" r="7" fill="#8fbc8f" stroke="#000000"><title>Admin</title></circle>
+<text fill="#333333" text-anchor="middle"><tspan x="802.03" y="147.3">Wait for invite</tspan></text>
+<line x1="127.03" y1="204.4" x2="923.03" y2="204.4" stroke="#333333" stroke-width="4" marker-end="url(#m1o9xkg0-arrowhead)"/>
+</svg>

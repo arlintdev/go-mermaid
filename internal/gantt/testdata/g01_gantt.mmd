@@ -1,0 +1,12 @@
+gantt
+  title Release plan
+  dateFormat YYYY-MM-DD
+  axisFormat %b %d
+  excludes weekends
+  section Design
+    Research        :done, des1, 2026-09-01, 5d
+    Mockups         :active, des2, after des1, 4d
+  section Build
+    Backend         :crit, b1, 2026-09-08, 10d
+    Frontend        :b2, after des2, 8d
+    Launch          :milestone, m1, 2026-09-25, 0d

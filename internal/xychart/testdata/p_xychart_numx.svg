@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="644.77" height="406.2" viewBox="0 0 644.77 406.2" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<path d="M111.43,323 L204.77,315 L298.1,307 L391.43,283 L484.77,223 L578.1,23" fill="none" stroke="#9d9daa" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="64.77" y1="23" x2="64.77" y2="343" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<line x1="64.77" y1="343" x2="624.77" y2="343" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<line x1="59.77" y1="343" x2="64.77" y2="343" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="347.9" fill="#333333" text-anchor="end">0</text>
+<line x1="59.77" y1="303" x2="64.77" y2="303" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="307.9" fill="#333333" text-anchor="end">10</text>
+<line x1="59.77" y1="263" x2="64.77" y2="263" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="267.9" fill="#333333" text-anchor="end">20</text>
+<line x1="59.77" y1="223" x2="64.77" y2="223" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="227.9" fill="#333333" text-anchor="end">30</text>
+<line x1="59.77" y1="183" x2="64.77" y2="183" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="187.9" fill="#333333" text-anchor="end">40</text>
+<line x1="59.77" y1="143" x2="64.77" y2="143" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="147.9" fill="#333333" text-anchor="end">50</text>
+<line x1="59.77" y1="103" x2="64.77" y2="103" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="107.9" fill="#333333" text-anchor="end">60</text>
+<line x1="59.77" y1="63" x2="64.77" y2="63" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="67.9" fill="#333333" text-anchor="end">70</text>
+<line x1="59.77" y1="23" x2="64.77" y2="23" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="27.9" fill="#333333" text-anchor="end">80</text>
+<line x1="111.43" y1="343" x2="111.43" y2="348" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="111.43" y="365.2" fill="#333333" text-anchor="middle">0</text>
+<line x1="204.77" y1="343" x2="204.77" y2="348" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="204.77" y="365.2" fill="#333333" text-anchor="middle">20</text>
+<line x1="298.1" y1="343" x2="298.1" y2="348" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="298.1" y="365.2" fill="#333333" text-anchor="middle">40</text>
+<line x1="391.43" y1="343" x2="391.43" y2="348" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="391.43" y="365.2" fill="#333333" text-anchor="middle">60</text>
+<line x1="484.77" y1="343" x2="484.77" y2="348" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="484.77" y="365.2" fill="#333333" text-anchor="middle">80</text>
+<line x1="578.1" y1="343" x2="578.1" y2="348" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="578.1" y="365.2" fill="#333333" text-anchor="middle">100</text>
+<text x="30" y="183" fill="#333333" text-anchor="middle" transform="rotate(-90 30 183)">Latency</text>
+<text x="344.77" y="386.2" fill="#333333" text-anchor="middle">Load</text>
+</svg>

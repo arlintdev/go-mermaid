@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="644.77" height="538.89" viewBox="0 0 644.77 538.89" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="322.38" y="36" fill="#333333" font-size="20" text-anchor="middle">Revenue by region, with negative months and long names</text>
+<rect x="80.77" y="217" width="24" height="114.29" fill="#ececff" stroke="#9d9daa"/>
+<rect x="160.77" y="331.29" width="24" height="36.57" fill="#ececff" stroke="#9d9daa"/>
+<rect x="240.77" y="57" width="24" height="274.29" fill="#ececff" stroke="#9d9daa"/>
+<rect x="320.77" y="267.29" width="24" height="64" fill="#ececff" stroke="#9d9daa"/>
+<rect x="400.77" y="331.29" width="24" height="22.86" fill="#ececff" stroke="#9d9daa"/>
+<rect x="480.77" y="130.14" width="24" height="201.14" fill="#ececff" stroke="#9d9daa"/>
+<rect x="560.77" y="303.86" width="24" height="27.43" fill="#ececff" stroke="#9d9daa"/>
+<rect x="104.77" y="239.86" width="24" height="91.43" fill="#8493a6" stroke="#58626e"/>
+<rect x="184.77" y="313" width="24" height="18.29" fill="#8493a6" stroke="#58626e"/>
+<rect x="264.77" y="166.71" width="24" height="164.57" fill="#8493a6" stroke="#58626e"/>
+<rect x="344.77" y="249" width="24" height="82.29" fill="#8493a6" stroke="#58626e"/>
+<rect x="424.77" y="322.14" width="24" height="9.14" fill="#8493a6" stroke="#58626e"/>
+<rect x="504.77" y="102.71" width="24" height="228.57" fill="#8493a6" stroke="#58626e"/>
+<rect x="584.77" y="294.71" width="24" height="36.57" fill="#8493a6" stroke="#58626e"/>
+<path d="M104.77,230.71 L184.77,340.43 L264.77,111.86 L344.77,258.14 L424.77,331.29 L504.77,121 L584.77,299.29" fill="none" stroke="#ffb6c1" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="64.77" y1="57" x2="64.77" y2="377" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<line x1="64.77" y1="377" x2="624.77" y2="377" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<line x1="59.77" y1="377" x2="64.77" y2="377" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="381.9" fill="#333333" text-anchor="end">-5</text>
+<line x1="59.77" y1="331.29" x2="64.77" y2="331.29" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="336.19" fill="#333333" text-anchor="end">0</text>
+<line x1="59.77" y1="285.57" x2="64.77" y2="285.57" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="290.47" fill="#333333" text-anchor="end">5</text>
+<line x1="59.77" y1="239.86" x2="64.77" y2="239.86" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="244.76" fill="#333333" text-anchor="end">10</text>
+<line x1="59.77" y1="194.14" x2="64.77" y2="194.14" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="199.04" fill="#333333" text-anchor="end">15</text>
+<line x1="59.77" y1="148.43" x2="64.77" y2="148.43" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="153.33" fill="#333333" text-anchor="end">20</text>
+<line x1="59.77" y1="102.71" x2="64.77" y2="102.71" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="107.61" fill="#333333" text-anchor="end">25</text>
+<line x1="59.77" y1="57" x2="64.77" y2="57" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="53.77" y="61.9" fill="#333333" text-anchor="end">30</text>
+<line x1="104.77" y1="377" x2="104.77" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="104.77" y="397.8" fill="#333333" text-anchor="end" transform="rotate(-45 104.77 397.8)">North America</text>
+<line x1="184.77" y1="377" x2="184.77" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="184.77" y="397.8" fill="#333333" text-anchor="end" transform="rotate(-45 184.77 397.8)">South, Central America</text>
+<line x1="264.77" y1="377" x2="264.77" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="264.77" y="397.8" fill="#333333" text-anchor="end" transform="rotate(-45 264.77 397.8)">Europe</text>
+<line x1="344.77" y1="377" x2="344.77" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="344.77" y="397.8" fill="#333333" text-anchor="end" transform="rotate(-45 344.77 397.8)">Middle East</text>
+<line x1="424.77" y1="377" x2="424.77" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="424.77" y="397.8" fill="#333333" text-anchor="end" transform="rotate(-45 424.77 397.8)">Africa</text>
+<line x1="504.77" y1="377" x2="504.77" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="504.77" y="397.8" fill="#333333" text-anchor="end" transform="rotate(-45 504.77 397.8)">Asia Pacific</text>
+<line x1="584.77" y1="377" x2="584.77" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="584.77" y="397.8" fill="#333333" text-anchor="end" transform="rotate(-45 584.77 397.8)">Oceania</text>
+<text x="30" y="217" fill="#333333" text-anchor="middle" transform="rotate(-90 30 217)">Change (k$)</text>
+<text x="344.77" y="518.89" fill="#333333" text-anchor="middle">Region</text>
+</svg>

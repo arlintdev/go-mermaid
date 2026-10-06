@@ -17,9 +17,13 @@ import (
 	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
-// Card is a single item within a column.
+// Card is a single item within a column, with the metadata Mermaid draws
+// on it: a ticket reference, the person assigned and a priority.
 type Card struct {
-	Text string
+	Text     string
+	Ticket   string
+	Assigned string
+	Priority string // "Very High", "High", "Low" or "Very Low"; other values are dropped
 }
 
 // Column is a labeled list of cards.
@@ -72,7 +76,8 @@ func Parse(src string) (*Diagram, error) {
 	var cur *Column
 	for _, it := range items {
 		if it.indent == minIndent {
-			cur = &Column{Title: it.text}
+			title, _ := splitMeta(it.text)
+			cur = &Column{Title: cardText(title)}
 			d.Columns = append(d.Columns, cur)
 			continue
 		}
@@ -80,7 +85,8 @@ func Parse(src string) (*Diagram, error) {
 			cur = &Column{}
 			d.Columns = append(d.Columns, cur)
 		}
-		cur.Cards = append(cur.Cards, &Card{Text: cardText(it.text)})
+		text, meta := splitMeta(it.text)
+		cur.Cards = append(cur.Cards, newCard(cardText(text), meta))
 	}
 	return d, nil
 }
@@ -88,9 +94,46 @@ func Parse(src string) (*Diagram, error) {
 // cardText strips an "id[text]" wrapper down to its text.
 func cardText(s string) string {
 	if o := strings.IndexByte(s, '['); o >= 0 && strings.HasSuffix(s, "]") {
-		return strings.Trim(strings.TrimSuffix(s[o+1:], "]"), `"`)
+		s = strings.TrimSuffix(s[o+1:], "]")
+	}
+	s = strings.TrimSpace(s)
+	if len(s) >= 2 && s[0] == '"' && s[len(s)-1] == '"' {
+		s = s[1 : len(s)-1]
 	}
 	return s
+}
+
+// splitMeta separates "text@{ key: value, ... }" into the text and its
+// metadata.
+func splitMeta(s string) (string, map[string]string) {
+	i := strings.Index(s, "@{")
+	if i < 0 {
+		return s, nil
+	}
+	body := strings.TrimSuffix(strings.TrimSpace(s[i+2:]), "}")
+	meta := map[string]string{}
+	for _, kv := range strings.Split(body, ",") {
+		k, v, ok := strings.Cut(kv, ":")
+		if !ok {
+			continue
+		}
+		v = strings.TrimSpace(v)
+		if len(v) >= 2 && (v[0] == '\'' || v[0] == '"') && v[len(v)-1] == v[0] {
+			v = v[1 : len(v)-1]
+		}
+		meta[strings.ToLower(strings.TrimSpace(k))] = v
+	}
+	return strings.TrimSpace(s[:i]), meta
+}
+
+func newCard(text string, meta map[string]string) *Card {
+	c := &Card{Text: text, Ticket: meta["ticket"], Assigned: meta["assigned"]}
+	for _, p := range []string{"Very High", "High", "Low", "Very Low"} {
+		if strings.EqualFold(strings.TrimSpace(meta["priority"]), p) {
+			c.Priority = p
+		}
+	}
+	return c
 }
 
 func leadingSpaces(s string) int {

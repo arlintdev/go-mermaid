@@ -9,6 +9,7 @@
 package sankey
 
 import (
+	"math"
 	"strconv"
 	"strings"
 
@@ -51,7 +52,7 @@ func Parse(src string) (*Diagram, error) {
 			return nil, syntax.Errorf(lineNo, 1, "expected 'source,target,value'")
 		}
 		v, err := strconv.ParseFloat(strings.TrimSpace(fields[2]), 64)
-		if err != nil {
+		if err != nil || math.IsNaN(v) || math.IsInf(v, 0) || v > 1e300 {
 			return nil, syntax.Errorf(lineNo, 1, "invalid flow value")
 		}
 		if v < 0 {
@@ -80,8 +81,13 @@ func splitCSV(line string) []string {
 	var fields []string
 	var cur strings.Builder
 	inQuote := false
-	for _, r := range line {
+	rs := []rune(line)
+	for i := 0; i < len(rs); i++ {
+		r := rs[i]
 		switch {
+		case r == '"' && inQuote && i+1 < len(rs) && rs[i+1] == '"':
+			cur.WriteRune('"') // "" inside quotes is a literal quote
+			i++
 		case r == '"':
 			inQuote = !inQuote
 		case r == ',' && !inQuote:
