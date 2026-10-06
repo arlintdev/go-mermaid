@@ -102,7 +102,7 @@ func TextBoxes(svg []byte) ([]Box, error) {
 	stack := []textState{{m: identity, size: 16, anchor: "start", family: "sans-serif"}}
 	var boxes []Box
 	type pos struct{ x, y float64 }
-	var cur pos     // current text position inside a <text>
+	var cur pos // current text position inside a <text>
 	inText := 0
 	var pending *struct {
 		st   textState
