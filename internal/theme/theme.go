@@ -12,44 +12,80 @@ type Palette struct {
 	NodeStroke string
 	Text       string
 	Edge       string
+
+	// ClusterFill and ClusterStroke color a flowchart subgraph's box, and
+	// LabelBackground the box behind an edge label. Empty values fall back
+	// to colors derived from the ones above (see Flow).
+	ClusterFill     string
+	ClusterStroke   string
+	LabelBackground string
+}
+
+// Flow returns p with the flowchart-only colors filled in.
+func (p Palette) Flow() Palette {
+	if p.ClusterFill == "" {
+		p.ClusterFill = p.Background
+	}
+	if p.ClusterStroke == "" {
+		p.ClusterStroke = p.NodeStroke
+	}
+	if p.LabelBackground == "" {
+		p.LabelBackground = p.Background
+	}
+	return p
 }
 
 // palettes maps theme names to palettes. Unknown names fall back to default.
 var palettes = map[string]Palette{
 	"default": {
-		Background: "#ffffff",
-		NodeFill:   "#ECECFF",
-		NodeStroke: "#9370DB",
-		Text:       "#333333",
-		Edge:       "#333333",
+		Background:      "#ffffff",
+		NodeFill:        "#ECECFF",
+		NodeStroke:      "#9370DB",
+		Text:            "#333333",
+		Edge:            "#333333",
+		ClusterFill:     "#ffffde",
+		ClusterStroke:   "#aaaa33",
+		LabelBackground: "#e8e8e8",
 	},
 	"dark": {
-		Background: "#1e1e1e",
-		NodeFill:   "#2b2b40",
-		NodeStroke: "#8888bb",
-		Text:       "#e6e6e6",
-		Edge:       "#bbbbbb",
+		Background:      "#1e1e1e",
+		NodeFill:        "#2b2b40",
+		NodeStroke:      "#8888bb",
+		Text:            "#e6e6e6",
+		Edge:            "#bbbbbb",
+		ClusterFill:     "#2a2a33",
+		ClusterStroke:   "#77775a",
+		LabelBackground: "#3a3a3a",
 	},
 	"neutral": {
-		Background: "#ffffff",
-		NodeFill:   "#eeeeee",
-		NodeStroke: "#999999",
-		Text:       "#222222",
-		Edge:       "#555555",
+		Background:      "#ffffff",
+		NodeFill:        "#eeeeee",
+		NodeStroke:      "#999999",
+		Text:            "#222222",
+		Edge:            "#555555",
+		ClusterFill:     "#f4f4f4",
+		ClusterStroke:   "#999999",
+		LabelBackground: "#ececec",
 	},
 	"forest": {
-		Background: "#ffffff",
-		NodeFill:   "#cde498",
-		NodeStroke: "#13540c",
-		Text:       "#13540c",
-		Edge:       "#3a7a2a",
+		Background:      "#ffffff",
+		NodeFill:        "#cde498",
+		NodeStroke:      "#13540c",
+		Text:            "#13540c",
+		Edge:            "#3a7a2a",
+		ClusterFill:     "#f2f9e8",
+		ClusterStroke:   "#6eaa49",
+		LabelBackground: "#e8f2df",
 	},
 	"base": {
-		Background: "#ffffff",
-		NodeFill:   "#e8e8e8",
-		NodeStroke: "#666666",
-		Text:       "#1a1a1a",
-		Edge:       "#444444",
+		Background:      "#ffffff",
+		NodeFill:        "#e8e8e8",
+		NodeStroke:      "#666666",
+		Text:            "#1a1a1a",
+		Edge:            "#444444",
+		ClusterFill:     "#f4f4f4",
+		ClusterStroke:   "#888888",
+		LabelBackground: "#ececec",
 	},
 }
 

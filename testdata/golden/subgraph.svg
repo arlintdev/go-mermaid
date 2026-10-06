@@ -1,24 +1,26 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="136.57" height="476" viewBox="0 0 136.57 476" font-family="sans-serif" font-size="14">
-  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="220" height="643.44" viewBox="0 0 220 643.44" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m1im7wxb-arrow-0" viewBox="0 0 10 11" refX="0" refY="5.5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="11" orient="auto-start-reverse"><path d="M0,0 L10,5.5 L0,11 z" fill="#333333"/></marker>
+  </defs>
   <rect width="100%" height="100%" fill="#ffffff"/>
-  <g transform="translate(30,50)">
-    <rect x="-14" y="-34" width="104.57" height="182" fill="none" stroke="#9370DB" stroke-dasharray="4,3" rx="4"/>
-    <text x="-8" y="-20" fill="#333333">Ingest</text>
-    <rect x="-12.84" y="150" width="102.24" height="182" fill="none" stroke="#9370DB" stroke-dasharray="4,3" rx="4"/>
-    <text x="-6.84" y="164" fill="#333333">Store</text>
-    <path d="M38.28,42 L38.28,92" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-    <path d="M38.28,226 L38.28,276" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-    <path d="M38.28,134 L38.28,184" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-    <path d="M38.28,318 L38.28,368" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-    <rect x="0.78" y="0" width="75.01" height="42" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="38.28" y="25.9">Fetch</tspan></text>
-    <rect x="0" y="92" width="76.57" height="42" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="38.28" y="117.9">Parse</tspan></text>
-    <path d="M8.56,189.04 L8.56,220.96 A29.72,5.04 0 0 0 68.01,220.96 L68.01,189.04 A29.72,5.04 0 0 0 8.56,189.04 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M8.56,189.04 A29.72,5.04 0 0 0 68.01,189.04" fill="none" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="38.28" y="209.9">DB</tspan></text>
-    <rect x="1.16" y="276" width="74.24" height="42" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="38.28" y="301.9">Index</tspan></text>
-    <rect x="1.55" y="368" width="73.46" height="42" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="38.28" y="393.9">Done</tspan></text>
+  <g transform="translate(16,16)">
+    <rect x="0" y="0" width="188" height="218" fill="#ffffde" stroke="#aaaa33"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="94" y="23.6">Ingest</tspan></text>
+    <rect x="0" y="268" width="188" height="245.44" fill="#ffffde" stroke="#aaaa33"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="94" y="291.6">Store</tspan></text>
+    <path d="M94,102 L94,142" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1im7wxb-arrow-0)"/>
+    <path d="M94,397.44 L94,437.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1im7wxb-arrow-0)"/>
+    <path d="M94,200 L94,312" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1im7wxb-arrow-0)"/>
+    <path d="M94,495.44 L94,553.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1im7wxb-arrow-0)"/>
+    <rect x="18" y="54" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="94" y="83.6">Fetch</tspan></text>
+    <rect x="18" y="152" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="94" y="181.6">Parse</tspan></text>
+    <path d="M18,335.72 A76,13.72 0 0 1 170,335.72 L170,383.72 A76,13.72 0 0 1 18,383.72 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M18,335.72 A76,13.72 0 0 0 170,335.72" fill="none" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="94" y="372.18">DB</tspan></text>
+    <rect x="18" y="447.44" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="94" y="477.04">Index</tspan></text>
+    <rect x="18" y="563.44" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="94" y="593.04">Done</tspan></text>
   </g>
 </svg>

@@ -92,3 +92,19 @@ func height(svg []byte) float64 {
 	v, _ := strconv.ParseFloat(s[:strings.IndexByte(s, '"')], 64)
 	return v
 }
+
+func TestFontFaceIsValidated(t *testing.T) {
+	for _, face := range []string{`x"/><script>`, "a;b", "url(x)", ""} {
+		out, err := mermaid.Render("graph TD\nA-->B", mermaid.WithFont(face, 14))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(string(out), `font-family="sans-serif"`) {
+			t.Errorf("font %q was not replaced by the default", face)
+		}
+	}
+	out, _ := mermaid.Render("graph TD\nA-->B", mermaid.WithFont(`"Trebuchet MS", Verdana, sans-serif`, 14))
+	if !strings.Contains(string(out), `font-family="&quot;Trebuchet MS&quot;, Verdana, sans-serif"`) {
+		t.Error("a plain font list was not kept")
+	}
+}

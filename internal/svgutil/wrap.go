@@ -80,3 +80,9 @@ func (f Face) LinesWidth(lines []string, fontSize float64) float64 {
 
 // JoinBreaks rewrites every explicit line break in s (see Breaks) as "\n".
 func JoinBreaks(s string) string { return strings.Join(Breaks(s), "\n") }
+
+// Wrap breaks text into lines no wider than maxWidth at fontSize, measured
+// with sans-serif metrics; see Face.Wrap.
+func Wrap(text string, maxWidth, fontSize float64) []string {
+	return FaceSans.Wrap(text, fontSize, maxWidth)
+}

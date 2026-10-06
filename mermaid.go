@@ -50,6 +50,7 @@ import (
 	"github.com/arlintdev/go-mermaid/internal/sankey"
 	"github.com/arlintdev/go-mermaid/internal/sequence"
 	"github.com/arlintdev/go-mermaid/internal/state"
+	"github.com/arlintdev/go-mermaid/internal/svgid"
 	"github.com/arlintdev/go-mermaid/internal/syntax"
 	"github.com/arlintdev/go-mermaid/internal/timeline"
 	"github.com/arlintdev/go-mermaid/internal/xychart"
@@ -77,6 +78,10 @@ func Render(src string, opts ...Option) (out []byte, err error) {
 	cfg := defaultConfig()
 	for _, opt := range opts {
 		opt(&cfg)
+	}
+	cfg.fontFace = safeFontFace(cfg.fontFace)
+	if !(cfg.fontSize > 0 && cfg.fontSize <= 200) {
+		cfg.fontSize = defaultConfig().fontSize
 	}
 
 	title, body := parseFrontmatter(src)
@@ -214,19 +219,32 @@ func wrapParse(err error) error {
 	return fmt.Errorf("%w: %w", ErrParse, err)
 }
 
+// flowFontSize is the flowchart font size when WithFont is not given.
+const flowFontSize = 16
+
 func renderFlowchart(src string, cfg config, title string) ([]byte, error) {
 	graph, err := parser.Flowchart(src)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrParse, err)
 	}
 
-	laid, err := layout.Compute(graph, cfg.layout())
+	lo := cfg.layout()
+	ro := cfg.render()
+	if !cfg.fontSet {
+		// mermaid.js draws flowcharts at 16 px; the other diagram types keep
+		// the library's 14 px default.
+		lo.FontSize, ro.FontSize = flowFontSize, flowFontSize
+	}
+	laid, err := layout.Flow(graph, lo)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrLayout, err)
 	}
 
-	ro := cfg.render()
 	ro.Title = title
+	ro.IDPrefix = cfg.idPrefix
+	if ro.IDPrefix == "" {
+		ro.IDPrefix = svgid.Prefix(src)
+	}
 	svg, err := render.SVG(laid, ro)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrRender, err)

@@ -1,6 +1,9 @@
 package mermaid
 
 import (
+	"regexp"
+	"strings"
+
 	"github.com/arlintdev/go-mermaid/internal/layout"
 	"github.com/arlintdev/go-mermaid/internal/render"
 	"github.com/arlintdev/go-mermaid/internal/theme"
@@ -80,6 +83,23 @@ type config struct {
 
 	bgColor       string // override background color
 	bgTransparent bool   // omit the background rect entirely
+
+	fontSet  bool   // WithFont was given
+	idPrefix string // WithIDPrefix, empty for one derived from the source
+}
+
+// fontFamilyRe accepts a plain CSS font-family list: names, generic
+// families, commas, spaces, hyphens and quotes. Anything else could carry
+// markup into the SVG, so it falls back to the default.
+var fontFamilyRe = regexp.MustCompile(`^[A-Za-z0-9 ,'"-]{1,200}$`)
+
+// safeFontFace returns face when it is a plain font-family list, otherwise
+// the default family.
+func safeFontFace(face string) string {
+	if fontFamilyRe.MatchString(face) && strings.TrimSpace(face) != "" {
+		return face
+	}
+	return defaultConfig().fontFace
 }
 
 func defaultConfig() config {
@@ -122,6 +142,7 @@ func WithFont(face string, size float64) Option {
 	return func(c *config) {
 		c.fontFace = face
 		c.fontSize = size
+		c.fontSet = true
 	}
 }
 
@@ -154,4 +175,13 @@ func WithBackground(color string) Option {
 // with whatever it is embedded in.
 func WithTransparentBackground() Option {
 	return func(c *config) { c.bgTransparent = true; c.bgColor = "" }
+}
+
+// WithIDPrefix sets the prefix of every id in a flowchart's SVG (its
+// markers), so pictures inlined on one page never share an id. Without it
+// the prefix is derived from a hash of the source. The prefix must start
+// with a letter and hold only letters, digits, '-' and '_'; any other value
+// is replaced by "m".
+func WithIDPrefix(prefix string) Option {
+	return func(c *config) { c.idPrefix = prefix }
 }
