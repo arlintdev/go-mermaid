@@ -32,10 +32,10 @@ const (
 )
 
 // look is an element kind's colours and its [type] wording, after
-// Mermaid's C4 defaults.
+// look is how an element is drawn: its colors (escaped) and its [type].
 type look struct{ fill, stroke, text, typ string }
 
-func lookFor(e *Element) look {
+func lookFor(e *Element, cc theme.C4Colors) look {
 	ext := strings.HasSuffix(e.Kind, "_Ext")
 	base := strings.TrimSuffix(e.Kind, "_Ext")
 	techn := func(t string) string {
@@ -44,39 +44,40 @@ func lookFor(e *Element) look {
 		}
 		return t
 	}
-	var l look
+	var c theme.C4Look
+	var typ string
 	switch {
 	case base == "Person":
-		l = look{"#08427b", "#073b6f", "#ffffff", "Person"}
+		c, typ = cc.Person, "Person"
 		if ext {
-			l = look{"#686868", "#8a8a8a", "#ffffff", "External Person"}
+			c, typ = cc.ExternalPerson, "External Person"
 		}
 	case strings.HasPrefix(base, "System"):
-		l = look{"#1168bd", "#3c7fc0", "#ffffff", "Software System"}
+		c, typ = cc.System, "Software System"
 		if ext {
-			l = look{"#999999", "#8a8a8a", "#ffffff", "External System"}
+			c, typ = cc.ExternalSystem, "External System"
 		}
 	case strings.HasPrefix(base, "Container"):
-		l = look{"#438dd5", "#3c7fc0", "#ffffff", techn("Container")}
+		c, typ = cc.Container, techn("Container")
 		if ext {
-			l = look{"#b3b3b3", "#a6a6a6", "#ffffff", techn("External Container")}
+			c, typ = cc.ExternalContainer, techn("External Container")
 		}
 	default:
-		l = look{"#85bbf0", "#78a8d8", "#000000", techn("Component")}
+		c, typ = cc.Component, techn("Component")
 		if ext {
-			l = look{"#cccccc", "#bfbfbf", "#000000", techn("External Component")}
+			c, typ = cc.ExternalComponent, techn("External Component")
 		}
 	}
 	if e.Style.Fill != "" {
-		l.fill = svgutil.Esc(e.Style.Fill)
+		c.Fill, c.Text = e.Style.Fill, theme.TextOn(e.Style.Fill, c.Text)
 	}
 	if e.Style.Stroke != "" {
-		l.stroke = svgutil.Esc(e.Style.Stroke)
+		c.Stroke = e.Style.Stroke
 	}
 	if e.Style.Text != "" {
-		l.text = svgutil.Esc(e.Style.Text)
+		c.Text = e.Style.Text
 	}
-	return l
+	return look{svgutil.Esc(c.Fill), svgutil.Esc(c.Stroke), svgutil.Esc(c.Text), typ}
 }
 
 type metrics struct {
@@ -89,7 +90,7 @@ func (m metrics) lines(s string, size, maxW float64) []string { return m.face.Wr
 
 // elementText is an element's label, [type] and description lines.
 func elementText(e *Element, m metrics) (label, typ, descr []string) {
-	return m.lines(e.Label, m.fs, maxTextW), m.lines("["+lookFor(e).typ+"]", m.fs*0.78, maxTextW), m.lines(e.Descr, m.fs*0.85, maxTextW)
+	return m.lines(e.Label, m.fs, maxTextW), m.lines("["+lookFor(e, theme.C4Colors{}).typ+"]", m.fs*0.78, maxTextW), m.lines(e.Descr, m.fs*0.85, maxTextW)
 }
 
 func headR(m metrics) float64 { return m.fs * 1.25 }
@@ -523,7 +524,7 @@ func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
 	}
 
 	var b strings.Builder
-	edge := "#444444"
+	edge := svgutil.Esc(c.pal.C4.Line)
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
 		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(fs))
 	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(c.pal.Background))
@@ -605,8 +606,8 @@ func (c *ctx) writeBoundary(b *strings.Builder, bo *Boundary) {
 		return
 	}
 	n := svgutil.Num
-	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="none" stroke="#444444" stroke-dasharray="7 7"/>`+"\n",
-		n(r.x), n(r.y), n(r.w), n(r.h))
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="none" stroke="%s" stroke-dasharray="7 7"/>`+"\n",
+		n(r.x), n(r.y), n(r.w), n(r.h), svgutil.Esc(c.pal.C4.Line))
 	y := r.y + 8 + c.m.fs
 	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" font-weight="bold">%s</text>`+"\n", n(r.x+bPad*0.6), n(y), svgutil.Esc(c.pal.Text), svgutil.Esc(bo.Label))
 	if bo.Type != "" {
@@ -620,7 +621,7 @@ func (c *ctx) writeElement(b *strings.Builder, e *Element) {
 	if !ok {
 		return
 	}
-	l := lookFor(e)
+	l := lookFor(e, c.pal.C4)
 	n := svgutil.Num
 	x, y, w, h := r.x, r.y, r.w, r.h
 	attrs := fmt.Sprintf(`fill="%s" stroke="%s"`, l.fill, l.stroke)
