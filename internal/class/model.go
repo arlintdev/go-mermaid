@@ -5,6 +5,8 @@
 // lollipop), multiplicities, namespaces and notes.
 package class
 
+import "github.com/arlintdev/go-mermaid/internal/cssval"
+
 // Class is a UML class with attribute and method members.
 type Class struct {
 	Name       string
@@ -40,20 +42,7 @@ func (c *Class) Label() string {
 
 // Style is a validated look from a style or classDef line; an empty field
 // means "not set".
-type Style struct {
-	Fill, Stroke, StrokeWidth, Dash, Color string
-}
-
-func (s Style) over(base Style) Style {
-	pick := func(a, b string) string {
-		if a != "" {
-			return a
-		}
-		return b
-	}
-	return Style{pick(s.Fill, base.Fill), pick(s.Stroke, base.Stroke), pick(s.StrokeWidth, base.StrokeWidth),
-		pick(s.Dash, base.Dash), pick(s.Color, base.Color)}
-}
+type Style = cssval.Style
 
 // headKind is a relationship line-end decoration.
 type headKind int

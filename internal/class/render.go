@@ -223,7 +223,7 @@ func writeClass(b *strings.Builder, d *Diagram, c *Class, n *domain.Node, pal th
 	}
 	st := c.Style
 	for i := len(c.Classes) - 1; i >= 0; i-- {
-		st = st.over(d.ClassDefs[c.Classes[i]])
+		st = st.Over(d.ClassDefs[c.Classes[i]])
 	}
 	fill, stroke, text := svgutil.Esc(pal.NodeFill), svgutil.Esc(pal.NodeStroke), svgutil.Esc(pal.Text)
 	if st.Fill != "" {

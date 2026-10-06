@@ -2,7 +2,6 @@ package class
 
 import (
 	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/cssval"
@@ -100,7 +99,7 @@ func Parse(src string) (*Diagram, error) {
 
 		case kw == "classDef":
 			n := firstWord(rest)
-			st := parseCSS(strings.TrimSpace(rest[len(n):]))
+			st := cssval.Parse(strings.TrimSpace(rest[len(n):]))
 			for _, one := range strings.Split(n, ",") {
 				if one = strings.TrimSpace(one); one != "" {
 					d.ClassDefs[one] = st
@@ -137,7 +136,7 @@ func Parse(src string) (*Diagram, error) {
 	}
 	for _, s := range styleLines {
 		if c := d.class(className(s[0])); c != nil {
-			c.Style = parseCSS(s[1]).over(c.Style)
+			c.Style = cssval.Parse(s[1]).Over(c.Style)
 		}
 	}
 	for _, cl := range classLines {
@@ -329,42 +328,6 @@ func formatMember(m string, method bool) member {
 		out.text += " : " + generics(ret)
 	}
 	return out
-}
-
-// parseCSS reads "fill:#f9f,stroke:#333,stroke-width:4px" keeping only
-// values that validate.
-func parseCSS(s string) Style {
-	var st Style
-	for _, part := range strings.FieldsFunc(s, func(r rune) bool { return r == ',' || r == ';' }) {
-		k, v, ok := strings.Cut(part, ":")
-		if !ok {
-			continue
-		}
-		v = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(v), "!important"))
-		switch strings.ToLower(strings.TrimSpace(k)) {
-		case "fill":
-			if c, ok := cssval.Color(v); ok {
-				st.Fill = c
-			}
-		case "stroke":
-			if c, ok := cssval.Color(v); ok {
-				st.Stroke = c
-			}
-		case "color":
-			if c, ok := cssval.Color(v); ok {
-				st.Color = c
-			}
-		case "stroke-width":
-			if w, ok := cssval.Pixels(v, 20); ok {
-				st.StrokeWidth = strconv.FormatFloat(w, 'f', -1, 64)
-			}
-		case "stroke-dasharray":
-			if dsh, ok := cssval.Dash(v); ok {
-				st.Dash = dsh
-			}
-		}
-	}
-	return st
 }
 
 func clip(s string) string {

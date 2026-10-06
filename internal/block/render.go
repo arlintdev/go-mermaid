@@ -345,7 +345,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 func (l *layout) drawBlock(b *strings.Builder, d *Diagram, blk *Block, pal theme.Palette) {
 	st := blk.Style
 	for i := len(blk.Classes) - 1; i >= 0; i-- {
-		st = st.over(d.Classes[blk.Classes[i]])
+		st = st.Over(d.Classes[blk.Classes[i]])
 	}
 	fill, stroke, text := svgutil.Esc(pal.NodeFill), svgutil.Esc(pal.NodeStroke), svgutil.Esc(pal.Text)
 	if blk.Composite {

@@ -2,7 +2,6 @@ package state
 
 import (
 	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/cssval"
@@ -85,7 +84,7 @@ func Parse(src string) (*Diagram, error) {
 		case kw == "classDef":
 			rest := strings.TrimSpace(line[len(kw):])
 			name := firstWord(rest)
-			st := parseCSS(strings.TrimSpace(rest[len(name):]))
+			st := cssval.Parse(strings.TrimSpace(rest[len(name):]))
 			for _, n := range strings.Split(name, ",") {
 				if n = strings.TrimSpace(n); n != "" {
 					d.ClassDefs[n] = st
@@ -102,7 +101,7 @@ func Parse(src string) (*Diagram, error) {
 			rest := strings.TrimSpace(line[len(kw):])
 			id := firstWord(rest)
 			name := "\x00style:" + id
-			d.ClassDefs[name] = parseCSS(strings.TrimSpace(rest[len(id):]))
+			d.ClassDefs[name] = cssval.Parse(strings.TrimSpace(rest[len(id):]))
 			classLines = append(classLines, [2]string{id, name})
 
 		case isNoteOpen(line):
@@ -366,46 +365,6 @@ func isTransition(line string) bool {
 	}
 	c := strings.Index(line, ":")
 	return c < 0 || a < c || strings.HasPrefix(line[c:], ":::") && a > c
-}
-
-// parseCSS reads "fill:#f9f,stroke:#333,stroke-width:4px" keeping only
-// values that validate.
-func parseCSS(s string) Style {
-	var st Style
-	for _, part := range strings.FieldsFunc(s, func(r rune) bool { return r == ',' || r == ';' }) {
-		k, v, ok := strings.Cut(part, ":")
-		if !ok {
-			continue
-		}
-		v = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(v), "!important"))
-		switch strings.ToLower(strings.TrimSpace(k)) {
-		case "fill":
-			if c, ok := cssval.Color(v); ok {
-				st.Fill = c
-			}
-		case "stroke":
-			if c, ok := cssval.Color(v); ok {
-				st.Stroke = c
-			}
-		case "color":
-			if c, ok := cssval.Color(v); ok {
-				st.Color = c
-			}
-		case "stroke-width":
-			if w, ok := cssval.Pixels(v, 20); ok {
-				st.StrokeWidth = strconv.FormatFloat(w, 'f', -1, 64)
-			}
-		case "stroke-dasharray":
-			if dsh, ok := cssval.Dash(v); ok {
-				st.Dash = dsh
-			}
-		case "font-weight":
-			if fw, ok := cssval.FontWeight(v); ok {
-				st.FontWeight = fw
-			}
-		}
-	}
-	return st
 }
 
 func clip(s string) string {
