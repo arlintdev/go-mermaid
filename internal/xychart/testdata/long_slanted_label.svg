@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="763.15" height="634.04" viewBox="0 0 763.15 634.04" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="220.49" y="236.33" width="112" height="106.67" fill="#ececff" stroke="#9d9daa"/>
+<rect x="407.15" y="129.67" width="112" height="213.33" fill="#ececff" stroke="#9d9daa"/>
+<rect x="593.82" y="23" width="112" height="320" fill="#ececff" stroke="#9d9daa"/>
+<line x1="183.15" y1="23" x2="183.15" y2="343" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<line x1="183.15" y1="343" x2="743.15" y2="343" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<line x1="178.15" y1="343" x2="183.15" y2="343" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="172.15" y="347.9" fill="#333333" text-anchor="end">0.0</text>
+<line x1="178.15" y1="289.67" x2="183.15" y2="289.67" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="172.15" y="294.57" fill="#333333" text-anchor="end">0.5</text>
+<line x1="178.15" y1="236.33" x2="183.15" y2="236.33" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="172.15" y="241.23" fill="#333333" text-anchor="end">1.0</text>
+<line x1="178.15" y1="183" x2="183.15" y2="183" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="172.15" y="187.9" fill="#333333" text-anchor="end">1.5</text>
+<line x1="178.15" y1="129.67" x2="183.15" y2="129.67" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="172.15" y="134.57" fill="#333333" text-anchor="end">2.0</text>
+<line x1="178.15" y1="76.33" x2="183.15" y2="76.33" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="172.15" y="81.23" fill="#333333" text-anchor="end">2.5</text>
+<line x1="178.15" y1="23" x2="183.15" y2="23" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="172.15" y="27.9" fill="#333333" text-anchor="end">3.0</text>
+<line x1="276.49" y1="343" x2="276.49" y2="348" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="276.49" y="363.8" fill="#333333" text-anchor="end" transform="rotate(-45 276.49 363.8)">Pneumonoultramicroscopicsilicovolcanoconiosisdiagnosis</text>
+<line x1="463.15" y1="343" x2="463.15" y2="348" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="463.15" y="363.8" fill="#333333" text-anchor="end" transform="rotate(-45 463.15 363.8)">b</text>
+<line x1="649.82" y1="343" x2="649.82" y2="348" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="649.82" y="363.8" fill="#333333" text-anchor="end" transform="rotate(-45 649.82 363.8)">c</text>
+</svg>

@@ -49,7 +49,7 @@
     <path d="M188.14,806.72 A76,13.72 0 0 1 340.14,806.72 L340.14,854.72 A76,13.72 0 0 1 188.14,854.72 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M188.14,806.72 A76,13.72 0 0 0 340.14,806.72" fill="none" stroke="#9370DB"/>
     <text fill="#333333" text-anchor="middle"><tspan x="264.14" y="843.18">PostgreSQL 17</tspan></text>
     <rect x="0" y="575" width="197.36" height="96" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="98.68" y="604.6">vault: sealed</tspan><tspan x="98.68" y="628.6">files under</tspan><tspan x="98.68" y="652.6">DIGIN_DATA_DIR/files</tspan></text>
+    <text fill="#333333" text-anchor="middle"><tspan x="98.68" y="604.6">vault: sealed files</tspan><tspan x="98.68" y="628.6">under</tspan><tspan x="98.68" y="652.6">DIGIN_DATA_DIR/files</tspan></text>
     <rect x="390.14" y="793" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
     <text fill="#333333" text-anchor="middle"><tspan x="466.14" y="822.6">realtime hub, in</tspan><tspan x="466.14" y="846.6">memory</tspan></text>
   </g>

@@ -164,3 +164,37 @@ func TestWrapNeverSplitsLetters(t *testing.T) {
 		}
 	}
 }
+
+func TestWrapWithin(t *testing.T) {
+	f := FaceSans
+	word := "Pneumonoultramicroscopicsilicovolcanoconiosis"
+	lines := f.WrapWithin("a "+word, 14, 120)
+	if strings.Join(lines, "") != "a"+word {
+		t.Fatalf("text lost or changed: %q", lines)
+	}
+	for _, l := range lines {
+		if f.Width(l, 14) > 120 {
+			t.Errorf("line %q is %.1f wide, over 120", l, f.Width(l, 14))
+		}
+	}
+	if got := f.WrapWithin("short words only", 14, 120); strings.Join(got, "|") != strings.Join(f.Wrap("short words only", 14, 120), "|") {
+		t.Errorf("text that fits wraps differently from Wrap: %q", got)
+	}
+	if got := f.WrapWithin("é́é́é́", 14, 1); strings.Join(got, "") != "é́é́é́" || !utf8.ValidString(got[0]) || strings.HasPrefix(got[1], "́") {
+		t.Errorf("a combining mark was cut from its letter: %q", got)
+	}
+}
+
+func TestBoldWidth(t *testing.T) {
+	for _, s := range []string{"Section name", "WWW", "il1", "日本語 ok"} {
+		if FaceSans.BoldWidth(s, 14) <= FaceSans.Width(s, 14)*0.99 {
+			t.Errorf("bold %q is not at least as wide as regular", s)
+		}
+	}
+	if FaceSans.BoldWidth("Planning and design", 14) < FaceSans.Width("Planning and design", 14)*1.05 {
+		t.Error("bold lower-case text is measured barely wider than regular")
+	}
+	if FaceMono.BoldWidth("abc", 10) != FaceMono.Width("abc", 10) {
+		t.Error("Courier bold changed pitch")
+	}
+}

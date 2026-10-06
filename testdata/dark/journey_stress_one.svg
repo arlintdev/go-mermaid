@@ -1,0 +1,16 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="303.45" height="407" viewBox="0 0 303.45 407" font-family="sans-serif" font-size="14">
+<defs><marker id="m1vb13kv-arrowhead" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M0,0 V4 L6,2 Z" fill="#e6e6e6"/></marker></defs>
+<circle cx="23" cy="26" r="7" fill="#8fbc8f" stroke="#1e1e1e"/>
+<text x="40" y="30.9" fill="#e6e6e6">Me</text>
+<rect x="83.45" y="16" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="158.45" y="45.9">S</tspan></text>
+<line x1="158.45" y1="126" x2="158.45" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="158.45" cy="241" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="153.45" cy="236" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="163.45" cy="236" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M151.95,243 A7.5,7.5 0 0 0 164.95,243" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="83.45" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="97.45" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="158.45" y="108.9">Task</tspan></text>
+<line x1="83.45" y1="166" x2="279.45" y2="166" stroke="#e6e6e6" stroke-width="4" marker-end="url(#m1vb13kv-arrowhead)"/>
+</svg>

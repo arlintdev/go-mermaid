@@ -1,0 +1,8 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="95" height="85" viewBox="0 0 95 85" font-family="sans-serif" font-size="14">
+  <g transform="translate(16,16)">
+    <rect x="0" y="0" width="63" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="31.5" y="22.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">A</text>
+    <line x1="0" y1="37.1" x2="63" y2="37.1" stroke="#8888bb"/>
+    <line x1="0" y1="44.8" x2="63" y2="44.8" stroke="#8888bb"/>
+  </g>
+</svg>

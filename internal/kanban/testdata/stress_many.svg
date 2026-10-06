@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="438" height="767.7" viewBox="0 0 438 767.7" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="16" y="16" width="200" height="735.7" rx="5" fill="#e8ffb9" stroke="#e8ffb9"/>
+<text fill="#333333" text-anchor="middle"><tspan x="116" y="36">Todo</tspan></text>
+<rect x="23.5" y="46.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="73.1">Task number 0</tspan></text>
+<rect x="23.5" y="96.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="123.1">Task number 1</tspan></text>
+<rect x="23.5" y="146.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="173.1">Task number 2</tspan></text>
+<rect x="23.5" y="196.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="223.1">Task number 3</tspan></text>
+<rect x="23.5" y="246.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="273.1">Task number 4</tspan></text>
+<rect x="23.5" y="296.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="323.1">Task number 5</tspan></text>
+<rect x="23.5" y="346.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="373.1">Task number 6</tspan></text>
+<rect x="23.5" y="396.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="423.1">Task number 7</tspan></text>
+<rect x="23.5" y="446.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="473.1">Task number 8</tspan></text>
+<rect x="23.5" y="496.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="523.1">Task number 9</tspan></text>
+<rect x="23.5" y="546.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="573.1">Task number 10</tspan></text>
+<rect x="23.5" y="596.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="623.1">Task number 11</tspan></text>
+<rect x="23.5" y="646.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="673.1">Task number 12</tspan></text>
+<rect x="23.5" y="696.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="33.5" y="723.1">Task number 13</tspan></text>
+<rect x="222" y="16" width="200" height="735.7" rx="5" fill="#dcb9ff" stroke="#dcb9ff"/>
+<text fill="#333333" text-anchor="middle"><tspan x="322" y="36">Done</tspan></text>
+<rect x="229.5" y="46.2" width="185" height="44" rx="5" fill="#ffffff" stroke="#9370db"/>
+<text fill="#333333"><tspan x="239.5" y="73.1">Done</tspan></text>
+</svg>

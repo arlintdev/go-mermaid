@@ -86,16 +86,17 @@ func svg(d *Diagram, o RenderOptions) ([]byte, error) {
 	if o.Title != "" {
 		top += titleFs*1.4 + 8
 	}
-	w := chartW + 2*pad
+	ncols := len(cols)
+	cw := chartWidth(nodes, ncols, face, fs)
+	w := cw + 2*pad
 	if tw := face.Width(o.Title, titleFs) + 2*pad; tw > w {
 		w = tw
 	}
 	h := top + chartH + pad
-	left := (w - chartW) / 2
-	ncols := len(cols)
+	left := (w - cw) / 2
 	for _, n := range nodes {
 		if ncols > 1 {
-			n.x = left + float64(n.col)*(chartW-nodeW)/float64(ncols-1)
+			n.x = left + float64(n.col)*(cw-nodeW)/float64(ncols-1)
 		} else {
 			n.x = left
 		}
@@ -132,9 +133,9 @@ func svg(d *Diagram, o RenderOptions) ([]byte, error) {
 			svgutil.Num(n.x), svgutil.Num(n.y0), svgutil.Num(nodeW), svgutil.Num(math.Max(n.y1-n.y0, 1)), n.color)
 	}
 	for _, n := range nodes {
-		label := n.name + " " + svgutil.Num(n.value)
+		label := nodeLabel(n)
 		x, anchor := n.x+nodeW+6, "start"
-		if n.x+nodeW/2 > w/2 {
+		if labelBefore(n.col, ncols) {
 			x, anchor = n.x-6, "end"
 		}
 		fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" text-anchor="%s">%s</text>`+"\n",
@@ -142,6 +143,44 @@ func svg(d *Diagram, o RenderOptions) ([]byte, error) {
 	}
 	b.WriteString("</svg>\n")
 	return []byte(b.String()), nil
+}
+
+func nodeLabel(n *node) string { return n.name + " " + svgutil.Num(n.value) }
+
+// labelBefore reports whether the labels of column col stand before their
+// nodes (the right half of the chart) rather than after them.
+func labelBefore(col, ncols int) bool { return 2*col > ncols-1 }
+
+// chartWidth is chartW, or wider when two labels facing each other across
+// the gap between two columns, at the same height, need more room.
+func chartWidth(nodes []*node, ncols int, face svgutil.Face, fs float64) float64 {
+	if ncols < 2 {
+		w := 0.0
+		for _, n := range nodes {
+			w = max(w, face.Width(nodeLabel(n), fs))
+		}
+		return max(chartW, nodeW+6+w)
+	}
+	gap := 0.0
+	for _, a := range nodes {
+		if labelBefore(a.col, ncols) || a.col+1 >= ncols {
+			continue
+		}
+		aw := face.Width(nodeLabel(a), fs)
+		gap = max(gap, aw+12)
+		for _, b := range nodes {
+			if b.col != a.col+1 || !labelBefore(b.col, ncols) || math.Abs(a.center()-b.center()) > fs*1.3 {
+				continue
+			}
+			gap = max(gap, aw+face.Width(nodeLabel(b), fs)+24)
+		}
+	}
+	for _, b := range nodes {
+		if labelBefore(b.col, ncols) {
+			gap = max(gap, face.Width(nodeLabel(b), fs)+12)
+		}
+	}
+	return max(chartW, nodeW+float64(ncols-1)*(nodeW+gap))
 }
 
 // build makes the graph and its columns: each node's column is its depth

@@ -153,19 +153,39 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	}
 	axisTitleH := axisTitleFs*1.3 + 4
 	var left, plotTop, w, h float64
-	rotate := false
+	rotate, upright, every := false, false, 1
 	if !d.Horizontal {
 		band := plotW / float64(n)
 		rotate = xs.ticks == nil && catLabelW > band-6
+		// Slanted labels sit band/√2 apart; when that is less than a line,
+		// stand them upright, and when even that is too tight, label only
+		// every few categories.
+		if rotate && band*math.Sqrt2/2 < fs*1.05 {
+			upright = true
+			every = max(1, int(math.Ceil(fs*1.1/band)))
+		}
 		left = pad + valLabelW + gap + tickLen
 		if d.YLabel != "" {
 			left += axisTitleH
 		}
+		if rotate && !upright {
+			// A slanted label runs down and to the left of its tick; widen the
+			// left margin until the first ones clear the canvas edge.
+			for i, l := range labels {
+				x := left + band*(float64(i)+0.5)
+				if reach := (face.Width(l, fs) + fs*0.75) * math.Sqrt2 / 2; x-reach < pad {
+					left += pad - (x - reach)
+				}
+			}
+		}
 		plotTop = top + fs/2
 		bottom := plotTop + plotH + tickLen + gap
-		if rotate {
+		switch {
+		case upright:
+			bottom += catLabelW + fs*0.3
+		case rotate:
 			bottom += catLabelW*0.71 + fs*0.71
-		} else {
+		default:
 			bottom += fs
 		}
 		if d.XLabel != "" {
@@ -312,13 +332,20 @@ func svg(d *Diagram, o RenderOptions) []byte {
 			axis(left-tickLen, y, left, y)
 			text(left-tickLen-gap, y+fs*0.35, "end", vs.label(t), "")
 		}
+		catIdx := -1
 		catTicks(func(off float64, label string) {
 			x := left + off
 			axis(x, bottom, x, bottom+tickLen)
-			if label == "" {
+			catIdx++
+			if label == "" || catIdx%every != 0 {
 				return
 			}
 			ly := bottom + tickLen + gap
+			if upright {
+				fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" text-anchor="end" transform="rotate(-90 %s %s)">%s</text>`+"\n",
+					svgutil.Num(x+fs*0.35), svgutil.Num(ly), pal.Text, svgutil.Num(x+fs*0.35), svgutil.Num(ly), svgutil.Esc(label))
+				return
+			}
 			if rotate {
 				fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" text-anchor="end" transform="rotate(-45 %s %s)">%s</text>`+"\n",
 					svgutil.Num(x), svgutil.Num(ly+fs*0.7), pal.Text, svgutil.Num(x), svgutil.Num(ly+fs*0.7), svgutil.Esc(label))

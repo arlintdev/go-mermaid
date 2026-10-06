@@ -77,8 +77,8 @@ func Parse(src string) (*Diagram, error) {
 			}
 			last.Events = append(last.Events, events(line[1:])...)
 		default:
-			t, evs, _ := strings.Cut(line, ":")
-			last = &Period{Time: strings.TrimSpace(t), Events: events(evs)}
+			parts := splitEvents(line)
+			last = &Period{Time: strings.TrimSpace(parts[0]), Events: events(strings.Join(parts[1:], ": "))}
 			if cur == nil {
 				cur = &Section{}
 				d.Sections = append(d.Sections, cur)
@@ -95,10 +95,24 @@ func Parse(src string) (*Diagram, error) {
 // events splits "a : b : c" into its non-empty events.
 func events(s string) []string {
 	var out []string
-	for _, ev := range strings.Split(s, ":") {
+	for _, ev := range splitEvents(s) {
 		if ev = strings.TrimSpace(ev); ev != "" {
 			out = append(out, ev)
 		}
 	}
 	return out
+}
+
+// splitEvents splits s at each colon followed by a space or the end of the
+// line, as Mermaid does, so a colon inside a word (a URL, a time) stays.
+func splitEvents(s string) []string {
+	var out []string
+	start := 0
+	for i := 0; i < len(s); i++ {
+		if s[i] == ':' && (i+1 == len(s) || s[i+1] == ' ' || s[i+1] == '\t') {
+			out = append(out, s[start:i])
+			start = i + 1
+		}
+	}
+	return append(out, s[start:])
 }

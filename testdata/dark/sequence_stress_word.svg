@@ -1,0 +1,19 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="1163.61" height="242.4" viewBox="0 0 1163.61 242.4" font-family="sans-serif" font-size="14">
+  <defs><marker id="mtoxf9m-seq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bbbbbb"/></marker><marker id="mtoxf9m-seq-open" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#bbbbbb" stroke-width="1.5"/></marker></defs>
+  <g transform="translate(16,16)">
+    <line x1="163.37" y1="52" x2="163.37" y2="158.4" stroke="#8888bb"/>
+    <line x1="802.87" y1="52" x2="802.87" y2="158.4" stroke="#8888bb"/>
+    <line x1="163.37" y1="94.2" x2="802.87" y2="94.2" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#mtoxf9m-seq-arrow)"/>
+    <text x="483.12" y="84.7" fill="#e6e6e6" text-anchor="middle">PneumonoultramicroscopicsilicovolcanoconiosisPneumonoultramicroscopicsilicovolcanoconiosis</text>
+    <rect x="812.87" y="114.2" width="318.75" height="32.2" fill="#4a4630" stroke="#8a8350"/>
+    <text x="972.24" y="135.2" fill="#eeeadc" text-anchor="middle">Pneumonoultramicroscopicsilicovolcanoconiosis</text>
+    <rect x="0" y="0" width="326.75" height="52" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="163.37" y="30.9" fill="#e6e6e6" text-anchor="middle">Pneumonoultramicroscopicsilicovolcanoconiosis</text>
+    <rect x="0" y="158.4" width="326.75" height="52" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="163.37" y="189.3" fill="#e6e6e6" text-anchor="middle">Pneumonoultramicroscopicsilicovolcanoconiosis</text>
+    <rect x="737.87" y="0" width="130" height="52" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="802.87" y="30.9" fill="#e6e6e6" text-anchor="middle">B</text>
+    <rect x="737.87" y="158.4" width="130" height="52" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="802.87" y="189.3" fill="#e6e6e6" text-anchor="middle">B</text>
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+C4Container
+  Person(user, "User")
+  Person(admin, "Admin")
+  System_Boundary(b, "Shop") {
+    Container(web, "Web", "React")
+    Container(api, "API", "Go")
+    ContainerDb(db, "DB", "Postgres")
+    Container(worker, "Worker", "Go")
+  }
+  System_Ext(mail, "Mail", "Resend")
+  Rel(user, web, "Uses", "HTTPS")
+  Rel(admin, web, "Administers", "HTTPS")
+  Rel(web, api, "Calls", "JSON")
+  Rel(api, db, "Reads and writes", "SQL")
+  Rel(worker, db, "Polls", "SQL")
+  Rel(api, worker, "Enqueues", "AMQP")
+  Rel(worker, mail, "Sends email", "SMTP")
+  Rel(admin, api, "Runs reports", "HTTPS")
+  Rel(user, mail, "Receives", "IMAP")

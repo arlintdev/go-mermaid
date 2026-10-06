@@ -1,0 +1,11 @@
+classDiagram
+  Order "1" --> "*" LineItem : contains
+  Order --> Customer : placed by
+  Order --> Payment : paid with
+  Customer --> Address : lives at
+  Order --> Address : ships to
+  Payment --> Customer : charged to
+  LineItem --> Product : refers to
+  Product --> Supplier : supplied by
+  Supplier --> Address : located at
+  Customer --> Product : wishlists

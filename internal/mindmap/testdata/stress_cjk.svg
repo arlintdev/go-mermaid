@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="437.58" height="72.2" viewBox="0 0 437.58 72.2" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<path d="M232.58,35.1 C271.08,35.1 271.08,35.1 309.58,35.1" fill="none" stroke="#ffff78" stroke-width="11" stroke-linecap="round"/>
+<path d="M232.58,35.1 C194.08,35.1 194.08,35.1 155.58,35.1" fill="none" stroke="#d7ff86" stroke-width="11" stroke-linecap="round"/>
+<rect x="211.58" y="16" width="42" height="38.2" rx="5" fill="#0000ec"/>
+<text fill="#ffffff" text-anchor="middle"><tspan x="232.58" y="40">根</tspan></text>
+<path d="M309.58,54.2 V21 Q309.58,16 314.58,16 H416.58 Q421.58,16 421.58,21 V54.2 Z" fill="#ffff78"/>
+<line x1="309.58" y1="54.2" x2="421.58" y2="54.2" stroke="#ababff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="365.58" y="40">数据库连接池</tspan></text>
+<path d="M16,54.2 V21 Q16,16 21,16 H150.58 Q155.58,16 155.58,21 V54.2 Z" fill="#d7ff86"/>
+<line x1="16" y1="54.2" x2="155.58" y2="54.2" stroke="#d0b9ff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="85.79" y="40">Deploy 🚀 done ✅</tspan></text>
+</svg>

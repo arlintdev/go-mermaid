@@ -1,6 +1,9 @@
 package quadrant
 
 import (
+	"strings"
+
+	"github.com/arlintdev/go-mermaid/internal/goldentest"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -87,4 +90,29 @@ func TestPointStyles(t *testing.T) {
 	if s := d.Points[3].Style; s.Color != "" || s.Radius != 0 {
 		t.Errorf("invalid values must be dropped: %+v", s)
 	}
+}
+
+func TestLongQuadrantNameStaysInItsQuadrant(t *testing.T) {
+	Convey("Given a quadrant named by one word wider than the quadrant", t, func() {
+		word := "Pneumonoultramicroscopicsilicovolcanoconiosisdiagnosis"
+		src := "quadrantChart\ntitle Reach\nquadrant-1 " + word + "\nA: [0.3, 0.6]"
+		out, err := Render(src, RenderOptions{Theme: "default", FontFace: "sans-serif", FontSize: 14, Padding: 16})
+		So(err, ShouldBeNil)
+
+		Convey("Then the name is cut into lines that stay inside the top-right quadrant", func() {
+			boxes, err := goldentest.TextBoxes(out)
+			So(err, ShouldBeNil)
+			var joined string
+			for _, b := range boxes {
+				if strings.HasPrefix(word[len(joined):], b.Text) && b.Text != "A" {
+					joined += b.Text
+					So(b.X0, ShouldBeGreaterThanOrEqualTo, 250)
+					So(b.X1, ShouldBeLessThanOrEqualTo, 16+500-5)
+				}
+			}
+			So(joined, ShouldEqual, word)
+			off, _ := goldentest.OffCanvas(out, 0)
+			So(off, ShouldBeEmpty)
+		})
+	})
 }

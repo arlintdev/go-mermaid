@@ -83,7 +83,7 @@ func svg(lay *Layout, o RenderOptions, prefix string) []byte {
 	pad := o.Padding
 	titleH := svgutil.TitleHeight(o.Title, o.FontSize)
 	contentW := lay.Width
-	if tw := m.face.Width(o.Title, o.FontSize); tw > contentW {
+	if tw := m.face.Bold().Width(o.Title, o.FontSize); tw > contentW {
 		contentW = tw
 	}
 	width := contentW + pad*2

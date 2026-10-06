@@ -1,0 +1,58 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="1739.85" height="796.8" viewBox="0 0 1739.85 796.8" font-family="sans-serif" font-size="14">
+  <defs><marker id="m1k8ph2d-seq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bbbbbb"/></marker><marker id="m1k8ph2d-seq-open" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#bbbbbb" stroke-width="1.5"/></marker></defs>
+  <g transform="translate(16,16)">
+    <line x1="65" y1="52" x2="65" y2="712.8" stroke="#8888bb"/>
+    <line x1="637.91" y1="52" x2="637.91" y2="712.8" stroke="#8888bb"/>
+    <line x1="1158.05" y1="52" x2="1158.05" y2="712.8" stroke="#8888bb"/>
+    <rect x="608.91" y="114.2" width="578.14" height="201" fill="none" stroke="#8888bb" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <polygon points="608.91,114.2 655.37,114.2 655.37,131.4 648.37,138.4 608.91,138.4" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="630.14" y="131.2" fill="#e6e6e6" text-anchor="middle" font-weight="bold">loop</text>
+    <text x="663.37" y="131.2" fill="#e6e6e6" text-anchor="start">[Every]</text>
+    <rect x="620.91" y="150.4" width="554.14" height="154.8" fill="none" stroke="#8888bb" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <polygon points="620.91,150.4 680.58,150.4 680.58,167.6 673.58,174.6 620.91,174.6" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="648.75" y="167.4" fill="#e6e6e6" text-anchor="middle" font-weight="bold">critical</text>
+    <text x="688.58" y="167.4" fill="#e6e6e6" text-anchor="start">[Pneumonoultramicroscopicsilicovolcanoconiosisdiagnosis_and_more_still]</text>
+    <line x1="620.91" y1="228.8" x2="1175.05" y2="228.8" stroke="#8888bb" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <text x="688.58" y="244.8" fill="#e6e6e6" text-anchor="start">[Supercalifragilisticexpialidociouslyunbreakableconditionname]</text>
+    <rect x="620.91" y="325.2" width="554.14" height="154.8" fill="none" stroke="#8888bb" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <polygon points="620.91,325.2 661.14,325.2 661.14,342.4 654.14,349.4 620.91,349.4" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="639.03" y="342.2" fill="#e6e6e6" text-anchor="middle" font-weight="bold">par</text>
+    <text x="669.14" y="342.2" fill="#e6e6e6" text-anchor="start">[Ateamwithaverylongunbreakablenamethatdoesnotend]</text>
+    <line x1="620.91" y1="403.6" x2="1175.05" y2="403.6" stroke="#8888bb" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <text x="669.14" y="419.6" fill="#e6e6e6" text-anchor="start">[Bteam]</text>
+    <rect x="48" y="490" width="562.91" height="100.4" fill="none" stroke="#8888bb" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <polygon points="48,490 87.46,490 87.46,507.2 80.46,514.2 48,514.2" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="65.73" y="507" fill="#e6e6e6" text-anchor="middle" font-weight="bold">opt</text>
+    <text x="95.46" y="507" fill="#e6e6e6" text-anchor="start">[Supercalifragilisticexpialidociouslyunbreakableconditionnameeeeeeeeeeeeeeee]</text>
+    <rect x="1141.05" y="600.4" width="566.79" height="100.4" fill="none" stroke="#8888bb" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <polygon points="1141.05,600.4 1196.07,600.4 1196.07,617.6 1189.07,624.6 1141.05,624.6" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="1166.56" y="617.4" fill="#e6e6e6" text-anchor="middle" font-weight="bold">break</text>
+    <text x="1204.07" y="617.4" fill="#e6e6e6" text-anchor="start">[https://identity.example.com/realms/organisation/protocol/openid-connect/auth]</text>
+    <line x1="65" y1="94.2" x2="637.91" y2="94.2" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1k8ph2d-seq-arrow)"/>
+    <text x="351.46" y="84.7" fill="#e6e6e6" text-anchor="middle">start</text>
+    <line x1="637.91" y1="210.8" x2="1158.05" y2="210.8" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1k8ph2d-seq-arrow)"/>
+    <text x="897.98" y="201.3" fill="#e6e6e6" text-anchor="middle">go</text>
+    <line x1="1158.05" y1="285.2" x2="637.91" y2="285.2" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1k8ph2d-seq-arrow)"/>
+    <text x="897.98" y="275.7" fill="#e6e6e6" text-anchor="middle">back</text>
+    <line x1="637.91" y1="385.6" x2="1158.05" y2="385.6" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1k8ph2d-seq-arrow)"/>
+    <text x="897.98" y="376.1" fill="#e6e6e6" text-anchor="middle">x</text>
+    <line x1="1158.05" y1="460" x2="637.91" y2="460" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1k8ph2d-seq-arrow)"/>
+    <text x="897.98" y="450.5" fill="#e6e6e6" text-anchor="middle">y</text>
+    <path d="M65,550.4 C99,546.4 99,574.4 65,570.4" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1k8ph2d-seq-arrow)"/>
+    <text x="81" y="540.9" fill="#e6e6e6" text-anchor="start">self</text>
+    <path d="M1158.05,660.8 C1192.05,656.8 1192.05,684.8 1158.05,680.8" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1k8ph2d-seq-arrow)"/>
+    <text x="1174.05" y="651.3" fill="#e6e6e6" text-anchor="start">z</text>
+    <rect x="0" y="0" width="130" height="52" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="65" y="30.9" fill="#e6e6e6" text-anchor="middle">A</text>
+    <rect x="0" y="712.8" width="130" height="52" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="65" y="743.7" fill="#e6e6e6" text-anchor="middle">A</text>
+    <rect x="572.91" y="0" width="130" height="52" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="637.91" y="30.9" fill="#e6e6e6" text-anchor="middle">B</text>
+    <rect x="572.91" y="712.8" width="130" height="52" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="637.91" y="743.7" fill="#e6e6e6" text-anchor="middle">B</text>
+    <rect x="1093.05" y="0" width="130" height="52" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="1158.05" y="30.9" fill="#e6e6e6" text-anchor="middle">C</text>
+    <rect x="1093.05" y="712.8" width="130" height="52" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="1158.05" y="743.7" fill="#e6e6e6" text-anchor="middle">C</text>
+  </g>
+</svg>

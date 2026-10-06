@@ -1,0 +1,68 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="532" height="532" viewBox="0 0 532 532" font-family="sans-serif" font-size="14">
+  <rect x="266" y="21" width="245" height="245" fill="#2b2b40"/>
+  <rect x="21" y="21" width="245" height="245" fill="#282838"/>
+  <rect x="21" y="266" width="245" height="245" fill="#25252f"/>
+  <rect x="266" y="266" width="245" height="245" fill="#222226"/>
+  <rect x="21" y="21" width="490" height="490" fill="none" stroke="#515172" stroke-width="2"/>
+  <line x1="266" y1="21" x2="266" y2="511" stroke="#515172"/><line x1="21" y1="266" x2="511" y2="266" stroke="#515172"/>
+  <circle cx="21" cy="511" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="40.43" y="500.64">Point 0</tspan></text>
+  <circle cx="202.3" cy="251.3" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="202.3" y="267.82">Point 1</tspan></text>
+  <circle cx="383.6" cy="481.6" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="383.6" y="498.12">Point 2</tspan></text>
+  <circle cx="74.9" cy="221.9" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="74.9" y="238.42">Point 3</tspan></text>
+  <circle cx="256.2" cy="452.2" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="256.2" y="468.72">Point 4</tspan></text>
+  <circle cx="437.5" cy="192.5" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="437.5" y="209.02">Point 5</tspan></text>
+  <circle cx="128.8" cy="422.8" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="128.8" y="439.32">Point 6</tspan></text>
+  <circle cx="310.1" cy="163.1" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="310.1" y="179.62">Point 7</tspan></text>
+  <circle cx="491.4" cy="393.4" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="491.4" y="409.92">Point 8</tspan></text>
+  <circle cx="182.7" cy="133.7" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="182.7" y="150.22">Point 9</tspan></text>
+  <circle cx="364" cy="364" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="364" y="380.52">Point 10</tspan></text>
+  <circle cx="55.3" cy="104.3" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="55.3" y="120.82">Point 11</tspan></text>
+  <circle cx="236.6" cy="334.6" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="236.6" y="351.12">Point 12</tspan></text>
+  <circle cx="417.9" cy="74.9" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="417.9" y="91.42">Point 13</tspan></text>
+  <circle cx="109.2" cy="305.2" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="109.2" y="321.72">Point 14</tspan></text>
+  <circle cx="290.5" cy="45.5" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="290.5" y="62.02">Point 15</tspan></text>
+  <circle cx="471.8" cy="275.8" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="471.8" y="292.32">Point 16</tspan></text>
+  <circle cx="163.1" cy="506.1" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="163.1" y="495.74">Point 17</tspan></text>
+  <circle cx="344.4" cy="246.4" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="344.4" y="262.92">Point 18</tspan></text>
+  <circle cx="35.7" cy="476.7" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="43.55" y="466.34">Point 19</tspan></text>
+  <circle cx="217" cy="217" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="217" y="233.52">Point 20</tspan></text>
+  <circle cx="398.3" cy="447.3" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="398.3" y="463.82">Point 21</tspan></text>
+  <circle cx="89.6" cy="187.6" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="89.6" y="204.12">Point 22</tspan></text>
+  <circle cx="270.9" cy="417.9" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="270.9" y="434.42">Point 23</tspan></text>
+  <circle cx="452.2" cy="158.2" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="452.2" y="174.72">Point 24</tspan></text>
+  <circle cx="143.5" cy="388.5" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="143.5" y="405.02">Point 25</tspan></text>
+  <circle cx="324.8" cy="128.8" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="324.8" y="145.32">Point 26</tspan></text>
+  <circle cx="506.1" cy="359.1" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="488.45" y="375.62">Point 27</tspan></text>
+  <circle cx="197.4" cy="99.4" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="197.4" y="115.92">Point 28</tspan></text>
+  <circle cx="378.7" cy="329.7" r="5" fill="#8888bb"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="378.7" y="346.22">Point 29</tspan></text>
+</svg>

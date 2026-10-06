@@ -93,7 +93,11 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	titles := make([][]string, len(d.Sections))
 	gutter := 0.0
 	for i, s := range d.Sections {
-		titles[i] = l.face.Wrap(s, l.taskFs, sectionTitleMaxW)
+		// A word too long to wrap may widen the gutter up to 2.5 times the
+		// wrap width; past that it is cut.
+		for _, ln := range l.face.Wrap(s, l.taskFs, sectionTitleMaxW) {
+			titles[i] = append(titles[i], l.face.WrapWithin(ln, l.taskFs, sectionTitleMaxW*2.5)...)
+		}
 		for _, ln := range titles[i] {
 			gutter = math.Max(gutter, l.face.Width(ln, l.taskFs)+20)
 		}
@@ -132,7 +136,42 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	}
 	gridTop := y
 	rowsTop := gridTop + 4
-	gridBottom := rowsTop + float64(len(rows))*rowH + 4
+	// Each run of rows in one section is a block at least as tall as the
+	// section's title; the rows sit in the middle of a taller block, and the
+	// first and last row's band reach its edges.
+	rowY := make([]float64, len(rows))
+	bandY := make([]float64, len(rows))
+	bandH := make([]float64, len(rows))
+	blockMid := map[int]float64{}
+	lh := l.taskFs * 1.25
+	for i, by := 0, rowsTop; i < len(rows); {
+		j := i
+		for j < len(rows) && rows[j].Section == rows[i].Section {
+			j++
+		}
+		n := float64(j - i)
+		extra := 0.0
+		if si := rows[i].Section; si >= 0 && si < len(titles) {
+			extra = math.Max(0, float64(len(titles[si]))*lh+8-n*rowH)
+		}
+		for k := i; k < j; k++ {
+			rowY[k] = by + extra/2 + float64(k-i)*rowH
+			bandY[k], bandH[k] = rowY[k], rowH
+		}
+		bandY[i] = by
+		bandH[i] += extra / 2
+		bandH[j-1] += extra / 2
+		if _, seen := blockMid[rows[i].Section]; !seen {
+			blockMid[rows[i].Section] = by + (n*rowH+extra)/2
+		}
+		by += n*rowH + extra
+		i = j
+	}
+	rowsBottom := rowsTop
+	if len(rows) > 0 {
+		rowsBottom = bandY[len(rows)-1] + bandH[len(rows)-1]
+	}
+	gridBottom := rowsBottom + 4
 	labelY := gridBottom + 6 + l.tickFs
 
 	// Excluded days, behind everything else.
@@ -184,7 +223,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 	// Bars, milestones and their labels.
 	for i, t := range rows {
-		cy := rowsTop + float64(i)*rowH + rowH/2
+		cy := rowY[i] + rowH/2
 		fill, stroke, inText := gc.TaskFill, gc.TaskStroke, gc.TaskText
 		switch {
 		case t.Done:
@@ -243,21 +282,11 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 	// Section titles, centred on their rows.
 	for si, lines := range titles {
-		first, last := -1, -1
-		for i, t := range rows {
-			if t.Section == si {
-				if first < 0 {
-					first = i
-				}
-				last = i
-			}
-		}
-		if first < 0 {
+		mid, ok := blockMid[si]
+		if !ok {
 			continue
 		}
-		cy := rowsTop + (float64(first)+float64(last+1))/2*rowH
-		lh := l.taskFs * 1.25
-		top := cy - lh*float64(len(lines)-1)/2 + l.taskFs*0.35
+		top := mid - lh*float64(len(lines)-1)/2 + l.taskFs*0.35
 		fmt.Fprintf(&body, `<text fill="%s" font-size="%s">`, pal.Text, svgutil.Num(l.taskFs))
 		for k, ln := range lines {
 			fmt.Fprintf(&body, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(pad+8), svgutil.Num(top+float64(k)*lh), svgutil.Esc(ln))
@@ -266,11 +295,14 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	}
 
 	w := math.Ceil(maxRight + pad)
+	if o.Title != "" {
+		w = max(w, math.Ceil(l.face.Width(o.Title, l.titleFs)+2*pad))
+	}
 	var bands strings.Builder
 	for i, t := range rows {
 		band := gc.Bands[max(t.Section, 0)%len(gc.Bands)]
 		fmt.Fprintf(&bands, `<rect x="%s" y="%s" width="%s" height="%s" fill="%s" fill-opacity="%s"/>`+"\n",
-			svgutil.Num(pad), svgutil.Num(rowsTop+float64(i)*rowH), svgutil.Num(w-2*pad), svgutil.Num(rowH),
+			svgutil.Num(pad), svgutil.Num(bandY[i]), svgutil.Num(w-2*pad), svgutil.Num(bandH[i]),
 			svgutil.Esc(band.Fill), svgutil.Num(band.Opacity))
 	}
 	h := math.Ceil(labelY + 4 + pad)

@@ -117,7 +117,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	lineEnd := faceTop + 4*scoreStep + faceR + 15
 	lastRight := x + float64(len(tasks))*(taskW+taskGap) - taskGap
 	arrowEnd := lastRight + 46
-	w := math.Max(arrowEnd+8+pad, pad+face.Width(o.Title, titleFs)+pad)
+	w := math.Max(arrowEnd+8+pad, pad+legendW+face.Bold().Width(o.Title, titleFs)+pad)
 	h := lineEnd + pad
 	if lh := secY + float64(len(actors))*20 + pad; lh > h {
 		h = lh

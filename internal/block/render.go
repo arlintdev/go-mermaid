@@ -265,7 +265,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	}
 	w, h := bounds.w+dx, bounds.h+dy
 	if o.Title != "" {
-		w = max(w, l.face.Width(o.Title, fs*1.15)+2*pad)
+		w = max(w, l.face.Bold().Width(o.Title, fs*1.15)+2*pad)
 	}
 
 	var b strings.Builder

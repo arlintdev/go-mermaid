@@ -1,0 +1,17 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="1298.75" height="445.4" viewBox="0 0 1298.75 445.4" font-family="sans-serif" font-size="14">
+<defs><marker id="mvwjt62-arrowhead" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M0,0 V4 L6,2 Z" fill="#e6e6e6"/></marker></defs>
+<text x="83.45" y="38" fill="#e6e6e6" font-size="22" font-weight="bold">A very long diagram title that goes on and on describing everything this picture is supposed to show to its readers</text>
+<circle cx="23" cy="64.4" r="7" fill="#8fbc8f" stroke="#1e1e1e"/>
+<text x="40" y="69.3" fill="#e6e6e6">Me</text>
+<rect x="83.45" y="54.4" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="158.45" y="84.3">S</tspan></text>
+<line x1="158.45" y1="164.4" x2="158.45" y2="429.4" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="158.45" cy="279.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="153.45" cy="274.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="163.45" cy="274.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M151.95,281.4 A7.5,7.5 0 0 0 164.95,281.4" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="83.45" y="114.4" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="97.45" cy="114.4" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="158.45" y="147.3">Task</tspan></text>
+<line x1="83.45" y1="204.4" x2="279.45" y2="204.4" stroke="#e6e6e6" stroke-width="4" marker-end="url(#mvwjt62-arrowhead)"/>
+</svg>

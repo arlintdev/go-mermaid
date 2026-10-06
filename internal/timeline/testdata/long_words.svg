@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="855.76" height="388.12" viewBox="0 0 855.76 388.12" font-family="sans-serif" font-size="14">
+<svg xmlns="http://www.w3.org/2000/svg" width="855.76" height="344.62" viewBox="0 0 855.76 344.62" font-family="sans-serif" font-size="14">
   <rect width="100%" height="100%" fill="#ffffff"/>
   <defs><marker id="mm9l4g8-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker><marker id="mm9l4g8-arrow-sm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
   <text x="16" y="38.4" fill="#333333" font-size="22.4" font-weight="bold">Rollout</text>
-  <line x1="230.94" y1="144.12" x2="230.94" y2="354.12" stroke="#333333" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#mm9l4g8-arrow-sm)"/>
-  <line x1="624.82" y1="144.12" x2="624.82" y2="354.12" stroke="#333333" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#mm9l4g8-arrow-sm)"/>
+  <line x1="230.94" y1="144.12" x2="230.94" y2="310.62" stroke="#333333" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#mm9l4g8-arrow-sm)"/>
+  <line x1="624.82" y1="144.12" x2="624.82" y2="310.62" stroke="#333333" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#mm9l4g8-arrow-sm)"/>
   <line x1="16" y1="172.12" x2="839.76" y2="172.12" stroke="#333333" stroke-width="3" marker-end="url(#mm9l4g8-arrow)"/>
   <rect x="40" y="59.12" width="775.76" height="35.5" rx="5" fill="#8686ff"/>
   <line x1="41" y1="93.12" x2="814.76" y2="93.12" stroke="#6060b8" stroke-width="3"/>
@@ -11,15 +11,12 @@
   <rect x="40" y="108.62" width="381.88" height="35.5" rx="5" fill="#8686ff"/>
   <line x1="41" y1="142.62" x2="420.88" y2="142.62" stroke="#6060b8" stroke-width="3"/>
   <text fill="#1f1f1f" text-anchor="middle"><tspan x="230.94" y="131.27">2024</tspan></text>
-  <rect x="40" y="200.12" width="381.88" height="35.5" rx="5" fill="#bcbcff"/>
-  <line x1="41" y1="234.12" x2="420.88" y2="234.12" stroke="#8686ff" stroke-width="3"/>
-  <text fill="#1f1f1f" text-anchor="middle"><tspan x="230.94" y="222.77">Deploy https</tspan></text>
-  <rect x="40" y="243.62" width="381.88" height="53" rx="5" fill="#bcbcff"/>
+  <rect x="40" y="200.12" width="381.88" height="53" rx="5" fill="#bcbcff"/>
+  <line x1="41" y1="251.62" x2="420.88" y2="251.62" stroke="#8686ff" stroke-width="3"/>
+  <text fill="#1f1f1f" text-anchor="middle"><tspan x="230.94" y="222.77">Deploy https://identity.example.com/realms/organisation/</tspan><tspan x="230.94" y="240.27">protocol/openid-connect/auth</tspan></text>
+  <rect x="40" y="261.12" width="381.88" height="35.5" rx="5" fill="#bcbcff"/>
   <line x1="41" y1="295.12" x2="420.88" y2="295.12" stroke="#8686ff" stroke-width="3"/>
-  <text fill="#1f1f1f" text-anchor="middle"><tspan x="230.94" y="266.27">//identity.example.com/realms/organisation/protocol/</tspan><tspan x="230.94" y="283.77">openid-connect/auth</tspan></text>
-  <rect x="40" y="304.62" width="381.88" height="35.5" rx="5" fill="#bcbcff"/>
-  <line x1="41" y1="338.62" x2="420.88" y2="338.62" stroke="#8686ff" stroke-width="3"/>
-  <text fill="#1f1f1f" text-anchor="middle"><tspan x="230.94" y="327.27">Pneumonoultramicroscopicsilicovolcanoconiosisdiagnosis</tspan></text>
+  <text fill="#1f1f1f" text-anchor="middle"><tspan x="230.94" y="283.77">Pneumonoultramicroscopicsilicovolcanoconiosisdiagnosis</tspan></text>
   <rect x="433.88" y="108.62" width="381.88" height="35.5" rx="5" fill="#8686ff"/>
   <line x1="434.88" y1="142.62" x2="814.76" y2="142.62" stroke="#6060b8" stroke-width="3"/>
   <text fill="#1f1f1f" text-anchor="middle"><tspan x="624.82" y="131.27">2025</tspan></text>

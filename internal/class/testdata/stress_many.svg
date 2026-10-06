@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="123" height="1524" viewBox="0 0 123 1524" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(16,16)">
+    <path d="M45.5,376 C45.5,392 45.5,392 45.5,422" fill="none" stroke="#333333"/>
+    <path d="M45.5,362 L37.5,376 L53.5,376 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M45.5,489 C45.5,505 45.5,505 45.5,535" fill="none" stroke="#333333"/>
+    <path d="M45.5,475 L37.5,489 L53.5,489 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M45.5,602 C45.5,618 45.5,618 45.5,648" fill="none" stroke="#333333"/>
+    <path d="M45.5,588 L37.5,602 L53.5,602 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M45.5,715 C45.5,731 45.5,731 45.5,761" fill="none" stroke="#333333"/>
+    <path d="M45.5,701 L37.5,715 L53.5,715 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M45.5,828 C45.5,844 45.5,844 45.5,874" fill="none" stroke="#333333"/>
+    <path d="M45.5,814 L37.5,828 L53.5,828 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M45.5,941 C45.5,957 45.5,957 45.5,987" fill="none" stroke="#333333"/>
+    <path d="M45.5,927 L37.5,941 L53.5,941 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M45.5,1054 C45.5,1070 45.5,1070 45.5,1100" fill="none" stroke="#333333"/>
+    <path d="M45.5,1040 L37.5,1054 L53.5,1054 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M45.5,1167 C45.5,1183 45.5,1183 45.5,1213" fill="none" stroke="#333333"/>
+    <path d="M45.5,1153 L37.5,1167 L53.5,1167 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M45.5,1280 C45.5,1296 45.5,1296 45.5,1326" fill="none" stroke="#333333"/>
+    <path d="M45.5,1266 L37.5,1280 L53.5,1280 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M45.5,1393 C45.5,1409 45.5,1409 45.5,1439" fill="none" stroke="#333333"/>
+    <path d="M45.5,1379 L37.5,1393 L53.5,1393 Z" fill="#ffffff" stroke="#333333"/>
+    <rect x="0" y="0" width="91" height="362" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="22.61" fill="#333333" text-anchor="middle" font-weight="bold">C0</text>
+    <line x1="0" y1="37.1" x2="91" y2="37.1" stroke="#9370DB"/>
+    <text x="11.2" y="57.61" fill="#333333">+field0 int</text>
+    <text x="11.2" y="77.91" fill="#333333">+field1 int</text>
+    <text x="11.2" y="98.21" fill="#333333">+field2 int</text>
+    <text x="11.2" y="118.51" fill="#333333">+field3 int</text>
+    <text x="11.2" y="138.81" fill="#333333">+field4 int</text>
+    <text x="11.2" y="159.11" fill="#333333">+field5 int</text>
+    <text x="11.2" y="179.41" fill="#333333">+field6 int</text>
+    <text x="11.2" y="199.71" fill="#333333">+field7 int</text>
+    <text x="11.2" y="220.01" fill="#333333">+field8 int</text>
+    <text x="11.2" y="240.31" fill="#333333">+field9 int</text>
+    <text x="11.2" y="260.61" fill="#333333">+field10 int</text>
+    <text x="11.2" y="280.91" fill="#333333">+field11 int</text>
+    <text x="11.2" y="301.21" fill="#333333">+field12 int</text>
+    <text x="11.2" y="321.51" fill="#333333">+field13 int</text>
+    <text x="11.2" y="341.81" fill="#333333">+field14 int</text>
+    <line x1="0" y1="354.2" x2="91" y2="354.2" stroke="#9370DB"/>
+    <rect x="14" y="422" width="63" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="444.61" fill="#333333" text-anchor="middle" font-weight="bold">C1</text>
+    <line x1="14" y1="459.1" x2="77" y2="459.1" stroke="#9370DB"/>
+    <line x1="14" y1="466.8" x2="77" y2="466.8" stroke="#9370DB"/>
+    <rect x="14" y="535" width="63" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="557.61" fill="#333333" text-anchor="middle" font-weight="bold">C2</text>
+    <line x1="14" y1="572.1" x2="77" y2="572.1" stroke="#9370DB"/>
+    <line x1="14" y1="579.8" x2="77" y2="579.8" stroke="#9370DB"/>
+    <rect x="14" y="648" width="63" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="670.61" fill="#333333" text-anchor="middle" font-weight="bold">C3</text>
+    <line x1="14" y1="685.1" x2="77" y2="685.1" stroke="#9370DB"/>
+    <line x1="14" y1="692.8" x2="77" y2="692.8" stroke="#9370DB"/>
+    <rect x="14" y="761" width="63" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="783.61" fill="#333333" text-anchor="middle" font-weight="bold">C4</text>
+    <line x1="14" y1="798.1" x2="77" y2="798.1" stroke="#9370DB"/>
+    <line x1="14" y1="805.8" x2="77" y2="805.8" stroke="#9370DB"/>
+    <rect x="14" y="874" width="63" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="896.61" fill="#333333" text-anchor="middle" font-weight="bold">C5</text>
+    <line x1="14" y1="911.1" x2="77" y2="911.1" stroke="#9370DB"/>
+    <line x1="14" y1="918.8" x2="77" y2="918.8" stroke="#9370DB"/>
+    <rect x="14" y="987" width="63" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="1009.61" fill="#333333" text-anchor="middle" font-weight="bold">C6</text>
+    <line x1="14" y1="1024.1" x2="77" y2="1024.1" stroke="#9370DB"/>
+    <line x1="14" y1="1031.8" x2="77" y2="1031.8" stroke="#9370DB"/>
+    <rect x="14" y="1100" width="63" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="1122.61" fill="#333333" text-anchor="middle" font-weight="bold">C7</text>
+    <line x1="14" y1="1137.1" x2="77" y2="1137.1" stroke="#9370DB"/>
+    <line x1="14" y1="1144.8" x2="77" y2="1144.8" stroke="#9370DB"/>
+    <rect x="14" y="1213" width="63" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="1235.61" fill="#333333" text-anchor="middle" font-weight="bold">C8</text>
+    <line x1="14" y1="1250.1" x2="77" y2="1250.1" stroke="#9370DB"/>
+    <line x1="14" y1="1257.8" x2="77" y2="1257.8" stroke="#9370DB"/>
+    <rect x="14" y="1326" width="63" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="1348.61" fill="#333333" text-anchor="middle" font-weight="bold">C9</text>
+    <line x1="14" y1="1363.1" x2="77" y2="1363.1" stroke="#9370DB"/>
+    <line x1="14" y1="1370.8" x2="77" y2="1370.8" stroke="#9370DB"/>
+    <rect x="14" y="1439" width="63" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="45.5" y="1461.61" fill="#333333" text-anchor="middle" font-weight="bold">C10</text>
+    <line x1="14" y1="1476.1" x2="77" y2="1476.1" stroke="#9370DB"/>
+    <line x1="14" y1="1483.8" x2="77" y2="1483.8" stroke="#9370DB"/>
+  </g>
+</svg>

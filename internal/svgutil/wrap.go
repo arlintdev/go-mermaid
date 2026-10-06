@@ -30,6 +30,25 @@ func (f Face) Wrap(text string, fontSize, maxWidth float64) []string {
 	return f.wrap(text, fontSize, maxWidth, math.Max(maxWidth*2, 360), true)
 }
 
+// WrapWide is Wrap for a label holding a token wider than its usual wrap
+// width: lines fill to maxWidth, and only a token wider than maxWidth breaks
+// after '/', '-' or '_' (and between CJK characters).
+func (f Face) WrapWide(text string, fontSize, maxWidth float64) []string {
+	return f.wrap(text, fontSize, maxWidth, maxWidth, true)
+}
+
+// LongestWord returns the width of the widest run of text between spaces
+// and line breaks.
+func (f Face) LongestWord(text string, fontSize float64) float64 {
+	w := 0.0
+	for _, line := range Breaks(text) {
+		for _, word := range strings.Fields(line) {
+			w = math.Max(w, f.Width(word, fontSize))
+		}
+	}
+	return w
+}
+
 // WrapHard is for text drawn inside a box: it breaks between words, and
 // breaks a token wider than maxWidth only after '/', '-' or '_' or between
 // wide (CJK) characters. A token with no such place stays whole, so a caller
@@ -138,6 +157,33 @@ func (f Face) WrapWidthFor(text string, fontSize, lineHeight, base, most float64
 	}
 	w := math.Sqrt(total * lineHeight * 0.6)
 	return math.Max(base, math.Min(w, most))
+}
+
+// WrapWithin is Wrap for text that has a fixed room and nowhere else to go:
+// a line Wrap leaves wider than maxWidth (one long token) is cut between
+// characters into pieces that fit, as a browser's overflow-wrap does.
+func (f Face) WrapWithin(text string, fontSize, maxWidth float64) []string {
+	lines := f.Wrap(text, fontSize, maxWidth)
+	if maxWidth <= 0 {
+		return lines
+	}
+	var out []string
+	for _, l := range lines {
+		for f.Width(l, fontSize) > maxWidth {
+			r := []rune(l)
+			n := 1
+			for n < len(r) && f.Width(string(r[:n+1]), fontSize) <= maxWidth {
+				n++
+			}
+			for n < len(r) && zeroWidth(r[n]) {
+				n++
+			}
+			out = append(out, string(r[:n]))
+			l = string(r[n:])
+		}
+		out = append(out, l)
+	}
+	return out
 }
 
 // LinesWidth returns the width of the widest of lines.

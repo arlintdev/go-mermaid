@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1210.22" height="217" viewBox="0 0 1210.22 217" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="624.49" y="57" width="280" height="48" fill="#ececff" stroke="#9d9daa"/>
+<rect x="624.49" y="137" width="560" height="48" fill="#ececff" stroke="#9d9daa"/>
+<line x1="624.49" y1="41" x2="1184.49" y2="41" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<line x1="624.49" y1="41" x2="624.49" y2="201" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<line x1="624.49" y1="36" x2="624.49" y2="41" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="624.49" y="30" fill="#333333" text-anchor="middle">0.0</text>
+<line x1="764.49" y1="36" x2="764.49" y2="41" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="764.49" y="30" fill="#333333" text-anchor="middle">0.5</text>
+<line x1="904.49" y1="36" x2="904.49" y2="41" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="904.49" y="30" fill="#333333" text-anchor="middle">1.0</text>
+<line x1="1044.49" y1="36" x2="1044.49" y2="41" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="1044.49" y="30" fill="#333333" text-anchor="middle">1.5</text>
+<line x1="1184.49" y1="36" x2="1184.49" y2="41" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="1184.49" y="30" fill="#333333" text-anchor="middle">2.0</text>
+<line x1="619.49" y1="81" x2="624.49" y2="81" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text fill="#333333" text-anchor="end"><tspan x="613.49" y="85.9">PneumonoultramicroscopicsilicovolcanoconiosisPneumonoultramicroscopicsilicovolcanoconiosis</tspan></text>
+<line x1="619.49" y1="161" x2="624.49" y2="161" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text fill="#333333" text-anchor="end"><tspan x="613.49" y="165.9">b</tspan></text>
+</svg>

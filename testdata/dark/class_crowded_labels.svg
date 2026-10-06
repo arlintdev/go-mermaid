@@ -1,0 +1,74 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="388.63" height="840" viewBox="0 0 388.63 840" font-family="sans-serif" font-size="14">
+  <g transform="translate(41.13,16)">
+    <path d="M176.35,53 C176.35,102 39.5,102 39.5,151" fill="none" stroke="#bbbbbb"/>
+    <path d="M39.5,151 L44.5,141 L34.5,141 Z" fill="#bbbbbb"/>
+    <text x="166.04" y="75.17" fill="#e6e6e6" text-anchor="middle" font-size="11.9">1</text>
+    <text x="48.81" y="137.16" fill="#e6e6e6" text-anchor="middle" font-size="11.9">*</text>
+    <path d="M201.55,53 L201.55,115.25 L260.5,115.25 L260.5,177.5 L260.5,239.75 L148,239.75 L148,302" fill="none" stroke="#bbbbbb"/>
+    <path d="M148,302 L153,292 L143,292 Z" fill="#bbbbbb"/>
+    <path d="M214.15,53 C214.15,102 169.5,102 169.5,151" fill="none" stroke="#bbbbbb"/>
+    <path d="M169.5,151 L174.5,141 L164.5,141 Z" fill="#bbbbbb"/>
+    <path d="M119,355 L119,417.25 L128.5,417.25 L128.5,479.5 L128.5,630.5 L128.5,692.75 L26.67,692.75 L26.67,755" fill="none" stroke="#bbbbbb"/>
+    <path d="M26.67,755 L31.67,745 L21.67,745 Z" fill="#bbbbbb"/>
+    <path d="M188.95,53 L188.95,115.25 L311.5,115.25 L311.5,177.5 L311.5,253 L227.5,253 L227.5,328.5 L227.5,404 L179.5,404 L179.5,479.5 L179.5,630.5 L179.5,692.75 L52.33,692.75 L52.33,755" fill="none" stroke="#bbbbbb"/>
+    <path d="M52.33,755 L57.33,745 L47.33,745 Z" fill="#bbbbbb"/>
+    <path d="M169.5,204 C169.5,253 119,253 119,302" fill="none" stroke="#bbbbbb"/>
+    <path d="M119,302 L124,292 L114,292 Z" fill="#bbbbbb"/>
+    <path d="M39.5,204 C39.5,328.5 39.5,328.5 39.5,453" fill="none" stroke="#bbbbbb"/>
+    <path d="M39.5,453 L44.5,443 L34.5,443 Z" fill="#bbbbbb"/>
+    <path d="M39.5,506 C39.5,555 39.5,555 39.5,604" fill="none" stroke="#bbbbbb"/>
+    <path d="M39.5,604 L44.5,594 L34.5,594 Z" fill="#bbbbbb"/>
+    <path d="M39.5,657 C39.5,706 39.5,706 39.5,755" fill="none" stroke="#bbbbbb"/>
+    <path d="M39.5,755 L44.5,745 L34.5,745 Z" fill="#bbbbbb"/>
+    <path d="M148,355 C148,404 39.5,404 39.5,453" fill="none" stroke="#bbbbbb"/>
+    <path d="M39.5,453 L44.5,443 L34.5,443 Z" fill="#bbbbbb"/>
+    <rect x="163.75" y="0" width="63" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="195.25" y="22.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Order</text>
+    <line x1="163.75" y1="37.1" x2="226.75" y2="37.1" stroke="#8888bb"/>
+    <line x1="163.75" y1="44.8" x2="226.75" y2="44.8" stroke="#8888bb"/>
+    <rect x="0" y="151" width="79" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="39.5" y="173.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">LineItem</text>
+    <line x1="0" y1="188.1" x2="79" y2="188.1" stroke="#8888bb"/>
+    <line x1="0" y1="195.8" x2="79" y2="195.8" stroke="#8888bb"/>
+    <rect x="90" y="302" width="87" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="133.5" y="324.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Customer</text>
+    <line x1="90" y1="339.1" x2="177" y2="339.1" stroke="#8888bb"/>
+    <line x1="90" y1="346.8" x2="177" y2="346.8" stroke="#8888bb"/>
+    <rect x="129" y="151" width="81" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="169.5" y="173.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Payment</text>
+    <line x1="129" y1="188.1" x2="210" y2="188.1" stroke="#8888bb"/>
+    <line x1="129" y1="195.8" x2="210" y2="195.8" stroke="#8888bb"/>
+    <rect x="1" y="755" width="77" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="39.5" y="777.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Address</text>
+    <line x1="1" y1="792.1" x2="78" y2="792.1" stroke="#8888bb"/>
+    <line x1="1" y1="799.8" x2="78" y2="799.8" stroke="#8888bb"/>
+    <rect x="2.5" y="453" width="74" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="39.5" y="475.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Product</text>
+    <line x1="2.5" y1="490.1" x2="76.5" y2="490.1" stroke="#8888bb"/>
+    <line x1="2.5" y1="497.8" x2="76.5" y2="497.8" stroke="#8888bb"/>
+    <rect x="1" y="604" width="77" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="39.5" y="626.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Supplier</text>
+    <line x1="1" y1="641.1" x2="78" y2="641.1" stroke="#8888bb"/>
+    <line x1="1" y1="648.8" x2="78" y2="648.8" stroke="#8888bb"/>
+    <rect x="80.46" y="94.44" width="54.92" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="107.92" y="106.41" fill="#e6e6e6" text-anchor="middle" font-size="12.6">contains</text>
+    <rect x="229.54" y="192.31" width="61.93" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="260.5" y="204.28" fill="#e6e6e6" text-anchor="middle" font-size="12.6">placed by</text>
+    <rect x="162.97" y="94.44" width="57.72" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="191.82" y="106.41" fill="#e6e6e6" text-anchor="middle" font-size="12.6">paid with</text>
+    <rect x="104.89" y="589.2" width="47.21" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="128.5" y="601.17" fill="#e6e6e6" text-anchor="middle" font-size="12.6">lives at</text>
+    <rect x="201.79" y="376.34" width="51.42" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="227.5" y="388.31" fill="#e6e6e6" text-anchor="middle" font-size="12.6">ships to</text>
+    <rect x="110.48" y="245.44" width="67.53" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="144.25" y="257.41" fill="#e6e6e6" text-anchor="middle" font-size="12.6">charged to</text>
+    <rect x="12.39" y="320.94" width="54.22" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="39.5" y="332.91" fill="#e6e6e6" text-anchor="middle" font-size="12.6">refers to</text>
+    <rect x="3.63" y="547.44" width="71.73" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="39.5" y="559.41" fill="#e6e6e6" text-anchor="middle" font-size="12.6">supplied by</text>
+    <rect x="-25.13" y="697.81" width="62.63" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="6.18" y="709.78" fill="#e6e6e6" text-anchor="middle" font-size="12.6">located at</text>
+    <rect x="55.05" y="400.97" width="54.9" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="82.5" y="412.94" fill="#e6e6e6" text-anchor="middle" font-size="12.6">wishlists</text>
+  </g>
+</svg>

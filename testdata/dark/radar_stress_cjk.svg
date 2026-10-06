@@ -1,0 +1,16 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="553.54" height="401" viewBox="0 0 553.54 401" font-family="sans-serif" font-size="14">
+<circle cx="288.19" cy="213" r="170" fill="#5a5a5a" fill-opacity="0.3" stroke="#5a5a5a"/>
+<circle cx="288.19" cy="213" r="136" fill="#5a5a5a" fill-opacity="0.3" stroke="#5a5a5a"/>
+<circle cx="288.19" cy="213" r="102" fill="#5a5a5a" fill-opacity="0.3" stroke="#5a5a5a"/>
+<circle cx="288.19" cy="213" r="68" fill="#5a5a5a" fill-opacity="0.3" stroke="#5a5a5a"/>
+<circle cx="288.19" cy="213" r="34" fill="#5a5a5a" fill-opacity="0.3" stroke="#5a5a5a"/>
+<line x1="288.19" y1="213" x2="288.19" y2="43" stroke="#cccccc" stroke-width="2"/>
+<text x="288.19" y="29" fill="#e6e6e6" font-size="13" text-anchor="middle">速度</text>
+<line x1="288.19" y1="213" x2="435.41" y2="298" stroke="#cccccc" stroke-width="2"/>
+<text x="447.54" y="315.4" fill="#e6e6e6" font-size="13" text-anchor="start">质量</text>
+<line x1="288.19" y1="213" x2="140.96" y2="298" stroke="#cccccc" stroke-width="2"/>
+<text x="128.84" y="315.4" fill="#e6e6e6" font-size="13" text-anchor="end">&quot;Deploy 🚀 done ✅&quot;</text>
+<path d="M288.19,111 C333.24,108.11 431,249.21 405.97,281 C380.94,312.79 160.99,326.9 140.96,298 C120.94,269.1 243.14,113.89 288.19,111 Z" fill="#6a6ae0" fill-opacity="0.5" stroke="#6a6ae0" stroke-width="2"/>
+<rect x="493.54" y="16" width="12" height="12" fill="#6a6ae0" fill-opacity="0.5" stroke="#6a6ae0"/>
+<text x="511.54" y="26.55" fill="#e6e6e6" font-size="13">我们</text>
+</svg>

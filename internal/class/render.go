@@ -146,11 +146,17 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 			bd.AddRect(nx, ny, nw, nh)
 		}
 	}
+	shapes, labelAt, moved := relationShapes(d, g, m)
 	for i, r := range d.Relations {
 		e := g.Edges[i]
 		if r.Label != "" {
 			lw := m.face.Width(r.Label, m.fs*0.9) + 8
 			bd.AddRect(e.LabelPos.X-lw/2, e.LabelPos.Y-m.fs, lw, m.fs*1.4)
+			if moved[i] {
+				fs := m.fs * 0.9
+				tw := m.face.Width(generics(r.Label), fs)
+				bd.AddRect(labelAt[i].X-tw/2-4, labelAt[i].Y-fs*0.95, tw+8, fs*1.3)
+			}
 		}
 		for _, p := range e.Points {
 			bd.AddRect(p.X-20, p.Y-20, 40, 40)
@@ -160,6 +166,10 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 	contentW, contentH := bd.Size()
 	w := contentW + pad*2
 	h := contentH + titleH + pad*2
+	if o.Title != "" {
+		w = max(w, m.face.Bold().Width(o.Title, m.fs)+2*pad)
+	}
+	shiftX += (w - contentW - pad*2) / 2
 
 	var b strings.Builder
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
@@ -174,20 +184,10 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 	for _, ns := range d.Namespaces {
 		writeNamespace(&b, ns, g, pal, m)
 	}
-	shapes := make([]curve.Shape, len(d.Relations))
-	vertical := g.Direction == domain.TopBottom || g.Direction == domain.BottomTop
 	for i, r := range d.Relations {
-		e := g.Edges[i]
-		if len(e.Points) < 2 {
+		if len(g.Edges[i].Points) < 2 {
 			continue
 		}
-		var obs []curve.Box
-		for _, n := range g.Nodes {
-			if n.ID != r.From && n.ID != r.To {
-				obs = append(obs, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
-			}
-		}
-		shapes[i] = curve.Edge(e.Points, vertical, obs, headLen(r.Left), headLen(r.Right))
 		writeRelation(&b, r, shapes[i], pal, m)
 	}
 	for i, nt := range d.Notes {
@@ -198,7 +198,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 	}
 	// Relationship labels last, so no line or box covers them.
 	for i, r := range d.Relations {
-		writeEdgeLabel(&b, r, g.Edges[i], shapes[i], pal, m)
+		writeEdgeLabel(&b, r, g.Edges[i], labelAt[i], pal, m)
 	}
 
 	b.WriteString("  </g>\n</svg>\n")
@@ -310,23 +310,72 @@ func writeRelation(b *strings.Builder, r *Relation, sh curve.Shape, pal theme.Pa
 
 // writeEdgeLabel draws a relationship's label on a soft background at the
 // position the layout reserved for it.
-func writeEdgeLabel(b *strings.Builder, r *Relation, e *domain.Edge, sh curve.Shape, pal theme.Palette, m metrics) {
+func writeEdgeLabel(b *strings.Builder, r *Relation, e *domain.Edge, at domain.Point, pal theme.Palette, m metrics) {
 	if r.Label == "" || len(e.Points) < 2 {
 		return
 	}
 	fs := m.fs * 0.9
 	text := generics(r.Label)
 	tw := m.face.Width(text, fs)
-	// LabelPos is the text baseline; a curved line takes its label at its
-	// middle instead.
-	x, y := e.LabelPos.X, e.LabelPos.Y
-	if sh.Curved {
-		x, y = sh.Mid.X, sh.Mid.Y+fs*0.35
-	}
+	x, y := at.X, at.Y
 	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s" fill-opacity="0.85"/>`+"\n",
 		svgutil.Num(x-tw/2-4), svgutil.Num(y-fs*0.95), svgutil.Num(tw+8), svgutil.Num(fs*1.3), svgutil.Esc(pal.RelationLabel))
 	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" font-size="%s">%s</text>`+"\n",
 		svgutil.Num(x), svgutil.Num(y), svgutil.Esc(pal.Text), svgutil.Num(fs), svgutil.Esc(text))
+}
+
+// relationShapes draws every relationship line and places its label: at
+// the layout's label position (the text baseline), or a curved line's
+// middle, then moved along its own line where it would hide another line,
+// label or class. moved reports the labels that left their first spot.
+func relationShapes(d *Diagram, g *domain.Graph, m metrics) (shapes []curve.Shape, at []domain.Point, moved []bool) {
+	shapes = make([]curve.Shape, len(d.Relations))
+	at = make([]domain.Point, len(d.Relations))
+	moved = make([]bool, len(d.Relations))
+	vertical := g.Direction == domain.TopBottom || g.Direction == domain.BottomTop
+	fs := m.fs * 0.9
+	var labels []curve.Label
+	var idx []int
+	for i, r := range d.Relations {
+		e := g.Edges[i]
+		if len(e.Points) < 2 {
+			continue
+		}
+		var obs []curve.Box
+		for _, n := range g.Nodes {
+			if n.ID != r.From && n.ID != r.To {
+				obs = append(obs, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
+			}
+		}
+		shapes[i] = curve.Edge(e.Points, vertical, obs, headLen(r.Left), headLen(r.Right))
+		at[i] = e.LabelPos
+		if shapes[i].Curved {
+			at[i] = domain.Point{X: shapes[i].Mid.X, Y: shapes[i].Mid.Y + fs*0.35}
+		}
+		if r.Label == "" {
+			continue
+		}
+		line := i
+		if r.From == r.To {
+			line = -1
+		}
+		tw := m.face.Width(generics(r.Label), fs)
+		// The plate runs from 0.95em above the baseline to 0.35em below.
+		labels = append(labels, curve.Label{Line: line, W: tw + 8, H: fs * 1.3, X: at[i].X, Y: at[i].Y - fs*0.3})
+		idx = append(idx, i)
+	}
+	var boxes []curve.Box
+	for _, n := range g.Nodes {
+		boxes = append(boxes, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
+	}
+	curve.PlaceLabels(shapes, labels, boxes)
+	for k, l := range labels {
+		i := idx[k]
+		if p := (domain.Point{X: l.X, Y: l.Y + fs*0.3}); math.Abs(p.X-at[i].X) > 1e-9 || math.Abs(p.Y-at[i].Y) > 1e-9 {
+			at[i], moved[i] = p, true
+		}
+	}
+	return shapes, at, moved
 }
 
 func headLen(k headKind) float64 {
