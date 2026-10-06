@@ -112,16 +112,16 @@ func TestLinkForms(t *testing.T) {
 
 func TestLabelText(t *testing.T) {
 	cases := map[string]string{
-		"A[\"`**Markdown** string with *emphasis*`\"]":       "Markdown string with emphasis",
-		"A[\"Quotes &quot;inside&quot; and #amp; entity\"]":  `Quotes "inside" and & entity`,
-		"A[\"one<br/>two\"]":                                 "one\ntwo",
-		"A[\"one<b>bold</b> two\"]":                          "onebold two",
-		"A[\"#35; and #quot;q#quot;\"]":                      `# and "q"`,
-		"A[Ünïcödé — ✓ 日本語]":                                 "Ünïcödé — ✓ 日本語",
-		"A[\"`line one\n  line two`\"]":                      "line one\nline two",
-		"A[\"a < b and c > d\"]":                             "a < b and c > d",
-		"A[\"<script>alert(1)</script>\"]":                   "alert(1)",
-		"A[\"&lt;img src=x onerror=alert(1)&gt;\"]":          "<img src=x onerror=alert(1)>",
+		"A[\"`**Markdown** string with *emphasis*`\"]":      "Markdown string with emphasis",
+		"A[\"Quotes &quot;inside&quot; and #amp; entity\"]": `Quotes "inside" and & entity`,
+		"A[\"one<br/>two\"]":                                "one\ntwo",
+		"A[\"one<b>bold</b> two\"]":                         "onebold two",
+		"A[\"#35; and #quot;q#quot;\"]":                     `# and "q"`,
+		"A[Ünïcödé — ✓ 日本語]":                                "Ünïcödé — ✓ 日本語",
+		"A[\"`line one\n  line two`\"]":                     "line one\nline two",
+		"A[\"a < b and c > d\"]":                            "a < b and c > d",
+		"A[\"<script>alert(1)</script>\"]":                  "alert(1)",
+		"A[\"&lt;img src=x onerror=alert(1)&gt;\"]":         "<img src=x onerror=alert(1)>",
 		"A[\"#lt;rect width=#quot;9999#quot;/#gt; plain\"]": `<rect width="9999"/> plain`,
 	}
 	for src, want := range cases {

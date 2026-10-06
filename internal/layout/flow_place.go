@@ -347,9 +347,15 @@ func (f *flowGraph) placePrimary() {
 		f.trackBottom[r] = p
 		p += startRoom[r+1]
 	}
+	// Nodes line up on the side of their layer the edges come from, as in
+	// mermaid.js, so a row of boxes shares its top edge; labels and dummies
+	// sit in the middle.
 	for r, layer := range f.layers {
 		for _, n := range layer {
 			n.p = f.bandTop[r] + f.bandH[r]/2
+			if n.real != nil {
+				n.p = f.bandTop[r] + n.ps/2
+			}
 		}
 	}
 	for i, c := range f.clusters {

@@ -90,8 +90,8 @@ func assignTracks(runs []*hrun) int {
 func (f *flowGraph) planPorts() {
 	f.routes = map[*fedge]*route{}
 	type use struct {
-		r    *route
-		idx  int     // index in xs of this end
+		r      *route
+		idx    int     // index in xs of this end
 		toward float64 // cross position of the adjacent waypoint
 	}
 	sides := map[*fnode]map[bool][]use{}
@@ -173,15 +173,19 @@ func (f *flowGraph) route() {
 		}
 		var pts []rpt
 		first, last := e.chain[0], e.chain[len(e.chain)-1]
-		pts = append(pts, rpt{r.xs[0], first.p + first.ps/2})
+		x := r.xs[0]
+		pts = append(pts, rpt{x, first.p + first.ps/2})
 		for i := 0; i+1 < len(e.chain); i++ {
 			if t := r.tracks[i]; t >= 0 {
-				g := e.chain[i].rank
-				y := f.trackY(g, t)
-				pts = append(pts, rpt{r.xs[i], y}, rpt{r.xs[i+1], y})
+				y := f.trackY(e.chain[i].rank, t)
+				x = r.xs[i+1]
+				pts = append(pts, rpt{r.xs[i], y}, rpt{x, y})
 			}
+			// A step without a run differs by less than half a pixel: keep
+			// the line straight.
+			r.xs[i+1] = x
 		}
-		pts = append(pts, rpt{r.xs[len(r.xs)-1], last.p - last.ps/2})
+		pts = append(pts, rpt{x, last.p - last.ps/2})
 		e.rpts = simplify(pts)
 		if e.label != nil {
 			e.labelAt = rpt{r.xs[indexOf(e.chain, e.label)], e.label.p}

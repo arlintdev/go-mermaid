@@ -36,3 +36,25 @@ func TestWrap(t *testing.T) {
 		t.Errorf("a word a little too wide stays whole, got %q", got)
 	}
 }
+
+func TestWrapBreaksAfterHyphens(t *testing.T) {
+	got := FaceSans.Wrap("OnFailure=: digin-backup-failed.service, make backup-failed", 16, 120)
+	for _, l := range got {
+		if FaceSans.Width(l, 16) > 120*1.5 {
+			t.Errorf("line %q too wide", l)
+		}
+	}
+	joined := strings.Join(got, "")
+	if strings.ReplaceAll(joined, " ", "") != strings.ReplaceAll("OnFailure=: digin-backup-failed.service, make backup-failed", " ", "") {
+		t.Errorf("lost text: %q", got)
+	}
+	found := false
+	for _, l := range got {
+		if strings.HasSuffix(l, "-") {
+			found = true
+		}
+	}
+	if !found {
+		t.Errorf("no break after a hyphen: %q", got)
+	}
+}

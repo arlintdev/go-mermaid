@@ -38,7 +38,7 @@ func Flow(g *domain.Graph, opts Options) (*Result, error) {
 const (
 	defaultWrapWidth = 120.0 // node labels, as mermaid.js 12
 	labelWrapWidth   = 200.0 // edge labels
-	nodePadX         = 16.0 // text to rectangle edge, each side
+	nodePadX         = 16.0  // text to rectangle edge, each side
 	nodePadY         = 12.0
 	labelPadX        = 4.0 // text to edge-label background, each side
 	labelPadY        = 2.0
@@ -78,7 +78,11 @@ func measure(g *domain.Graph, opts Options) {
 		if label == "" && n.Shape != domain.ShapeSmallCircle && n.Shape != domain.ShapeFramedCircle {
 			label = n.ID
 		}
-		n.Lines = face.Wrap(label, fs, opts.WrapWidth)
+		wrapAt := opts.WrapWidth
+		if wrapAt > 0 {
+			wrapAt = face.WrapWidthFor(label, fs, lh, wrapAt, math.Max(wrapAt, 2*labelWrapWidth-100))
+		}
+		n.Lines = face.Wrap(label, fs, wrapAt)
 		if label == "" {
 			n.Lines = nil
 		}
@@ -87,7 +91,7 @@ func measure(g *domain.Graph, opts Options) {
 		if boxLike(n.Shape) && opts.WrapWidth > 0 {
 			// mermaid.js 12 gives every box the full wrapping width, so a
 			// row of boxes lines up.
-			tw = math.Max(tw, opts.WrapWidth)
+			tw = math.Max(tw, math.Min(wrapAt, opts.WrapWidth))
 		}
 		n.Size = shapeSize(n.Shape, tw, th)
 	}

@@ -138,7 +138,7 @@ func clipToOutline(n *domain.Node, end, next domain.Point) domain.Point {
 	}
 	c := n.Center()
 	w, h := n.Size.W, n.Size.H
-	if math.Abs(end.X-next.X) < 0.01 {
+	if math.Abs(end.X-next.X) < 0.5 {
 		// Vertical segment: find the outline at x = end.X on the side
 		// facing next.
 		dy := halfExtent(n.Shape, w, h, end.X-c.X, true)
