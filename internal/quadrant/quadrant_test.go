@@ -64,3 +64,27 @@ func TestRender(t *testing.T) {
 		})
 	})
 }
+
+func TestPointStyles(t *testing.T) {
+	d, err := Parse("quadrantChart\nA: [0.1, 0.2] radius: 10, color: #ff0000, stroke-color: #000, stroke-width: 2px\n" +
+		"B:::hot: [0.3, 0.4] color: blue\nC:::hot: [0.5, 0.6]\nD: [0.5, 0.5] color: url(#x), radius: 9999\n" +
+		"classDef hot color: #00ff00, radius: 8, stroke-width: 3px")
+	if err != nil {
+		t.Fatal(err)
+	}
+	a := d.Points[0].Style
+	if a.Radius != 10 || a.Color != "#ff0000" || a.StrokeColor != "#000" || a.StrokeWidth != 2 {
+		t.Errorf("inline style: %+v", a)
+	}
+	b := d.Points[1].Style.merge(d.Classes[d.Points[1].Class])
+	if d.Points[1].Label != "B" || b.Color != "blue" || b.Radius != 8 || b.StrokeWidth != 3 {
+		t.Errorf("inline over class: %+v", b)
+	}
+	c := d.Points[2].Style.merge(d.Classes["hot"])
+	if c.Color != "#00ff00" {
+		t.Errorf("class style: %+v", c)
+	}
+	if s := d.Points[3].Style; s.Color != "" || s.Radius != 0 {
+		t.Errorf("invalid values must be dropped: %+v", s)
+	}
+}
