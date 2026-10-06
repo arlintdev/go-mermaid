@@ -16,14 +16,33 @@ import (
 	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
+// Shape is a mindmap node's outline.
+type Shape int
+
+// The mindmap node shapes, by their delimiters.
+const (
+	ShapeDefault Shape = iota // Text
+	ShapeSquare               // [Text]
+	ShapeRounded              // (Text)
+	ShapeCircle               // ((Text))
+	ShapeBang                 // ))Text((
+	ShapeCloud                // )Text(
+	ShapeHexagon              // {{Text}}
+)
+
 // Node is a mindmap node with children.
 type Node struct {
 	Text     string
+	Shape    Shape
 	Depth    int
 	Children []*Node
 
-	X float64
-	Y float64
+	// Layout, filled in by the renderer: centre, size, wrapped lines, the
+	// branch (child of the root) it belongs to and its side of the root.
+	X, Y, W, H float64
+	lines      []string
+	section    int
+	side       float64
 }
 
 // Diagram is a parsed mindmap.
@@ -60,8 +79,8 @@ func Parse(src string) (*Diagram, error) {
 		if strings.HasPrefix(trimmed, "::") {
 			continue
 		}
-		text := cleanText(trimmed)
-		n := &Node{Text: text}
+		text, shape := parseNode(trimmed)
+		n := &Node{Text: text, Shape: shape}
 
 		for len(stack) > 0 && stack[len(stack)-1].indent >= indent {
 			stack = stack[:len(stack)-1]
@@ -89,18 +108,42 @@ func Parse(src string) (*Diagram, error) {
 	return d, nil
 }
 
-// cleanText extracts a node's display text from an optional shape, e.g.
-// "root((Ideas))" -> "Ideas", "id[Text]" -> "Text", "Plain" -> "Plain".
-func cleanText(s string) string {
-	for _, pair := range [][2]string{{"((", "))"}, {"{{", "}}"}, {"([", "])"}, {"[", "]"}, {"(", ")"}, {"{", "}"}} {
-		open, closer := pair[0], pair[1]
-		if !strings.HasSuffix(s, closer) {
+// shapes lists each shape's delimiters, longest first so "((" wins over "(".
+var shapes = []struct {
+	open, close string
+	shape       Shape
+}{
+	{"((", "))", ShapeCircle}, {"))", "((", ShapeBang}, {"{{", "}}", ShapeHexagon},
+	{"[", "]", ShapeSquare}, {"(", ")", ShapeRounded}, {")", "(", ShapeCloud},
+}
+
+// parseNode reads a node line: an optional id, then the text inside a
+// shape's delimiters, or plain text. A trailing ":::class" is dropped:
+// classes carry styles a static picture cannot apply.
+func parseNode(s string) (string, Shape) {
+	if i := strings.Index(s, ":::"); i > 0 {
+		s = strings.TrimSpace(s[:i])
+	}
+	for _, sh := range shapes {
+		if !strings.HasSuffix(s, sh.close) {
 			continue
 		}
-		i := strings.Index(s, open)
-		if i >= 0 && i+len(open) <= len(s)-len(closer) {
-			return strings.TrimSpace(s[i+len(open) : len(s)-len(closer)])
+		i := strings.Index(s, sh.open)
+		if i >= 0 && i+len(sh.open) <= len(s)-len(sh.close) {
+			return unquote(s[i+len(sh.open) : len(s)-len(sh.close)]), sh.shape
 		}
+	}
+	return unquote(s), ShapeDefault
+}
+
+// unquote strips "..." and "`...`" (Mermaid's markdown string) wrappers.
+func unquote(s string) string {
+	s = strings.TrimSpace(s)
+	if len(s) >= 2 && s[0] == '"' && s[len(s)-1] == '"' {
+		s = strings.TrimSpace(s[1 : len(s)-1])
+	}
+	if len(s) >= 2 && s[0] == '`' && s[len(s)-1] == '`' {
+		s = strings.TrimSpace(s[1 : len(s)-1])
 	}
 	return s
 }
