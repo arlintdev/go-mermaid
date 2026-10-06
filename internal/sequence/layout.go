@@ -230,7 +230,7 @@ func measure(d *Diagram, m metrics, xs []float64) []constraint {
 		default:
 			lo, hi := min(i, j), max(i, j)
 			span := xs[hi] - xs[lo] + 2*overhang(m)
-			note.Lines = wrap(note.Text, max(span, m.wrapW+pad)-pad, m.face, m.fs)
+			note.Lines = wrap(note.Text, max(span, 1.5*m.wrapW+pad)-pad, m.face, m.fs)
 			note.W = max(widest(note.Lines, m.face, m.fs)+pad, span)
 		}
 	}
@@ -277,7 +277,7 @@ func vertical(lay *Layout) {
 	k := m.k
 	for _, p := range d.Participants {
 		p.TopY = lay.HeadTop
-		p.LifeStart = lay.HeadTop + lay.HeadH
+		p.LifeStart = lay.headBottom(p)
 		p.LifeEnd = -1
 	}
 	cursor := lay.HeadTop + lay.HeadH + 8*k
@@ -331,7 +331,7 @@ func vertical(lay *Layout) {
 			if created != nil {
 				y = max(y, cursor+lay.HeadH/2+6*k)
 				created.TopY = y - lay.HeadH/2
-				created.LifeStart = created.TopY + lay.HeadH
+				created.LifeStart = lay.headBottom(created)
 			}
 			msg.Y = y
 			if from == to {
@@ -473,6 +473,24 @@ func vertical(lay *Layout) {
 	if len(d.Boxes) > 0 {
 		lay.Height += m.boxPad
 	}
+}
+
+// actorInset is how far below the slot top an actor's figure starts in a
+// top header: the figure and its name are centred in the header slot.
+func (lay *Layout) actorInset(p *Participant) float64 {
+	return (lay.HeadH - actorBlockH(p, lay.m)) / 2
+}
+
+func actorBlockH(p *Participant, m metrics) float64 {
+	return m.figH + float64(len(p.Lines))*m.lineH + 2*m.k
+}
+
+// headBottom is where p's lifeline starts below its top header.
+func (lay *Layout) headBottom(p *Participant) float64 {
+	if p.Kind == KindActor {
+		return p.TopY + lay.actorInset(p) + actorBlockH(p, lay.m)
+	}
+	return p.TopY + lay.HeadH
 }
 
 func sign(v float64) float64 {

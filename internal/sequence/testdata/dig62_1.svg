@@ -1,70 +1,70 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1033.95" height="1586" viewBox="0 0 1033.95 1586" font-family="sans-serif" font-size="14">
+<svg xmlns="http://www.w3.org/2000/svg" width="975.06" height="1567.8" viewBox="0 0 975.06 1567.8" font-family="sans-serif" font-size="14">
   <defs><marker id="mwpfmtc-seq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker><marker id="mwpfmtc-seq-open" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#333333" stroke-width="1.5"/></marker></defs>
   <rect width="100%" height="100%" fill="#ffffff"/>
   <g transform="translate(16,16)">
-    <line x1="86.92" y1="48" x2="86.92" y2="1506" stroke="#9370DB"/>
-    <line x1="302.82" y1="48" x2="302.82" y2="1506" stroke="#9370DB"/>
-    <line x1="545.56" y1="48" x2="545.56" y2="1506" stroke="#9370DB"/>
-    <line x1="793.77" y1="48" x2="793.77" y2="1506" stroke="#9370DB"/>
-    <line x1="86.92" y1="90.2" x2="545.56" y2="90.2" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text x="316.24" y="80.7" fill="#333333" text-anchor="middle">POST /office/invite {connId, userId: Nora}</text>
-    <path d="M545.56,152.6 C579.56,148.6 579.56,176.6 545.56,172.6" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="start"><tspan x="561.56" y="124.9">place = hub.Where(connId);</tspan><tspan x="561.56" y="143.1">spot(place): Avery may be there</tspan></text>
-    <path d="M545.56,271.4 C579.56,267.4 579.56,295.4 545.56,291.4" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="start"><tspan x="561.56" y="207.3">MayReach(Avery, Nora)? not a</tspan><tspan x="561.56" y="225.5">bot? may be in this place? not on</tspan><tspan x="561.56" y="243.7">it? online (workspace-mates</tspan><tspan x="561.56" y="261.9">only)? rings.allow</tspan></text>
-    <path d="M545.56,353.8 C579.56,349.8 579.56,377.8 545.56,373.8" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="start"><tspan x="561.56" y="326.1">invites.ring: hub.Hold(place, Nora,</tspan><tspan x="561.56" y="344.3">10)</tspan></text>
-    <path d="M545.56,436.2 C579.56,432.2 579.56,460.2 545.56,456.2" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="start"><tspan x="561.56" y="408.5">audit call_invited (kind, subject,</tspan><tspan x="561.56" y="426.7">invitee_id)</tspan></text>
-    <line x1="545.56" y1="518.6" x2="793.77" y2="518.6" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="669.67" y="490.9">ring {inviteId, fromUser: Avery,</tspan><tspan x="669.67" y="509.1">kind, with: [Avery, Edith]}</tspan></text>
-    <line x1="545.56" y1="562.8" x2="86.92" y2="562.8" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text x="316.24" y="553.3" fill="#333333" text-anchor="middle">call.ringing {place, ringing: [Nora by Avery]}</text>
-    <line x1="545.56" y1="625.2" x2="302.82" y2="625.2" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="424.19" y="597.5">call.ringing {place, ringing: [Nora</tspan><tspan x="424.19" y="615.7">by Avery]}</tspan></text>
-    <line x1="545.56" y1="669.4" x2="86.92" y2="669.4" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text x="316.24" y="659.9" fill="#333333" text-anchor="middle">{inviteId}</text>
-    <line x1="793.77" y1="731.8" x2="545.56" y2="731.8" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="669.67" y="704.1">POST /office/invites/{id}/answer</tspan><tspan x="669.67" y="722.3">{connId, media}</tspan></text>
-    <path d="M545.56,812.4 C579.56,808.4 579.56,836.4 545.56,832.4" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="start"><tspan x="561.56" y="766.5">invites.take; spot(place) as Nora;</tspan><tspan x="561.56" y="784.7">joinCall into the kept seat;</tspan><tspan x="561.56" y="802.9">calls.admit for a call of two</tspan></text>
-    <path d="M545.56,894.8 C579.56,890.8 579.56,918.8 545.56,914.8" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="start"><tspan x="561.56" y="867.1">audit call_invite_answered</tspan><tspan x="561.56" y="885.3">(invited_by: Avery); hub.Release</tspan></text>
-    <line x1="545.56" y1="977.2" x2="793.77" y2="977.2" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="669.67" y="949.5">ring.end {inviteId, reason:</tspan><tspan x="669.67" y="967.7">answered} (her other tabs stop)</tspan></text>
-    <line x1="545.56" y1="1021.4" x2="86.92" y2="1021.4" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text x="316.24" y="1011.9" fill="#333333" text-anchor="middle">call.ringing {ringing: [], outcome: answered}</text>
-    <line x1="545.56" y1="1065.6" x2="86.92" y2="1065.6" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text x="316.24" y="1056.1" fill="#333333" text-anchor="middle">call {occupants: Avery, Edith, Nora}</text>
-    <line x1="545.56" y1="1128" x2="302.82" y2="1128" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="424.19" y="1100.3">call {occupants: Avery, Edith,</tspan><tspan x="424.19" y="1118.5">Nora}</tspan></text>
-    <line x1="545.56" y1="1190.4" x2="793.77" y2="1190.4" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="669.67" y="1162.7">{others: [Avery&#39;s tab, Edith&#39;s tab],</tspan><tspan x="669.67" y="1180.9">resume, kind, callId}</tspan></text>
-    <path d="M793.77,1234.6 C827.77,1230.6 827.77,1258.6 793.77,1254.6" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text x="809.77" y="1225.1" fill="#333333" text-anchor="start">connect(Avery), connect(Edith)</text>
-    <line x1="793.77" y1="1317" x2="545.56" y2="1317" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="669.67" y="1289.3">POST /office/signal to Avery, and</tspan><tspan x="669.67" y="1307.5">to Edith</tspan></text>
-    <line x1="545.56" y1="1361.2" x2="86.92" y2="1361.2" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text x="316.24" y="1351.7" fill="#333333" text-anchor="middle">signal from Nora</text>
-    <line x1="545.56" y1="1405.4" x2="302.82" y2="1405.4" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
-    <text x="424.19" y="1395.9" fill="#333333" text-anchor="middle">signal from Nora</text>
-    <rect x="62.92" y="1425.4" width="263.9" height="68.6" fill="#fff5ad" stroke="#aaaa33"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="194.87" y="1446.4">Avery and Edith keep the connection</tspan><tspan x="194.87" y="1464.6">they had to each other: one new</tspan><tspan x="194.87" y="1482.8">connection each, to Nora</tspan></text>
+    <line x1="86.92" y1="48" x2="86.92" y2="1487.8" stroke="#9370DB"/>
+    <line x1="302.82" y1="48" x2="302.82" y2="1487.8" stroke="#9370DB"/>
+    <line x1="496.8" y1="48" x2="496.8" y2="1487.8" stroke="#9370DB"/>
+    <line x1="734.88" y1="48" x2="734.88" y2="1487.8" stroke="#9370DB"/>
+    <line x1="86.92" y1="90.2" x2="496.8" y2="90.2" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text x="291.86" y="80.7" fill="#333333" text-anchor="middle">POST /office/invite {connId, userId: Nora}</text>
+    <path d="M496.8,152.6 C530.8,148.6 530.8,176.6 496.8,172.6" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="start"><tspan x="512.8" y="124.9">place = hub.Where(connId);</tspan><tspan x="512.8" y="143.1">spot(place): Avery may be there</tspan></text>
+    <path d="M496.8,271.4 C530.8,267.4 530.8,295.4 496.8,291.4" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="start"><tspan x="512.8" y="207.3">MayReach(Avery, Nora)? not a</tspan><tspan x="512.8" y="225.5">bot? may be in this place? not</tspan><tspan x="512.8" y="243.7">on it? online (workspace-mates</tspan><tspan x="512.8" y="261.9">only)? rings.allow</tspan></text>
+    <path d="M496.8,353.8 C530.8,349.8 530.8,377.8 496.8,373.8" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="start"><tspan x="512.8" y="326.1">invites.ring:</tspan><tspan x="512.8" y="344.3">hub.Hold(place, Nora, 10)</tspan></text>
+    <path d="M496.8,436.2 C530.8,432.2 530.8,460.2 496.8,456.2" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="start"><tspan x="512.8" y="408.5">audit call_invited (kind,</tspan><tspan x="512.8" y="426.7">subject, invitee_id)</tspan></text>
+    <line x1="496.8" y1="518.6" x2="734.88" y2="518.6" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="615.84" y="490.9">ring {inviteId, fromUser: Avery,</tspan><tspan x="615.84" y="509.1">kind, with: [Avery, Edith]}</tspan></text>
+    <line x1="496.8" y1="562.8" x2="86.92" y2="562.8" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text x="291.86" y="553.3" fill="#333333" text-anchor="middle">call.ringing {place, ringing: [Nora by Avery]}</text>
+    <line x1="496.8" y1="625.2" x2="302.82" y2="625.2" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="399.81" y="597.5">call.ringing {place,</tspan><tspan x="399.81" y="615.7">ringing: [Nora by Avery]}</tspan></text>
+    <line x1="496.8" y1="669.4" x2="86.92" y2="669.4" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text x="291.86" y="659.9" fill="#333333" text-anchor="middle">{inviteId}</text>
+    <line x1="734.88" y1="731.8" x2="496.8" y2="731.8" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="615.84" y="704.1">POST /office/invites/{id}/answer</tspan><tspan x="615.84" y="722.3">{connId, media}</tspan></text>
+    <path d="M496.8,812.4 C530.8,808.4 530.8,836.4 496.8,832.4" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="start"><tspan x="512.8" y="766.5">invites.take; spot(place) as</tspan><tspan x="512.8" y="784.7">Nora; joinCall into the kept seat;</tspan><tspan x="512.8" y="802.9">calls.admit for a call of two</tspan></text>
+    <path d="M496.8,894.8 C530.8,890.8 530.8,918.8 496.8,914.8" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="start"><tspan x="512.8" y="867.1">audit call_invite_answered</tspan><tspan x="512.8" y="885.3">(invited_by: Avery); hub.Release</tspan></text>
+    <line x1="496.8" y1="977.2" x2="734.88" y2="977.2" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="615.84" y="949.5">ring.end {inviteId, reason:</tspan><tspan x="615.84" y="967.7">answered} (her other tabs stop)</tspan></text>
+    <line x1="496.8" y1="1021.4" x2="86.92" y2="1021.4" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text x="291.86" y="1011.9" fill="#333333" text-anchor="middle">call.ringing {ringing: [], outcome: answered}</text>
+    <line x1="496.8" y1="1065.6" x2="86.92" y2="1065.6" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text x="291.86" y="1056.1" fill="#333333" text-anchor="middle">call {occupants: Avery, Edith, Nora}</text>
+    <line x1="496.8" y1="1128" x2="302.82" y2="1128" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="399.81" y="1100.3">call {occupants:</tspan><tspan x="399.81" y="1118.5">Avery, Edith, Nora}</tspan></text>
+    <line x1="496.8" y1="1190.4" x2="734.88" y2="1190.4" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="615.84" y="1162.7">{others: [Avery&#39;s tab, Edith&#39;s</tspan><tspan x="615.84" y="1180.9">tab], resume, kind, callId}</tspan></text>
+    <path d="M734.88,1234.6 C768.88,1230.6 768.88,1258.6 734.88,1254.6" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text x="750.88" y="1225.1" fill="#333333" text-anchor="start">connect(Avery), connect(Edith)</text>
+    <line x1="734.88" y1="1317" x2="496.8" y2="1317" stroke="#333333" stroke-width="1.5" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="615.84" y="1289.3">POST /office/signal</tspan><tspan x="615.84" y="1307.5">to Avery, and to Edith</tspan></text>
+    <line x1="496.8" y1="1361.2" x2="86.92" y2="1361.2" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text x="291.86" y="1351.7" fill="#333333" text-anchor="middle">signal from Nora</text>
+    <line x1="496.8" y1="1405.4" x2="302.82" y2="1405.4" stroke="#333333" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mwpfmtc-seq-arrow)"/>
+    <text x="399.81" y="1395.9" fill="#333333" text-anchor="middle">signal from Nora</text>
+    <rect x="34.28" y="1425.4" width="321.18" height="50.4" fill="#fff5ad" stroke="#aaaa33"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="194.87" y="1446.4">Avery and Edith keep the connection they had to</tspan><tspan x="194.87" y="1464.6">each other: one new connection each, to Nora</tspan></text>
     <rect x="0" y="0" width="173.84" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
     <text x="86.92" y="28.9" fill="#333333" text-anchor="middle">Avery&#39;s tab (on the call)</text>
-    <rect x="0" y="1506" width="173.84" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="86.92" y="1534.9" fill="#333333" text-anchor="middle">Avery&#39;s tab (on the call)</text>
+    <rect x="0" y="1487.8" width="173.84" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="86.92" y="1516.7" fill="#333333" text-anchor="middle">Avery&#39;s tab (on the call)</text>
     <rect x="217.84" y="0" width="169.96" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
     <text x="302.82" y="28.9" fill="#333333" text-anchor="middle">Edith&#39;s tab (on the call)</text>
-    <rect x="217.84" y="1506" width="169.96" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="302.82" y="1534.9" fill="#333333" text-anchor="middle">Edith&#39;s tab (on the call)</text>
-    <rect x="480.56" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="545.56" y="28.9" fill="#333333" text-anchor="middle">Digin server</text>
-    <rect x="480.56" y="1506" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="545.56" y="1534.9" fill="#333333" text-anchor="middle">Digin server</text>
-    <rect x="728.77" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="793.77" y="28.9" fill="#333333" text-anchor="middle">Nora&#39;s tabs</text>
-    <rect x="728.77" y="1506" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="793.77" y="1534.9" fill="#333333" text-anchor="middle">Nora&#39;s tabs</text>
+    <rect x="217.84" y="1487.8" width="169.96" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="302.82" y="1516.7" fill="#333333" text-anchor="middle">Edith&#39;s tab (on the call)</text>
+    <rect x="431.8" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="496.8" y="28.9" fill="#333333" text-anchor="middle">Digin server</text>
+    <rect x="431.8" y="1487.8" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="496.8" y="1516.7" fill="#333333" text-anchor="middle">Digin server</text>
+    <rect x="669.88" y="0" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="734.88" y="28.9" fill="#333333" text-anchor="middle">Nora&#39;s tabs</text>
+    <rect x="669.88" y="1487.8" width="130" height="48" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="734.88" y="1516.7" fill="#333333" text-anchor="middle">Nora&#39;s tabs</text>
   </g>
 </svg>

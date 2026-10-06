@@ -3,7 +3,7 @@
   <rect width="100%" height="100%" fill="#ffffff"/>
   <g transform="translate(51.03,16)">
     <rect x="207" y="1104.8" width="238" height="50.2" fill="rgb(200, 220, 255)"/>
-    <line x1="65" y1="66.2" x2="65" y2="1209.2" stroke="#9370DB"/>
+    <line x1="65" y1="63.2" x2="65" y2="1209.2" stroke="#9370DB"/>
     <line x1="239" y1="66.2" x2="239" y2="1209.2" stroke="#9370DB"/>
     <line x1="413" y1="66.2" x2="413" y2="1209.2" stroke="#9370DB"/>
     <line x1="587" y1="66.2" x2="587" y2="1209.2" stroke="#9370DB"/>
@@ -98,9 +98,9 @@
     <text x="326" y="1137.8" fill="#333333" text-anchor="middle">Highlighted region</text>
     <rect x="-35.03" y="1165" width="90.03" height="32.2" fill="#fff5ad" stroke="#aaaa33"/>
     <text x="9.99" y="1186" fill="#333333" text-anchor="middle">Sees result</text>
-    <circle cx="65" cy="12" r="8" fill="#ECECFF" stroke="#9370DB" stroke-width="1.5"/>
-    <path d="M65,20 L65,33 M54,25 L76,25 M55,44 L65,33 L75,44" fill="none" stroke="#9370DB" stroke-width="1.5"/>
-    <text x="65" y="53.3" fill="#333333" text-anchor="middle">User</text>
+    <circle cx="65" cy="15" r="8" fill="#ECECFF" stroke="#9370DB" stroke-width="1.5"/>
+    <path d="M65,23 L65,36 M54,28 L76,28 M55,47 L65,36 L75,47" fill="none" stroke="#9370DB" stroke-width="1.5"/>
+    <text x="65" y="56.3" fill="#333333" text-anchor="middle">User</text>
     <circle cx="65" cy="1221.2" r="8" fill="#ECECFF" stroke="#9370DB" stroke-width="1.5"/>
     <path d="M65,1229.2 L65,1242.2 M54,1234.2 L76,1234.2 M55,1253.2 L65,1242.2 L75,1253.2" fill="none" stroke="#9370DB" stroke-width="1.5"/>
     <text x="65" y="1262.5" fill="#333333" text-anchor="middle">User</text>

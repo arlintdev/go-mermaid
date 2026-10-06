@@ -134,9 +134,9 @@ func svg(lay *Layout, o RenderOptions, prefix string) []byte {
 		w.note(n)
 	}
 	for _, p := range d.Participants {
-		w.header(p, p.TopY)
+		w.header(p, p.TopY, lay.actorInset(p))
 		if !p.Destroyed {
-			w.header(p, lay.BottomY)
+			w.header(p, lay.BottomY, 0)
 		} else {
 			w.destroyMark(p)
 		}
@@ -177,11 +177,12 @@ func (w *writer) centred(ls []string, x, cy float64, anchor, fill, extra string)
 	w.lines(ls, x, first, anchor, fill, extra)
 }
 
-func (w *writer) header(p *Participant, top float64) {
+func (w *writer) header(p *Participant, top, inset float64) {
 	m, c := w.m, w.c
 	h := w.lay.HeadH
 	if p.Kind == KindActor {
 		k := m.k
+		top += inset
 		cx := p.X
 		headR := 8 * k
 		cy := top + 4*k + headR
