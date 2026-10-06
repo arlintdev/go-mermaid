@@ -1,263 +1,275 @@
 package parser
 
 import (
+	"html"
 	"regexp"
 	"strconv"
 	"strings"
 
+	"github.com/arlintdev/go-mermaid/internal/cssval"
 	"github.com/arlintdev/go-mermaid/internal/domain"
+	"github.com/arlintdev/go-mermaid/internal/svgutil"
 )
 
-// classAssign records a pending "apply class name to these node ids".
+// classAssign records "apply these class names to these ids".
 type classAssign struct {
-	ids  []string
-	name string
+	ids   []string
+	names []string
 }
 
-// Preprocess pulls flowchart styling directives (classDef, class, style, and
-// inline :::class) out of the source. It returns the source with those
-// directives removed (so the lexer never sees their CSS-like payloads) and a
-// map of node ID to resolved Style. Directive order does not matter.
-func Preprocess(src string) (string, map[string]*domain.Style, map[string]string, *LinkStyles) {
-	classDefs := map[string]*domain.Style{}
-	styles := map[string]*domain.Style{}
-	links := map[string]string{}
-	linkStyles := &LinkStyles{ByIndex: map[int]*domain.Style{}}
+type directStyle struct {
+	id    string
+	style *domain.Style
+}
 
-	var pending []classAssign
+// styles holds what the styling lines of a flowchart said.
+type styles struct {
+	classDefs map[string]*domain.Style
+	assigns   []classAssign
+	direct    []directStyle
+	links     LinkStyles
+}
 
+// preprocess pulls the styling statements (classDef, class, style,
+// linkStyle) and the interaction ones a static picture has no use for
+// (click, callbacks) out of the source. It returns the remaining statements,
+// one per line, for the lexer. Statements may be separated by newlines or by
+// semicolons.
+func preprocess(src string) (string, *styles) {
+	st := &styles{classDefs: map[string]*domain.Style{}, links: LinkStyles{ByIndex: map[int]*domain.Style{}}}
 	var kept []string
+	inAccBlock := false
 	for _, line := range strings.Split(src, "\n") {
 		t := strings.TrimSpace(line)
-		switch {
-		case strings.HasPrefix(t, "classDef "):
-			name, st := parseClassDef(t)
-			if name != "" {
-				classDefs[name] = st
+		if inAccBlock {
+			if strings.Contains(t, "}") {
+				inAccBlock = false
 			}
-		case strings.HasPrefix(t, "class "):
-			rest := strings.Fields(strings.TrimSpace(t[len("class "):]))
-			if len(rest) >= 2 {
-				ids := strings.Split(rest[0], ",")
-				pending = append(pending, classAssign{ids: ids, name: rest[1]})
-			}
-		case strings.HasPrefix(t, "style "):
-			id, st := parseStyleStmt(t)
-			if id != "" {
-				mergeStyle(styles, id, st)
-			}
-		case strings.HasPrefix(t, "linkStyle "):
-			parseLinkStyle(t, linkStyles)
-		case strings.HasPrefix(t, "click "):
-			if id, url := parseClick(t); id != "" && url != "" {
-				links[id] = url
-			}
-		default:
-			kept = append(kept, stripInline(expandShapeMeta(line), &pending))
-		}
-	}
-
-	for _, a := range pending {
-		st, ok := classDefs[a.name]
-		if !ok {
+			kept = append(kept, "")
 			continue
 		}
-		for _, id := range a.ids {
-			mergeStyle(styles, strings.TrimSpace(id), st)
+		if strings.HasPrefix(t, "accDescr") && strings.HasSuffix(t, "{") {
+			inAccBlock = true
+			kept = append(kept, "")
+			continue
 		}
+		var out []string
+		for _, stmt := range splitStatements(line) {
+			if !st.read(strings.TrimSpace(stmt)) {
+				out = append(out, stmt)
+			}
+		}
+		// Keep the line count so error positions still point at the source.
+		kept = append(kept, strings.Join(out, ";"))
 	}
-	return strings.Join(kept, "\n"), styles, links, linkStyles
+	return strings.Join(kept, "\n"), st
 }
 
-// parseClick handles "click ID href "URL"" and "click ID "URL"".
-func parseClick(line string) (id, url string) {
-	rest := strings.Fields(strings.TrimSpace(line[len("click"):]))
-	if len(rest) < 1 {
-		return "", ""
-	}
-	id = rest[0]
-	if i := strings.IndexByte(line, '"'); i >= 0 {
-		if j := strings.IndexByte(line[i+1:], '"'); j >= 0 {
-			url = line[i+1 : i+1+j]
+// read takes one statement and reports whether it was a styling or
+// interaction statement it consumed.
+func (st *styles) read(t string) bool {
+	word, rest, _ := strings.Cut(t, " ")
+	rest = strings.TrimSpace(rest)
+	switch word {
+	case "classDef":
+		names, props, _ := strings.Cut(rest, " ")
+		s := parseProps(props)
+		for _, n := range strings.Split(names, ",") {
+			if n = strings.TrimSpace(n); n != "" {
+				st.classDefs[n] = s
+			}
 		}
+	case "class":
+		f := strings.Fields(rest)
+		if len(f) >= 2 {
+			st.assigns = append(st.assigns, classAssign{ids: splitList(f[0]), names: splitList(strings.Join(f[1:], ""))})
+		}
+	case "style":
+		id, props, _ := strings.Cut(rest, " ")
+		if id != "" {
+			st.direct = append(st.direct, directStyle{id: id, style: parseProps(props)})
+		}
+	case "linkStyle":
+		parseLinkStyle(rest, &st.links)
+	case "click", "callback":
+	case "accTitle:", "accDescr:":
+	default:
+		return strings.HasPrefix(t, "accTitle:") || strings.HasPrefix(t, "accDescr:")
 	}
-	if !safeURL(url) {
-		url = ""
-	}
-	return id, url
+	return true
 }
 
-// safeURL reports whether a click target is safe to emit as an href. Only
-// http(s), mailto, and same-document/relative links are allowed; schemes like
-// javascript: are rejected so a diagram can't smuggle script into the SVG.
-func safeURL(u string) bool {
-	u = strings.TrimSpace(u)
-	if u == "" {
-		return false
+func splitList(s string) []string {
+	var out []string
+	for _, p := range strings.Split(s, ",") {
+		if p = strings.TrimSpace(p); p != "" {
+			out = append(out, p)
+		}
 	}
-	lower := strings.ToLower(u)
-	switch {
-	case strings.HasPrefix(lower, "http://"), strings.HasPrefix(lower, "https://"),
-		strings.HasPrefix(lower, "mailto:"):
-		return true
-	case strings.HasPrefix(u, "/"), strings.HasPrefix(u, "#"), strings.HasPrefix(u, "./"),
-		strings.HasPrefix(u, "../"):
-		return true
-	}
-	// A bare relative path with no scheme (no colon before the first / or #) is
-	// fine; a colon earlier than any path separator implies a scheme we don't
-	// trust.
-	colon := strings.IndexByte(u, ':')
-	if colon < 0 {
-		return true
-	}
-	slash := strings.IndexAny(u, "/#")
-	return slash >= 0 && slash < colon
+	return out
 }
 
-// stripInline removes ":::class" occurrences, recording each as an assignment
-// to the node that precedes it (looking past any shape brackets).
-func stripInline(line string, pending *[]classAssign) string {
-	for {
-		idx := topLevelTripleColon(line)
-		if idx < 0 {
-			return line
-		}
-		j := idx + 3
-		for j < len(line) && isWordByte(line[j]) {
-			j++
-		}
-		class := line[idx+3 : j]
-		if id := nodeIDBefore(line, idx); id != "" && class != "" {
-			*pending = append(*pending, classAssign{ids: []string{id}, name: class})
-		}
-		line = line[:idx] + line[j:]
-	}
-}
+// entityTail matches the end of an entity written before a semicolon, as in
+// "#quot;" or "&amp;", so that semicolon does not end the statement.
+var entityTail = regexp.MustCompile(`[#&]#?[A-Za-z0-9]+$`)
 
-// topLevelTripleColon returns the index of the first ":::" that sits outside any
-// shape bracket or quoted label, or -1. This keeps a literal ":::" inside a node
-// label from being mistaken for an inline class assignment.
-func topLevelTripleColon(s string) int {
-	depth, inQuote := 0, false
-	for i := 0; i+2 < len(s); i++ {
-		c := s[i]
-		if inQuote {
+// splitStatements splits a line at the semicolons that end statements,
+// leaving those inside quotes, shapes, pipes and entities alone.
+func splitStatements(line string) []string {
+	var out []string
+	depth, inQuote, inPipe := 0, false, false
+	start := 0
+	for i := 0; i < len(line); i++ {
+		c := line[i]
+		switch {
+		case inQuote:
 			if c == '"' {
 				inQuote = false
 			}
-			continue
-		}
-		switch c {
-		case '"':
+		case c == '"':
 			inQuote = true
-		case '[', '(', '{':
+		case c == '[' || c == '(' || c == '{':
 			depth++
-		case ']', ')', '}':
+		case (c == ']' || c == ')' || c == '}') && depth > 0:
+			depth--
+		case c == '|' && depth == 0:
+			inPipe = !inPipe
+		case c == ';' && depth == 0 && !inPipe:
+			if entityTail.MatchString(line[start:i]) && !isStyling(line[start:i]) {
+				continue
+			}
+			out = append(out, line[start:i])
+			start = i + 1
+		}
+	}
+	return append(out, line[start:])
+}
+
+// isStyling reports whether a statement is a styling line, whose "#333;"
+// is a colour and not an entity.
+func isStyling(stmt string) bool {
+	word, _, _ := strings.Cut(strings.TrimSpace(stmt), " ")
+	switch word {
+	case "classDef", "class", "style", "linkStyle":
+		return true
+	}
+	return false
+}
+
+// apply resolves the styles onto the graph. The default class goes first,
+// then classes in the order they were assigned (inline ones first), then
+// direct style lines, so a later, more specific line wins.
+func (st *styles) apply(g *domain.Graph, inline []classAssign) {
+	targets := map[string]**domain.Style{}
+	for _, n := range g.Nodes {
+		targets[n.ID] = &n.Style
+	}
+	for _, sg := range g.Subgraphs {
+		if _, ok := targets[sg.ID]; !ok {
+			targets[sg.ID] = &sg.Style
+		}
+	}
+	merge := func(id string, s *domain.Style) {
+		if p, ok := targets[id]; ok && s != nil {
+			if *p == nil {
+				*p = &domain.Style{}
+			}
+			mergeStyle(*p, s)
+		}
+	}
+	if def, ok := st.classDefs["default"]; ok {
+		for _, n := range g.Nodes {
+			merge(n.ID, def)
+		}
+	}
+	for _, a := range append(append([]classAssign{}, inline...), st.assigns...) {
+		for _, name := range a.names {
+			for _, id := range a.ids {
+				merge(id, st.classDefs[name])
+			}
+		}
+	}
+	for _, d := range st.direct {
+		merge(d.id, d.style)
+	}
+	for i, e := range g.Edges {
+		if s := st.links.For(i); s != nil {
+			e.Style = s
+		}
+	}
+}
+
+// propSplit splits "fill:#f9f,stroke:rgb(1,2,3)" at the commas outside
+// parentheses.
+func propSplit(s string) []string {
+	var out []string
+	depth, start := 0, 0
+	for i := 0; i < len(s); i++ {
+		switch s[i] {
+		case '(':
+			depth++
+		case ')':
 			if depth > 0 {
 				depth--
 			}
-		case ':':
-			if depth == 0 && s[i+1] == ':' && s[i+2] == ':' {
-				return i
+		case ',':
+			if depth == 0 {
+				out = append(out, s[start:i])
+				start = i + 1
 			}
 		}
 	}
-	return -1
+	return append(out, s[start:])
 }
 
-// nodeIDBefore returns the node identifier ending at idx, skipping a trailing
-// shape (balanced brackets) if present.
-func nodeIDBefore(s string, idx int) string {
-	i := idx
-	if i > 0 {
-		switch s[i-1] {
-		case ']', ')', '}':
-			depth := 0
-			for i > 0 {
-				switch s[i-1] {
-				case ']', ')', '}':
-					depth++
-				case '[', '(', '{':
-					depth--
-				}
-				i--
-				if depth == 0 {
-					goto readID
-				}
-			}
-		}
-	}
-readID:
-	end := i
-	for i > 0 && isWordByte(s[i-1]) {
-		i--
-	}
-	return s[i:end]
-}
-
-func isWordByte(c byte) bool {
-	return c == '_' || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
-}
-
-func parseClassDef(line string) (string, *domain.Style) {
-	rest := strings.TrimSpace(line[len("classDef "):])
-	name, props, _ := strings.Cut(rest, " ")
-	return strings.TrimSpace(name), parseProps(props)
-}
-
-func parseStyleStmt(line string) (string, *domain.Style) {
-	rest := strings.TrimSpace(line[len("style "):])
-	id, props, _ := strings.Cut(rest, " ")
-	return strings.TrimSpace(id), parseProps(props)
-}
-
-// parseProps parses "fill:#f9f,stroke:#333,color:#fff" into a Style.
+// parseProps parses "fill:#f9f,stroke:#333,color:#fff" into a Style. Each
+// value is checked by cssval; one that is not a plain colour, length, dash
+// pattern or keyword is dropped, so a style line can never carry markup into
+// the picture.
 func parseProps(s string) *domain.Style {
 	st := &domain.Style{}
-	for _, kv := range strings.Split(s, ",") {
+	for _, kv := range propSplit(s) {
 		k, v, ok := strings.Cut(kv, ":")
 		if !ok {
 			continue
 		}
-		switch strings.TrimSpace(k) {
-		case "fill":
-			st.Fill = strings.TrimSpace(v)
+		v = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(strings.TrimRight(v, "; ")), "!important"))
+		switch strings.ToLower(strings.TrimSpace(k)) {
+		case "fill", "background", "background-color":
+			st.Fill, _ = cssval.Color(v)
 		case "stroke":
-			st.Stroke = strings.TrimSpace(v)
+			st.Stroke, _ = cssval.Color(v)
 		case "color":
-			st.Color = strings.TrimSpace(v)
+			st.Color, _ = cssval.Color(v)
 		case "stroke-width":
-			st.StrokeWidth = strings.TrimSuffix(strings.TrimSpace(v), "px")
+			if px, ok := cssval.Pixels(v, 40); ok {
+				st.StrokeWidth = svgutil.Num(px)
+			}
 		case "stroke-dasharray":
-			st.StrokeDash = strings.TrimSpace(v)
+			st.StrokeDash, _ = cssval.Dash(v)
+		case "font-weight":
+			st.FontWeight, _ = cssval.FontWeight(v)
+		case "font-style":
+			st.FontStyle, _ = cssval.FontStyle(v)
 		}
 	}
 	return st
 }
 
-// mergeStyle overlays non-empty fields of st onto the style for id.
-func mergeStyle(m map[string]*domain.Style, id string, st *domain.Style) {
-	cur := m[id]
-	if cur == nil {
-		cur = &domain.Style{}
-		m[id] = cur
+// mergeStyle overlays the non-empty fields of src onto dst.
+func mergeStyle(dst, src *domain.Style) {
+	set := func(d *string, s string) {
+		if s != "" {
+			*d = s
+		}
 	}
-	if st.Fill != "" {
-		cur.Fill = st.Fill
-	}
-	if st.Stroke != "" {
-		cur.Stroke = st.Stroke
-	}
-	if st.Color != "" {
-		cur.Color = st.Color
-	}
-	if st.StrokeWidth != "" {
-		cur.StrokeWidth = st.StrokeWidth
-	}
-	if st.StrokeDash != "" {
-		cur.StrokeDash = st.StrokeDash
-	}
+	set(&dst.Fill, src.Fill)
+	set(&dst.Stroke, src.Stroke)
+	set(&dst.Color, src.Color)
+	set(&dst.StrokeWidth, src.StrokeWidth)
+	set(&dst.StrokeDash, src.StrokeDash)
+	set(&dst.FontWeight, src.FontWeight)
+	set(&dst.FontStyle, src.FontStyle)
 }
 
 // LinkStyles holds the per-edge overrides from linkStyle directives. Default
@@ -273,20 +285,27 @@ func (l *LinkStyles) For(i int) *domain.Style {
 		return nil
 	}
 	if st, ok := l.ByIndex[i]; ok {
+		if l.Default != nil {
+			merged := *l.Default
+			mergeStyle(&merged, st)
+			return &merged
+		}
 		return st
 	}
 	return l.Default
 }
 
-// parseLinkStyle reads `linkStyle 0,2 stroke:#f00,stroke-width:4px` and
-// `linkStyle default ...`. The selector is a comma-separated list of edge
-// indexes in source order, matching Mermaid.
-func parseLinkStyle(line string, into *LinkStyles) {
-	rest := strings.TrimSpace(line[len("linkStyle "):])
+var interpolate = regexp.MustCompile(`^interpolate\s+\S+\s*`)
+
+// parseLinkStyle reads `0,2 stroke:#f00,stroke-width:4px` and `default ...`
+// (the text after "linkStyle"). The selector is a comma-separated list of
+// edge indexes in source order, matching Mermaid.
+func parseLinkStyle(rest string, into *LinkStyles) {
 	sel, props, ok := strings.Cut(rest, " ")
 	if !ok {
 		return
 	}
+	props = interpolate.ReplaceAllString(strings.TrimSpace(props), "")
 	st := parseProps(props)
 	if strings.EqualFold(strings.TrimSpace(sel), "default") {
 		into.Default = st
@@ -294,83 +313,42 @@ func parseLinkStyle(line string, into *LinkStyles) {
 	}
 	for _, part := range strings.Split(sel, ",") {
 		n, err := strconv.Atoi(strings.TrimSpace(part))
-		if err != nil {
+		if err != nil || n < 0 {
 			continue
 		}
 		into.ByIndex[n] = st
 	}
 }
 
-// shapeMetaRe matches the Mermaid 11 metadata form `A@{ shape: rect,
-// label: "Hi" }` on one line.
-var shapeMetaRe = regexp.MustCompile(`([A-Za-z0-9_.-]+)@\{([^}]*)\}`)
+var (
+	htmlTag      = regexp.MustCompile(`</?[A-Za-z][^<>]*>`)
+	hashEntity   = regexp.MustCompile(`#([A-Za-z]+|[0-9]+);`)
+	mdStrong     = regexp.MustCompile(`(\*\*|__)(\S(?:.*?\S)?)(\*\*|__)`)
+	mdEmphasis   = regexp.MustCompile(`(^|[^\w*])[*_](\S(?:[^*_]*?\S)?)[*_]($|[^\w*])`)
+	spaceAroundN = regexp.MustCompile(`[ \t]*\n[ \t]*`)
+)
 
-// shapeDelims maps a Mermaid 11 shape name onto the bracket pair the lexer
-// already understands.
-var shapeDelims = map[string][2]string{
-	"rect": {"[", "]"}, "rectangle": {"[", "]"}, "process": {"[", "]"},
-	"rounded": {"(", ")"}, "round": {"(", ")"},
-	"stadium": {"([", "])"}, "pill": {"([", "])"},
-	"circle":  {"((", "))"},
-	"diamond": {"{", "}"}, "decision": {"{", "}"}, "rhombus": {"{", "}"},
-	"hexagon": {"{{", "}}"}, "hex": {"{{", "}}"},
-	"cylinder": {"[(", ")]"}, "database": {"[(", ")]"}, "db": {"[(", ")]"},
-	"subroutine": {"[[", "]]"}, "subprocess": {"[[", "]]"},
-}
-
-// expandShapeMeta rewrites the Mermaid 11 metadata form into the bracket form
-// the lexer understands, so `A@{ shape: circle, label: "Hi" }` becomes
-// `A((Hi))`. An unknown shape falls back to a rectangle.
-func expandShapeMeta(line string) string {
-	return shapeMetaRe.ReplaceAllStringFunc(line, func(m string) string {
-		sub := shapeMetaRe.FindStringSubmatch(m)
-		id, body := sub[1], sub[2]
-		shape, label := "", id
-		for _, part := range splitMeta(body) {
-			k, v, ok := strings.Cut(part, ":")
-			if !ok {
-				continue
-			}
-			v = strings.Trim(strings.TrimSpace(v), `"'`)
-			switch strings.ToLower(strings.TrimSpace(k)) {
-			case "shape":
-				shape = strings.ToLower(v)
-			case "label", "title":
-				label = v
-			}
+// cleanLabel turns label source into the plain text drawn: a markdown string
+// ("`**bold** text`") loses its markers and keeps its line breaks, HTML tags
+// other than <br> are dropped, and entities written as "#quot;" or "&amp;"
+// become their characters. The result is plain text; the renderer escapes
+// it.
+func cleanLabel(s string) string {
+	s = strings.TrimSpace(s)
+	if len(s) >= 2 && s[0] == '`' && s[len(s)-1] == '`' {
+		s = s[1 : len(s)-1]
+		s = mdStrong.ReplaceAllString(s, "$2")
+		s = mdEmphasis.ReplaceAllString(s, "$1$2$3")
+		s = spaceAroundN.ReplaceAllString(strings.TrimSpace(s), "\n")
+	}
+	s = svgutil.JoinBreaks(s)
+	s = htmlTag.ReplaceAllString(s, "")
+	s = hashEntity.ReplaceAllStringFunc(s, func(m string) string {
+		name := m[1 : len(m)-1]
+		if name[0] >= '0' && name[0] <= '9' {
+			return "&#" + name + ";"
 		}
-		d, ok := shapeDelims[shape]
-		if !ok {
-			d = [2]string{"[", "]"}
-		}
-		return id + d[0] + label + d[1]
+		return "&" + name + ";"
 	})
-}
-
-// splitMeta splits metadata on commas that sit outside quotes, so a label may
-// contain a comma.
-func splitMeta(s string) []string {
-	var out []string
-	var cur strings.Builder
-	inQuote := byte(0)
-	for i := 0; i < len(s); i++ {
-		c := s[i]
-		switch {
-		case inQuote != 0 && c == inQuote:
-			inQuote = 0
-			cur.WriteByte(c)
-		case inQuote == 0 && (c == '"' || c == '\''):
-			inQuote = c
-			cur.WriteByte(c)
-		case inQuote == 0 && c == ',':
-			out = append(out, cur.String())
-			cur.Reset()
-		default:
-			cur.WriteByte(c)
-		}
-	}
-	if cur.Len() > 0 {
-		out = append(out, cur.String())
-	}
-	return out
+	return strings.TrimSpace(html.UnescapeString(s))
 }

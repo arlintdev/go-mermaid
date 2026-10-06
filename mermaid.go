@@ -39,7 +39,6 @@ import (
 	"github.com/arlintdev/go-mermaid/internal/journey"
 	"github.com/arlintdev/go-mermaid/internal/kanban"
 	"github.com/arlintdev/go-mermaid/internal/layout"
-	"github.com/arlintdev/go-mermaid/internal/lexer"
 	"github.com/arlintdev/go-mermaid/internal/mindmap"
 	"github.com/arlintdev/go-mermaid/internal/packet"
 	"github.com/arlintdev/go-mermaid/internal/parser"
@@ -216,32 +215,9 @@ func wrapParse(err error) error {
 }
 
 func renderFlowchart(src string, cfg config, title string) ([]byte, error) {
-	src, styles, links, linkStyles := parser.Preprocess(src)
-
-	tokens, err := lexer.Lex(src)
+	graph, err := parser.Flowchart(src)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrParse, err)
-	}
-
-	graph, err := parser.Parse(tokens)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrParse, err)
-	}
-
-	for id, st := range styles {
-		if n := graph.NodeByID(id); n != nil {
-			n.Style = st
-		}
-	}
-	for id, url := range links {
-		if n := graph.NodeByID(id); n != nil {
-			n.Link = url
-		}
-	}
-	for i, e := range graph.Edges {
-		if st := linkStyles.For(i); st != nil {
-			e.Style = st
-		}
 	}
 
 	laid, err := layout.Compute(graph, cfg.layout())

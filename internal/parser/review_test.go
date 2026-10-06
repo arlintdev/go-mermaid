@@ -6,39 +6,26 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestClickURLSanitization(t *testing.T) {
-	Convey("Given click directives with various URLs", t, func() {
-		Convey("When the target uses the javascript: scheme", func() {
-			_, _, links, _ := Preprocess("graph TD\nA\nclick A \"javascript:alert(1)\"")
-			Convey("Then the link is rejected", func() {
-				So(links["A"], ShouldEqual, "")
-			})
-		})
+func TestClickIsDropped(t *testing.T) {
+	Convey("Given a click directive", t, func() {
+		g, err := Flowchart("graph TD\nA\nclick A \"javascript:alert(1)\"\nclick A href \"https://example.com\"")
 
-		Convey("When the target is an https URL", func() {
-			_, _, links, _ := Preprocess("graph TD\nA\nclick A \"https://example.com\"")
-			Convey("Then the link is kept", func() {
-				So(links["A"], ShouldEqual, "https://example.com")
-			})
-		})
-
-		Convey("When the target is a relative path", func() {
-			_, _, links, _ := Preprocess("graph TD\nA\nclick A \"/docs/x\"")
-			Convey("Then the link is kept", func() {
-				So(links["A"], ShouldEqual, "/docs/x")
-			})
+		Convey("Then it is read and left out, since a static picture cannot link", func() {
+			So(err, ShouldBeNil)
+			So(len(g.Nodes), ShouldEqual, 1)
+			So(g.NodeByID("A").Link, ShouldEqual, "")
 		})
 	})
 }
 
 func TestInlineClassInsideLabel(t *testing.T) {
 	Convey("Given a node whose label text contains ':::'", t, func() {
-		src, _, _, _ := Preprocess("graph LR\nA[\"a:::b\"]")
+		g, err := Flowchart("graph LR\nA[\"a:::b\"]")
 
-		Convey("When preprocessing styling directives", func() {
-			Convey("Then the label is left intact and no class is stripped", func() {
-				So(src, ShouldContainSubstring, "a:::b")
-			})
+		Convey("Then the label is left intact and no class is read from it", func() {
+			So(err, ShouldBeNil)
+			So(g.NodeByID("A").Label, ShouldEqual, "a:::b")
+			So(g.NodeByID("A").Style, ShouldBeNil)
 		})
 	})
 }

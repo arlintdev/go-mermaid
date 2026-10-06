@@ -77,3 +77,6 @@ func (f Face) LinesWidth(lines []string, fontSize float64) float64 {
 	}
 	return w
 }
+
+// JoinBreaks rewrites every explicit line break in s (see Breaks) as "\n".
+func JoinBreaks(s string) string { return strings.Join(Breaks(s), "\n") }
