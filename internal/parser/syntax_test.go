@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/arlintdev/go-mermaid/internal/domain"
@@ -194,5 +196,16 @@ func TestUnicodeIDs(t *testing.T) {
 	g := mustParse(t, "flowchart TD\n  Ä[Ü] --> 日[本]")
 	if g.NodeByID("Ä") == nil || g.NodeByID("日").Label != "本" {
 		t.Errorf("nodes %+v", g.Nodes)
+	}
+}
+
+func TestSizeLimits(t *testing.T) {
+	var b strings.Builder
+	b.WriteString("flowchart TD\n")
+	for i := 0; i <= MaxEdges; i++ {
+		fmt.Fprintf(&b, "A%d --> B%d\n", i%10, i%7)
+	}
+	if _, err := Flowchart(b.String()); err == nil {
+		t.Error("a chart over the edge limit was accepted")
 	}
 }

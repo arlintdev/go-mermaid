@@ -148,9 +148,15 @@ func (f *flowGraph) addFillers(maxRank int) {
 func (f *flowGraph) order() {
 	var best [][]*fnode
 	bestCross := -1
+	var starts int
 	// Barycenter sweeps settle in a local minimum that depends on where
 	// they start, so start from a few places and keep the best.
-	for start := 0; start < 3 && bestCross != 0; start++ {
+	// Large charts get less effort, so hostile input stays fast.
+	starts, f.sweeps = 3, 24
+	if len(f.nodes) > 600 {
+		starts, f.sweeps = 1, 8
+	}
+	for start := 0; start < starts && bestCross != 0; start++ {
 		f.initOrder(start == 1)
 		if start == 2 {
 			f.mirror()
@@ -169,7 +175,7 @@ func (f *flowGraph) sweep() ([][]*fnode, int) {
 	best := f.snapshot()
 	bestCross := f.crossings()
 	stale := 0
-	for iter := 0; iter < 24 && bestCross > 0 && stale < 6; iter++ {
+	for iter := 0; iter < f.sweeps && bestCross > 0 && stale < 6; iter++ {
 		down := iter%2 == 0
 		keys := f.clusterKeys()
 		if down {
@@ -181,7 +187,9 @@ func (f *flowGraph) sweep() ([][]*fnode, int) {
 				f.sortLayer(r, false, keys)
 			}
 		}
-		f.transpose()
+		if len(f.nodes) <= 2000 {
+			f.transpose()
+		}
 		if c := f.crossings(); c < bestCross {
 			bestCross, best, stale = c, f.snapshot(), 0
 		} else {

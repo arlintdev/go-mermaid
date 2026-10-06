@@ -270,6 +270,7 @@ type flowGraph struct {
 	// gaps between layer i and i+1: where tracks may run
 	trackTop, trackBottom []float64
 	trackCount            []int
+	sweeps                int
 	routes                map[*fedge]*route
 }
 

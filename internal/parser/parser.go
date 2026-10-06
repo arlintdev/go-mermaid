@@ -27,9 +27,23 @@ func Flowchart(src string) (*domain.Graph, error) {
 	if err != nil {
 		return nil, err
 	}
+	// mermaid.js refuses charts past 500 edges (its maxEdges); the same
+	// limits keep hostile input from tying up the layout.
+	if len(g.Edges) > MaxEdges {
+		return nil, syntax.Errorf(1, 1, "too many links: %d, at most %d", len(g.Edges), MaxEdges)
+	}
+	if len(g.Nodes) > MaxNodes {
+		return nil, syntax.Errorf(1, 1, "too many nodes: %d, at most %d", len(g.Nodes), MaxNodes)
+	}
 	st.apply(g, p.classRefs)
 	return g, nil
 }
+
+// MaxEdges and MaxNodes bound the size of a flowchart Flowchart accepts.
+const (
+	MaxEdges = 500
+	MaxNodes = 1000
+)
 
 // Parse builds a Graph from tokens produced by the lexer. Inline ":::class"
 // references are read but not resolved; Flowchart resolves them.
@@ -269,6 +283,9 @@ func (p *parser) parseStatement() error {
 		}
 		// `A & B --> C & D` links every node on the left to every node on
 		// the right, so the lists form a small cross product.
+		if len(p.graph.Edges)+len(from)*len(to) > MaxEdges {
+			return p.errAt(p.cur(), "too many links, at most %d", MaxEdges)
+		}
 		for _, f := range from {
 			for _, t := range to {
 				p.graph.Edges = append(p.graph.Edges, newEdge(f, t, label, link))
