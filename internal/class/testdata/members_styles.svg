@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="930.18" height="391" viewBox="0 0 930.18 391" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(16,16)">
+    <path d="M208,82 C269.36,82 269.36,82 344.73,82" fill="none" stroke="#333333"/>
+    <path d="M194,82 L208,90 L208,74 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M462.73,90.83 C527.59,90.83 527.59,124.67 608.45,124.67" fill="none" stroke="#333333"/>
+    <path d="M446.73,90.83 L454.73,96.83 L462.73,90.83 L454.73,84.83 Z" fill="#333333" stroke="#333333"/>
+    <text x="464.73" y="101.18" fill="#333333" text-anchor="middle" font-size="11.9">1</text>
+    <text x="590.45" y="115.9" fill="#333333" text-anchor="middle" font-size="11.9">many</text>
+    <path d="M446.73,73.17 C522.09,73.17 522.09,30.5 587.45,30.5" fill="none" stroke="#333333"/>
+    <circle cx="592.45" cy="30.5" r="5" fill="#ffffff" stroke="#333333"/>
+    <path d="M685.45,133.5 C752.32,133.5 752.32,133.5 819.18,133.5" fill="none" stroke="#333333" stroke-dasharray="5 4"/>
+    <path d="M671.45,133.5 L685.45,141.5 L685.45,125.5 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M833.18,133.5 L819.18,125.5 L819.18,141.5 Z" fill="#ffffff" stroke="#333333"/>
+    <path d="M160,243 C384.23,243 384.23,142.33 608.45,142.33" fill="none" stroke="#333333" stroke-dasharray="3 3"/>
+    <rect x="34" y="214" width="126" height="58" fill="#fff5ad" stroke="#aaaa33"/>
+    <text x="45.2" y="236.51" fill="#333333">x and y in pixels,</text>
+    <text x="45.2" y="256.81" fill="#333333">from the top left</text>
+    <rect x="29" y="322" width="136" height="37" fill="#fff5ad" stroke="#aaaa33"/>
+    <text x="40.2" y="344.51" fill="#333333">free-standing note</text>
+    <rect x="0" y="0" width="194" height="164" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="97" y="22.61" fill="#333333" text-anchor="middle" font-size="12.6">«abstract»</text>
+    <text x="97" y="42.91" fill="#333333" text-anchor="middle" font-weight="bold">Shape&lt;T&gt;</text>
+    <line x1="0" y1="57.4" x2="194" y2="57.4" stroke="#9370DB"/>
+    <text x="11.2" y="77.91" fill="#333333">+List&lt;List&lt;int&gt;&gt; points</text>
+    <text x="11.2" y="98.21" fill="#333333">+count</text>
+    <line x1="11.2" y1="100.21" x2="53.62" y2="100.21" stroke="#333333"/>
+    <line x1="0" y1="110.6" x2="194" y2="110.6" stroke="#9370DB"/>
+    <text x="11.2" y="131.11" fill="#333333" font-style="italic">+area() : double</text>
+    <text x="11.2" y="151.41" fill="#333333">+make(T seed) : Shape&lt;T&gt;</text>
+    <line x1="11.2" y1="153.41" x2="182.78" y2="153.41" stroke="#333333"/>
+    <rect x="344.73" y="55.5" width="102" height="53" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+    <text x="395.73" y="78.11" fill="#333333" text-anchor="middle" font-weight="bold">Round thing</text>
+    <line x1="344.73" y1="92.6" x2="446.73" y2="92.6" stroke="#1565c0"/>
+    <line x1="344.73" y1="100.3" x2="446.73" y2="100.3" stroke="#1565c0"/>
+    <rect x="608.45" y="107" width="63" height="53" fill="#fff3e0" stroke="#9370DB"/>
+    <text x="639.95" y="129.61" fill="#333333" text-anchor="middle" font-weight="bold">Point</text>
+    <line x1="608.45" y1="144.1" x2="671.45" y2="144.1" stroke="#9370DB"/>
+    <line x1="608.45" y1="151.8" x2="671.45" y2="151.8" stroke="#9370DB"/>
+    <rect x="597.45" y="4" width="85" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="639.95" y="26.61" fill="#333333" text-anchor="middle" font-weight="bold">Drawable</text>
+    <line x1="597.45" y1="41.1" x2="682.45" y2="41.1" stroke="#9370DB"/>
+    <line x1="597.45" y1="48.8" x2="682.45" y2="48.8" stroke="#9370DB"/>
+    <rect x="833.18" y="107" width="65" height="53" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="865.68" y="129.61" fill="#333333" text-anchor="middle" font-weight="bold">Vector</text>
+    <line x1="833.18" y1="144.1" x2="898.18" y2="144.1" stroke="#9370DB"/>
+    <line x1="833.18" y1="151.8" x2="898.18" y2="151.8" stroke="#9370DB"/>
+    <rect x="506.08" y="100.19" width="43.02" height="16.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text x="527.59" y="112.16" fill="#333333" text-anchor="middle" font-size="12.6">centre</text>
+  </g>
+</svg>
