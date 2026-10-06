@@ -161,6 +161,16 @@ func svg(d *Diagram, o RenderOptions) []byte {
 		if d.YLabel != "" {
 			left += axisTitleH
 		}
+		if rotate {
+			// A slanted label runs down and to the left of its tick; widen the
+			// left margin until the first ones clear the canvas edge.
+			for i, l := range labels {
+				x := left + band*(float64(i)+0.5)
+				if reach := (face.Width(l, fs) + fs*0.75) * math.Sqrt2 / 2; x-reach < pad {
+					left += pad - (x - reach)
+				}
+			}
+		}
 		plotTop = top + fs/2
 		bottom := plotTop + plotH + tickLen + gap
 		if rotate {
