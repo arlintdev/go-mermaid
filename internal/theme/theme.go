@@ -21,6 +21,24 @@ type Palette struct {
 	LabelBackground string
 }
 
+// Over returns p with every non-empty color of o put over it.
+func (p Palette) Over(o Palette) Palette {
+	set := func(d *string, s string) {
+		if s != "" {
+			*d = s
+		}
+	}
+	set(&p.Background, o.Background)
+	set(&p.NodeFill, o.NodeFill)
+	set(&p.NodeStroke, o.NodeStroke)
+	set(&p.Text, o.Text)
+	set(&p.Edge, o.Edge)
+	set(&p.ClusterFill, o.ClusterFill)
+	set(&p.ClusterStroke, o.ClusterStroke)
+	set(&p.LabelBackground, o.LabelBackground)
+	return p
+}
+
 // Flow returns p with the flowchart-only colors filled in.
 func (p Palette) Flow() Palette {
 	if p.ClusterFill == "" {

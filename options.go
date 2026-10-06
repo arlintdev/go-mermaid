@@ -36,7 +36,7 @@ type Palette = theme.Palette
 func WithCustomTheme(name string, p Palette) Option {
 	return func(c *config) {
 		theme.Register(name, p)
-		c.theme = Theme(name)
+		c.theme, c.themeSet = Theme(name), true
 	}
 }
 
@@ -84,8 +84,11 @@ type config struct {
 	bgColor       string // override background color
 	bgTransparent bool   // omit the background rect entirely
 
-	fontSet  bool   // WithFont was given
-	idPrefix string // WithIDPrefix, empty for one derived from the source
+	fontSet  bool // WithFont was given
+	themeSet bool // WithTheme or WithCustomTheme was given
+
+	themeVars theme.Palette // colours from the diagram's init directive
+	idPrefix  string        // WithIDPrefix, empty for one derived from the source
 }
 
 // fontFamilyRe accepts a plain CSS font-family list: names, generic
@@ -134,7 +137,7 @@ func (c config) render() render.Options {
 
 // WithTheme sets the color palette.
 func WithTheme(t Theme) Option {
-	return func(c *config) { c.theme = t }
+	return func(c *config) { c.theme, c.themeSet = t, true }
 }
 
 // WithFont sets the font family and base size (in pixels) for labels.

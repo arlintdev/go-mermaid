@@ -1,30 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="386" height="660.31" viewBox="0 0 386 660.31" font-family="sans-serif" font-size="16">
+<svg xmlns="http://www.w3.org/2000/svg" width="386" height="720.31" viewBox="0 0 386 720.31" font-family="sans-serif" font-size="16">
   <defs>
-    <marker id="m17u59rd-arrow-0" viewBox="0 0 10 11" refX="0" refY="5.5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="11" orient="auto-start-reverse"><path d="M0,0 L10,5.5 L0,11 z" fill="#333333"/></marker>
+    <marker id="m17u59rd-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
   </defs>
   <rect width="100%" height="100%" fill="#ffffff"/>
   <g transform="translate(16,16)">
-    <path d="M76,75.44 L76,135.94 Q76,140.94 81,140.94 L107.75,140.94 Q109,140.94 109,142.19 L109,143.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m17u59rd-arrow-0)"/>
-    <path d="M278,48 L278,135.94 Q278,140.94 273,140.94 L246.25,140.94 Q245,140.94 245,142.19 L245,143.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m17u59rd-arrow-0)"/>
-    <path d="M177,273.44 L177,341.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m17u59rd-arrow-0)"/>
-    <path d="M177,450.87 L177,518.87" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m17u59rd-arrow-0)"/>
-    <rect x="16.86" y="100.44" width="118.27" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="76" y="120.04">pg_dump, WAL</tspan></text>
-    <rect x="217.98" y="100.44" width="120.03" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="278" y="120.04">files, still sealed</tspan></text>
-    <rect x="149.43" y="298.44" width="55.14" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="177" y="318.04">sealed</tspan></text>
-    <rect x="107.19" y="475.87" width="139.62" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="177" y="495.47">sealed copies only</tspan></text>
+    <path d="M76,75.44 L76,150.94 Q76,155.94 81,155.94 L105.75,155.94 Q109,155.94 109,159.19 L109,162.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m17u59rd-arrow-0)"/>
+    <path d="M278,48 L278,150.94 Q278,155.94 273,155.94 L248.25,155.94 Q245,155.94 245,159.19 L245,162.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m17u59rd-arrow-0)"/>
+    <path d="M177,293.44 L177,380.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m17u59rd-arrow-0)"/>
+    <path d="M177,490.87 L177,577.87" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m17u59rd-arrow-0)"/>
+    <rect x="16.86" y="110.44" width="118.27" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="130.04">pg_dump, WAL</tspan></text>
+    <rect x="217.98" y="110.44" width="120.03" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="130.04">files, still sealed</tspan></text>
+    <rect x="149.43" y="328.44" width="55.14" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="177" y="348.04">sealed</tspan></text>
+    <rect x="107.19" y="525.87" width="139.62" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="177" y="545.47">sealed copies only</tspan></text>
     <path d="M0,13.72 A76,13.72 0 0 1 152,13.72 L152,61.72 A76,13.72 0 0 1 0,61.72 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M0,13.72 A76,13.72 0 0 0 152,13.72" fill="none" stroke="#9370DB"/>
     <text fill="#333333" text-anchor="middle"><tspan x="76" y="50.18">digin-db</tspan></text>
     <rect x="202" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
     <text fill="#333333" text-anchor="middle"><tspan x="278" y="29.6">digin</tspan></text>
-    <rect x="101" y="153.44" width="152" height="120" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="177" y="183.04">The host&#39;s runs:</tspan><tspan x="177" y="207.04">nightly, and</tspan><tspan x="177" y="231.04">WAL each</tspan><tspan x="177" y="255.04">minute</tspan></text>
-    <path d="M101,365.16 A76,13.72 0 0 1 253,365.16 L253,437.16 A76,13.72 0 0 1 101,437.16 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M101,365.16 A76,13.72 0 0 0 253,365.16" fill="none" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="177" y="401.61">digin-backups:</tspan><tspan x="177" y="425.61">sealed</tspan></text>
-    <path d="M101,542.59 A76,13.72 0 0 1 253,542.59 L253,614.59 A76,13.72 0 0 1 101,614.59 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M101,542.59 A76,13.72 0 0 0 253,542.59" fill="none" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="177" y="579.05">Backup store,</tspan><tspan x="177" y="603.05">off the host</tspan></text>
+    <rect x="101" y="173.44" width="152" height="120" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="177" y="203.04">The host&#39;s runs:</tspan><tspan x="177" y="227.04">nightly, and</tspan><tspan x="177" y="251.04">WAL each</tspan><tspan x="177" y="275.04">minute</tspan></text>
+    <path d="M101,405.16 A76,13.72 0 0 1 253,405.16 L253,477.16 A76,13.72 0 0 1 101,477.16 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M101,405.16 A76,13.72 0 0 0 253,405.16" fill="none" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="177" y="441.61">digin-backups:</tspan><tspan x="177" y="465.61">sealed</tspan></text>
+    <path d="M101,602.59 A76,13.72 0 0 1 253,602.59 L253,674.59 A76,13.72 0 0 1 101,674.59 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M101,602.59 A76,13.72 0 0 0 253,602.59" fill="none" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="177" y="639.05">Backup store,</tspan><tspan x="177" y="663.05">off the host</tspan></text>
   </g>
 </svg>

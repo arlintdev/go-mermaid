@@ -27,6 +27,9 @@ type Options struct {
 	Padding  float64
 	Title    string
 	Curved   bool
+	// Vars overrides palette colors (from a diagram's init directive); its
+	// values must already be validated.
+	Vars theme.Palette
 	// IDPrefix starts every id in the picture (markers), so two pictures on
 	// one page never share one. It must be letters, digits, '-' or '_' and
 	// start with a letter; anything else is replaced by "m".
@@ -46,10 +49,10 @@ func (o Options) prefix() string {
 const (
 	edgeWidth      = 1.5
 	thickWidth     = 3.5
-	arrowLen       = 10.0
-	arrowWide      = 11.0
-	circleMarker   = 9.0
-	crossMarker    = 10.0
+	arrowLen       = 11.0
+	arrowWide      = 12.0
+	circleMarker   = 13.0
+	crossMarker    = 13.0
 	cornerRadius   = 5.0
 	curvedRadius   = 14.0
 	titleFontScale = 1.15
@@ -74,7 +77,7 @@ func SVG(res *layout.Result, opts Options) ([]byte, error) {
 	}
 	r := &renderer{
 		opts:    opts,
-		pal:     theme.For(opts.Theme).Flow(),
+		pal:     theme.For(opts.Theme).Over(opts.Vars).Flow(),
 		face:    svgutil.FaceFor(opts.FontFace),
 		markers: map[string]string{},
 	}
@@ -119,11 +122,17 @@ func (r *renderer) render(res *layout.Result) []byte {
 }
 
 func (r *renderer) drawBody(b *strings.Builder, g *domain.Graph) {
-	for _, sg := range clusterOrder(g) {
+	clusters := clusterOrder(g)
+	for _, sg := range clusters {
 		r.drawCluster(b, sg)
 	}
 	for _, e := range g.Edges {
 		r.drawEdge(b, e)
+	}
+	// Titles go over the edges: one an edge must cross is drawn on a patch
+	// of its box's fill, so the line passes behind the words.
+	for _, sg := range clusters {
+		r.drawClusterTitle(b, sg, g.Edges)
 	}
 	for _, e := range g.Edges {
 		r.drawEdgeLabel(b, e)
@@ -161,24 +170,57 @@ func (r *renderer) drawCluster(b *strings.Builder, sg *domain.Subgraph) {
 	if box.Size.W <= 0 || box.Size.H <= 0 {
 		return
 	}
-	fill, stroke, text := r.pal.ClusterFill, r.pal.ClusterStroke, r.pal.Text
+	fill, stroke := r.pal.ClusterFill, r.pal.ClusterStroke
 	extra := ""
 	if st := sg.Style; st != nil {
-		fill, stroke, text = pick(st.Fill, fill), pick(st.Stroke, stroke), pick(st.Color, text)
+		fill, stroke = pick(st.Fill, fill), pick(st.Stroke, stroke)
 		extra = strokeExtras(st)
 	}
 	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"%s/>`+"\n",
 		num(box.Min.X), num(box.Min.Y), num(box.Size.W), num(box.Size.H), esc(fill), esc(stroke), extra)
+}
+
+func (r *renderer) drawClusterTitle(b *strings.Builder, sg *domain.Subgraph, edges []*domain.Edge) {
+	box := sg.Box
 	lines := sg.TitleLines
 	if len(lines) == 0 && sg.Title != "" {
 		lines = svgutil.SplitLines(sg.Title)
 	}
-	if len(lines) == 0 {
+	if box.Size.W <= 0 || len(lines) == 0 {
 		return
+	}
+	fill, text := r.pal.ClusterFill, r.pal.Text
+	if st := sg.Style; st != nil {
+		fill, text = pick(st.Fill, fill), pick(st.Color, text)
 	}
 	lh := r.opts.FontSize * 1.5
 	top := box.Min.Y + 6
-	r.writeLines(b, lines, box.Min.X+box.Size.W/2, top+lh*float64(len(lines))/2, text, fontAttrs(sg.Style))
+	cx := box.Min.X + box.Size.W/2
+	if sg.TitleX != 0 {
+		cx = sg.TitleX
+	}
+	tw := r.face.LinesWidth(lines, r.opts.FontSize) + 8
+	th := lh * float64(len(lines))
+	x0, x1, y0, y1 := cx-tw/2, cx+tw/2, top, top+th
+	for _, e := range edges {
+		if e.Line == domain.LineInvisible {
+			continue
+		}
+		crossed := false
+		for i := 1; i < len(e.Points); i++ {
+			p, q := e.Points[i-1], e.Points[i]
+			if math.Min(p.X, q.X) < x1 && math.Max(p.X, q.X) > x0 && math.Min(p.Y, q.Y) < y1 && math.Max(p.Y, q.Y) > y0 {
+				crossed = true
+				break
+			}
+		}
+		if crossed {
+			fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s"/>`+"\n",
+				num(x0), num(y0), num(tw), num(th), esc(fill))
+			break
+		}
+	}
+	r.writeLines(b, lines, cx, top+th/2, text, fontAttrs(sg.Style))
 }
 
 func pick(v, def string) string {

@@ -250,3 +250,58 @@ func (f *flowGraph) normalize() (w, h float64) {
 	}
 	return maxX - minX, maxY - minY
 }
+
+// placeTitles moves each subgraph title along the top of its box, as little
+// as it can from the middle, so no edge runs through it.
+func (f *flowGraph) placeTitles() {
+	face, fs := f.opts.face(), f.opts.FontSize
+	for _, c := range f.clusters {
+		sg := c.sg
+		sg.TitleX = 0
+		if !c.used || len(sg.TitleLines) == 0 {
+			continue
+		}
+		b := sg.Box
+		y0, y1 := b.Min.Y, b.Min.Y+c.titleH
+		tw := face.LinesWidth(sg.TitleLines, fs) + 8
+		var blocked [][2]float64
+		for _, e := range f.g.Edges {
+			for i := 1; i < len(e.Points); i++ {
+				p, q := e.Points[i-1], e.Points[i]
+				if math.Max(p.Y, q.Y) < y0 || math.Min(p.Y, q.Y) > y1 {
+					continue
+				}
+				blocked = append(blocked, [2]float64{math.Min(p.X, q.X) - 4, math.Max(p.X, q.X) + 4})
+			}
+		}
+		lo, hi := b.Min.X+4, b.Min.X+b.Size.W-4
+		mid := b.Min.X + b.Size.W/2
+		free := func(x float64) bool {
+			if x-tw/2 < lo-0.01 || x+tw/2 > hi+0.01 {
+				return false
+			}
+			for _, bl := range blocked {
+				if x-tw/2 < bl[1] && bl[0] < x+tw/2 {
+					return false
+				}
+			}
+			return true
+		}
+		if free(mid) || len(blocked) == 0 {
+			continue
+		}
+		cands := []float64{lo + tw/2, hi - tw/2}
+		for _, bl := range blocked {
+			cands = append(cands, bl[1]+tw/2, bl[0]-tw/2)
+		}
+		best, bestD := 0.0, math.Inf(1)
+		for _, x := range cands {
+			if d := math.Abs(x - mid); free(x) && d < bestD {
+				best, bestD = x, d
+			}
+		}
+		if !math.IsInf(bestD, 1) {
+			sg.TitleX = best
+		}
+	}
+}

@@ -1,22 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1207.78" height="332.84" viewBox="0 0 1207.78 332.84" font-family="sans-serif" font-size="16">
   <defs>
-    <marker id="mil368u-arrow-0" viewBox="0 0 10 11" refX="0" refY="5.5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="11" orient="auto-start-reverse"><path d="M0,0 L10,5.5 L0,11 z" fill="#333333"/></marker>
+    <marker id="mil368u-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
   </defs>
   <rect width="100%" height="100%" fill="#ffffff"/>
   <g transform="translate(16,16)">
     <rect x="107.78" y="0" width="866" height="300.84" fill="#ffffde" stroke="#aaaa33"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="540.78" y="23.6">Cloud</tspan></text>
     <rect x="125.78" y="54" width="390" height="228.84" fill="#ffffde" stroke="#aaaa33"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="320.78" y="77.6">Web tier</tspan></text>
     <rect x="565.78" y="64.84" width="390" height="188.36" fill="#ffffde" stroke="#aaaa33"/>
+    <path d="M295.78,165 L303.28,165 Q308.28,165 308.28,160 L308.28,137 Q308.28,132 313.28,132 L334.78,132" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
+    <path d="M295.78,197 L303.28,197 Q308.28,197 308.28,202 L308.28,225 Q308.28,230 313.28,230 L334.78,230" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
+    <path d="M735.78,181 L774.78,181" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
+    <path d="M497.78,132 L548.28,132 Q553.28,132 553.28,137 L553.28,146.28 Q553.28,151.28 558.28,151.28 L572.78,151.28" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
+    <path d="M497.78,230 L548.28,230 Q553.28,230 553.28,225 L553.28,215.72 Q553.28,210.72 558.28,210.72 L572.78,210.72" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
+    <path d="M57.78,181 L132.78,181" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
+    <path d="M955.78,181 L1012.78,181" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="540.78" y="23.6">Cloud</tspan></text>
+    <text fill="#333333" text-anchor="middle"><tspan x="320.78" y="77.6">Web tier</tspan></text>
     <text fill="#333333" text-anchor="middle"><tspan x="760.78" y="88.44">Data tier</tspan></text>
-    <path d="M295.78,165 L303.28,165 Q308.28,165 308.28,160 L308.28,137 Q308.28,132 313.28,132 L335.78,132" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
-    <path d="M295.78,197 L303.28,197 Q308.28,197 308.28,202 L308.28,225 Q308.28,230 313.28,230 L335.78,230" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
-    <path d="M735.78,181 L775.78,181" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
-    <path d="M497.78,132 L548.28,132 Q553.28,132 553.28,137 L553.28,146.28 Q553.28,151.28 558.28,151.28 L573.78,151.28" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
-    <path d="M497.78,230 L548.28,230 Q553.28,230 553.28,225 L553.28,215.72 Q553.28,210.72 558.28,210.72 L573.78,210.72" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
-    <path d="M57.78,181 L133.78,181" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
-    <path d="M955.78,181 L1013.78,181" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mil368u-arrow-0)"/>
     <rect x="143.78" y="157" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
     <text fill="#333333" text-anchor="middle"><tspan x="219.78" y="186.6">Load balancer</tspan></text>
     <rect x="345.78" y="108" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>

@@ -1,45 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="896.76" height="674" viewBox="0 0 896.76 674" font-family="sans-serif" font-size="16">
+<svg xmlns="http://www.w3.org/2000/svg" width="896.76" height="734" viewBox="0 0 896.76 734" font-family="sans-serif" font-size="16">
   <defs>
-    <marker id="mucy8ql-arrow-0" viewBox="0 0 10 11" refX="0" refY="5.5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="11" orient="auto-start-reverse"><path d="M0,0 L10,5.5 L0,11 z" fill="#333333"/></marker>
+    <marker id="mucy8ql-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
   </defs>
   <rect width="100%" height="100%" fill="#ffffff"/>
   <g transform="translate(16,16)">
-    <rect x="174.46" y="174" width="690.29" height="468" fill="#ffffde" stroke="#aaaa33"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="519.61" y="197.6">The organisation&#39;s boundary</tspan></text>
-    <path d="M268.46,96 L268.46,218" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
-    <path d="M272.04,324 L272.04,384.5 Q272.04,389.5 277.04,389.5 L307.74,389.5 Q308.99,389.5 308.99,390.75 L308.99,392" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
-    <path d="M322.99,450 L322.99,518" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
-    <path d="M336.46,528 L336.46,520.5 Q336.46,515.5 341.46,515.5 L543.87,515.5 Q548.87,515.5 548.87,510.5 L548.87,341.5 Q548.87,336.5 543.87,336.5 L337.71,336.5 Q336.46,336.5 336.46,335.25 L336.46,334" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
-    <path d="M444.99,450 L444.99,457.5 Q444.99,462.5 449.99,462.5 L465.46,462.5 Q470.46,462.5 470.46,467.5 L470.46,518" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
-    <path d="M741.48,276 L741.48,384.5 Q741.48,389.5 736.48,389.5 L446.24,389.5 Q444.99,389.5 444.99,390.75 L444.99,392" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
-    <path d="M308.99,450 L308.99,457.5 Q308.99,462.5 303.99,462.5 L83.23,462.5 Q78.23,462.5 78.23,467.5 L78.23,518" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
-    <rect x="238.24" y="121" width="60.45" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="268.46" y="140.6">HTTPS</tspan></text>
-    <rect x="192.46" y="349" width="159.15" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="272.04" y="368.6">HTTP, or mutual TLS</tspan></text>
-    <rect x="273.21" y="475" width="99.57" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="322.99" y="494.6">OIDC sign-in</tspan></text>
-    <rect x="458.16" y="349" width="181.41" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="548.87" y="368.6">SCIM, through the proxy</tspan></text>
-    <rect x="413.56" y="475" width="113.81" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="470.46" y="494.6">JSON log lines</tspan></text>
-    <rect x="664.57" y="349" width="153.82" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="741.48" y="368.6">metrics, with a token</tspan></text>
-    <rect x="0" y="475" width="156.46" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="78.23" y="494.6">HTTPS, to allow-lists</tspan></text>
+    <rect x="174.46" y="194" width="690.29" height="508" fill="#ffffde" stroke="#aaaa33"/>
+    <path d="M268.46,96 L268.46,237" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
+    <path d="M272.04,344 L272.04,419.5 Q272.04,424.5 277.04,424.5 L305.74,424.5 Q308.99,424.5 308.99,427.75 L308.99,431" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
+    <path d="M322.99,490 L322.99,577" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
+    <path d="M336.46,588 L336.46,575.5 Q336.46,570.5 341.46,570.5 L543.87,570.5 Q548.87,570.5 548.87,565.5 L548.87,366.5 Q548.87,361.5 543.87,361.5 L339.71,361.5 Q336.46,361.5 336.46,358.25 L336.46,355" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
+    <path d="M444.99,490 L444.99,502.5 Q444.99,507.5 449.99,507.5 L465.46,507.5 Q470.46,507.5 470.46,512.5 L470.46,577" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
+    <path d="M741.48,296 L741.48,419.5 Q741.48,424.5 736.48,424.5 L448.24,424.5 Q444.99,424.5 444.99,427.75 L444.99,431" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
+    <path d="M308.99,490 L308.99,502.5 Q308.99,507.5 303.99,507.5 L83.23,507.5 Q78.23,507.5 78.23,512.5 L78.23,577" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mucy8ql-arrow-0)"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="519.61" y="217.6">The organisation&#39;s boundary</tspan></text>
+    <rect x="238.24" y="131" width="60.45" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="268.46" y="150.6">HTTPS</tspan></text>
+    <rect x="192.46" y="379" width="159.15" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="272.04" y="398.6">HTTP, or mutual TLS</tspan></text>
+    <rect x="273.21" y="525" width="99.57" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="322.99" y="544.6">OIDC sign-in</tspan></text>
+    <rect x="458.16" y="379" width="181.41" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="548.87" y="398.6">SCIM, through the proxy</tspan></text>
+    <rect x="413.56" y="525" width="113.81" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="470.46" y="544.6">JSON log lines</tspan></text>
+    <rect x="664.57" y="379" width="153.82" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="741.48" y="398.6">metrics, with a token</tspan></text>
+    <rect x="0" y="525" width="156.46" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="78.23" y="544.6">HTTPS, to allow-lists</tspan></text>
     <rect x="192.46" y="0" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
     <text fill="#333333" text-anchor="middle"><tspan x="268.46" y="29.6">People&#39;s</tspan><tspan x="268.46" y="53.6">browsers and</tspan><tspan x="268.46" y="77.6">MCP clients</tspan></text>
-    <rect x="192.46" y="228" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="268.46" y="257.6">Reverse proxy:</tspan><tspan x="268.46" y="281.6">ends TLS, the</tspan><tspan x="268.46" y="305.6">only way in</tspan></text>
-    <rect x="192.46" y="528" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="268.46" y="557.6">Identity provider</tspan></text>
-    <rect x="300.99" y="402" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="376.99" y="431.6">digin</tspan></text>
-    <rect x="394.46" y="528" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="470.46" y="557.6">Log collection,</tspan><tspan x="470.46" y="581.6">SIEM</tspan></text>
-    <rect x="665.48" y="228" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="741.48" y="257.6">Monitoring</tspan></text>
-    <rect x="2.23" y="528" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="78.23" y="557.6">Outside: only</tspan><tspan x="78.23" y="581.6">what is turned</tspan><tspan x="78.23" y="605.6">on</tspan></text>
+    <rect x="192.46" y="248" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="268.46" y="277.6">Reverse proxy:</tspan><tspan x="268.46" y="301.6">ends TLS, the</tspan><tspan x="268.46" y="325.6">only way in</tspan></text>
+    <rect x="192.46" y="588" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="268.46" y="617.6">Identity provider</tspan></text>
+    <rect x="300.99" y="442" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="376.99" y="471.6">digin</tspan></text>
+    <rect x="394.46" y="588" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="470.46" y="617.6">Log collection,</tspan><tspan x="470.46" y="641.6">SIEM</tspan></text>
+    <rect x="665.48" y="248" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="741.48" y="277.6">Monitoring</tspan></text>
+    <rect x="2.23" y="588" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="78.23" y="617.6">Outside: only</tspan><tspan x="78.23" y="641.6">what is turned</tspan><tspan x="78.23" y="665.6">on</tspan></text>
   </g>
 </svg>

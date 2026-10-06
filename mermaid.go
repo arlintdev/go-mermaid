@@ -85,6 +85,13 @@ func Render(src string, opts ...Option) (out []byte, err error) {
 	}
 
 	title, body := parseFrontmatter(src)
+	// A theme named in the diagram's own init directive applies unless the
+	// caller chose one.
+	initName, initVars := directiveTheme(body)
+	if initName != "" && !cfg.themeSet {
+		cfg.theme = Theme(initName)
+	}
+	cfg.themeVars = initVars
 	accTitle, accDescr, body := extractA11y(body)
 
 	var raw []byte
@@ -241,6 +248,9 @@ func renderFlowchart(src string, cfg config, title string) ([]byte, error) {
 	}
 
 	ro.Title = title
+	if !cfg.themeSet {
+		ro.Vars = cfg.themeVars
+	}
 	ro.IDPrefix = cfg.idPrefix
 	if ro.IDPrefix == "" {
 		ro.IDPrefix = svgid.Prefix(src)

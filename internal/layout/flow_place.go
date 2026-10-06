@@ -373,6 +373,11 @@ func (f *flowGraph) placePrimary() {
 		}
 		p += endRoom[r]
 		clear := f.opts.RankSep / 2
+		if f.hasLabel(r) || f.hasLabel(r+1) {
+			// An edge label gets more air above and below it, so the
+			// arrowhead under it stays clear of it.
+			clear = f.opts.RankSep * 0.7
+		}
 		if need := float64(tracks[r]+1) * trackGap; need > clear {
 			clear = need
 		}
@@ -441,4 +446,14 @@ func (f *flowGraph) widenForTitles(startRoom, endRoom []float64) {
 			endRoom[c.maxRank] += extra
 		}
 	}
+}
+
+// hasLabel reports whether layer r holds an edge label.
+func (f *flowGraph) hasLabel(r int) bool {
+	for _, n := range f.layers[r] {
+		if n.isLabel {
+			return true
+		}
+	}
+	return false
 }

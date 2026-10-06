@@ -37,6 +37,10 @@ type Subgraph struct {
 	// Set by layouts that place subgraphs; zero otherwise.
 	Box        Rect
 	TitleLines []string
+	// TitleX is the centre of the title across the box, when a layout has
+	// moved it off the middle to keep it clear of the edges entering the
+	// box; zero means the middle.
+	TitleX float64
 }
 
 // Graph is a parsed flowchart, independent of layout or rendering.

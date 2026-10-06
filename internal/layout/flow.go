@@ -31,6 +31,7 @@ func Flow(g *domain.Graph, opts Options) (*Result, error) {
 	f.run()
 	f.writeBack()
 	w, h := f.normalize()
+	f.placeTitles()
 	return &Result{Graph: g, Width: w, Height: h}, nil
 }
 
