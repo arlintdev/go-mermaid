@@ -19,9 +19,6 @@ type RenderOptions struct {
 	Title    string
 }
 
-// seriesColors is Mermaid's default xychart plot palette.
-var seriesColors = []string{"#ececff", "#8493a6", "#ffb6c1", "#c4a000", "#fcfc7f", "#f5deb3", "#87ceeb", "#ffe4e1", "#e6e6fa", "#90ee90"}
-
 const (
 	tickLen = 5.0
 	gap     = 6.0
@@ -86,7 +83,8 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	pal := theme.For(o.Theme)
+	pal := theme.For(o.Theme).Escaped()
+	series := pal.XYChart.Series
 	face := svgutil.FaceFor(o.FontFace)
 	fs := o.FontSize
 	pad := o.Padding
@@ -245,7 +243,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 		group = math.Min(group, 40)
 	}
 	for bi, s := range bars {
-		color := seriesColors[seriesIdx(d, s)%len(seriesColors)]
+		color := series[seriesIdx(d, s)%len(series)]
 		bw := group / float64(len(bars))
 		for i, v := range s.Values {
 			c := catPos(i) - group/2 + float64(bi)*bw
@@ -258,7 +256,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 				x, y, rw, rh = v0, c, v1-v0, bw
 			}
 			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"/>`+"\n",
-				svgutil.Num(x), svgutil.Num(y), svgutil.Num(rw), svgutil.Num(rh), color, darken(color))
+				svgutil.Num(x), svgutil.Num(y), svgutil.Num(rw), svgutil.Num(rh), color, theme.Darken(color))
 		}
 	}
 	for _, s := range d.Series {
@@ -275,7 +273,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 			fmt.Fprintf(&p, "%s%s,%s ", cmd, svgutil.Num(x), svgutil.Num(y))
 		}
 		fmt.Fprintf(&b, `<path d="%s" fill="none" stroke="%s" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`+"\n",
-			strings.TrimSpace(p.String()), lineColor(seriesColors[seriesIdx(d, s)%len(seriesColors)]))
+			strings.TrimSpace(p.String()), lineColor(series[seriesIdx(d, s)%len(series)], pal.Background))
 	}
 
 	axis := func(x1, y1, x2, y2 float64) {
@@ -372,29 +370,20 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	return []byte(b.String())
 }
 
-// darken returns a #rrggbb colour a third of the way to black, for a bar's
-// outline, so pale bars still read on a white page.
-func darken(c string) string {
-	v, err := strconv.ParseUint(strings.TrimPrefix(c, "#"), 16, 32)
-	if err != nil || len(c) != 7 {
+// lineColor keeps a palette colour for a line unless it is too pale to see
+// as a thin stroke on a light page (Mermaid's first colour is), in which
+// case it is darkened.
+func lineColor(c, page string) string {
+	if theme.IsDark(page) {
 		return c
 	}
-	r, g, bl := v>>16&0xff, v>>8&0xff, v&0xff
-	f := func(x uint64) uint64 { return x * 2 / 3 }
-	return fmt.Sprintf("#%02x%02x%02x", f(r), f(g), f(bl))
-}
-
-// lineColor keeps a palette colour for a line unless it is too pale to see
-// as a thin stroke on a white page (Mermaid's first colour is), in which
-// case it is darkened.
-func lineColor(c string) string {
 	v, err := strconv.ParseUint(strings.TrimPrefix(c, "#"), 16, 32)
 	if err != nil {
 		return c
 	}
 	lum := (0.2126*float64(v>>16&0xff) + 0.7152*float64(v>>8&0xff) + 0.0722*float64(v&0xff)) / 255
 	if lum > 0.8 {
-		return darken(c)
+		return theme.Darken(c)
 	}
 	return c
 }
