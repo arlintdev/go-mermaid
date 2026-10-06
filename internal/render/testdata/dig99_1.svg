@@ -6,7 +6,7 @@
   <g transform="translate(16,16)">
     <path d="M334.48,48 L334.48,87" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
     <path d="M264.79,170 L264.79,209" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
-    <path d="M264.79,340 L264.79,427" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M264.79,316 L264.79,427" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
     <path d="M514.16,340 L514.16,427" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
     <path d="M741.08,316 L741.08,427" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
     <path d="M996.02,316 L996.02,427" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
@@ -45,8 +45,8 @@
     <text fill="#333333" text-anchor="middle"><tspan x="334.48" y="29.6">Request</tspan></text>
     <rect x="255.35" y="98" width="158.26" height="72" fill="#ECECFF" stroke="#9370DB"/>
     <text fill="#333333" text-anchor="middle"><tspan x="334.48" y="127.6">asNobody:</tspan><tspan x="334.48" y="151.6">store.Nobody(ctx)</tspan></text>
-    <rect x="159.42" y="220" width="210.74" height="120" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="264.79" y="249.6">authenticator.middleware</tspan><tspan x="264.79" y="273.6">or the MCP</tspan><tspan x="264.79" y="297.6">endpoint:</tspan><tspan x="264.79" y="321.6">ScopeFor</tspan></text>
+    <rect x="159.42" y="220" width="210.74" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="264.79" y="249.6">authenticator.middleware</tspan><tspan x="264.79" y="273.6">or the MCP endpoint:</tspan><tspan x="264.79" y="297.6">ScopeFor</tspan></text>
     <rect x="178.99" y="438" width="171.6" height="72" fill="#ECECFF" stroke="#9370DB"/>
     <text fill="#333333" text-anchor="middle"><tspan x="264.79" y="467.6">store.AsPerson(ctx,</tspan><tspan x="264.79" y="491.6">user, scope)</tspan></text>
     <rect x="438.16" y="220" width="152" height="120" fill="#ECECFF" stroke="#9370DB"/>

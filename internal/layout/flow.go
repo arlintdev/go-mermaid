@@ -96,6 +96,12 @@ func measure(g *domain.Graph, opts Options) {
 			wrapAt = face.WrapWidthFor(label, fs, lh, wrapAt, math.Max(wrapAt, 2*labelWrapWidth-100))
 		}
 		n.Lines = face.Wrap(label, fs, wrapAt)
+		if lw := face.LongestWord(label, fs); wrapAt > 0 && lw > wrapAt {
+			// Widen the node for a long token (a URL, a path) rather than
+			// break it after every slash; past 2.5 wrap widths it breaks.
+			wrapAt = math.Min(lw, 2.5*wrapAt)
+			n.Lines = face.WrapWide(label, fs, wrapAt)
+		}
 		if label == "" {
 			n.Lines = nil
 		}

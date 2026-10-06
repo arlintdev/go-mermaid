@@ -30,6 +30,25 @@ func (f Face) Wrap(text string, fontSize, maxWidth float64) []string {
 	return f.wrap(text, fontSize, maxWidth, math.Max(maxWidth*2, 360), true)
 }
 
+// WrapWide is Wrap for a label holding a token wider than its usual wrap
+// width: lines fill to maxWidth, and only a token wider than maxWidth breaks
+// after '/', '-' or '_' (and between CJK characters).
+func (f Face) WrapWide(text string, fontSize, maxWidth float64) []string {
+	return f.wrap(text, fontSize, maxWidth, maxWidth, true)
+}
+
+// LongestWord returns the width of the widest run of text between spaces
+// and line breaks.
+func (f Face) LongestWord(text string, fontSize float64) float64 {
+	w := 0.0
+	for _, line := range Breaks(text) {
+		for _, word := range strings.Fields(line) {
+			w = math.Max(w, f.Width(word, fontSize))
+		}
+	}
+	return w
+}
+
 // WrapHard is for text drawn inside a box: it breaks between words, and
 // breaks a token wider than maxWidth only after '/', '-' or '_' or between
 // wide (CJK) characters. A token with no such place stays whole, so a caller
