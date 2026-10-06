@@ -258,6 +258,80 @@ func measure(d *Diagram, m metrics, xs []float64) []constraint {
 			note.W = max(widest(note.Lines, m.face, m.fs)+pad, span)
 		}
 	}
+	return append(cons, frameConstraints(d, m)...)
+}
+
+// frameLines wraps a frame's condition or a section's label. A word too long
+// to wrap may widen the frame up to frameWordMax; past that it is cut.
+func frameLines(label string, m metrics) []string {
+	if label == "" {
+		return nil
+	}
+	var out []string
+	for _, l := range wrap("["+label+"]", m.wrapW*1.4, m.face, m.fs) {
+		out = append(out, m.face.WrapWithin(l, m.fs, frameWordMax*m.k)...)
+	}
+	return out
+}
+
+// frameWordMax is the widest a frame's label line may be, at 14px.
+const frameWordMax = 520.0
+
+// frameConstraints keeps every frame wide enough for its labels by moving
+// lifelines apart: a frame around several lifelines spreads them, and one
+// around a single lifeline pushes the next one clear of its right edge, so
+// a frame never reaches over a lifeline it does not enclose.
+func frameConstraints(d *Diagram, m metrics) []constraint {
+	type span struct {
+		f      *Frame
+		lo, hi int
+	}
+	var stack []span
+	var cons []constraint
+	n := len(d.Participants)
+	cover := func(i, j int) {
+		if len(stack) == 0 {
+			return
+		}
+		top := &stack[len(stack)-1]
+		if top.lo < 0 {
+			top.lo, top.hi = i, j
+			return
+		}
+		top.lo, top.hi = min(top.lo, i), max(top.hi, j)
+	}
+	for _, it := range d.items {
+		switch it.kind {
+		case itMessage:
+			i, j := d.index[it.msg.From], d.index[it.msg.To]
+			cover(min(i, j), max(i, j))
+		case itNote:
+			i, j := d.index[it.note.Of[0]], d.index[it.note.Of[len(it.note.Of)-1]]
+			cover(min(i, j), max(i, j))
+		case itFrameStart:
+			if it.frame.Kind != "rect" {
+				it.frame.Lines = frameLines(it.frame.Label, m)
+			}
+			stack = append(stack, span{f: it.frame, lo: -1, hi: -1})
+		case itSection:
+			it.section.Lines = frameLines(it.section.Label, m)
+		case itFrameEnd:
+			if len(stack) == 0 || stack[len(stack)-1].f != it.frame {
+				continue
+			}
+			sp := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if sp.lo < 0 {
+				sp.lo, sp.hi = 0, n-1
+			}
+			if w := frameMinWidth(sp.f, m) - 2*m.frameMargin; sp.lo < sp.hi {
+				cons = append(cons, constraint{sp.lo, sp.hi, w})
+			} else if sp.hi+1 < n {
+				cons = append(cons, constraint{sp.hi, sp.hi + 1, w + m.frameMargin + m.barW + m.frameMargin})
+			}
+			cover(sp.lo, sp.hi)
+		}
+	}
 	return cons
 }
 
@@ -440,16 +514,12 @@ func vertical(lay *Layout) {
 				continue
 			}
 			f.Y0 = cursor + 10*k
-			if f.Label != "" {
-				f.Lines = wrap("["+f.Label+"]", m.wrapW*1.4, m.face, m.fs)
-			}
+			f.Lines = frameLines(f.Label, m)
 			cursor = f.Y0 + max(m.tabH, float64(len(f.Lines))*m.lineH+8*k)
 		case itSection:
 			s := it.section
 			s.Y = cursor + 8*k
-			if s.Label != "" {
-				s.Lines = wrap("["+s.Label+"]", m.wrapW*1.4, m.face, m.fs)
-			}
+			s.Lines = frameLines(s.Label, m)
 			cursor = s.Y + float64(len(s.Lines))*m.lineH + 4*k
 		case itFrameEnd:
 			n := len(frames)
