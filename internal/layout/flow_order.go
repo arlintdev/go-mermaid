@@ -146,7 +146,26 @@ func (f *flowGraph) addFillers(maxRank int) {
 // subgraphs in one order on every layer, so their boxes can neither
 // interleave nor overlap.
 func (f *flowGraph) order() {
-	f.initOrder()
+	var best [][]*fnode
+	bestCross := -1
+	// Barycenter sweeps settle in a local minimum that depends on where
+	// they start, so start from a few places and keep the best.
+	for start := 0; start < 3 && bestCross != 0; start++ {
+		f.initOrder(start == 1)
+		if start == 2 {
+			f.mirror()
+		}
+		order, cross := f.sweep()
+		if bestCross < 0 || cross < bestCross {
+			best, bestCross = order, cross
+		}
+	}
+	f.restore(best)
+}
+
+// sweep runs barycenter sweeps from the current order and returns the best
+// order seen and its crossing count.
+func (f *flowGraph) sweep() ([][]*fnode, int) {
 	best := f.snapshot()
 	bestCross := f.crossings()
 	stale := 0
@@ -169,12 +188,27 @@ func (f *flowGraph) order() {
 			stale++
 		}
 	}
-	f.restore(best)
+	return best, bestCross
+}
+
+// mirror reverses every layer, keeping clusters nested.
+func (f *flowGraph) mirror() {
+	keys := f.clusterKeys()
+	for i := range keys {
+		keys[i] = -keys[i]
+	}
+	for r, layer := range f.layers {
+		vals := map[*fnode]float64{}
+		for _, n := range layer {
+			vals[n] = -float64(n.order)
+		}
+		f.arrange(r, vals, keys)
+	}
 }
 
 // initOrder places nodes in the order a depth-first walk from the sources,
 // in source order, first reaches them.
-func (f *flowGraph) initOrder() {
+func (f *flowGraph) initOrder(reverse bool) {
 	visited := map[*fnode]bool{}
 	next := make([]int, len(f.layers))
 	var visit func(n *fnode)
@@ -185,8 +219,11 @@ func (f *flowGraph) initOrder() {
 		visited[n] = true
 		n.order = next[n.rank]
 		next[n.rank]++
-		for _, d := range n.downs {
-			visit(d.n)
+		for i := range n.downs {
+			if reverse {
+				i = len(n.downs) - 1 - i
+			}
+			visit(n.downs[i].n)
 		}
 	}
 	for _, n := range f.nodes {

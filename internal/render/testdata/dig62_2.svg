@@ -1,34 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="756.23" height="542" viewBox="0 0 756.23 542" font-family="sans-serif" font-size="16">
+<svg xmlns="http://www.w3.org/2000/svg" width="663.82" height="542" viewBox="0 0 663.82 542" font-family="sans-serif" font-size="16">
   <defs>
     <marker id="mksnr85-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
   </defs>
   <rect width="100%" height="100%" fill="#ffffff"/>
   <g transform="translate(16,16)">
-    <path d="M161.44,59 L161.44,62.25 Q161.44,65.5 158.19,65.5 L93.91,65.5 Q88.91,65.5 88.91,70.5 L88.91,305" fill="none" stroke="#333333" stroke-width="1.5" marker-start="url(#mksnr85-arrow-0)" marker-end="url(#mksnr85-arrow-0)"/>
-    <path d="M186,59 L186,433.67 Q186,438.67 191,438.67 L235.36,438.67 Q240.36,438.67 240.36,443.67 L240.36,451" fill="none" stroke="#333333" stroke-width="1.5" marker-start="url(#mksnr85-arrow-0)" marker-end="url(#mksnr85-arrow-0)"/>
-    <path d="M76,375 L76,445.33 Q76,450.33 81,450.33 L225.77,450.33 Q226.36,450.33 226.36,450.92 L226.36,451.5" fill="none" stroke="#333333" stroke-width="1.5" marker-start="url(#mksnr85-arrow-0)" marker-end="url(#mksnr85-arrow-0)"/>
-    <path d="M297.44,48 L297.44,60.5 Q297.44,65.5 302.44,65.5 L408.42,65.5 Q413.42,65.5 413.42,70.5 L413.42,135" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#mksnr85-arrow-0)"/>
-    <path d="M389.75,218 L389.75,293.5 Q389.75,298.5 384.75,298.5 L147.25,298.5 Q144,298.5 144,301.75 L144,305" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#mksnr85-arrow-0)"/>
-    <path d="M481.42,218 L481.42,230.5 Q481.42,235.5 486.42,235.5 L616.07,235.5 Q621.07,235.5 621.07,240.5 L621.07,433.67 Q621.07,438.67 616.07,438.67 L367.36,438.67 Q362.36,438.67 362.36,443.67 L362.36,451" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#mksnr85-arrow-0)"/>
-    <rect x="13.32" y="83" width="151.18" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="88.91" y="102.6">audio, video, screen</tspan></text>
-    <rect x="110.41" y="253" width="151.18" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="186" y="272.6">audio, video, screen</tspan></text>
-    <rect x="0.41" y="399" width="151.18" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="76" y="418.6">audio, video, screen</tspan></text>
-    <rect x="310.73" y="83" width="205.39" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="413.42" y="102.6">call setup over HTTP POST</tspan></text>
-    <rect x="286.59" y="253" width="206.32" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="389.75" y="272.6">setup down the SSE stream</tspan></text>
-    <rect x="517.91" y="253" width="206.32" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="621.07" y="272.6">setup down the SSE stream</tspan></text>
-    <rect x="153.44" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="229.44" y="29.6">Browser A</tspan></text>
-    <rect x="0" y="316" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="76" y="345.6">Browser B</tspan></text>
-    <rect x="218.36" y="462" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="294.36" y="491.6">Browser C</tspan></text>
-    <rect x="337.42" y="146" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="413.42" y="175.6">Digin server:</tspan><tspan x="413.42" y="199.6">hub</tspan></text>
+    <path d="M459.14,59 L459.14,293.5 Q459.14,298.5 454.14,298.5 L451.28,298.5 Q448.03,298.5 448.03,301.75 L448.03,305" fill="none" stroke="#333333" stroke-width="1.5" marker-start="url(#mksnr85-arrow-0)" marker-end="url(#mksnr85-arrow-0)"/>
+    <path d="M491.74,59 L491.74,62.25 Q491.74,65.5 494.99,65.5 L551.23,65.5 Q556.23,65.5 556.23,70.5 L556.23,439.5 Q556.23,444.5 551.23,444.5 L417.72,444.5 Q414.47,444.5 414.47,447.75 L414.47,451" fill="none" stroke="#333333" stroke-width="1.5" marker-start="url(#mksnr85-arrow-0)" marker-end="url(#mksnr85-arrow-0)"/>
+    <path d="M380.03,375 L380.03,451" fill="none" stroke="#333333" stroke-width="1.5" marker-start="url(#mksnr85-arrow-0)" marker-end="url(#mksnr85-arrow-0)"/>
+    <path d="M355.74,48 L355.74,60.5 Q355.74,65.5 350.74,65.5 L260.85,65.5 Q255.85,65.5 255.85,70.5 L255.85,135" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#mksnr85-arrow-0)"/>
+    <path d="M323.85,218 L323.85,230.5 Q323.85,235.5 328.85,235.5 L329.48,235.5 Q334.48,235.5 334.48,240.5 L334.48,305" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#mksnr85-arrow-0)"/>
+    <path d="M187.85,218 L187.85,230.5 Q187.85,235.5 182.85,235.5 L108.16,235.5 Q103.16,235.5 103.16,240.5 L103.16,439.5 Q103.16,444.5 108.16,444.5 L275.22,444.5 Q278.47,444.5 278.47,447.75 L278.47,451" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#mksnr85-arrow-0)"/>
+    <rect x="383.55" y="83" width="151.18" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="459.14" y="102.6">audio, video, screen</tspan></text>
+    <rect x="480.64" y="253" width="151.18" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="556.23" y="272.6">audio, video, screen</tspan></text>
+    <rect x="304.44" y="399" width="151.18" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="380.03" y="418.6">audio, video, screen</tspan></text>
+    <rect x="153.16" y="83" width="205.39" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="255.85" y="102.6">call setup over HTTP POST</tspan></text>
+    <rect x="231.32" y="253" width="206.32" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="334.48" y="272.6">setup down the SSE stream</tspan></text>
+    <rect x="0" y="253" width="206.32" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="103.16" y="272.6">setup down the SSE stream</tspan></text>
+    <rect x="347.74" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="423.74" y="29.6">Browser A</tspan></text>
+    <rect x="304.03" y="316" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="380.03" y="345.6">Browser B</tspan></text>
+    <rect x="270.47" y="462" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="346.47" y="491.6">Browser C</tspan></text>
+    <rect x="179.85" y="146" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="255.85" y="175.6">Digin server:</tspan><tspan x="255.85" y="199.6">hub</tspan></text>
   </g>
 </svg>
