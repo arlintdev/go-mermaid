@@ -140,6 +140,33 @@ func (f Face) WrapWidthFor(text string, fontSize, lineHeight, base, most float64
 	return math.Max(base, math.Min(w, most))
 }
 
+// WrapWithin is Wrap for text that has a fixed room and nowhere else to go:
+// a line Wrap leaves wider than maxWidth (one long token) is cut between
+// characters into pieces that fit, as a browser's overflow-wrap does.
+func (f Face) WrapWithin(text string, fontSize, maxWidth float64) []string {
+	lines := f.Wrap(text, fontSize, maxWidth)
+	if maxWidth <= 0 {
+		return lines
+	}
+	var out []string
+	for _, l := range lines {
+		for f.Width(l, fontSize) > maxWidth {
+			r := []rune(l)
+			n := 1
+			for n < len(r) && f.Width(string(r[:n+1]), fontSize) <= maxWidth {
+				n++
+			}
+			for n < len(r) && zeroWidth(r[n]) {
+				n++
+			}
+			out = append(out, string(r[:n]))
+			l = string(r[n:])
+		}
+		out = append(out, l)
+	}
+	return out
+}
+
 // LinesWidth returns the width of the widest of lines.
 func (f Face) LinesWidth(lines []string, fontSize float64) float64 {
 	w := 0.0

@@ -44,9 +44,10 @@ type drawer struct {
 }
 
 // text writes s as one <text>, wrapped onto further lines below the first
-// when it is wider than maxW.
+// when it is wider than maxW; a word wider than maxW is cut to fit, since the
+// chart has a fixed size.
 func (dr *drawer) text(s string, x, y, size, maxW float64, fill, anchor, extra string) {
-	lines := dr.face.Wrap(s, size, maxW)
+	lines := dr.face.WrapWithin(s, size, maxW)
 	lh := size * 1.2
 	fmt.Fprintf(&dr.b, `  <text fill="%s" font-size="%s" text-anchor="%s"%s>`, fill, svgutil.Num(size), anchor, extra)
 	for i, ln := range lines {
@@ -128,7 +129,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 		}
 		y := q[1] + edge + fs*0.85
 		if len(d.Points) == 0 {
-			n := len(dr.face.Wrap(name, fs, halfW-2*edge))
+			n := len(dr.face.WrapWithin(name, fs, halfW-2*edge))
 			y = q[1] + halfH/2 - float64(n-1)*fs*0.6 + fs*0.35
 		}
 		dr.text(name, q[0]+halfW/2, y, fs, halfW-2*edge, text, "middle", "")
