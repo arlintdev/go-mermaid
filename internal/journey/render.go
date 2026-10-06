@@ -90,7 +90,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	taskLines := make([][]string, len(tasks))
 	for i, t := range tasks {
 		taskLines[i] = wrap(face, t.Name, fs, inner)
-		boxH = math.Max(boxH, float64(len(taskLines[i]))*lh+16)
+		boxH = math.Max(boxH, float64(len(taskLines[i]))*lh+26)
 	}
 	secLines := make([][]string, len(d.Sections))
 	secH := minBoxH
@@ -171,7 +171,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 				fmt.Fprintf(&b, `<circle cx="%s" cy="%s" r="7" fill="%s" stroke="#000000"><title>%s</title></circle>`+"\n",
 					svgutil.Num(x+14+float64(k)*10), svgutil.Num(taskY), colour[a], svgutil.Esc(a))
 			}
-			label(taskLines[i], cx, taskY+boxH/2)
+			label(taskLines[i], cx, taskY+boxH/2+3)
 			x += taskW + taskGap
 			i++
 		}

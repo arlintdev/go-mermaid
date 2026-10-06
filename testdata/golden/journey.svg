@@ -15,7 +15,7 @@
 <path d="M154.28,281.4 A7.5,7.5 0 0 0 167.28,281.4" fill="none" stroke="#666666" stroke-width="1.2"/>
 <rect x="85.78" y="114.4" width="150" height="50" rx="3" fill="#ececff" stroke="#666666"/>
 <circle cx="99.78" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Me</title></circle>
-<text fill="#333333" text-anchor="middle"><tspan x="160.78" y="144.3">Make tea</tspan></text>
+<text fill="#333333" text-anchor="middle"><tspan x="160.78" y="147.3">Make tea</tspan></text>
 <line x1="360.78" y1="164.4" x2="360.78" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
 <circle cx="360.78" cy="339.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
 <circle cx="355.78" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
@@ -23,7 +23,7 @@
 <line x1="355.78" y1="346.4" x2="365.78" y2="346.4" stroke="#666666"/>
 <rect x="285.78" y="114.4" width="150" height="50" rx="3" fill="#ececff" stroke="#666666"/>
 <circle cx="299.78" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Me</title></circle>
-<text fill="#333333" text-anchor="middle"><tspan x="360.78" y="144.3">Go upstairs</tspan></text>
+<text fill="#333333" text-anchor="middle"><tspan x="360.78" y="147.3">Go upstairs</tspan></text>
 <line x1="560.78" y1="164.4" x2="560.78" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
 <circle cx="560.78" cy="399.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
 <circle cx="555.78" cy="394.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
@@ -32,7 +32,7 @@
 <rect x="485.78" y="114.4" width="150" height="50" rx="3" fill="#ececff" stroke="#666666"/>
 <circle cx="499.78" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Me</title></circle>
 <circle cx="509.78" cy="114.4" r="7" fill="#8fbc8f" stroke="#000000"><title>Cat</title></circle>
-<text fill="#333333" text-anchor="middle"><tspan x="560.78" y="144.3">Do work</tspan></text>
+<text fill="#333333" text-anchor="middle"><tspan x="560.78" y="147.3">Do work</tspan></text>
 <rect x="685.78" y="54.4" width="350" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
 <text fill="#333333" text-anchor="middle"><tspan x="860.78" y="84.3">Go home</tspan></text>
 <line x1="760.78" y1="164.4" x2="760.78" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
@@ -42,7 +42,7 @@
 <path d="M754.28,281.4 A7.5,7.5 0 0 0 767.28,281.4" fill="none" stroke="#666666" stroke-width="1.2"/>
 <rect x="685.78" y="114.4" width="150" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
 <circle cx="699.78" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Me</title></circle>
-<text fill="#333333" text-anchor="middle"><tspan x="760.78" y="144.3">Go downstairs</tspan></text>
+<text fill="#333333" text-anchor="middle"><tspan x="760.78" y="147.3">Go downstairs</tspan></text>
 <line x1="960.78" y1="164.4" x2="960.78" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
 <circle cx="960.78" cy="339.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
 <circle cx="955.78" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
@@ -50,6 +50,6 @@
 <line x1="955.78" y1="346.4" x2="965.78" y2="346.4" stroke="#666666"/>
 <rect x="885.78" y="114.4" width="150" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
 <circle cx="899.78" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Me</title></circle>
-<text fill="#333333" text-anchor="middle"><tspan x="960.78" y="144.3">Sit down</tspan></text>
+<text fill="#333333" text-anchor="middle"><tspan x="960.78" y="147.3">Sit down</tspan></text>
 <line x1="85.78" y1="204.4" x2="1081.78" y2="204.4" stroke="#333333" stroke-width="4" marker-end="url(#m7zg7eb-arrowhead)"/>
 </svg>

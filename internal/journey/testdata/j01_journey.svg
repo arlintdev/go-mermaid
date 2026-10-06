@@ -17,7 +17,7 @@
 <path d="M195.53,311.4 A7.5,7.5 0 0 0 208.53,311.4" fill="none" stroke="#666666" stroke-width="1.2"/>
 <rect x="127.03" y="114.4" width="150" height="50" rx="3" fill="#ececff" stroke="#666666"/>
 <circle cx="141.03" cy="114.4" r="7" fill="#00ffff" stroke="#000000"><title>Visitor</title></circle>
-<text fill="#333333" text-anchor="middle"><tspan x="202.03" y="144.3">Read the site</tspan></text>
+<text fill="#333333" text-anchor="middle"><tspan x="202.03" y="147.3">Read the site</tspan></text>
 <line x1="402.03" y1="164.4" x2="402.03" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
 <circle cx="402.03" cy="339.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
 <circle cx="397.03" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
@@ -26,7 +26,7 @@
 <rect x="327.03" y="114.4" width="150" height="50" rx="3" fill="#ececff" stroke="#666666"/>
 <circle cx="341.03" cy="114.4" r="7" fill="#00ffff" stroke="#000000"><title>Visitor</title></circle>
 <circle cx="351.03" cy="114.4" r="7" fill="#7cfc00" stroke="#000000"><title>Colleague</title></circle>
-<text fill="#333333" text-anchor="middle"><tspan x="402.03" y="144.3">Ask a colleague</tspan></text>
+<text fill="#333333" text-anchor="middle"><tspan x="402.03" y="147.3">Ask a colleague</tspan></text>
 <rect x="527.03" y="54.4" width="350" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
 <text fill="#333333" text-anchor="middle"><tspan x="702.03" y="84.3">Join</tspan></text>
 <line x1="602.03" y1="164.4" x2="602.03" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
@@ -36,7 +36,7 @@
 <path d="M595.53,281.4 A7.5,7.5 0 0 0 608.53,281.4" fill="none" stroke="#666666" stroke-width="1.2"/>
 <rect x="527.03" y="114.4" width="150" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
 <circle cx="541.03" cy="114.4" r="7" fill="#00ffff" stroke="#000000"><title>Visitor</title></circle>
-<text fill="#333333" text-anchor="middle"><tspan x="602.03" y="144.3">Sign in with SSO</tspan></text>
+<text fill="#333333" text-anchor="middle"><tspan x="602.03" y="147.3">Sign in with SSO</tspan></text>
 <line x1="802.03" y1="164.4" x2="802.03" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
 <circle cx="802.03" cy="399.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
 <circle cx="797.03" cy="394.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
@@ -45,6 +45,6 @@
 <rect x="727.03" y="114.4" width="150" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
 <circle cx="741.03" cy="114.4" r="7" fill="#00ffff" stroke="#000000"><title>Visitor</title></circle>
 <circle cx="751.03" cy="114.4" r="7" fill="#8fbc8f" stroke="#000000"><title>Admin</title></circle>
-<text fill="#333333" text-anchor="middle"><tspan x="802.03" y="144.3">Wait for invite</tspan></text>
+<text fill="#333333" text-anchor="middle"><tspan x="802.03" y="147.3">Wait for invite</tspan></text>
 <line x1="127.03" y1="204.4" x2="923.03" y2="204.4" stroke="#333333" stroke-width="4" marker-end="url(#m1o9xkg0-arrowhead)"/>
 </svg>
