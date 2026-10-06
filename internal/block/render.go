@@ -108,7 +108,7 @@ func (l *layout) natural(b *Block) (float64, float64) {
 		w += 2 * compPad
 		h += 2 * compPad
 	default:
-		lines := wrap(l.face, b.Label, l.fs, maxLabelW)
+		lines := l.face.WrapHard(b.Label, l.fs, maxLabelW)
 		l.lines[b] = lines
 		tw := 0.0
 		for _, ln := range lines {
@@ -214,7 +214,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 		if e.Label != "" {
 			// Room for the label between the blocks it joins, within reason.
 			w := 0.0
-			for _, ln := range wrap(l.face, e.Label, fs*0.9, maxLabelW) {
+			for _, ln := range l.face.WrapHard(e.Label, fs*0.9, maxLabelW) {
 				w = max(w, l.face.Width(ln, fs*0.9))
 			}
 			l.gap = max(l.gap, min(w+28, 110))
@@ -323,7 +323,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 			continue
 		}
 		mx, my := midpoint(de.pts)
-		lines := wrap(l.face, de.e.Label, fs*0.9, maxLabelW)
+		lines := l.face.WrapHard(de.e.Label, fs*0.9, maxLabelW)
 		tw := 0.0
 		for _, ln := range lines {
 			tw = max(tw, l.face.Width(ln, fs*0.9))
@@ -696,49 +696,6 @@ func writeLines(b *strings.Builder, lines []string, cx, cy, lh, fs float64, fill
 		fmt.Fprintf(b, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(cx), svgutil.Num(y0+float64(i)*lh), svgutil.Esc(ln))
 	}
 	b.WriteString("</text>\n")
-}
-
-// wrap breaks s into lines no wider than maxW, at spaces where it can and
-// inside a word only when the word alone is too wide.
-func wrap(face svgutil.Face, s string, size, maxW float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			for face.Width(wd, size) > maxW && len([]rune(wd)) > 1 {
-				if cur != "" {
-					lines = append(lines, cur)
-					cur = ""
-				}
-				// The longest prefix that fits, measured rune by rune so a
-				// very long word costs linear time.
-				r := []rune(wd)
-				k, w := 0, 0.0
-				for k < len(r) {
-					cw := face.Width(string(r[k]), size)
-					if k > 0 && w+cw > maxW {
-						break
-					}
-					w += cw
-					k++
-				}
-				lines = append(lines, string(r[:k]))
-				wd = string(r[k:])
-			}
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && face.Width(try, size) > maxW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)

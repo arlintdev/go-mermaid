@@ -117,7 +117,7 @@ func titleCase(s string) string {
 
 // fieldLines wraps one "Label: value" row into lines.
 func fieldLines(f [2]string, m metrics) []string {
-	return wrap(m.face, f[0]+": "+f[1], m.fs, maxTextW)
+	return m.face.WrapHard(f[0]+": "+f[1], m.fs, maxTextW)
 }
 
 func nodeSize(n *Node, m metrics) (float64, float64) {
@@ -311,49 +311,6 @@ func writeNode(b *strings.Builder, d *Diagram, n *Node, dn *domain.Node, pal the
 			fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s">%s</text>`+"\n", num(x+m.padX), num(cy-m.lh*0.3), text, svgutil.Esc(l))
 		}
 	}
-}
-
-// wrap breaks s into lines no wider than maxW, at spaces where it can and
-// inside a word only when the word alone is too wide.
-func wrap(face svgutil.Face, s string, size, maxW float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			for face.Width(wd, size) > maxW && len([]rune(wd)) > 1 {
-				if cur != "" {
-					lines = append(lines, cur)
-					cur = ""
-				}
-				// The longest prefix that fits, measured rune by rune so a
-				// very long word costs linear time.
-				r := []rune(wd)
-				k, w := 0, 0.0
-				for k < len(r) {
-					cw := face.Width(string(r[k]), size)
-					if k > 0 && w+cw > maxW {
-						break
-					}
-					w += cw
-					k++
-				}
-				lines = append(lines, string(r[:k]))
-				wd = string(r[k:])
-			}
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && face.Width(try, size) > maxW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)

@@ -53,7 +53,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	loopRoom := map[string]float64{}
 	for _, r := range d.Relationships {
 		if r.From == r.To {
-			tw, th := textSize(m.face, wrap(m.face, r.Label, fs*0.9, maxLabelW), fs*0.9)
+			tw, th := textSize(m.face, m.face.Wrap(r.Label, fs*0.9, maxLabelW), fs*0.9)
 			if !vert {
 				tw = th
 			}
@@ -80,7 +80,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		}
 		e := &domain.Edge{From: r.From, To: r.To}
 		if r.Label != "" {
-			e.Label = strings.Join(wrap(m.face, r.Label, fs*0.9, maxLabelW), "\n")
+			e.Label = strings.Join(m.face.Wrap(r.Label, fs*0.9, maxLabelW), "\n")
 		}
 		edgeOf[i] = e
 		g.Edges = append(g.Edges, e)
@@ -90,7 +90,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	rankSep := 96.0
 	if !vert {
 		for _, r := range d.Relationships {
-			tw, _ := textSize(m.face, wrap(m.face, r.Label, fs*0.9, maxLabelW), fs*0.9)
+			tw, _ := textSize(m.face, m.face.Wrap(r.Label, fs*0.9, maxLabelW), fs*0.9)
 			rankSep = max(rankSep, tw+80)
 		}
 	}
@@ -230,7 +230,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 	for i, r := range d.Relationships {
 		var lines []string
 		if r.Label != "" {
-			lines = wrap(m.face, r.Label, lfs, maxLabelW)
+			lines = m.face.Wrap(r.Label, lfs, maxLabelW)
 		}
 		tw, th := textSize(m.face, lines, lfs)
 		if r.From == r.To {
@@ -510,28 +510,6 @@ func writeLines(b *strings.Builder, lines []string, x, cy, size float64, fill, a
 		fmt.Fprintf(b, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(x), svgutil.Num(y0+float64(i)*lh), svgutil.Esc(l))
 	}
 	b.WriteString("</text>\n")
-}
-
-// wrap breaks s into lines no wider than maxW, at spaces.
-func wrap(face svgutil.Face, s string, size, maxW float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && face.Width(try, size) > maxW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)

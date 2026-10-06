@@ -86,7 +86,7 @@ type metrics struct {
 	ff   string // the font family the layout measures with
 }
 
-func (m metrics) lines(s string, size, maxW float64) []string { return wrap(m.face, s, size, maxW) }
+func (m metrics) lines(s string, size, maxW float64) []string { return m.face.WrapHard(s, size, maxW) }
 
 // elementText is an element's label, [type] and description lines.
 func elementText(e *Element, m metrics) (label, typ, descr []string) {
@@ -667,49 +667,6 @@ func (c *ctx) writeElement(b *strings.Builder, e *Element) {
 		ty += 6
 		write(descr, c.m.fs*0.85, "")
 	}
-}
-
-// wrap breaks s into lines no wider than maxW, at spaces where it can and
-// inside a word only when the word alone is too wide.
-func wrap(face svgutil.Face, s string, size, maxW float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			for face.Width(wd, size) > maxW && len([]rune(wd)) > 1 {
-				if cur != "" {
-					lines = append(lines, cur)
-					cur = ""
-				}
-				// The longest prefix that fits, measured rune by rune so a
-				// very long word costs linear time.
-				r := []rune(wd)
-				k, w := 0, 0.0
-				for k < len(r) {
-					cw := face.Width(string(r[k]), size)
-					if k > 0 && w+cw > maxW {
-						break
-					}
-					w += cw
-					k++
-				}
-				lines = append(lines, string(r[:k]))
-				wd = string(r[k:])
-			}
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && face.Width(try, size) > maxW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)

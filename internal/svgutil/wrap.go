@@ -23,6 +23,19 @@ func Breaks(s string) []string {
 // wider than maxWidth stays whole unless it is far wider, when it is cut.
 // maxWidth <= 0 only splits at explicit breaks.
 func (f Face) Wrap(text string, fontSize, maxWidth float64) []string {
+	return f.wrap(text, fontSize, maxWidth, math.Max(maxWidth*2, 360), true)
+}
+
+// WrapHard is for text drawn inside a box of fixed width: it breaks only
+// between words, and cuts a word wider than maxWidth so that no line is
+// wider than maxWidth.
+func (f Face) WrapHard(text string, fontSize, maxWidth float64) []string {
+	return f.wrap(text, fontSize, maxWidth, maxWidth, false)
+}
+
+// wrap breaks between words, after hyphens when hyphens is set, and cuts
+// any piece of a word wider than cutAt.
+func (f Face) wrap(text string, fontSize, maxWidth, cutAt float64, hyphens bool) []string {
 	var out []string
 	for _, line := range Breaks(text) {
 		line = strings.Join(strings.Fields(line), " ")
@@ -32,7 +45,7 @@ func (f Face) Wrap(text string, fontSize, maxWidth float64) []string {
 		}
 		cur := ""
 		for _, word := range strings.Fields(line) {
-			for i, piece := range f.pieces(word, fontSize, maxWidth) {
+			for i, piece := range f.pieces(word, fontSize, cutAt, hyphens) {
 				joined := cur + piece
 				if i == 0 && cur != "" {
 					joined = cur + " " + piece
@@ -53,13 +66,13 @@ func (f Face) Wrap(text string, fontSize, maxWidth float64) []string {
 	return out
 }
 
-// pieces splits a word after each hyphen, and cuts any piece far
-// wider than maxWidth.
-func (f Face) pieces(word string, fontSize, maxWidth float64) []string {
+// pieces splits a word after each hyphen when hyphens is set, and cuts any
+// piece wider than cutAt.
+func (f Face) pieces(word string, fontSize, cutAt float64, hyphens bool) []string {
 	var parts []string
 	start := 0
 	for i, r := range word {
-		if r == '-' && i > start && i+1 < len(word) {
+		if hyphens && r == '-' && i > start && i+1 < len(word) {
 			parts = append(parts, word[start:i+1])
 			start = i + 1
 		}
@@ -67,7 +80,7 @@ func (f Face) pieces(word string, fontSize, maxWidth float64) []string {
 	parts = append(parts, word[start:])
 	var out []string
 	for _, p := range parts {
-		out = append(out, f.cut(p, fontSize, math.Max(maxWidth*2, 360))...)
+		out = append(out, f.cut(p, fontSize, cutAt)...)
 	}
 	return out
 }
@@ -103,22 +116,25 @@ func Wrap(text string, maxWidth, fontSize float64) []string {
 	return FaceSans.Wrap(text, fontSize, maxWidth)
 }
 
-// cut splits a word wider than limit into pieces no wider than limit.
+// cut splits a word wider than limit into pieces no wider than limit. It
+// measures rune by rune, so a very long word costs linear time.
 func (f Face) cut(word string, fontSize, limit float64) []string {
 	if f.Width(word, fontSize) <= limit {
 		return []string{word}
 	}
 	var pieces []string
-	var cur []rune
-	for _, r := range word {
-		if len(cur) > 0 && f.Width(string(append(cur, r)), fontSize) > limit {
-			pieces = append(pieces, string(cur))
-			cur = cur[:0]
+	start, em, joined := 0, 0.0, false
+	for i, r := range word {
+		rw := 0.0
+		if !joined {
+			rw = f.runeWidth(r)
 		}
-		cur = append(cur, r)
+		joined = r == zeroWidthJoiner
+		if i > start && (em+rw)*fontSize > limit {
+			pieces = append(pieces, word[start:i])
+			start, em = i, 0
+		}
+		em += rw
 	}
-	if len(cur) > 0 {
-		pieces = append(pieces, string(cur))
-	}
-	return pieces
+	return append(pieces, word[start:])
 }

@@ -90,11 +90,11 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	for _, s := range d.Sections {
 		if s.Name != "" {
 			span := float64(len(s.Periods))*(colW+colGap) - colGap
-			secLines = max(secLines, len(wrap(face, s.Name, fs, max(span, colW)-2*boxPadX)))
+			secLines = max(secLines, len(face.WrapHard(s.Name, fs, max(span, colW)-2*boxPadX)))
 		}
 	}
 	for _, p := range periods {
-		perLines = max(perLines, len(wrap(face, p.Time, fs, textW)))
+		perLines = max(perLines, len(face.WrapHard(p.Time, fs, textW)))
 	}
 
 	titleSize := fs * 1.6
@@ -126,7 +126,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	for i, p := range periods {
 		yy := evTop
 		for _, ev := range p.Events {
-			ls := wrap(face, ev, fs, textW)
+			ls := face.WrapHard(ev, fs, textW)
 			evLines[i] = append(evLines[i], ls)
 			yy += boxH(len(ls)) + eventGap
 		}
@@ -169,9 +169,9 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 			x := colX(idx)
 			if sectioned && pi == 0 && sec.Name != "" {
 				span := float64(len(sec.Periods))*(colW+colGap) - colGap
-				drawBox(&b, x, secY, span, boxH(secLines), c.fill, c.accent, c.text, wrap(face, sec.Name, fs, span-2*boxPadX), true, lh, fs)
+				drawBox(&b, x, secY, span, boxH(secLines), c.fill, c.accent, c.text, face.WrapHard(sec.Name, fs, span-2*boxPadX), true, lh, fs)
 			}
-			drawBox(&b, x, perY, colW, boxH(perLines), c.fill, c.accent, c.text, wrap(face, p.Time, fs, textW), !sectioned, lh, fs)
+			drawBox(&b, x, perY, colW, boxH(perLines), c.fill, c.accent, c.text, face.WrapHard(p.Time, fs, textW), !sectioned, lh, fs)
 			ey := evTop
 			for _, ls := range evLines[idx] {
 				drawBox(&b, x, ey, colW, boxH(len(ls)), c.light, c.lightAccent, c.text, ls, false, lh, fs)
@@ -202,49 +202,6 @@ func drawBox(b *strings.Builder, x, y, w, h float64, fill, accent, text string, 
 		fmt.Fprintf(b, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(x+w/2), svgutil.Num(ty+float64(i)*lh), svgutil.Esc(ln))
 	}
 	b.WriteString("</text>\n")
-}
-
-// wrap breaks s into lines no wider than maxW, at spaces where it can and
-// inside a word only when the word alone is too wide.
-func wrap(face svgutil.Face, s string, size, maxW float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			for face.Width(wd, size) > maxW && len([]rune(wd)) > 1 {
-				if cur != "" {
-					lines = append(lines, cur)
-					cur = ""
-				}
-				// The longest prefix that fits, measured rune by rune so a
-				// very long word costs linear time.
-				r := []rune(wd)
-				k, w := 0, 0.0
-				for k < len(r) {
-					cw := face.Width(string(r[k]), size)
-					if k > 0 && w+cw > maxW {
-						break
-					}
-					w += cw
-					k++
-				}
-				lines = append(lines, string(r[:k]))
-				wd = string(r[k:])
-			}
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && face.Width(try, size) > maxW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)

@@ -132,7 +132,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	catLines := make([][]string, n)
 	for i, l := range labels {
 		if d.Horizontal {
-			catLines[i] = wrap(face, l, fs, 160)
+			catLines[i] = face.Wrap(l, fs, 160)
 		} else {
 			catLines[i] = []string{l}
 		}

@@ -73,10 +73,10 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	colTitles := make([][]string, len(d.Columns))
 	colH := 0.0
 	for ci, col := range d.Columns {
-		colTitles[ci] = wrap(face, col.Title, fs, colW-16)
+		colTitles[ci] = face.Wrap(col.Title, fs, colW-16)
 		h := headH + float64(len(colTitles[ci])-1)*lh
 		for _, c := range col.Cards {
-			cl := cardLayout{lines: wrap(face, c.Text, fs, textW), meta: c.Ticket != "" || c.Assigned != ""}
+			cl := cardLayout{lines: face.Wrap(c.Text, fs, textW), meta: c.Ticket != "" || c.Assigned != ""}
 			cl.h = float64(len(cl.lines))*lh + 20
 			if cl.meta {
 				cl.h += metaFs*1.3 + 2

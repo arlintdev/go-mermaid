@@ -436,26 +436,7 @@ func writeNamespace(b *strings.Builder, ns *Namespace, g *domain.Graph, pal them
 		svgutil.Num(x+w/2), svgutil.Num(y+m.fs+4), svgutil.Esc(pal.Text), svgutil.Esc(ns.Name))
 }
 
-func noteLines(text string, m metrics) []string {
-	var out []string
-	for _, para := range svgutil.SplitLines(text) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && m.face.Width(try, m.fs) > noteMaxW {
-				out = append(out, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		out = append(out, cur)
-	}
-	return out
-}
+func noteLines(text string, m metrics) []string { return m.face.Wrap(text, m.fs, noteMaxW) }
 
 func noteSize(text string, m metrics) (float64, float64) {
 	lines := noteLines(text, m)

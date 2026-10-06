@@ -57,7 +57,7 @@ func (l *layout) measure(n *Node, depth int) {
 	if n.Shape == ShapeCircle {
 		limit = maxTextW * 0.6 // a circle grows in both directions
 	}
-	n.lines = wrap(l.face, n.Text, l.fs, limit)
+	n.lines = l.face.Wrap(n.Text, l.fs, limit)
 	tw := 0.0
 	for _, ln := range n.lines {
 		tw = math.Max(tw, l.face.Width(ln, l.fs))

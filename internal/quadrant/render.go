@@ -45,7 +45,7 @@ type drawer struct {
 // text writes s as one <text>, wrapped onto further lines below the first
 // when it is wider than maxW.
 func (dr *drawer) text(s string, x, y, size, maxW float64, fill, anchor, extra string) {
-	lines := wrap(dr.face, s, size, maxW)
+	lines := dr.face.Wrap(s, size, maxW)
 	lh := size * 1.2
 	fmt.Fprintf(&dr.b, `  <text fill="%s" font-size="%s" text-anchor="%s"%s>`, fill, svgutil.Num(size), anchor, extra)
 	for i, ln := range lines {
@@ -127,7 +127,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 		}
 		y := q[1] + edge + fs*0.85
 		if len(d.Points) == 0 {
-			n := len(wrap(dr.face, name, fs, halfW-2*edge))
+			n := len(dr.face.Wrap(name, fs, halfW-2*edge))
 			y = q[1] + halfH/2 - float64(n-1)*fs*0.6 + fs*0.35
 		}
 		dr.text(name, q[0]+halfW/2, y, fs, halfW-2*edge, text, "middle", "")
@@ -195,28 +195,6 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
-}
-
-// wrap breaks s into lines no wider than maxW, at spaces where it can.
-func wrap(face svgutil.Face, s string, size, maxW float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && face.Width(try, size) > maxW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
 }
 
 // oneLine keeps a rotated axis label on one line, shortened with an ellipsis

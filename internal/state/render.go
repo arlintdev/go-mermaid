@@ -111,26 +111,7 @@ func (c *ctx) lift(id, parent string, region int) string {
 	return ""
 }
 
-func (c *ctx) wrap(s string, size float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && c.face.Width(try, size) > maxTextW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
-}
+func (c *ctx) wrap(s string, size float64) []string { return c.face.Wrap(s, size, maxTextW) }
 
 func (c *ctx) textBlock(lines []string, size float64) (w, h float64) {
 	for _, l := range lines {

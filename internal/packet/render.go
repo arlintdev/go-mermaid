@@ -112,7 +112,7 @@ func writeLabel(b *strings.Builder, face svgutil.Face, label string, cx, cy, max
 	lines := []string{label}
 	if face.Width(label, fs) > maxW {
 		small := math.Max(9, fs-2)
-		if l := wrap(face, label, small, maxW); len(l) <= 2 && fits(face, l, small, maxW) {
+		if l := face.Wrap(label, small, maxW); len(l) <= 2 && fits(face, l, small, maxW) {
 			lines, fs = l, small
 		} else if face.Width(label, small) <= blockH-6 && small <= maxW+4 {
 			fmt.Fprintf(b, `<text x="%s" y="%s" fill="#000000" font-size="%s" text-anchor="middle" transform="rotate(-90 %s %s)">%s</text>`+"\n",
