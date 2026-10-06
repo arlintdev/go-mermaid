@@ -309,8 +309,8 @@
     <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1226.4" y="198.16">is in</tspan></text>
     <rect x="1515.42" y="183.56" width="28.31" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
     <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1529.58" y="198.16">has</tspan></text>
-    <rect x="1760.63" y="200.31" width="41.62" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1781.44" y="214.91">sends</tspan></text>
+    <rect x="1713.91" y="186.45" width="41.62" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1734.72" y="201.05">sends</tspan></text>
     <rect x="1358.45" y="176.81" width="38.11" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
     <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1377.51" y="191.41">holds</tspan></text>
     <rect x="1069.98" y="628.53" width="38.11" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
@@ -323,8 +323,8 @@
     <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1323.92" y="433.16">holds</tspan></text>
     <rect x="1197.61" y="442.06" width="48.62" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
     <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1221.92" y="456.66">defines</tspan></text>
-    <rect x="728.1" y="643.56" width="54.92" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="755.56" y="658.16">contains</tspan></text>
+    <rect x="787.31" y="617.66" width="54.92" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="814.77" y="632.26">contains</tspan></text>
     <rect x="835.45" y="643.56" width="46.52" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
     <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="858.71" y="658.16">groups</tspan></text>
     <rect x="822.67" y="817.81" width="57.73" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
@@ -339,14 +339,14 @@
     <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1537.91" y="557.41">parent of</tspan></text>
     <rect x="722.73" y="331.93" width="58.43" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
     <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="751.95" y="346.53">assigned</tspan></text>
-    <rect x="873.71" y="200.31" width="75.23" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="911.32" y="214.91">signed in by</tspan></text>
-    <rect x="1465.12" y="207.78" width="37.41" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1483.82" y="222.38">owns</tspan></text>
+    <rect x="856.8" y="174.28" width="75.23" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="894.41" y="188.88">signed in by</tspan></text>
+    <rect x="1546.78" y="211.56" width="37.41" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1565.48" y="226.16">owns</tspan></text>
     <rect x="972.88" y="200.31" width="64.74" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
     <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1005.25" y="214.91">granted to</tspan></text>
-    <rect x="1761.54" y="222.69" width="39.51" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1781.29" y="237.29">reach</tspan></text>
+    <rect x="1763.02" y="250.12" width="39.51" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1782.77" y="264.72">reach</tspan></text>
     <rect x="1491.03" y="411.81" width="39.51" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
     <text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="1510.79" y="426.41">reach</tspan></text>
   </g>
