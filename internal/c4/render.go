@@ -6,6 +6,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/arlintdev/go-mermaid/internal/curve"
+
 	"github.com/arlintdev/go-mermaid/internal/domain"
 	"github.com/arlintdev/go-mermaid/internal/layout"
 	"github.com/arlintdev/go-mermaid/internal/svgid"
@@ -300,7 +302,7 @@ func (c *ctx) relLines(r *Rel) []string {
 
 type drawnRel struct {
 	r      *Rel
-	sh     edgeShape
+	sh     curve.Shape
 	lx, ly float64
 }
 
@@ -351,15 +353,15 @@ func (c *ctx) route(r *Rel) (drawnRel, bool) {
 					pts[i], pts[j] = pts[j], pts[i]
 				}
 			}
-			var obs []box
+			var obs []curve.Box
 			for id, rr := range c.rects {
 				if id != r.From && id != r.To && c.d.element(id) != nil {
-					obs = append(obs, box{rr.x, rr.y, rr.w, rr.h})
+					obs = append(obs, curve.Box{X: rr.x, Y: rr.y, W: rr.w, H: rr.h})
 				}
 			}
-			sh := shapeEdge(pts, true, obs, 0, 0)
-			lx, ly := sh.mid.X, sh.mid.Y
-			if !sh.curved {
+			sh := curve.Edge(pts, true, obs, 0, 0)
+			lx, ly := sh.Mid.X, sh.Mid.Y
+			if !sh.Curved {
 				lx, ly = e.LabelPos.X+bx+s.ox, e.LabelPos.Y+by+s.oy-c.m.fs*0.3
 			}
 			return drawnRel{r, sh, lx, ly}, true
@@ -396,7 +398,7 @@ func (c *ctx) route(r *Rel) (drawnRel, bool) {
 			}
 		}
 	}
-	sh := edgeShape{start: pts[0], end: pts[len(pts)-1], d: path(pts)}
+	sh := curve.Shape{Start: pts[0], End: pts[len(pts)-1], D: curve.Path(pts)}
 	tw, th := c.textBox(c.relLines(r))
 	best := domain.PolylineMidpoint(pts)
 	total := domain.PolylineLength(pts)
@@ -415,7 +417,7 @@ func (c *ctx) route(r *Rel) (drawnRel, bool) {
 			break
 		}
 	}
-	sh.mid = best
+	sh.Mid = best
 	return drawnRel{r, sh, best.X, best.Y}, true
 }
 
@@ -477,8 +479,8 @@ func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
 		if !ok {
 			continue
 		}
-		bd.Add(dr.sh.start.X, dr.sh.start.Y)
-		bd.Add(dr.sh.end.X, dr.sh.end.Y)
+		bd.Add(dr.sh.Start.X, dr.sh.Start.Y)
+		bd.Add(dr.sh.End.X, dr.sh.End.Y)
 		lines := c.relLines(r)
 		tw, th := c.textBox(lines)
 		bd.AddRect(dr.lx-tw/2-4, dr.ly-th/2-2, tw+8, th+4)
@@ -549,7 +551,7 @@ func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
 		default:
 			markers = fmt.Sprintf(` marker-end="url(#%s-arrow)"`, id)
 		}
-		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.2"%s/>`+"\n", dr.sh.d, col, markers)
+		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.2"%s/>`+"\n", dr.sh.D, col, markers)
 	}
 	for _, e := range c.d.Elements {
 		c.writeElement(&b, e)
@@ -708,18 +710,6 @@ func wrap(face svgutil.Face, s string, size, maxW float64) []string {
 		lines = append(lines, cur)
 	}
 	return lines
-}
-
-func path(pts []domain.Point) string {
-	var d strings.Builder
-	for i, p := range pts {
-		cmd := "L"
-		if i == 0 {
-			cmd = "M"
-		}
-		fmt.Fprintf(&d, "%s%s,%s ", cmd, svgutil.Num(p.X), svgutil.Num(p.Y))
-	}
-	return strings.TrimSpace(d.String())
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)

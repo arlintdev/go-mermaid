@@ -6,6 +6,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/arlintdev/go-mermaid/internal/curve"
+
 	"github.com/arlintdev/go-mermaid/internal/domain"
 	"github.com/arlintdev/go-mermaid/internal/layout"
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
@@ -214,7 +216,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 
 	type drawn struct {
 		r      *Relationship
-		sh     edgeShape
+		sh     curve.Shape
 		lx, ly float64
 		lines  []string
 	}
@@ -249,16 +251,16 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 		if e == nil || len(e.Points) < 2 {
 			continue
 		}
-		var obs []box
+		var obs []curve.Box
 		for _, n := range g.Nodes {
 			if n.ID != r.From && n.ID != r.To {
-				obs = append(obs, box{n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H})
+				obs = append(obs, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 			}
 		}
-		sh := shapeEdge(e.Points, vert, obs, 0, 0)
+		sh := curve.Edge(e.Points, vert, obs, 0, 0)
 		lx, ly := e.LabelPos.X, e.LabelPos.Y
-		if sh.curved {
-			lx, ly = sh.mid.X, sh.mid.Y
+		if sh.Curved {
+			lx, ly = sh.Mid.X, sh.Mid.Y
 		} else if len(lines) > 0 {
 			ly -= float64(len(lines)-1)*lfs*1.3/2 + lfs*0.3
 		}
@@ -329,15 +331,15 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 		if de.r.Dashed {
 			dash = ` stroke-dasharray="6 4"`
 		}
-		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.3"%s/>`+"\n", de.sh.d, edge, dash)
+		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.3"%s/>`+"\n", de.sh.D, edge, dash)
 	}
 	for _, e := range d.Entities {
 		writeEntity(&b, d, e, g.NodeByID(e.Name), cols[e], pal, m)
 	}
 	// Glyphs sit over the entity border, and labels over everything.
 	for _, de := range rels {
-		writeCrow(&b, de.r.LeftKind, de.sh.start, de.sh.sdir, pal)
-		writeCrow(&b, de.r.RightKind, de.sh.end, de.sh.edir, pal)
+		writeCrow(&b, de.r.LeftKind, de.sh.Start, de.sh.StartDir, pal)
+		writeCrow(&b, de.r.RightKind, de.sh.End, de.sh.EndDir, pal)
 	}
 	for _, de := range rels {
 		if de.lines == nil {
@@ -354,21 +356,21 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 
 // selfShape is the loop of a relationship from an entity to itself, with
 // where its label goes.
-func selfShape(n *domain.Node, vert bool, tw, th float64) (edgeShape, float64, float64) {
+func selfShape(n *domain.Node, vert bool, tw, th float64) (curve.Shape, float64, float64) {
 	num := svgutil.Num
 	if vert {
 		x, cy := n.Pos.X+n.Size.W, n.Pos.Y+n.Size.H/2
 		a, z := domain.Point{X: x, Y: cy - 14}, domain.Point{X: x, Y: cy + 14}
 		c1, c2 := domain.Point{X: x + selfLoop, Y: cy - 14 - selfLoop*0.6}, domain.Point{X: x + selfLoop, Y: cy + 14 + selfLoop*0.6}
-		sh := edgeShape{start: a, end: z, curved: true, sdir: unitTo(a, c1, z), edir: unitTo(z, c2, a),
-			d: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(a.X), num(a.Y), num(c1.X), num(c1.Y), num(c2.X), num(c2.Y), num(z.X), num(z.Y))}
+		sh := curve.Shape{Start: a, End: z, Curved: true, StartDir: curve.UnitTo(a, c1, z), EndDir: curve.UnitTo(z, c2, a),
+			D: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(a.X), num(a.Y), num(c1.X), num(c1.Y), num(c2.X), num(c2.Y), num(z.X), num(z.Y))}
 		return sh, x + selfLoop*0.75 + 8 + tw/2, cy
 	}
 	cx, y := n.Pos.X+n.Size.W/2, n.Pos.Y
 	a, z := domain.Point{X: cx - 14, Y: y}, domain.Point{X: cx + 14, Y: y}
 	c1, c2 := domain.Point{X: cx - 14 - selfLoop*0.6, Y: y - selfLoop}, domain.Point{X: cx + 14 + selfLoop*0.6, Y: y - selfLoop}
-	sh := edgeShape{start: a, end: z, curved: true, sdir: unitTo(a, c1, z), edir: unitTo(z, c2, a),
-		d: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(a.X), num(a.Y), num(c1.X), num(c1.Y), num(c2.X), num(c2.Y), num(z.X), num(z.Y))}
+	sh := curve.Shape{Start: a, End: z, Curved: true, StartDir: curve.UnitTo(a, c1, z), EndDir: curve.UnitTo(z, c2, a),
+		D: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(a.X), num(a.Y), num(c1.X), num(c1.Y), num(c2.X), num(c2.Y), num(z.X), num(z.Y))}
 	return sh, cx, y - selfLoop*0.75 - th/2 - 4
 }
 
@@ -530,18 +532,6 @@ func wrap(face svgutil.Face, s string, size, maxW float64) []string {
 		lines = append(lines, cur)
 	}
 	return lines
-}
-
-func path(pts []domain.Point) string {
-	var d strings.Builder
-	for i, p := range pts {
-		cmd := "L"
-		if i == 0 {
-			cmd = "M"
-		}
-		fmt.Fprintf(&d, "%s%s,%s ", cmd, svgutil.Num(p.X), svgutil.Num(p.Y))
-	}
-	return strings.TrimSpace(d.String())
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)

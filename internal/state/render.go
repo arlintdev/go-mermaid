@@ -6,6 +6,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/arlintdev/go-mermaid/internal/curve"
+
 	"github.com/arlintdev/go-mermaid/internal/domain"
 	"github.com/arlintdev/go-mermaid/internal/layout"
 	"github.com/arlintdev/go-mermaid/internal/svgid"
@@ -214,7 +216,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		edges = append(edges, edge{t: t, e: e})
 	}
 
-	var nodeBoxes []box
+	var nodeBoxes []curve.Box
 	if len(g.Nodes) > 0 {
 		rankSep := 50.0
 		if labelled {
@@ -224,7 +226,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 			return block{}, err
 		}
 		for _, n := range g.Nodes {
-			nodeBoxes = append(nodeBoxes, box{n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H})
+			nodeBoxes = append(nodeBoxes, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 		}
 	}
 
@@ -236,7 +238,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 	// Edge shapes and label boxes.
 	type drawnEdge struct {
 		t      *Transition
-		sh     edgeShape
+		sh     curve.Shape
 		lx, ly float64
 		lines  []string
 	}
@@ -252,21 +254,21 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 				continue
 			}
 			tw, th := c.textBlock(lines, c.fs*0.9)
-			var sh edgeShape
+			var sh curve.Shape
 			var lx, ly float64
 			num := svgutil.Num
 			if vertical(dir) {
 				// Out of the right side and back in.
 				x, cy := n.Pos.X+n.Size.W, n.Pos.Y+n.Size.H/2
-				sh = edgeShape{d: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(x), num(cy-6), num(x+selfLoop), num(cy-selfLoop*0.9),
-					num(x+selfLoop), num(cy+selfLoop*0.9), num(x+1), num(cy+6)), curved: true}
+				sh = curve.Shape{D: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(x), num(cy-6), num(x+selfLoop), num(cy-selfLoop*0.9),
+					num(x+selfLoop), num(cy+selfLoop*0.9), num(x+1), num(cy+6)), Curved: true}
 				lx, ly = x+selfLoop*0.75+6+tw/2, cy
 				bd.AddRect(x, cy-selfLoop, selfLoop+8, 2*selfLoop)
 			} else {
 				// Out of the top and back in, near the right end.
 				cx, y := n.Pos.X+n.Size.W-min(30, n.Size.W/3), n.Pos.Y
-				sh = edgeShape{d: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(cx-6), num(y), num(cx-selfLoop*0.9), num(y-selfLoop),
-					num(cx+selfLoop*0.9), num(y-selfLoop), num(cx+6), num(y-1)), curved: true}
+				sh = curve.Shape{D: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(cx-6), num(y), num(cx-selfLoop*0.9), num(y-selfLoop),
+					num(cx+selfLoop*0.9), num(y-selfLoop), num(cx+6), num(y-1)), Curved: true}
 				lx, ly = cx, y-selfLoop*0.75-th/2-2
 				bd.AddRect(cx-selfLoop, y-selfLoop, 2*selfLoop, selfLoop)
 			}
@@ -279,20 +281,20 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		if len(ed.e.Points) < 2 {
 			continue
 		}
-		var obs []box
+		var obs []curve.Box
 		for _, n := range g.Nodes {
 			if n.ID != ed.e.From && n.ID != ed.e.To {
-				obs = append(obs, box{n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H})
+				obs = append(obs, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 			}
 		}
 		pts := c.barEnds(g, ed.e, dir)
-		sh := shapeEdge(pts, vertical(dir), obs, 0, 0)
+		sh := curve.Edge(pts, vertical(dir), obs, 0, 0)
 		for _, p := range ed.e.Points {
 			bd.Add(p.X, p.Y)
 		}
 		lx, ly := ed.e.LabelPos.X, ed.e.LabelPos.Y
-		if sh.curved {
-			lx, ly = sh.mid.X, sh.mid.Y
+		if sh.Curved {
+			lx, ly = sh.Mid.X, sh.Mid.Y
 		} else if len(lines) > 0 {
 			// LabelPos is the baseline of the label's last line.
 			ly -= float64(len(lines)-1)*c.fs*0.9*1.3/2 + c.fs*0.3
@@ -322,7 +324,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		w, h := tw+20, th+14
 		hits := func(x, y float64) bool {
 			for _, o := range nodeBoxes {
-				if x < o.x+o.w+8 && x+w > o.x-8 && y < o.y+o.h+8 && y+h > o.y-8 {
+				if x < o.X+o.W+8 && x+w > o.X-8 && y < o.Y+o.H+8 && y+h > o.Y-8 {
 					return true
 				}
 			}
@@ -346,11 +348,11 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		for tries := 0; !placed && tries < len(nodeBoxes)+1; tries++ {
 			moved := false
 			for _, o := range nodeBoxes {
-				if x < o.x+o.w+8 && x+w > o.x-8 && y < o.y+o.h+8 && y+h > o.y-8 {
+				if x < o.X+o.W+8 && x+w > o.X-8 && y < o.Y+o.H+8 && y+h > o.Y-8 {
 					if nt.Side == SideLeft {
-						x = o.x - noteGap - w
+						x = o.X - noteGap - w
 					} else {
-						x = o.x + o.w + noteGap
+						x = o.X + o.W + noteGap
 					}
 					moved = true
 				}
@@ -359,7 +361,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 				break
 			}
 		}
-		nodeBoxes = append(nodeBoxes, box{x, y, w, h})
+		nodeBoxes = append(nodeBoxes, curve.Box{X: x, Y: y, W: w, H: h})
 		bd.AddRect(x, y, w, h)
 		notes = append(notes, placedNote{nt, x, y, w, h, lines, tn})
 	}
@@ -391,7 +393,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 			svgutil.Num(a.X), svgutil.Num(a.Y), svgutil.Num(z.X), svgutil.Num(z.Y), edgeCol)
 	}
 	for _, de := range drawn {
-		fmt.Fprintf(&b, `<path d="%s" fill="none" stroke="%s" stroke-width="1.3" marker-end="url(#%s-arrow)"/>`+"\n", de.sh.d, edgeCol, c.id)
+		fmt.Fprintf(&b, `<path d="%s" fill="none" stroke="%s" stroke-width="1.3" marker-end="url(#%s-arrow)"/>`+"\n", de.sh.D, edgeCol, c.id)
 	}
 	for _, s := range members {
 		n := g.NodeByID(s.ID)
@@ -665,18 +667,6 @@ func (c *ctx) svg(root block) []byte {
 	fmt.Fprintf(&b, `  <g transform="translate(%s,%s)">`+"\n%s  </g>\n", svgutil.Num((w-root.w)/2), svgutil.Num(pad+titleH), root.body)
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
-}
-
-func path(pts []domain.Point) string {
-	var d strings.Builder
-	for i, p := range pts {
-		cmd := "L"
-		if i == 0 {
-			cmd = "M"
-		}
-		fmt.Fprintf(&d, "%s%s,%s ", cmd, svgutil.Num(p.X), svgutil.Num(p.Y))
-	}
-	return strings.TrimSpace(d.String())
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)

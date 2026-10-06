@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/arlintdev/go-mermaid/internal/curve"
+
 	"github.com/arlintdev/go-mermaid/internal/domain"
 	"github.com/arlintdev/go-mermaid/internal/layout"
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
@@ -184,20 +186,20 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 	for _, ns := range d.Namespaces {
 		writeNamespace(&b, ns, g, pal, m)
 	}
-	shapes := make([]edgeShape, len(d.Relations))
+	shapes := make([]curve.Shape, len(d.Relations))
 	vertical := g.Direction == domain.TopBottom || g.Direction == domain.BottomTop
 	for i, r := range d.Relations {
 		e := g.Edges[i]
 		if len(e.Points) < 2 {
 			continue
 		}
-		var obs []box
+		var obs []curve.Box
 		for _, n := range g.Nodes {
 			if n.ID != r.From && n.ID != r.To {
-				obs = append(obs, box{n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H})
+				obs = append(obs, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 			}
 		}
-		shapes[i] = shapeEdge(e.Points, vertical, obs, headLen(r.Left), headLen(r.Right))
+		shapes[i] = curve.Edge(e.Points, vertical, obs, headLen(r.Left), headLen(r.Right))
 		writeRelation(&b, r, shapes[i], pal, m)
 	}
 	for i, nt := range d.Notes {
@@ -313,34 +315,22 @@ func classSize(c *Class, m metrics) domain.Size {
 	return domain.Size{W: math.Ceil(w), H: math.Ceil(h)}
 }
 
-func path(pts []domain.Point) string {
-	var d strings.Builder
-	for i, p := range pts {
-		cmd := "L"
-		if i == 0 {
-			cmd = "M"
-		}
-		fmt.Fprintf(&d, "%s%s,%s ", cmd, svgutil.Num(p.X), svgutil.Num(p.Y))
-	}
-	return strings.TrimSpace(d.String())
-}
-
-func writeRelation(b *strings.Builder, r *Relation, sh edgeShape, pal theme.Palette, m metrics) {
+func writeRelation(b *strings.Builder, r *Relation, sh curve.Shape, pal theme.Palette, m metrics) {
 	edge := svgutil.Esc(pal.Edge)
 	dash := ""
 	if r.Dashed {
 		dash = ` stroke-dasharray="5 4"`
 	}
-	fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s"%s/>`+"\n", sh.d, edge, dash)
-	writeHead(b, r.Left, sh.start, sh.sdir[0], sh.sdir[1], pal)
-	writeHead(b, r.Right, sh.end, sh.edir[0], sh.edir[1], pal)
-	writeCardinality(b, r.LeftCard, sh.start, sh.sdir, pal, m)
-	writeCardinality(b, r.RightCard, sh.end, sh.edir, pal, m)
+	fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s"%s/>`+"\n", sh.D, edge, dash)
+	writeHead(b, r.Left, sh.Start, sh.StartDir[0], sh.StartDir[1], pal)
+	writeHead(b, r.Right, sh.End, sh.EndDir[0], sh.EndDir[1], pal)
+	writeCardinality(b, r.LeftCard, sh.Start, sh.StartDir, pal, m)
+	writeCardinality(b, r.RightCard, sh.End, sh.EndDir, pal, m)
 }
 
 // writeEdgeLabel draws a relationship's label on a soft background at the
 // position the layout reserved for it.
-func writeEdgeLabel(b *strings.Builder, r *Relation, e *domain.Edge, sh edgeShape, pal theme.Palette, m metrics) {
+func writeEdgeLabel(b *strings.Builder, r *Relation, e *domain.Edge, sh curve.Shape, pal theme.Palette, m metrics) {
 	if r.Label == "" || len(e.Points) < 2 {
 		return
 	}
@@ -350,8 +340,8 @@ func writeEdgeLabel(b *strings.Builder, r *Relation, e *domain.Edge, sh edgeShap
 	// LabelPos is the text baseline; a curved line takes its label at its
 	// middle instead.
 	x, y := e.LabelPos.X, e.LabelPos.Y
-	if sh.curved {
-		x, y = sh.mid.X, sh.mid.Y+fs*0.35
+	if sh.Curved {
+		x, y = sh.Mid.X, sh.Mid.Y+fs*0.35
 	}
 	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>`+"\n",
 		svgutil.Num(x-tw/2-4), svgutil.Num(y-fs*0.95), svgutil.Num(tw+8), svgutil.Num(fs*1.3))
@@ -485,17 +475,17 @@ func writeNote(b *strings.Builder, i int, nt *Note, g *domain.Graph, edgeBase in
 	if nt.For != "" {
 		for _, e := range g.Edges[edgeBase:] {
 			if e.From == noteID(i) && len(e.Points) >= 2 {
-				var obs []box
+				var obs []curve.Box
 				for _, o := range g.Nodes {
 					if o.ID != e.From && o.ID != e.To {
-						obs = append(obs, box{o.Pos.X, o.Pos.Y, o.Size.W, o.Size.H})
+						obs = append(obs, curve.Box{X: o.Pos.X, Y: o.Pos.Y, W: o.Size.W, H: o.Size.H})
 					}
 				}
-				sh := shapeEdge([]domain.Point{e.Points[0], e.Points[len(e.Points)-1]}, g.Direction == domain.TopBottom || g.Direction == domain.BottomTop, obs, 0, 0)
-				if !sh.curved {
-					sh.d = path(e.Points)
+				sh := curve.Edge([]domain.Point{e.Points[0], e.Points[len(e.Points)-1]}, g.Direction == domain.TopBottom || g.Direction == domain.BottomTop, obs, 0, 0)
+				if !sh.Curved {
+					sh.D = curve.Path(e.Points)
 				}
-				fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s" stroke-dasharray="3 3"/>`+"\n", sh.d, svgutil.Esc(pal.Edge))
+				fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s" stroke-dasharray="3 3"/>`+"\n", sh.D, svgutil.Esc(pal.Edge))
 				break
 			}
 		}

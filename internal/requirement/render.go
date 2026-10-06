@@ -6,6 +6,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/arlintdev/go-mermaid/internal/curve"
+
 	"github.com/arlintdev/go-mermaid/internal/domain"
 	"github.com/arlintdev/go-mermaid/internal/layout"
 	"github.com/arlintdev/go-mermaid/internal/svgid"
@@ -148,7 +150,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 
 	type drawn struct {
 		r      *Rel
-		sh     edgeShape
+		sh     curve.Shape
 		lx, ly float64
 	}
 	var rels []drawn
@@ -159,16 +161,16 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 		if len(e.Points) < 2 {
 			continue
 		}
-		var obs []box
+		var obs []curve.Box
 		for _, n := range g.Nodes {
 			if n.ID != r.From && n.ID != r.To {
-				obs = append(obs, box{n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H})
+				obs = append(obs, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 			}
 		}
-		sh := shapeEdge(e.Points, vert, obs, 0, 0)
+		sh := curve.Edge(e.Points, vert, obs, 0, 0)
 		lx, ly := e.LabelPos.X, e.LabelPos.Y-lfs*0.3
-		if sh.curved {
-			lx, ly = sh.mid.X, sh.mid.Y
+		if sh.Curved {
+			lx, ly = sh.Mid.X, sh.Mid.Y
 		}
 		tw := m.face.Width("«"+r.Type+"»", lfs)
 		bd.AddRect(lx-tw/2-4, ly-lfs, tw+8, lfs*2)
@@ -236,7 +238,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 			markers = fmt.Sprintf(` marker-start="url(#%s-contains)"`, id)
 			dash = ""
 		}
-		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.3"%s%s/>`+"\n", de.sh.d, edge, dash, markers)
+		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.3"%s%s/>`+"\n", de.sh.D, edge, dash, markers)
 	}
 	for _, n := range d.Nodes {
 		writeNode(&b, d, n, g.NodeByID(n.ID), pal, m)
@@ -352,18 +354,6 @@ func wrap(face svgutil.Face, s string, size, maxW float64) []string {
 		lines = append(lines, cur)
 	}
 	return lines
-}
-
-func path(pts []domain.Point) string {
-	var d strings.Builder
-	for i, p := range pts {
-		cmd := "L"
-		if i == 0 {
-			cmd = "M"
-		}
-		fmt.Fprintf(&d, "%s%s,%s ", cmd, svgutil.Num(p.X), svgutil.Num(p.Y))
-	}
-	return strings.TrimSpace(d.String())
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
