@@ -345,8 +345,8 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 			continue
 		}
 		tw, th := textSize(m.face, de.lines, lfs)
-		fmt.Fprintf(&b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>`+"\n",
-			svgutil.Num(de.lx-tw/2-4), svgutil.Num(de.ly-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4))
+		fmt.Fprintf(&b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s" fill-opacity="0.85"/>`+"\n",
+			svgutil.Num(de.lx-tw/2-4), svgutil.Num(de.ly-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4), svgutil.Esc(pal.RelationLabel))
 		writeLines(&b, de.lines, de.lx, de.ly, lfs, svgutil.Esc(pal.Text), "middle")
 	}
 	b.WriteString("  </g>\n</svg>\n")
@@ -386,15 +386,13 @@ func writeEntity(b *strings.Builder, d *Diagram, e *Entity, n *domain.Node, cols
 			}
 		}
 	}
-	fill, stroke, text := svgutil.Esc(pal.NodeFill), svgutil.Esc(pal.NodeStroke), svgutil.Esc(pal.Text)
-	if st.Fill != "" {
-		fill = svgutil.Esc(st.Fill)
-	}
-	if st.Stroke != "" {
-		stroke = svgutil.Esc(st.Stroke)
-	}
+	fill, stroke, text := pal.Node(st.Fill, st.Stroke, st.Color)
+	fill, stroke, text = svgutil.Esc(fill), svgutil.Esc(stroke), svgutil.Esc(text)
+	// The attribute rows keep the theme's fills, so their text does not
+	// follow a styled fill.
+	rowText := svgutil.Esc(pal.Text)
 	if st.Color != "" {
-		text = svgutil.Esc(st.Color)
+		rowText = svgutil.Esc(st.Color)
 	}
 	extra := ""
 	if st.StrokeWidth != "" {
@@ -416,7 +414,7 @@ func writeEntity(b *strings.Builder, d *Diagram, e *Entity, n *domain.Node, cols
 		hasKeys = hasKeys || len(a.Keys) > 0
 		hasComment = hasComment || a.Comment != ""
 	}
-	odd, even := svgutil.Esc(pal.Background), mix(pal.NodeFill, pal.Background, 0.55, svgutil.Esc(pal.Background))
+	odd, even := svgutil.Esc(pal.Background), theme.Mix(pal.NodeFill, pal.Background, 0.55, svgutil.Esc(pal.Background))
 	ry := y + m.headH
 	for i, a := range e.Attributes {
 		rowFill := odd
@@ -427,7 +425,7 @@ func writeEntity(b *strings.Builder, d *Diagram, e *Entity, n *domain.Node, cols
 		cx := x
 		for ci, c := range rowCells(a, hasKeys, hasComment) {
 			if c != "" {
-				writeLines(b, []string{c}, cx+m.cellPad, ry+m.rowH/2, m.fs*0.95, text, "start")
+				writeLines(b, []string{c}, cx+m.cellPad, ry+m.rowH/2, m.fs*0.95, rowText, "start")
 			}
 			cx += cols[ci]
 		}
@@ -509,21 +507,4 @@ func writeLines(b *strings.Builder, lines []string, x, cy, size float64, fill, a
 		fmt.Fprintf(b, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(x), svgutil.Num(y0+float64(i)*lh), svgutil.Esc(l))
 	}
 	b.WriteString("</text>\n")
-}
-
-// mix blends hex colour a toward hex colour b by t (0 keeps a). When either
-// is not a #rrggbb colour it returns fallback.
-func mix(a, b string, t float64, fallback string) string {
-	var ra, ga, ba, rb, gb, bb int
-	if len(a) != 7 || len(b) != 7 {
-		return fallback
-	}
-	if _, err := fmt.Sscanf(strings.ToLower(a), "#%02x%02x%02x", &ra, &ga, &ba); err != nil {
-		return fallback
-	}
-	if _, err := fmt.Sscanf(strings.ToLower(b), "#%02x%02x%02x", &rb, &gb, &bb); err != nil {
-		return fallback
-	}
-	c := func(x, y int) int { return x + int(float64(y-x)*t+0.5) }
-	return fmt.Sprintf("#%02x%02x%02x", c(ra, rb), c(ga, gb), c(ba, bb))
 }

@@ -245,8 +245,8 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 	for _, de := range rels {
 		label := "«" + de.r.Type + "»"
 		tw := m.face.Width(label, lfs)
-		fmt.Fprintf(&b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>`+"\n",
-			svgutil.Num(de.lx-tw/2-4), svgutil.Num(de.ly-lfs*0.65-2), svgutil.Num(tw+8), svgutil.Num(lfs*1.3+4))
+		fmt.Fprintf(&b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s" fill-opacity="0.85"/>`+"\n",
+			svgutil.Num(de.lx-tw/2-4), svgutil.Num(de.ly-lfs*0.65-2), svgutil.Num(tw+8), svgutil.Num(lfs*1.3+4), svgutil.Esc(pal.RelationLabel))
 		fmt.Fprintf(&b, `    <text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="middle">%s</text>`+"\n",
 			svgutil.Num(de.lx), svgutil.Num(de.ly+lfs*0.35), svgutil.Esc(pal.Text), svgutil.Num(lfs), svgutil.Esc(label))
 	}
@@ -267,16 +267,8 @@ func writeNode(b *strings.Builder, d *Diagram, n *Node, dn *domain.Node, pal the
 			}
 		}
 	}
-	fill, stroke, text := svgutil.Esc(pal.NodeFill), svgutil.Esc(pal.NodeStroke), svgutil.Esc(pal.Text)
-	if st.Fill != "" {
-		fill = svgutil.Esc(st.Fill)
-	}
-	if st.Stroke != "" {
-		stroke = svgutil.Esc(st.Stroke)
-	}
-	if st.Color != "" {
-		text = svgutil.Esc(st.Color)
-	}
+	fill, stroke, text := pal.Node(st.Fill, st.Stroke, st.Color)
+	fill, stroke, text = svgutil.Esc(fill), svgutil.Esc(stroke), svgutil.Esc(text)
 	extra := ""
 	if st.StrokeWidth != "" {
 		extra += ` stroke-width="` + svgutil.Esc(st.StrokeWidth) + `"`
