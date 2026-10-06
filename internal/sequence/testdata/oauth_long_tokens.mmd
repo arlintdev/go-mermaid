@@ -1,0 +1,11 @@
+sequenceDiagram
+  participant C as Client
+  participant R as Resource server
+  participant A as Authorization server
+  C->>R: GET /mcp
+  R-->>C: 401, WWW-Authenticate points to /.well-known/oauth-protected-resource
+  C->>R: GET /.well-known/oauth-protected-resource
+  R-->>C: authorization_servers: https://auth.example.com/realms/main
+  C->>A: discover, register, authorize with PKCE
+  Note over C,A: Token audience is https://resource.example.com/mcp/v1/endpoint
+  A-->>C: access_token

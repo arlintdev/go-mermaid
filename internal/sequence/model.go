@@ -65,6 +65,8 @@ type Box struct {
 
 	Lines  []string
 	X0, X1 float64
+
+	grow float64 // room each side for a label wider than the members
 }
 
 // Message is a single arrow from one participant to another.

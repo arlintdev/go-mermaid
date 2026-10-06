@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="922.3" height="435.2" viewBox="0 0 922.3 435.2" font-family="sans-serif" font-size="14">
+  <defs><marker id="m1k8wbmz-seq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker><marker id="m1k8wbmz-seq-open" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#333333" stroke-width="1.5"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(170.62,16)">
+    <rect x="0" y="0" width="452.31" height="403.2" fill="aqua" stroke="#9370DB" stroke-opacity="0.6"/>
+    <text x="226.16" y="18" fill="#333333" text-anchor="middle">https://identity.example.com/realms/organisation/protocol</text>
+    <line x1="139.16" y1="80.2" x2="139.16" y2="341.2" stroke="#9370DB"/>
+    <line x1="377.31" y1="80.2" x2="377.31" y2="341.2" stroke="#9370DB"/>
+    <rect x="122.16" y="184.6" width="455.53" height="80.4" fill="none" stroke="#9370DB" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <polygon points="122.16,184.6 168.62,184.6 168.62,201.8 161.62,208.8 122.16,208.8" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="143.39" y="201.6" fill="#333333" text-anchor="middle" font-weight="bold">loop</text>
+    <text x="176.62" y="201.6" fill="#333333" text-anchor="start">[retry_until_https://example.com/healthz/ready/endpoint_is_up]</text>
+    <line x1="139.16" y1="164.6" x2="377.31" y2="164.6" stroke="#333333" stroke-width="1.5" marker-end="url(#m1k8wbmz-seq-arrow)"/>
+    <text x="258.24" y="155.1" fill="#333333" text-anchor="middle">ok</text>
+    <line x1="377.31" y1="245" x2="139.16" y2="245" stroke="#333333" stroke-width="1.5" marker-end="url(#m1k8wbmz-seq-arrow)"/>
+    <text x="258.24" y="235.5" fill="#333333" text-anchor="middle">poll</text>
+    <path d="M377.31,299.2 C411.31,295.2 411.31,323.2 377.31,319.2" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1k8wbmz-seq-arrow)"/>
+    <text x="393.31" y="289.7" fill="#333333" text-anchor="start">self_message_with_a_very_long_identifier_name_here</text>
+    <rect x="-154.62" y="98.2" width="283.77" height="32.2" fill="#fff5ad" stroke="#aaaa33"/>
+    <text x="-12.73" y="119.2" fill="#333333" text-anchor="middle">/var/lib/application/data/storage/primary.db</text>
+    <rect x="10" y="28.2" width="258.31" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="139.16" y="59.1" fill="#333333" text-anchor="middle">svc_authentication_gateway_primary</text>
+    <rect x="10" y="341.2" width="258.31" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="139.16" y="372.1" fill="#333333" text-anchor="middle">svc_authentication_gateway_primary</text>
+    <rect x="312.31" y="28.2" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="377.31" y="59.1" fill="#333333" text-anchor="middle">B</text>
+    <rect x="312.31" y="341.2" width="130" height="52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="377.31" y="372.1" fill="#333333" text-anchor="middle">B</text>
+  </g>
+</svg>

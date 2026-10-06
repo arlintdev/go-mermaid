@@ -1,0 +1,11 @@
+sequenceDiagram
+  box Aqua https://identity.example.com/realms/organisation/protocol
+    participant A as svc_authentication_gateway_primary
+    participant B
+  end
+  Note left of A: /var/lib/application/data/storage/primary.db
+  A->>B: ok
+  loop retry_until_https://example.com/healthz/ready/endpoint_is_up
+    B->>A: poll
+  end
+  B->>B: self_message_with_a_very_long_identifier_name_here
