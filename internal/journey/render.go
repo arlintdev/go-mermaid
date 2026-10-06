@@ -20,16 +20,7 @@ type RenderOptions struct {
 	Title    string
 }
 
-// Mermaid's default journey colours.
-var (
-	sectionFills = []string{"#ececff", "#ffffde", "#ffecfe", "#deffe0", "#ecfffe", "#ffdee0", "#ffefec", "#defbff"}
-	actorFills   = []string{"#8fbc8f", "#7cfc00", "#00ffff", "#20b2aa", "#b0e0e6", "#ffffe0"}
-)
-
 const (
-	boxStroke  = "#666666"
-	faceFill   = "#fff8dc"
-	faceStroke = "#999999"
 	taskW      = 150.0
 	taskGap    = 50.0
 	minBoxH    = 50.0
@@ -53,7 +44,8 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	pal := theme.For(o.Theme)
+	pal := theme.For(o.Theme).Escaped()
+	jc := pal.Journey
 	face := svgutil.FaceFor(o.FontFace)
 	fs := o.FontSize
 	pad := o.Padding
@@ -76,7 +68,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	colour := map[string]string{}
 	legendW := 0.0
 	for i, a := range actors {
-		colour[a] = actorFills[i%len(actorFills)]
+		colour[a] = jc.Actors[i%len(jc.Actors)]
 		legendW = math.Max(legendW, 24+face.Width(a, fs))
 	}
 	if legendW > 0 {
@@ -133,8 +125,8 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	// Actor legend.
 	for i, a := range actors {
 		cy := secY + 10 + float64(i)*20
-		fmt.Fprintf(&b, `<circle cx="%s" cy="%s" r="7" fill="%s" stroke="#000000"/>`+"\n",
-			svgutil.Num(pad+7), svgutil.Num(cy), colour[a])
+		fmt.Fprintf(&b, `<circle cx="%s" cy="%s" r="7" fill="%s" stroke="%s"/>`+"\n",
+			svgutil.Num(pad+7), svgutil.Num(cy), colour[a], jc.ActorStroke)
 		fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s">%s</text>`+"\n",
 			svgutil.Num(pad+24), svgutil.Num(cy+fs*0.35), pal.Text, svgutil.Esc(a))
 	}
@@ -146,7 +138,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 
 	i := 0
 	for si, s := range d.Sections {
-		fill := sectionFills[si%len(sectionFills)]
+		fill := jc.Sections[si%len(jc.Sections)]
 		if len(s.Tasks) == 0 {
 			continue
 		}
@@ -154,7 +146,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 		sw := n*taskW + (n-1)*taskGap
 		if s.Name != "" {
 			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="3" fill="%s" stroke="%s"/>`+"\n",
-				svgutil.Num(x), svgutil.Num(secY), svgutil.Num(sw), svgutil.Num(secH), fill, boxStroke)
+				svgutil.Num(x), svgutil.Num(secY), svgutil.Num(sw), svgutil.Num(secH), fill, jc.Stroke)
 			label(secLines[si], x+sw/2, secY+secH/2)
 		}
 		for _, t := range s.Tasks {
@@ -162,13 +154,13 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 			score := min(max(t.Score, 1), 5)
 			fy := faceTop + float64(5-score)*scoreStep
 			fmt.Fprintf(&b, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s" stroke-dasharray="4 2"/>`+"\n",
-				svgutil.Num(cx), svgutil.Num(taskY+boxH), svgutil.Num(cx), svgutil.Num(lineEnd), boxStroke)
-			writeFace(&b, cx, fy, score)
+				svgutil.Num(cx), svgutil.Num(taskY+boxH), svgutil.Num(cx), svgutil.Num(lineEnd), jc.Stroke)
+			writeFace(&b, cx, fy, score, jc)
 			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="3" fill="%s" stroke="%s"/>`+"\n",
-				svgutil.Num(x), svgutil.Num(taskY), svgutil.Num(taskW), svgutil.Num(boxH), fill, boxStroke)
+				svgutil.Num(x), svgutil.Num(taskY), svgutil.Num(taskW), svgutil.Num(boxH), fill, jc.Stroke)
 			for k, a := range t.Actors {
-				fmt.Fprintf(&b, `<circle cx="%s" cy="%s" r="7" fill="%s" stroke="#000000"><title>%s</title></circle>`+"\n",
-					svgutil.Num(x+14+float64(k)*10), svgutil.Num(taskY), colour[a], svgutil.Esc(a))
+				fmt.Fprintf(&b, `<circle cx="%s" cy="%s" r="7" fill="%s" stroke="%s"><title>%s</title></circle>`+"\n",
+					svgutil.Num(x+14+float64(k)*10), svgutil.Num(taskY), colour[a], jc.ActorStroke, svgutil.Esc(a))
 			}
 			label(taskLines[i], cx, taskY+boxH/2+3)
 			x += taskW + taskGap
@@ -186,24 +178,24 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 
 // writeFace draws Mermaid's score face: a smile above 3, a frown below,
 // a straight mouth at 3.
-func writeFace(b *strings.Builder, cx, cy float64, score int) {
+func writeFace(b *strings.Builder, cx, cy float64, score int, jc theme.JourneyColors) {
 	fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="%s" fill="%s" stroke="%s" stroke-width="2"/>`+"\n",
-		svgutil.Num(cx), svgutil.Num(cy), svgutil.Num(faceR), faceFill, faceStroke)
+		svgutil.Num(cx), svgutil.Num(cy), svgutil.Num(faceR), jc.FaceFill, jc.FaceStroke)
 	for _, dx := range []float64{-5, 5} {
-		fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>`+"\n",
-			svgutil.Num(cx+dx), svgutil.Num(cy-5))
+		fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="1.5" fill="%s" stroke="%s" stroke-width="2"/>`+"\n",
+			svgutil.Num(cx+dx), svgutil.Num(cy-5), jc.FaceFeature, jc.FaceFeature)
 	}
 	switch {
 	case score > 3:
 		my := cy + 2
-		fmt.Fprintf(b, `<path d="M%s,%s A7.5,7.5 0 0 0 %s,%s" fill="none" stroke="#666666" stroke-width="1.2"/>`+"\n",
-			svgutil.Num(cx-6.5), svgutil.Num(my), svgutil.Num(cx+6.5), svgutil.Num(my))
+		fmt.Fprintf(b, `<path d="M%s,%s A7.5,7.5 0 0 0 %s,%s" fill="none" stroke="%s" stroke-width="1.2"/>`+"\n",
+			svgutil.Num(cx-6.5), svgutil.Num(my), svgutil.Num(cx+6.5), svgutil.Num(my), jc.FaceFeature)
 	case score < 3:
 		my := cy + 9
-		fmt.Fprintf(b, `<path d="M%s,%s A7.5,7.5 0 0 1 %s,%s" fill="none" stroke="#666666" stroke-width="1.2"/>`+"\n",
-			svgutil.Num(cx-6.5), svgutil.Num(my), svgutil.Num(cx+6.5), svgutil.Num(my))
+		fmt.Fprintf(b, `<path d="M%s,%s A7.5,7.5 0 0 1 %s,%s" fill="none" stroke="%s" stroke-width="1.2"/>`+"\n",
+			svgutil.Num(cx-6.5), svgutil.Num(my), svgutil.Num(cx+6.5), svgutil.Num(my), jc.FaceFeature)
 	default:
-		fmt.Fprintf(b, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="#666666"/>`+"\n",
-			svgutil.Num(cx-5), svgutil.Num(cy+7), svgutil.Num(cx+5), svgutil.Num(cy+7))
+		fmt.Fprintf(b, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s"/>`+"\n",
+			svgutil.Num(cx-5), svgutil.Num(cy+7), svgutil.Num(cx+5), svgutil.Num(cy+7), jc.FaceFeature)
 	}
 }
