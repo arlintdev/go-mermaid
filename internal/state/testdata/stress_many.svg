@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="95" height="1268" viewBox="0 0 95 1268" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><marker id="m1tl38ge-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
+  <g transform="translate(16,16)">
+<g transform="translate(0,0)">
+<path d="M31.5,14 C31.5,44 31.5,44 31.5,74" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,108 C31.5,138 31.5,138 31.5,168" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,202 C31.5,232 31.5,232 31.5,262" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,296 C31.5,326 31.5,326 31.5,356" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,390 C31.5,420 31.5,420 31.5,450" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,484 C31.5,514 31.5,514 31.5,544" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,578 C31.5,608 31.5,608 31.5,638" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,672 C31.5,702 31.5,702 31.5,732" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,766 C31.5,796 31.5,796 31.5,826" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,860 C31.5,890 31.5,890 31.5,920" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,954 C31.5,984 31.5,984 31.5,1014" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,1048 C31.5,1078 31.5,1078 31.5,1108" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<path d="M31.5,1142 C31.5,1172 31.5,1172 31.5,1202" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1tl38ge-arrow)"/>
+<circle cx="31.5" cy="7" r="7" fill="#333333"/>
+<rect x="0" y="74" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="95.9">S0</tspan></text>
+<rect x="0" y="168" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="189.9">S1</tspan></text>
+<rect x="0" y="262" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="283.9">S2</tspan></text>
+<rect x="0" y="356" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="377.9">S3</tspan></text>
+<rect x="0" y="450" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="471.9">S4</tspan></text>
+<rect x="0" y="544" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="565.9">S5</tspan></text>
+<rect x="0" y="638" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="659.9">S6</tspan></text>
+<rect x="0" y="732" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="753.9">S7</tspan></text>
+<rect x="0" y="826" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="847.9">S8</tspan></text>
+<rect x="0" y="920" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="941.9">S9</tspan></text>
+<rect x="0" y="1014" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="1035.9">S10</tspan></text>
+<rect x="0" y="1108" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="1129.9">S11</tspan></text>
+<rect x="0" y="1202" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="1223.9">S12</tspan></text>
+<rect x="20.49" y="127.81" width="22.01" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="142.41">e0</tspan></text>
+<rect x="20.49" y="221.81" width="22.01" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="236.41">e1</tspan></text>
+<rect x="20.49" y="315.81" width="22.01" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="330.41">e2</tspan></text>
+<rect x="20.49" y="409.81" width="22.01" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="424.41">e3</tspan></text>
+<rect x="20.49" y="503.81" width="22.01" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="518.41">e4</tspan></text>
+<rect x="20.49" y="597.81" width="22.01" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="612.41">e5</tspan></text>
+<rect x="20.49" y="691.81" width="22.01" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="706.41">e6</tspan></text>
+<rect x="20.49" y="785.81" width="22.01" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="800.41">e7</tspan></text>
+<rect x="20.49" y="879.81" width="22.01" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="894.41">e8</tspan></text>
+<rect x="20.49" y="973.81" width="22.01" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="988.41">e9</tspan></text>
+<rect x="16.99" y="1067.81" width="29.02" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="1082.41">e10</tspan></text>
+<rect x="16.99" y="1161.81" width="29.02" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="31.5" y="1176.41">e11</tspan></text>
+</g>
+  </g>
+</svg>

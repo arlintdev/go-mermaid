@@ -2,6 +2,7 @@ package git
 
 import (
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
@@ -137,11 +138,29 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	var w, h float64
 	if !r.vertical {
 		r.ox = pad + maxLabel + labelGap + dotR
+		// A slanted commit id runs down and to the left of its commit, and a
+		// tag reaches either side of it: keep both on the canvas.
+		r.leadIn()
+		for _, c := range d.Commits {
+			t := r.pos[c].t
+			if r.showID(c) {
+				reach := (r.face.Width(c.ID, r.sfs) + 3 + r.sfs*1.25) * math.Sqrt2 / 2
+				r.ox = max(r.ox, pad+6+reach-t)
+			}
+			if len(c.Tags) > 0 {
+				r.ox = max(r.ox, pad+r.tagWidth(c)/2-t)
+			}
+		}
 		r.oy = pad + titleH + max(dotR, r.fs*0.75) + 4
 		if r.hasTagOn(0) {
 			r.oy += r.sfs + 12
 		}
 		w = r.ox + r.tmax + dotR + 40 + pad
+		for _, c := range d.Commits {
+			if len(c.Tags) > 0 {
+				w = max(w, r.ox+r.pos[c].t+r.tagWidth(c)/2+pad)
+			}
+		}
 		h = r.oy + lastLane + dotR + r.idDrop() + pad
 	} else {
 		r.ox = pad + dotR + 12
@@ -169,7 +188,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 		h = r.oy + r.tmax + dotR + 30 + pad
 	}
 	if o.Title != "" {
-		w = max(w, r.face.Width(o.Title, fs*1.15)+2*pad)
+		w = max(w, r.face.Bold().Width(o.Title, fs*1.15)+2*pad)
 	}
 
 	var b strings.Builder
@@ -195,6 +214,39 @@ func (r *renderer) hasTagOn(lane int) bool {
 		}
 	}
 	return false
+}
+
+// leadIn moves every commit along the time axis, in a left-to-right
+// graph, until no slanted commit id reaches back over the name of a branch
+// on a lane below it; the names stand right-aligned before the first
+// commit.
+func (r *renderer) leadIn() {
+	th := r.sfs * 1.25
+	bh := r.fs + 7
+	lead := 0.0
+	for _, c := range r.d.Commits {
+		if !r.showID(c) {
+			continue
+		}
+		p := r.pos[c]
+		ay := p.l + dotR + 5
+		diag := (r.face.Width(c.ID, r.sfs) + 3 + th) * math.Sqrt2 / 2
+		for _, br := range r.d.Branches {
+			l := r.laneAt[br.Name]
+			if l <= p.l || ay+diag < l-bh/2 {
+				continue
+			}
+			y := min(l+bh/2, ay+diag)
+			lead = max(lead, 6+(y-ay)+th*math.Sqrt2/2-dotR-labelGap+2-p.t)
+		}
+	}
+	if lead <= 0 {
+		return
+	}
+	for c, p := range r.pos {
+		r.pos[c] = pt{p.t + lead, p.l}
+	}
+	r.tmax += lead
 }
 
 // idDrop is how far below a lane the rotated commit ids reach.

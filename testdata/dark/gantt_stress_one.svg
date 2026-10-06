@@ -1,0 +1,23 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="780" height="87" viewBox="0 0 780 87" font-family="sans-serif" font-size="14">
+<line x1="29.76" y1="16" x2="29.76" y2="50" stroke="#4a4a4a" stroke-opacity="0.8"/>
+<text x="29.76" y="67" fill="#e6e6e6" font-size="11" text-anchor="middle">00:00</text>
+<line x1="119.76" y1="16" x2="119.76" y2="50" stroke="#4a4a4a" stroke-opacity="0.8"/>
+<text x="119.76" y="67" fill="#e6e6e6" font-size="11" text-anchor="middle">03:00</text>
+<line x1="209.76" y1="16" x2="209.76" y2="50" stroke="#4a4a4a" stroke-opacity="0.8"/>
+<text x="209.76" y="67" fill="#e6e6e6" font-size="11" text-anchor="middle">06:00</text>
+<line x1="299.76" y1="16" x2="299.76" y2="50" stroke="#4a4a4a" stroke-opacity="0.8"/>
+<text x="299.76" y="67" fill="#e6e6e6" font-size="11" text-anchor="middle">09:00</text>
+<line x1="389.76" y1="16" x2="389.76" y2="50" stroke="#4a4a4a" stroke-opacity="0.8"/>
+<text x="389.76" y="67" fill="#e6e6e6" font-size="11" text-anchor="middle">12:00</text>
+<line x1="479.76" y1="16" x2="479.76" y2="50" stroke="#4a4a4a" stroke-opacity="0.8"/>
+<text x="479.76" y="67" fill="#e6e6e6" font-size="11" text-anchor="middle">15:00</text>
+<line x1="569.76" y1="16" x2="569.76" y2="50" stroke="#4a4a4a" stroke-opacity="0.8"/>
+<text x="569.76" y="67" fill="#e6e6e6" font-size="11" text-anchor="middle">18:00</text>
+<line x1="659.76" y1="16" x2="659.76" y2="50" stroke="#4a4a4a" stroke-opacity="0.8"/>
+<text x="659.76" y="67" fill="#e6e6e6" font-size="11" text-anchor="middle">21:00</text>
+<line x1="749.76" y1="16" x2="749.76" y2="50" stroke="#4a4a4a" stroke-opacity="0.8"/>
+<text x="749.76" y="67" fill="#e6e6e6" font-size="11" text-anchor="middle">00:00</text>
+<rect x="16" y="20" width="748" height="26" fill="#6666ff" fill-opacity="0.12"/>
+<rect x="29.76" y="23" width="720" height="20" rx="3" fill="#4b4f9a" stroke="#8a90dd" stroke-width="2"/>
+<text x="389.76" y="37.2" fill="#ffffff" font-size="12" text-anchor="middle">A</text>
+</svg>

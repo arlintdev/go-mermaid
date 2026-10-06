@@ -17,6 +17,9 @@ import (
 type Box struct {
 	Text           string
 	X0, Y0, X1, Y1 float64
+	// Rotated is set for text drawn at an angle, whose box is only the
+	// bounds of the slanted line.
+	Rotated bool
 }
 
 func (b Box) String() string {
@@ -223,7 +226,7 @@ func lineBox(s string, x, y float64, st textState) Box {
 	case "hanging", "text-before-edge":
 		asc, desc = 0, 0.95*st.size
 	}
-	b := Box{Text: s, X0: math.Inf(1), Y0: math.Inf(1), X1: math.Inf(-1), Y1: math.Inf(-1)}
+	b := Box{Text: s, X0: math.Inf(1), Y0: math.Inf(1), X1: math.Inf(-1), Y1: math.Inf(-1), Rotated: math.Abs(st.m.b) > 1e-9 || math.Abs(st.m.c) > 1e-9}
 	for _, c := range [4][2]float64{{x, y - asc}, {x + w, y - asc}, {x, y + desc}, {x + w, y + desc}} {
 		px, py := st.m.apply(c[0], c[1])
 		b.X0, b.Y0 = math.Min(b.X0, px), math.Min(b.Y0, py)
@@ -287,8 +290,8 @@ func OffCanvas(svg []byte, tol float64) ([]Box, error) {
 	return out, nil
 }
 
-// TextOverlaps returns the pairs of text lines whose boxes overlap by more
-// than tol in both directions.
+// TextOverlaps returns the pairs of level text lines whose boxes overlap by
+// more than tol in both directions (slanted text is left out).
 func TextOverlaps(svg []byte, tol float64) ([][2]Box, error) {
 	boxes, err := TextBoxes(svg)
 	if err != nil {
@@ -297,6 +300,9 @@ func TextOverlaps(svg []byte, tol float64) ([][2]Box, error) {
 	var out [][2]Box
 	for i, a := range boxes {
 		for _, b := range boxes[i+1:] {
+			if a.Rotated || b.Rotated {
+				continue
+			}
 			if math.Min(a.X1, b.X1)-math.Max(a.X0, b.X0) > tol && math.Min(a.Y1, b.Y1)-math.Max(a.Y0, b.Y0) > tol {
 				out = append(out, [2]Box{a, b})
 			}

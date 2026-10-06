@@ -1,0 +1,14 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="701.49" height="240.5" viewBox="0 0 701.49 240.5" font-family="sans-serif" font-size="14">
+  <defs><marker id="mnzx47d-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#bbbbbb"/></marker><marker id="mnzx47d-arrow-sm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#bbbbbb"/></marker></defs>
+  <line x1="350.75" y1="101" x2="350.75" y2="206.5" stroke="#bbbbbb" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#mnzx47d-arrow-sm)"/>
+  <line x1="16" y1="129" x2="685.49" y2="129" stroke="#bbbbbb" stroke-width="3" marker-end="url(#mnzx47d-arrow)"/>
+  <rect x="40" y="16" width="621.49" height="35.5" rx="5" fill="#2e2e7a"/>
+  <line x1="41" y1="50" x2="660.49" y2="50" stroke="#4747d1" stroke-width="3"/>
+  <text fill="#eeeeee" text-anchor="middle" font-weight="bold"><tspan x="350.75" y="38.65">Pneumonoultramicroscopicsilicovolcanoconiosis</tspan></text>
+  <rect x="40" y="65.5" width="621.49" height="35.5" rx="5" fill="#2e2e7a"/>
+  <line x1="41" y1="99.5" x2="660.49" y2="99.5" stroke="#4747d1" stroke-width="3"/>
+  <text fill="#eeeeee" text-anchor="middle"><tspan x="350.75" y="88.15">Pneumonoultramicroscopicsilicovolcanoconiosis</tspan></text>
+  <rect x="40" y="157" width="621.49" height="35.5" rx="5" fill="#29294c"/>
+  <line x1="41" y1="191" x2="660.49" y2="191" stroke="#2e2e7a" stroke-width="3"/>
+  <text fill="#eeeeee" text-anchor="middle"><tspan x="350.75" y="179.65">PneumonoultramicroscopicsilicovolcanoconiosisPneumonoultramicroscopicsilicovolcanoconiosis</tspan></text>
+</svg>

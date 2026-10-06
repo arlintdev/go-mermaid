@@ -103,8 +103,12 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if lh := top + float64(len(d.Curves))*(legendFs+8) + pad; !d.HideLegend && lh > h {
 		h = lh
 	}
-	if tw := face.Width(o.Title, titleFs) + 2*pad; tw > w {
-		w = tw
+	titleX := cx
+	if tw := face.Width(o.Title, titleFs); cx-tw/2 < pad || cx+tw/2 > w-pad {
+		// Too wide to centre over the chart: centre it on a canvas wide
+		// enough to hold it.
+		w = max(w, tw+2*pad)
+		titleX = w / 2
 	}
 
 	point := func(i int, v float64) (float64, float64) {
@@ -119,7 +123,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	fmt.Fprintf(&b, `<rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(pal.Background))
 	if o.Title != "" {
 		fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="middle">%s</text>`+"\n",
-			svgutil.Num(cx), svgutil.Num(pad+titleFs), pal.Text, svgutil.Num(titleFs), svgutil.Esc(o.Title))
+			svgutil.Num(titleX), svgutil.Num(pad+titleFs), pal.Text, svgutil.Num(titleFs), svgutil.Esc(o.Title))
 	}
 
 	// Graticule: circles or polygons, outermost first.

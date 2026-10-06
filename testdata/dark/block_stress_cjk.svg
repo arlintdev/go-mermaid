@@ -1,0 +1,8 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="355.16" height="72" viewBox="0 0 355.16 72" font-family="sans-serif" font-size="14">
+  <defs><marker id="m38vwez-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bbbbbb"/></marker></defs>
+  <rect x="16" y="16" width="143.58" height="40" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+  <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="87.79" y="40.9">数据库连接池</tspan></text>
+  <rect x="195.58" y="16" width="143.58" height="40" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+  <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="267.37" y="40.9">Deploy 🚀 done ✅</tspan></text>
+  <path d="M159.58,36 L195.58,36" fill="none" stroke="#bbbbbb" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#m38vwez-arrow)"/>
+</svg>

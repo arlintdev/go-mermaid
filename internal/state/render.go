@@ -635,7 +635,7 @@ func (c *ctx) svg(root block) []byte {
 	w := root.w + 2*pad
 	h := root.h + titleH + 2*pad
 	if c.o.Title != "" {
-		w = max(w, c.face.Width(c.o.Title, c.fs)+2*pad)
+		w = max(w, c.face.Bold().Width(c.o.Title, c.fs)+2*pad)
 	}
 	var b strings.Builder
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",

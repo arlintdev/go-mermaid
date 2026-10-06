@@ -1,0 +1,11 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="260" height="191" viewBox="0 0 260 191" font-family="sans-serif" font-size="14">
+  <defs><marker id="mair76x-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#bbbbbb"/></marker><marker id="mair76x-arrow-sm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#bbbbbb"/></marker></defs>
+  <line x1="130" y1="51.5" x2="130" y2="157" stroke="#bbbbbb" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#mair76x-arrow-sm)"/>
+  <line x1="16" y1="79.5" x2="244" y2="79.5" stroke="#bbbbbb" stroke-width="3" marker-end="url(#mair76x-arrow)"/>
+  <rect x="40" y="16" width="180" height="35.5" rx="5" fill="#2e2e7a"/>
+  <line x1="41" y1="50" x2="219" y2="50" stroke="#4747d1" stroke-width="3"/>
+  <text fill="#eeeeee" text-anchor="middle" font-weight="bold"><tspan x="130" y="38.65">2024</tspan></text>
+  <rect x="40" y="107.5" width="180" height="35.5" rx="5" fill="#29294c"/>
+  <line x1="41" y1="141.5" x2="219" y2="141.5" stroke="#2e2e7a" stroke-width="3"/>
+  <text fill="#eeeeee" text-anchor="middle"><tspan x="130" y="130.15">a</tspan></text>
+</svg>

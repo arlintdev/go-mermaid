@@ -1,0 +1,8 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="232" height="167.7" viewBox="0 0 232 167.7" font-family="sans-serif" font-size="14">
+<rect x="16" y="16" width="200" height="135.7" rx="5" fill="#43502b" stroke="#43502b"/>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="116" y="36">待办</tspan></text>
+<rect x="23.5" y="46.2" width="185" height="44" rx="5" fill="#262626" stroke="#8888bb"/>
+<text fill="#e6e6e6"><tspan x="33.5" y="73.1">数据库连接池</tspan></text>
+<rect x="23.5" y="96.2" width="185" height="44" rx="5" fill="#262626" stroke="#8888bb"/>
+<text fill="#e6e6e6"><tspan x="33.5" y="123.1">Deploy 🚀 done ✅</tspan></text>
+</svg>

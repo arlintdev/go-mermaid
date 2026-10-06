@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="202" height="1848" viewBox="0 0 202 1848" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><marker id="m17mu94m-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#444444"/></marker></defs>
+  <g transform="translate(16,16)">
+    <path d="M85,78 C85,118 85,118 85,158" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <path d="M85,236 C85,276 85,276 85,316" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <path d="M85,394 C85,434 85,434 85,474" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <path d="M85,552 C85,592 85,592 85,632" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <path d="M85,710 C85,750 85,750 85,790" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <path d="M85,868 C85,908 85,908 85,948" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <path d="M85,1026 C85,1066 85,1066 85,1106" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <path d="M85,1184 C85,1224 85,1224 85,1264" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <path d="M85,1342 C85,1382 85,1382 85,1422" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <path d="M85,1500 C85,1540 85,1540 85,1580" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <path d="M85,1658 C85,1698 85,1698 85,1738" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m17mu94m-arrow)"/>
+    <rect x="0" y="0" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="25.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 0</text>
+    <text x="85" y="40.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="61.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 0</text>
+    <rect x="0" y="158" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="183.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 1</text>
+    <text x="85" y="198.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="219.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 1</text>
+    <rect x="0" y="316" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="341.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 2</text>
+    <text x="85" y="356.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="377.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 2</text>
+    <rect x="0" y="474" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="499.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 3</text>
+    <text x="85" y="514.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="535.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 3</text>
+    <rect x="0" y="632" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="657.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 4</text>
+    <text x="85" y="672.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="693.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 4</text>
+    <rect x="0" y="790" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="815.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 5</text>
+    <text x="85" y="830.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="851.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 5</text>
+    <rect x="0" y="948" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="973.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 6</text>
+    <text x="85" y="988.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="1009.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 6</text>
+    <rect x="0" y="1106" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="1131.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 7</text>
+    <text x="85" y="1146.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="1167.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 7</text>
+    <rect x="0" y="1264" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="1289.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 8</text>
+    <text x="85" y="1304.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="1325.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 8</text>
+    <rect x="0" y="1422" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="1447.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 9</text>
+    <text x="85" y="1462.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="1483.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 9</text>
+    <rect x="0" y="1580" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="1605.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 10</text>
+    <text x="85" y="1620.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="1641.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 10</text>
+    <rect x="0" y="1738" width="170" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="85" y="1763.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">System 11</text>
+    <text x="85" y="1778.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="85" y="1799.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Does thing 11</text>
+    <rect x="69.1" y="108.27" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="121.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+    <rect x="69.1" y="266.26" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="279.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+    <rect x="69.1" y="424.26" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="437.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+    <rect x="69.1" y="582.26" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="595.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+    <rect x="69.1" y="740.26" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="753.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+    <rect x="69.1" y="898.26" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="911.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+    <rect x="69.1" y="1056.27" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="1069.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+    <rect x="69.1" y="1214.27" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="1227.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+    <rect x="69.1" y="1372.27" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="1385.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+    <rect x="69.1" y="1530.27" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="1543.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+    <rect x="69.1" y="1688.27" width="31.8" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="85" y="1701.57" fill="#333333" font-size="11.9" text-anchor="middle">calls</text>
+  </g>
+</svg>

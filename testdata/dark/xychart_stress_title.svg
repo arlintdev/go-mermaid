@@ -1,0 +1,19 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="1033.58" height="418" viewBox="0 0 1033.58 418" font-family="sans-serif" font-size="14">
+<text x="516.79" y="36" fill="#e6e6e6" font-size="20" text-anchor="middle">A very long diagram title that goes on and on describing everything this picture is supposed to show to its readers</text>
+<rect x="102.46" y="217" width="168" height="160" fill="#3498db" stroke="#226592"/>
+<rect x="382.46" y="57" width="168" height="320" fill="#3498db" stroke="#226592"/>
+<line x1="46.46" y1="57" x2="46.46" y2="377" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<line x1="46.46" y1="377" x2="606.46" y2="377" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<line x1="41.46" y1="377" x2="46.46" y2="377" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="35.46" y="381.9" fill="#e6e6e6" text-anchor="end">0.0</text>
+<line x1="41.46" y1="297" x2="46.46" y2="297" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="35.46" y="301.9" fill="#e6e6e6" text-anchor="end">0.5</text>
+<line x1="41.46" y1="217" x2="46.46" y2="217" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="35.46" y="221.9" fill="#e6e6e6" text-anchor="end">1.0</text>
+<line x1="41.46" y1="137" x2="46.46" y2="137" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="35.46" y="141.9" fill="#e6e6e6" text-anchor="end">1.5</text>
+<line x1="41.46" y1="57" x2="46.46" y2="57" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="35.46" y="61.9" fill="#e6e6e6" text-anchor="end">2.0</text>
+<line x1="186.46" y1="377" x2="186.46" y2="382" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<line x1="466.46" y1="377" x2="466.46" y2="382" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="956.16" height="431.4" viewBox="0 0 956.16 431.4" font-family="sans-serif" font-size="14">
+<text x="478.08" y="32" fill="#e6e6e6" font-size="16" text-anchor="middle">A very long diagram title that goes on and on describing everything this picture is supposed to show to its readers</text>
+<circle cx="188" cy="243.4" r="170" fill="#5a5a5a" fill-opacity="0.3" stroke="#5a5a5a"/>
+<circle cx="188" cy="243.4" r="136" fill="#5a5a5a" fill-opacity="0.3" stroke="#5a5a5a"/>
+<circle cx="188" cy="243.4" r="102" fill="#5a5a5a" fill-opacity="0.3" stroke="#5a5a5a"/>
+<circle cx="188" cy="243.4" r="68" fill="#5a5a5a" fill-opacity="0.3" stroke="#5a5a5a"/>
+<circle cx="188" cy="243.4" r="34" fill="#5a5a5a" fill-opacity="0.3" stroke="#5a5a5a"/>
+<line x1="188" y1="243.4" x2="188" y2="73.4" stroke="#cccccc" stroke-width="2"/>
+<text x="188" y="59.4" fill="#e6e6e6" font-size="13" text-anchor="middle">Pneumonoultramicroscopicsilicovolcanoconiosis</text>
+<line x1="188" y1="243.4" x2="335.22" y2="328.4" stroke="#cccccc" stroke-width="2"/>
+<text x="347.35" y="345.8" fill="#e6e6e6" font-size="13" text-anchor="start">Pneumonoultramicroscopicsilicovolcanoconiosis</text>
+<line x1="188" y1="243.4" x2="40.78" y2="328.4" stroke="#cccccc" stroke-width="2"/>
+<text x="28.65" y="345.8" fill="#e6e6e6" font-size="13" text-anchor="end">c</text>
+<path d="M188,186.73 C229.71,181.92 311.18,275.98 286.15,300.07 C261.12,324.15 57.46,347.67 40.78,328.4 C24.09,309.13 146.29,191.55 188,186.73 Z" fill="#6a6ae0" fill-opacity="0.5" stroke="#6a6ae0" stroke-width="2"/>
+<rect x="644.76" y="46.4" width="12" height="12" fill="#6a6ae0" fill-opacity="0.5" stroke="#6a6ae0"/>
+<text x="662.76" y="56.95" fill="#e6e6e6" font-size="13">Pneumonoultramicroscopicsilicovolcanoconiosis</text>
+</svg>

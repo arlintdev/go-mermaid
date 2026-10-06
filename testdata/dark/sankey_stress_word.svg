@@ -1,0 +1,10 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="1365.69" height="192" viewBox="0 0 1365.69 192" font-family="sans-serif" font-size="14">
+<path d="M26,96 C351.92,96 351.92,96 677.84,96" fill="none" stroke="#4e79a7" stroke-opacity="0.5" stroke-width="160"/>
+<path d="M687.84,96 C1013.77,96 1013.77,96 1339.69,96" fill="none" stroke="#f28e2c" stroke-opacity="0.5" stroke-width="160"/>
+<rect x="16" y="16" width="10" height="160" fill="#4e79a7"/>
+<rect x="677.84" y="16" width="10" height="160" fill="#f28e2c"/>
+<rect x="1339.69" y="16" width="10" height="160" fill="#e15759"/>
+<text x="32" y="100.9" fill="#e6e6e6" text-anchor="start">Pneumonoultramicroscopicsilicovolcanoconiosis 5</text>
+<text x="693.84" y="100.9" fill="#e6e6e6" text-anchor="start">PneumonoultramicroscopicsilicovolcanoconiosisPneumonoultramicroscopicsilicovolcanoconiosis 5</text>
+<text x="1333.69" y="100.9" fill="#e6e6e6" text-anchor="end">c 5</text>
+</svg>

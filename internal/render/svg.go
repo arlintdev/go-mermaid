@@ -91,7 +91,7 @@ func (r *renderer) render(res *layout.Result) []byte {
 		titleH = titleSize*1.5 + 8
 	}
 	contentW := res.Width
-	if tw := r.face.Width(r.opts.Title, titleSize); tw > contentW {
+	if tw := r.face.Bold().Width(r.opts.Title, titleSize); tw > contentW {
 		contentW = tw
 	}
 	shiftX := (contentW - res.Width) / 2

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420.5" height="401" viewBox="0 0 420.5 401" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<circle cx="188" cy="213" r="170" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="188" cy="213" r="136" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="188" cy="213" r="102" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="188" cy="213" r="68" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="188" cy="213" r="34" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<line x1="188" y1="213" x2="188" y2="43" stroke="#333333" stroke-width="2"/>
+<text x="188" y="29" fill="#333333" font-size="13" text-anchor="middle">a</text>
+<line x1="188" y1="213" x2="335.22" y2="298" stroke="#333333" stroke-width="2"/>
+<text x="347.35" y="315.4" fill="#333333" font-size="13" text-anchor="start">b</text>
+<line x1="188" y1="213" x2="40.78" y2="298" stroke="#333333" stroke-width="2"/>
+<text x="28.65" y="315.4" fill="#333333" font-size="13" text-anchor="end">c</text>
+<path d="M188,156.33 C229.71,151.52 311.18,245.58 286.15,269.67 C261.12,293.75 57.46,317.27 40.78,298 C24.09,278.73 146.29,161.15 188,156.33 Z" fill="#8686ff" fill-opacity="0.5" stroke="#8686ff" stroke-width="2"/>
+<rect x="380" y="16" width="12" height="12" fill="#8686ff" fill-opacity="0.5" stroke="#8686ff"/>
+<text x="398" y="26.55" fill="#333333" font-size="13">x</text>
+</svg>

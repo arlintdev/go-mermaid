@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="933.42" height="335.2" viewBox="0 0 933.42 335.2" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="466.71" y="34" fill="#333333" font-size="18" text-anchor="middle">A very long diagram title that goes on and on describing everything this picture is supposed to show to its readers</text>
+<path d="M436.82,184.2 L436.82,51.2 A133,133 0 0 1 552,250.7 Z" fill="#ececff" stroke="#000000" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<path d="M436.82,184.2 L552,250.7 A133,133 0 1 1 436.82,51.2 Z" fill="#ffffde" stroke="#000000" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<circle cx="436.82" cy="184.2" r="134" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="519.75" y="141.22" fill="#333333" text-anchor="middle">33%</text>
+<text x="353.89" y="236.98" fill="#333333" text-anchor="middle">67%</text>
+<rect x="599.82" y="164.2" width="18" height="18" fill="#ececff" stroke="#ececff"/>
+<text x="623.82" y="178.1" fill="#333333">a</text>
+<rect x="599.82" y="186.2" width="18" height="18" fill="#ffffde" stroke="#ffffde"/>
+<text x="623.82" y="200.1" fill="#333333">b</text>
+</svg>

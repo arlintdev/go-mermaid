@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3012" height="80" viewBox="0 0 3012 80" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="metdirs-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(16,16)">
+    <path d="M152,24 L191,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M354,24 L393,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M556,24 L595,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M758,24 L797,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M960,24 L999,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M1162,24 L1201,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M1364,24 L1403,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M1566,24 L1605,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M1768,24 L1807,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M1970,24 L2009,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M2172,24 L2211,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M2374,24 L2413,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M2576,24 L2615,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <path d="M2778,24 L2817,24" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#metdirs-arrow-0)"/>
+    <rect x="0" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="29.6">N0</tspan></text>
+    <rect x="202" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="29.6">N1</tspan></text>
+    <rect x="404" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="480" y="29.6">N2</tspan></text>
+    <rect x="606" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="682" y="29.6">N3</tspan></text>
+    <rect x="808" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="884" y="29.6">N4</tspan></text>
+    <rect x="1010" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="1086" y="29.6">N5</tspan></text>
+    <rect x="1212" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="1288" y="29.6">N6</tspan></text>
+    <rect x="1414" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="1490" y="29.6">N7</tspan></text>
+    <rect x="1616" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="1692" y="29.6">N8</tspan></text>
+    <rect x="1818" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="1894" y="29.6">N9</tspan></text>
+    <rect x="2020" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="2096" y="29.6">N10</tspan></text>
+    <rect x="2222" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="2298" y="29.6">N11</tspan></text>
+    <rect x="2424" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="2500" y="29.6">N12</tspan></text>
+    <rect x="2626" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="2702" y="29.6">N13</tspan></text>
+    <rect x="2828" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="2904" y="29.6">N14</tspan></text>
+  </g>
+</svg>

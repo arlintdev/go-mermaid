@@ -77,7 +77,8 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	}
 	top := pad + edge
 	if o.Title != "" {
-		top += titleSize*1.2 + 2*edge
+		n := len(dr.face.WrapWithin(o.Title, titleSize, chartSize-2*edge))
+		top += titleSize*1.2*float64(n) + 2*edge
 	}
 	plotW := chartSize - (left - pad) - edge
 	plotH := chartSize - (top - pad) - edge
@@ -162,6 +163,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 	// Points: X right, Y up. Labels go under the dot, kept inside the plot.
 	defFill := svgutil.Esc(pal.NodeStroke)
+	var placed [][4]float64
 	for _, p := range d.Points {
 		st := p.Style.merge(d.Classes[p.Class])
 		r := st.Radius
@@ -192,6 +194,36 @@ func svg(d *Diagram, o RenderOptions) []byte {
 		if ly+pointSize*0.3 > top+plotH {
 			ly = cy - r - 2 - pointSize*0.3
 		}
+		// A label that would cover another point's label tries the other
+		// side of its dot, then beside it.
+		box := func(x, y float64) [4]float64 {
+			return [4]float64{x - lw/2, y - pointSize*0.85, x + lw/2, y + pointSize*0.3}
+		}
+		hits := func(b [4]float64) bool {
+			if b[0] < left || b[2] > left+plotW || b[1] < top || b[3] > top+plotH {
+				return true
+			}
+			for _, o := range placed {
+				if b[0] < o[2] && b[2] > o[0] && b[1] < o[3] && b[3] > o[1] {
+					return true
+				}
+			}
+			return false
+		}
+		if hits(box(lx, ly)) {
+			for _, c := range [][2]float64{
+				{lx, cy - r - 2 - pointSize*0.3},
+				{lx, cy + r + 2 + pointSize*0.85},
+				{cx + r + 3 + lw/2, cy + pointSize*0.3},
+				{cx - r - 3 - lw/2, cy + pointSize*0.3},
+			} {
+				if !hits(box(c[0], c[1])) {
+					lx, ly = c[0], c[1]
+					break
+				}
+			}
+		}
+		placed = append(placed, box(lx, ly))
 		dr.text(p.Label, lx, ly, pointSize, plotW, text, "middle", "")
 	}
 

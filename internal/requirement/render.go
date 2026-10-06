@@ -223,8 +223,9 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 	w := cw + pad*2
 	h := ch + titleH + pad*2
 	if o.Title != "" {
-		w = max(w, m.face.Width(o.Title, m.fs)+2*pad)
+		w = max(w, m.face.Bold().Width(o.Title, m.fs)+2*pad)
 	}
+	shiftX += (w - cw - pad*2) / 2
 
 	var b strings.Builder
 	edge := svgutil.Esc(pal.Edge)

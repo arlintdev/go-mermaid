@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="303.45" height="445.4" viewBox="0 0 303.45 445.4" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<defs><marker id="m18vj9d-arrowhead" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M0,0 V4 L6,2 Z" fill="#333333"/></marker></defs>
+<text x="83.45" y="38" fill="#333333" font-size="22" font-weight="bold">T</text>
+<circle cx="23" cy="64.4" r="7" fill="#8fbc8f" stroke="#000000"/>
+<text x="40" y="69.3" fill="#333333">Me</text>
+<rect x="83.45" y="54.4" width="150" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
+<text fill="#333333" text-anchor="middle"><tspan x="158.45" y="84.3">S</tspan></text>
+<line x1="158.45" y1="164.4" x2="158.45" y2="429.4" stroke="#666666" stroke-dasharray="4 2"/>
+<circle cx="158.45" cy="339.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="153.45" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="163.45" cy="334.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<line x1="153.45" y1="346.4" x2="163.45" y2="346.4" stroke="#666666"/>
+<rect x="83.45" y="114.4" width="150" height="50" rx="3" fill="#ffffde" stroke="#666666"/>
+<circle cx="97.45" cy="114.4" r="7" fill="#8fbc8f" stroke="#000000"><title>Me</title></circle>
+<text fill="#333333" text-anchor="middle"><tspan x="158.45" y="147.3">A</tspan></text>
+<line x1="83.45" y1="204.4" x2="279.45" y2="204.4" stroke="#333333" stroke-width="4" marker-end="url(#m18vj9d-arrowhead)"/>
+</svg>

@@ -295,6 +295,9 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	}
 
 	w := math.Ceil(maxRight + pad)
+	if o.Title != "" {
+		w = max(w, math.Ceil(l.face.Width(o.Title, l.titleFs)+2*pad))
+	}
 	var bands strings.Builder
 	for i, t := range rows {
 		band := gc.Bands[max(t.Section, 0)%len(gc.Bands)]

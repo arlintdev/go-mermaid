@@ -166,6 +166,10 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 	contentW, contentH := bd.Size()
 	w := contentW + pad*2
 	h := contentH + titleH + pad*2
+	if o.Title != "" {
+		w = max(w, m.face.Bold().Width(o.Title, m.fs)+2*pad)
+	}
+	shiftX += (w - contentW - pad*2) / 2
 
 	var b strings.Builder
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",

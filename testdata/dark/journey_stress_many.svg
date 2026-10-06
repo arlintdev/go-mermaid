@@ -1,0 +1,154 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="3308.91" height="407" viewBox="0 0 3308.91 407" font-family="sans-serif" font-size="14">
+<defs><marker id="m1ieb7vx-arrowhead" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M0,0 V4 L6,2 Z" fill="#e6e6e6"/></marker></defs>
+<circle cx="23" cy="26" r="7" fill="#8fbc8f" stroke="#1e1e1e"/>
+<text x="40" y="30.9" fill="#e6e6e6">Me</text>
+<circle cx="23" cy="46" r="7" fill="#7cfc00" stroke="#1e1e1e"/>
+<text x="40" y="50.9" fill="#e6e6e6">You</text>
+<rect x="88.91" y="16" width="3150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="1663.91" y="45.9">S</tspan></text>
+<line x1="163.91" y1="126" x2="163.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="163.91" cy="361" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="158.91" cy="356" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="168.91" cy="356" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M157.41,370 A7.5,7.5 0 0 1 170.41,370" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="88.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="102.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="112.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="163.91" y="108.9">Task 0</tspan></text>
+<line x1="363.91" y1="126" x2="363.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="363.91" cy="331" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="358.91" cy="326" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="368.91" cy="326" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M357.41,340 A7.5,7.5 0 0 1 370.41,340" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="288.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="302.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="312.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="363.91" y="108.9">Task 1</tspan></text>
+<line x1="563.91" y1="126" x2="563.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="563.91" cy="301" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="558.91" cy="296" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="568.91" cy="296" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<line x1="558.91" y1="308" x2="568.91" y2="308" stroke="#666666"/>
+<rect x="488.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="502.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="512.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="563.91" y="108.9">Task 2</tspan></text>
+<line x1="763.91" y1="126" x2="763.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="763.91" cy="271" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="758.91" cy="266" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="768.91" cy="266" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M757.41,273 A7.5,7.5 0 0 0 770.41,273" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="688.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="702.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="712.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="763.91" y="108.9">Task 3</tspan></text>
+<line x1="963.91" y1="126" x2="963.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="963.91" cy="241" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="958.91" cy="236" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="968.91" cy="236" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M957.41,243 A7.5,7.5 0 0 0 970.41,243" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="888.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="902.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="912.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="963.91" y="108.9">Task 4</tspan></text>
+<line x1="1163.91" y1="126" x2="1163.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="1163.91" cy="361" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="1158.91" cy="356" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="1168.91" cy="356" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M1157.41,370 A7.5,7.5 0 0 1 1170.41,370" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="1088.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="1102.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="1112.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="1163.91" y="108.9">Task 5</tspan></text>
+<line x1="1363.91" y1="126" x2="1363.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="1363.91" cy="331" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="1358.91" cy="326" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="1368.91" cy="326" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M1357.41,340 A7.5,7.5 0 0 1 1370.41,340" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="1288.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="1302.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="1312.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="1363.91" y="108.9">Task 6</tspan></text>
+<line x1="1563.91" y1="126" x2="1563.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="1563.91" cy="301" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="1558.91" cy="296" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="1568.91" cy="296" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<line x1="1558.91" y1="308" x2="1568.91" y2="308" stroke="#666666"/>
+<rect x="1488.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="1502.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="1512.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="1563.91" y="108.9">Task 7</tspan></text>
+<line x1="1763.91" y1="126" x2="1763.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="1763.91" cy="271" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="1758.91" cy="266" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="1768.91" cy="266" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M1757.41,273 A7.5,7.5 0 0 0 1770.41,273" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="1688.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="1702.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="1712.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="1763.91" y="108.9">Task 8</tspan></text>
+<line x1="1963.91" y1="126" x2="1963.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="1963.91" cy="241" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="1958.91" cy="236" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="1968.91" cy="236" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M1957.41,243 A7.5,7.5 0 0 0 1970.41,243" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="1888.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="1902.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="1912.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="1963.91" y="108.9">Task 9</tspan></text>
+<line x1="2163.91" y1="126" x2="2163.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="2163.91" cy="361" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="2158.91" cy="356" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="2168.91" cy="356" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M2157.41,370 A7.5,7.5 0 0 1 2170.41,370" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="2088.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="2102.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="2112.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="2163.91" y="108.9">Task 10</tspan></text>
+<line x1="2363.91" y1="126" x2="2363.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="2363.91" cy="331" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="2358.91" cy="326" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="2368.91" cy="326" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M2357.41,340 A7.5,7.5 0 0 1 2370.41,340" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="2288.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="2302.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="2312.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="2363.91" y="108.9">Task 11</tspan></text>
+<line x1="2563.91" y1="126" x2="2563.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="2563.91" cy="301" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="2558.91" cy="296" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="2568.91" cy="296" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<line x1="2558.91" y1="308" x2="2568.91" y2="308" stroke="#666666"/>
+<rect x="2488.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="2502.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="2512.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="2563.91" y="108.9">Task 12</tspan></text>
+<line x1="2763.91" y1="126" x2="2763.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="2763.91" cy="271" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="2758.91" cy="266" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="2768.91" cy="266" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M2757.41,273 A7.5,7.5 0 0 0 2770.41,273" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="2688.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="2702.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="2712.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="2763.91" y="108.9">Task 13</tspan></text>
+<line x1="2963.91" y1="126" x2="2963.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="2963.91" cy="241" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="2958.91" cy="236" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="2968.91" cy="236" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M2957.41,243 A7.5,7.5 0 0 0 2970.41,243" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="2888.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="2902.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="2912.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="2963.91" y="108.9">Task 14</tspan></text>
+<line x1="3163.91" y1="126" x2="3163.91" y2="391" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="3163.91" cy="361" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="3158.91" cy="356" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="3168.91" cy="356" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M3157.41,370 A7.5,7.5 0 0 1 3170.41,370" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="3088.91" y="76" width="150" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="3102.91" cy="76" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<circle cx="3112.91" cy="76" r="7" fill="#7cfc00" stroke="#1e1e1e"><title>You</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="3163.91" y="108.9">Task 15</tspan></text>
+<line x1="88.91" y1="166" x2="3284.91" y2="166" stroke="#e6e6e6" stroke-width="4" marker-end="url(#m1ieb7vx-arrowhead)"/>
+</svg>
