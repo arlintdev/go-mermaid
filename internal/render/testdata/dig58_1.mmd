@@ -1,0 +1,17 @@
+flowchart TD
+  U[People's browsers and MCP clients]
+  subgraph BOUNDARY[The organisation's boundary]
+    P[Reverse proxy: ends TLS, the only way in]
+    IDP[Identity provider]
+    A[digin]
+    LOG[Log collection, SIEM]
+    MON[Monitoring]
+  end
+  EXT[Outside: only what is turned on]
+  U -->|HTTPS| P
+  P -->|HTTP, or mutual TLS| A
+  A -->|OIDC sign-in| IDP
+  IDP -->|SCIM, through the proxy| P
+  A -->|JSON log lines| LOG
+  MON -->|metrics, with a token| A
+  A -->|HTTPS, to allow-lists| EXT

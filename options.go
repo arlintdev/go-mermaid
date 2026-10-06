@@ -1,6 +1,9 @@
 package mermaid
 
 import (
+	"regexp"
+	"strings"
+
 	"github.com/arlintdev/go-mermaid/internal/layout"
 	"github.com/arlintdev/go-mermaid/internal/render"
 	"github.com/arlintdev/go-mermaid/internal/theme"
@@ -33,7 +36,7 @@ type Palette = theme.Palette
 func WithCustomTheme(name string, p Palette) Option {
 	return func(c *config) {
 		theme.Register(name, p)
-		c.theme = Theme(name)
+		c.theme, c.themeSet = Theme(name), true
 	}
 }
 
@@ -80,6 +83,26 @@ type config struct {
 
 	bgColor       string // override background color
 	bgTransparent bool   // omit the background rect entirely
+
+	fontSet  bool // WithFont was given
+	themeSet bool // WithTheme or WithCustomTheme was given
+
+	themeVars theme.Palette // colours from the diagram's init directive
+	idPrefix  string        // WithIDPrefix, empty for one derived from the source
+}
+
+// fontFamilyRe accepts a plain CSS font-family list: names, generic
+// families, commas, spaces, hyphens and quotes. Anything else could carry
+// markup into the SVG, so it falls back to the default.
+var fontFamilyRe = regexp.MustCompile(`^[A-Za-z0-9 ,'"-]{1,200}$`)
+
+// safeFontFace returns face when it is a plain font-family list, otherwise
+// the default family.
+func safeFontFace(face string) string {
+	if fontFamilyRe.MatchString(face) && strings.TrimSpace(face) != "" {
+		return face
+	}
+	return defaultConfig().fontFace
 }
 
 func defaultConfig() config {
@@ -114,7 +137,7 @@ func (c config) render() render.Options {
 
 // WithTheme sets the color palette.
 func WithTheme(t Theme) Option {
-	return func(c *config) { c.theme = t }
+	return func(c *config) { c.theme, c.themeSet = t, true }
 }
 
 // WithFont sets the font family and base size (in pixels) for labels.
@@ -122,6 +145,7 @@ func WithFont(face string, size float64) Option {
 	return func(c *config) {
 		c.fontFace = face
 		c.fontSize = size
+		c.fontSet = true
 	}
 }
 
@@ -154,4 +178,13 @@ func WithBackground(color string) Option {
 // with whatever it is embedded in.
 func WithTransparentBackground() Option {
 	return func(c *config) { c.bgTransparent = true; c.bgColor = "" }
+}
+
+// WithIDPrefix sets the prefix of every id in a flowchart's SVG (its
+// markers), so pictures inlined on one page never share an id. Without it
+// the prefix is derived from a hash of the source. The prefix must start
+// with a letter and hold only letters, digits, '-' and '_'; any other value
+// is replaced by "m".
+func WithIDPrefix(prefix string) Option {
+	return func(c *config) { c.idPrefix = prefix }
 }

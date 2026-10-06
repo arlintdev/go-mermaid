@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="702.99" height="1132" viewBox="0 0 702.99 1132" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m1jwanf8-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
+    <marker id="m1jwanf8-circle-1" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><circle cx="5" cy="5" r="4.5" fill="#333333"/></marker>
+    <marker id="m1jwanf8-cross-2" viewBox="0 0 11 11" refX="5.5" refY="5.5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><path d="M1.5,1.5 L9.5,9.5 M9.5,1.5 L1.5,9.5" stroke="#333333" stroke-width="2" fill="none"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(16,16)">
+    <path d="M305.5,48 L305.5,66.33 Q305.5,71.33 300.5,71.33 L283,71.33 Q278,71.33 278,76.33 L278,159" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M291.5,48 L291.5,54.67 Q291.5,59.67 286.5,59.67 L81,59.67 Q76,59.67 76,64.67 L76,159" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M413.5,48 L413.5,66.33 Q413.5,71.33 418.5,71.33 L475,71.33 Q480,71.33 480,76.33 L480,159" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M278,218 L278,305" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M76,218 L76,293.5 Q76,298.5 81,298.5 L206.76,298.5 Q210.01,298.5 210.01,301.75 L210.01,305" fill="none" stroke="#333333" stroke-width="3.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M480,218 L480,293.5 Q480,298.5 475,298.5 L349.26,298.5 Q346.01,298.5 346.01,301.75 L346.01,305" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M210.01,364 L210.01,376.5 Q210.01,381.5 205.01,381.5 L200.51,381.5 Q195.51,381.5 195.51,386.5 L195.51,462" fill="none" stroke="#333333" stroke-width="1.5"/>
+    <path d="M305.51,364 L305.51,542.5 Q305.51,547.5 300.51,547.5 L291.64,547.5 Q291.02,547.5 291.02,548.12 L291.02,548.75" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-circle-1)"/>
+    <path d="M333.02,364 L333.02,651.5" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-cross-2)"/>
+    <path d="M195.51,521 L195.51,549" fill="none" stroke="#333333" stroke-width="1.5" marker-start="url(#m1jwanf8-arrow-0)" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M223.02,608 L223.02,647" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M278.02,706 L278.02,745" fill="none" stroke="#333333" stroke-width="3.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M278.02,902 L278.02,1041" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M427.5,48 L427.5,54.67 Q427.5,59.67 432.5,59.67 L598.99,59.67 Q603.99,59.67 603.99,64.67 L603.99,305" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M346,218 L346,230.5 Q346,235.5 351,235.5 L580.99,235.5 Q585.99,235.5 585.99,240.5 L585.99,305" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M594.99,364 L594.99,451" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <path d="M594.99,510 L594.99,549" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1jwanf8-arrow-0)"/>
+    <rect x="254.43" y="95" width="47.14" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="114.6">piped</tspan></text>
+    <rect x="32.43" y="95" width="87.14" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="114.6">bare words</tspan></text>
+    <rect x="379.95" y="83" width="200.1" height="52" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="480" y="102.6">quoted, with a comma: and</tspan><tspan x="480" y="126.6">colon</tspan></text>
+    <rect x="232.64" y="253" width="90.72" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="272.6">dotted label</tspan></text>
+    <rect x="36.43" y="253" width="79.14" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="272.6">thick label</tspan></text>
+    <rect x="395.51" y="253" width="168.98" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="480" y="272.6">piped, quoted (parens)</tspan></text>
+    <rect x="140.38" y="399" width="110.27" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="195.51" y="418.6">open link label</tspan></text>
+    <rect x="283.5" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="359.5" y="29.6">Start</tspan></text>
+    <rect x="202" y="170" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="199.6">Two</tspan></text>
+    <rect x="0" y="170" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="199.6">Three</tspan></text>
+    <rect x="404" y="170" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="480" y="199.6">Four</tspan></text>
+    <rect x="202.01" y="316" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278.01" y="345.6">Five</tspan></text>
+    <rect x="119.51" y="462" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="195.51" y="491.6">Six</tspan></text>
+    <rect x="147.02" y="560" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="223.02" y="589.6">Circle end</tspan></text>
+    <rect x="202.02" y="658" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278.02" y="687.6">Cross end</tspan></text>
+    <rect x="202.02" y="756" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278.02" y="785.6">Nine</tspan></text>
+    <rect x="202.02" y="854" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278.02" y="883.6">Invisible link</tspan></text>
+    <rect x="202.02" y="1052" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278.02" y="1081.6">Long arrow</tspan></text>
+    <rect x="518.99" y="316" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="594.99" y="345.6">Fan-in</tspan></text>
+    <rect x="518.99" y="462" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="594.99" y="491.6">M</tspan></text>
+    <rect x="518.99" y="560" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="594.99" y="589.6">Chain</tspan></text>
+  </g>
+</svg>

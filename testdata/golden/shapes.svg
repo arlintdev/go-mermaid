@@ -1,23 +1,25 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="200.35" height="534" viewBox="0 0 200.35 534" font-family="sans-serif" font-size="14">
-  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="216" height="597.44" viewBox="0 0 216 597.44" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m1r80sw2-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
+  </defs>
   <rect width="100%" height="100%" fill="#ffffff"/>
   <g transform="translate(16,16)">
-    <path d="M84.18,42 L84.18,92" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-    <path d="M84.18,134 L84.18,184" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-    <path d="M84.18,226 L84.18,276" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-    <path d="M84.18,318 L84.18,368" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-    <path d="M84.18,410 L84.18,460" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
-    <rect x="30.32" y="0" width="107.7" height="42" fill="#ECECFF" stroke="#9370DB"/><line x1="36.32" y1="0" x2="36.32" y2="42" stroke="#9370DB"/><line x1="132.03" y1="0" x2="132.03" y2="42" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="84.18" y="25.9">Subroutine</tspan></text>
-    <path d="M34.22,97.04 L34.22,128.96 A49.96,5.04 0 0 0 134.14,128.96 L134.14,97.04 A49.96,5.04 0 0 0 34.22,97.04 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M34.22,97.04 A49.96,5.04 0 0 0 134.14,97.04" fill="none" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="84.18" y="117.9">Database</tspan></text>
-    <polygon points="15.16,205 36.16,184 132.19,184 153.19,205 132.19,226 36.16,226" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="84.18" y="209.9">Hexagon</tspan></text>
-    <polygon points="21,276 168.35,276 147.35,318 0,318" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="84.18" y="301.9">Parallelogram</tspan></text>
-    <polygon points="33.05,368 135.3,368 156.3,410 12.05,410" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="84.18" y="393.9">Trapezoid</tspan></text>
-    <rect x="38.5" y="460" width="91.35" height="42" rx="21" fill="#ECECFF" stroke="#9370DB"/>
-    <text fill="#333333" text-anchor="middle"><tspan x="84.18" y="485.9">Stadium</tspan></text>
+    <path d="M92,48 L92,87" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1r80sw2-arrow-0)"/>
+    <path d="M92,173.44 L92,212.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1r80sw2-arrow-0)"/>
+    <path d="M92,271.44 L92,310.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1r80sw2-arrow-0)"/>
+    <path d="M92,369.44 L92,408.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1r80sw2-arrow-0)"/>
+    <path d="M92,467.44 L92,506.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1r80sw2-arrow-0)"/>
+    <rect x="8" y="0" width="168" height="48" fill="#ECECFF" stroke="#9370DB"/><path d="M16,0 V48 M168,0 V48" fill="none" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="92" y="29.6">Subroutine</tspan></text>
+    <path d="M16,111.72 A76,13.72 0 0 1 168,111.72 L168,159.72 A76,13.72 0 0 1 16,159.72 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M16,111.72 A76,13.72 0 0 0 168,111.72" fill="none" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="92" y="148.18">Database</tspan></text>
+    <polygon points="4,247.44 16,223.44 168,223.44 180,247.44 168,271.44 16,271.44" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="92" y="253.04">Hexagon</tspan></text>
+    <polygon points="16,321.44 184,321.44 168,369.44 0,369.44" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="92" y="351.04">Parallelogram</tspan></text>
+    <polygon points="16,419.44 168,419.44 184,467.44 0,467.44" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="92" y="449.04">Trapezoid</tspan></text>
+    <rect x="8" y="517.44" width="168" height="48" rx="24" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="92" y="547.04">Stadium</tspan></text>
   </g>
 </svg>

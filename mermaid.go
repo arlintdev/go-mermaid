@@ -39,7 +39,6 @@ import (
 	"github.com/arlintdev/go-mermaid/internal/journey"
 	"github.com/arlintdev/go-mermaid/internal/kanban"
 	"github.com/arlintdev/go-mermaid/internal/layout"
-	"github.com/arlintdev/go-mermaid/internal/lexer"
 	"github.com/arlintdev/go-mermaid/internal/mindmap"
 	"github.com/arlintdev/go-mermaid/internal/packet"
 	"github.com/arlintdev/go-mermaid/internal/parser"
@@ -51,6 +50,7 @@ import (
 	"github.com/arlintdev/go-mermaid/internal/sankey"
 	"github.com/arlintdev/go-mermaid/internal/sequence"
 	"github.com/arlintdev/go-mermaid/internal/state"
+	"github.com/arlintdev/go-mermaid/internal/svgid"
 	"github.com/arlintdev/go-mermaid/internal/syntax"
 	"github.com/arlintdev/go-mermaid/internal/timeline"
 	"github.com/arlintdev/go-mermaid/internal/xychart"
@@ -79,8 +79,19 @@ func Render(src string, opts ...Option) (out []byte, err error) {
 	for _, opt := range opts {
 		opt(&cfg)
 	}
+	cfg.fontFace = safeFontFace(cfg.fontFace)
+	if !(cfg.fontSize > 0 && cfg.fontSize <= 200) {
+		cfg.fontSize = defaultConfig().fontSize
+	}
 
 	title, body := parseFrontmatter(src)
+	// A theme named in the diagram's own init directive applies unless the
+	// caller chose one.
+	initName, initVars := directiveTheme(body)
+	if initName != "" && !cfg.themeSet {
+		cfg.theme = Theme(initName)
+	}
+	cfg.themeVars = initVars
 	accTitle, accDescr, body := extractA11y(body)
 
 	var raw []byte
@@ -215,42 +226,35 @@ func wrapParse(err error) error {
 	return fmt.Errorf("%w: %w", ErrParse, err)
 }
 
+// flowFontSize is the flowchart font size when WithFont is not given.
+const flowFontSize = 16
+
 func renderFlowchart(src string, cfg config, title string) ([]byte, error) {
-	src, styles, links, linkStyles := parser.Preprocess(src)
-
-	tokens, err := lexer.Lex(src)
+	graph, err := parser.Flowchart(src)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrParse, err)
 	}
 
-	graph, err := parser.Parse(tokens)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrParse, err)
+	lo := cfg.layout()
+	ro := cfg.render()
+	if !cfg.fontSet {
+		// mermaid.js draws flowcharts at 16 px; the other diagram types keep
+		// the library's 14 px default.
+		lo.FontSize, ro.FontSize = flowFontSize, flowFontSize
 	}
-
-	for id, st := range styles {
-		if n := graph.NodeByID(id); n != nil {
-			n.Style = st
-		}
-	}
-	for id, url := range links {
-		if n := graph.NodeByID(id); n != nil {
-			n.Link = url
-		}
-	}
-	for i, e := range graph.Edges {
-		if st := linkStyles.For(i); st != nil {
-			e.Style = st
-		}
-	}
-
-	laid, err := layout.Compute(graph, cfg.layout())
+	laid, err := layout.Flow(graph, lo)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrLayout, err)
 	}
 
-	ro := cfg.render()
 	ro.Title = title
+	if !cfg.themeSet {
+		ro.Vars = cfg.themeVars
+	}
+	ro.IDPrefix = cfg.idPrefix
+	if ro.IDPrefix == "" {
+		ro.IDPrefix = svgid.Prefix(src)
+	}
 	svg, err := render.SVG(laid, ro)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrRender, err)

@@ -1,0 +1,10 @@
+flowchart TD
+  D[(digin-db)]
+  A[digin]
+  T[The host's runs: nightly, and WAL each minute]
+  BV[(digin-backups: sealed)]
+  OFF[(Backup store, off the host)]
+  D -->|pg_dump, WAL| T
+  A -->|files, still sealed| T
+  T -->|sealed| BV
+  BV -->|sealed copies only| OFF

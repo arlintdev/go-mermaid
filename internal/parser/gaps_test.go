@@ -3,30 +3,14 @@ package parser
 import (
 	"testing"
 
-	. "github.com/smartystreets/goconvey/convey"
 	"github.com/arlintdev/go-mermaid/internal/domain"
-	"github.com/arlintdev/go-mermaid/internal/lexer"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func graphOf(src string) *domain.Graph {
-	clean, styles, _, links := Preprocess(src)
-	toks, err := lexer.Lex(clean)
+	g, err := Flowchart(src)
 	if err != nil {
 		panic(err)
-	}
-	g, err := Parse(toks)
-	if err != nil {
-		panic(err)
-	}
-	for id, st := range styles {
-		if n := g.NodeByID(id); n != nil {
-			n.Style = st
-		}
-	}
-	for i, e := range g.Edges {
-		if st := links.For(i); st != nil {
-			e.Style = st
-		}
 	}
 	return g
 }

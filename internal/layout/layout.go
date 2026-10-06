@@ -19,6 +19,12 @@ type Options struct {
 	RankSep  float64 // gap between layers
 	FontSize float64 // used to estimate node sizes
 	FontFace string  // CSS font-family the SVG will ask for; picks the metrics
+
+	// WrapWidth is the width Flow wraps node labels at; zero means 120, as
+	// in mermaid.js 12, and a negative value turns wrapping off. Edge labels
+	// wrap at 200 or WrapWidth, whichever is wider. The older Compute
+	// ignores it.
+	WrapWidth float64
 }
 
 // face returns the metric table that matches the font family the renderer

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="386" height="1043.6" viewBox="0 0 386 1043.6" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="myyu7nx-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(16,16)">
+    <path d="M177,72 L177,111" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#myyu7nx-arrow-0)"/>
+    <path d="M177,194 L177,233" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#myyu7nx-arrow-0)"/>
+    <path d="M136.6,365.2 L136.6,418.1 Q136.6,423.1 131.6,423.1 L81,423.1 Q76,423.1 76,428.1 L76,492.6" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#myyu7nx-arrow-0)"/>
+    <path d="M217.4,365.2 L217.4,418.1 Q217.4,423.1 222.4,423.1 L273,423.1 Q278,423.1 278,428.1 L278,492.6" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#myyu7nx-arrow-0)"/>
+    <path d="M76,647.6 L76,680.1 Q76,685.1 81,685.1 L108.25,685.1 Q109,685.1 109,685.85 L109,686.6" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#myyu7nx-arrow-0)"/>
+    <path d="M278,575.6 L278,680.1 Q278,685.1 273,685.1 L245.75,685.1 Q245,685.1 245,685.85 L245,686.6" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#myyu7nx-arrow-0)"/>
+    <path d="M177,793.6 L177,832.6" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#myyu7nx-arrow-0)"/>
+    <rect x="59.55" y="440.6" width="32.9" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="460.2">yes</tspan></text>
+    <rect x="265.1" y="440.6" width="25.79" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="460.2">no</tspan></text>
+    <rect x="101" y="0" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="177" y="29.6">Integrity run,</tspan><tspan x="177" y="53.6">export or prune</tspan></text>
+    <rect x="101" y="122" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="177" y="151.6">App takes its</tspan><tspan x="177" y="175.6">anchor lock</tspan></text>
+    <polygon points="177,244 257.8,324.8 177,405.6 96.2,324.8" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="177" y="318.4">Signer</tspan><tspan x="177" y="342.4">configured?</tspan></text>
+    <rect x="0" y="503.6" width="152" height="144" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="533.2">Signer: checks</tspan><tspan x="76" y="557.2">the chain follows</tspan><tspan x="76" y="581.2">its last verified</tspan><tspan x="76" y="605.2">anchor, signs</tspan><tspan x="76" y="629.2">the tip</tspan></text>
+    <rect x="202" y="503.6" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="533.2">App signs with</tspan><tspan x="278" y="557.2">its own key</tspan></text>
+    <rect x="101" y="697.6" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="177" y="727.2">Anchor file, log</tspan><tspan x="177" y="751.2">line, optional</tspan><tspan x="177" y="775.2">webhook</tspan></text>
+    <rect x="101" y="843.6" width="152" height="168" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="177" y="873.2">Each run: last</tspan><tspan x="177" y="897.2">anchor held to</tspan><tspan x="177" y="921.2">the database;</tspan><tspan x="177" y="945.2">each window:</tspan><tspan x="177" y="969.2">every anchor</tspan><tspan x="177" y="993.2">judged</tspan></text>
+  </g>
+</svg>

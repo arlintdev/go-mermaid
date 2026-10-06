@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1230.53" height="1624" viewBox="0 0 1230.53 1624" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="mxxxd5a-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(16,16)">
+    <path d="M334.48,48 L334.48,87" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M264.79,170 L264.79,209" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M264.79,340 L264.79,427" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M514.16,340 L514.16,427" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M741.08,316 L741.08,427" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M996.02,316 L996.02,427" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M996.02,510 L996.02,622 Q996.02,627 991.02,627 L658.8,627 Q654.3,627 654.3,631.5 L654.3,636" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M264.79,510 L264.79,632 Q264.79,637 269.79,637 L513.29,637 Q513.79,637 513.79,637.5 L513.79,638" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M404.16,170 L404.16,622 Q404.16,627 409.16,627 L523.29,627 Q527.79,627 527.79,631.5 L527.79,636" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M514.16,582 L514.16,612 Q514.16,617 519.16,617 L536.79,617 Q541.79,617 541.79,622 L541.79,636" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M741.08,510 L741.08,612 Q741.08,617 736.08,617 L645.3,617 Q640.3,617 640.3,622 L640.3,636" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M513.79,815 L513.79,820 Q513.79,825 508.79,825 L81,825 Q76,825 76,830 L76,931" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M527.79,815 L527.79,830 Q527.79,835 522.79,835 L283,835 Q278,835 278,840 L278,931" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M541.79,815 L541.79,840 Q541.79,845 536.79,845 L485,845 Q480,845 480,850 L480,931" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M626.3,815 L626.3,840 Q626.3,845 631.3,845 L677,845 Q682,845 682,850 L682,931" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M640.3,815 L640.3,830 Q640.3,835 645.3,835 L879,835 Q884,835 884,840 L884,931" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M654.3,815 L654.3,820 Q654.3,825 659.3,825 L1099.26,825 Q1104.26,825 1104.26,830 L1104.26,931" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M76,1086 L76,1317" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M278,1134 L278,1317" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M480,1062 L480,1317" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M682,1110 L682,1317" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M884,1110 L884,1317" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <path d="M1104.26,1278 L1104.26,1317" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#mxxxd5a-arrow-0)"/>
+    <rect x="337.46" y="375" width="133.41" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="404.16" y="394.6">no one known yet</tspan></text>
+    <rect x="40.87" y="867" width="70.26" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="886.6">a person</tspan></text>
+    <rect x="256.21" y="867" width="43.58" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="886.6">a bot</tspan></text>
+    <rect x="449.76" y="867" width="60.48" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="480" y="886.6">nobody</tspan></text>
+    <rect x="612.18" y="867" width="139.63" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="682" y="886.6">a forge connection</tspan></text>
+    <rect x="810.19" y="867" width="147.62" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="884" y="886.6">the identity provider</tspan></text>
+    <rect x="1038.9" y="855" width="130.72" height="52" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="1104.26" y="874.6">no actor in ctx, or</tspan><tspan x="1104.26" y="898.6">store.Unscoped</tspan></text>
+    <rect x="258.48" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="334.48" y="29.6">Request</tspan></text>
+    <rect x="255.35" y="98" width="158.26" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="334.48" y="127.6">asNobody:</tspan><tspan x="334.48" y="151.6">store.Nobody(ctx)</tspan></text>
+    <rect x="159.42" y="220" width="210.74" height="120" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="264.79" y="249.6">authenticator.middleware</tspan><tspan x="264.79" y="273.6">or the MCP</tspan><tspan x="264.79" y="297.6">endpoint:</tspan><tspan x="264.79" y="321.6">ScopeFor</tspan></text>
+    <rect x="178.99" y="438" width="171.6" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="264.79" y="467.6">store.AsPerson(ctx,</tspan><tspan x="264.79" y="491.6">user, scope)</tspan></text>
+    <rect x="438.16" y="220" width="152" height="120" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="514.16" y="249.6">A bot is woken:</tspan><tspan x="514.16" y="273.6">named, handed</tspan><tspan x="514.16" y="297.6">an issue, a</tspan><tspan x="514.16" y="321.6">watch, a task</tspan></text>
+    <rect x="438.16" y="438" width="152" height="144" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="514.16" y="467.6">store.AsBot(ctx,</tspan><tspan x="514.16" y="491.6">bot), or</tspan><tspan x="514.16" y="515.6">AsBotFor(ctx,</tspan><tspan x="514.16" y="539.6">bot, person) for</tspan><tspan x="514.16" y="563.6">a task</tspan></text>
+    <rect x="665.08" y="220" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="741.08" y="249.6">A forge delivery</tspan><tspan x="741.08" y="273.6">whose signature</tspan><tspan x="741.08" y="297.6">holds</tspan></text>
+    <rect x="640.16" y="438" width="201.84" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="741.08" y="467.6">store.AsConnection(ctx,</tspan><tspan x="741.08" y="491.6">connection)</tspan></text>
+    <rect x="920.02" y="220" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="996.02" y="249.6">A SCIM request</tspan><tspan x="996.02" y="273.6">whose token</tspan><tspan x="996.02" y="297.6">holds</tspan></text>
+    <rect x="892" y="438" width="208.05" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="996.02" y="467.6">store.AsProvisioning(ctx,</tspan><tspan x="996.02" y="491.6">token)</tspan></text>
+    <rect x="505.79" y="647" width="156.51" height="168" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="584.04" y="676.6">scopedConn.hold</tspan><tspan x="584.04" y="700.6">before each</tspan><tspan x="584.04" y="724.6">statement, with</tspan><tspan x="584.04" y="748.6">digin.proof, the</tspan><tspan x="584.04" y="772.6">store&#39;s HMAC of</tspan><tspan x="584.04" y="796.6">whose it is</tspan></text>
+    <rect x="0" y="942" width="152" height="144" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="971.6">SET role</tspan><tspan x="76" y="995.6">digin_app,</tspan><tspan x="76" y="1019.6">digin.actor =</tspan><tspan x="76" y="1043.6">user id,</tspan><tspan x="76" y="1067.6">digin.reach</tspan></text>
+    <rect x="202" y="942" width="152" height="192" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="971.6">SET role</tspan><tspan x="278" y="995.6">digin_app,</tspan><tspan x="278" y="1019.6">digin.actor =</tspan><tspan x="278" y="1043.6">bot&#39;s user id,</tspan><tspan x="278" y="1067.6">digin.reach =</tspan><tspan x="278" y="1091.6">bot:B or</tspan><tspan x="278" y="1115.6">bot:B@U</tspan></text>
+    <rect x="404" y="942" width="152" height="120" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="480" y="971.6">SET role</tspan><tspan x="480" y="995.6">digin_app,</tspan><tspan x="480" y="1019.6">digin.actor =</tspan><tspan x="480" y="1043.6">nobody</tspan></text>
+    <rect x="606" y="942" width="152" height="168" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="682" y="971.6">SET role</tspan><tspan x="682" y="995.6">digin_app,</tspan><tspan x="682" y="1019.6">digin.actor =</tspan><tspan x="682" y="1043.6">forge,</tspan><tspan x="682" y="1067.6">digin.reach =</tspan><tspan x="682" y="1091.6">connection:C</tspan></text>
+    <rect x="808" y="942" width="152" height="168" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="884" y="971.6">SET role</tspan><tspan x="884" y="995.6">digin_app,</tspan><tspan x="884" y="1019.6">digin.actor =</tspan><tspan x="884" y="1043.6">provisioning,</tspan><tspan x="884" y="1067.6">digin.reach =</tspan><tspan x="884" y="1091.6">scim:T</tspan></text>
+    <rect x="1010" y="942" width="188.53" height="336" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="1104.26" y="971.6">The server&#39;s own</tspan><tspan x="1104.26" y="995.6">work: on its own login</tspan><tspan x="1104.26" y="1019.6">as digin_system; on</tspan><tspan x="1104.26" y="1043.6">one login of the</tspan><tspan x="1104.26" y="1067.6">server&#39;s, the same; as</tspan><tspan x="1104.26" y="1091.6">the login itself where</tspan><tspan x="1104.26" y="1115.6">that is a superuser or</tspan><tspan x="1104.26" y="1139.6">the tables&#39; owner;</tspan><tspan x="1104.26" y="1163.6">inside somebody&#39;s</tspan><tspan x="1104.26" y="1187.6">transaction, digin_app</tspan><tspan x="1104.26" y="1211.6">vouched for as</tspan><tspan x="1104.26" y="1235.6">system. digin.actor =</tspan><tspan x="1104.26" y="1259.6">system</tspan></text>
+    <rect x="0" y="1328" width="152" height="192" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="1357.6">Policies:</tspan><tspan x="76" y="1381.6">member</tspan><tspan x="76" y="1405.6">workspaces,</tspan><tspan x="76" y="1429.6">their projects,</tspan><tspan x="76" y="1453.6">what is under</tspan><tspan x="76" y="1477.6">them, their own</tspan><tspan x="76" y="1501.6">conversations</tspan></text>
+    <rect x="202" y="1328" width="152" height="192" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="1357.6">Policies:</tspan><tspan x="278" y="1381.6">digin_bot_reach,</tspan><tspan x="278" y="1405.6">its workspace,</tspan><tspan x="278" y="1429.6">granted projects,</tspan><tspan x="278" y="1453.6">its channels; no</tspan><tspan x="278" y="1477.6">writes where</tspan><tspan x="278" y="1501.6">read-only</tspan></text>
+    <rect x="404" y="1328" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="480" y="1357.6">Policies: no row</tspan><tspan x="480" y="1381.6">of any table</tspan></text>
+    <rect x="606" y="1328" width="152" height="120" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="682" y="1357.6">Policies: the</tspan><tspan x="682" y="1381.6">connection&#39;s</tspan><tspan x="682" y="1405.6">workspace while</tspan><tspan x="682" y="1429.6">it is on</tspan></text>
+    <rect x="808" y="1328" width="152" height="264" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="884" y="1357.6">Policies:</tspan><tspan x="884" y="1381.6">accounts,</tspan><tspan x="884" y="1405.6">memberships as</tspan><tspan x="884" y="1429.6">member, its</tspan><tspan x="884" y="1453.6">groups, no</tspan><tspan x="884" y="1477.6">administrator,</tspan><tspan x="884" y="1501.6">default channels</tspan><tspan x="884" y="1525.6">by id; no</tspan><tspan x="884" y="1549.6">workspace&#39;s</tspan><tspan x="884" y="1573.6">work</tspan></text>
+    <rect x="1028.26" y="1328" width="152" height="144" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="1104.26" y="1357.6">Planned with no</tspan><tspan x="1104.26" y="1381.6">policy, or past</tspan><tspan x="1104.26" y="1405.6">them as system;</tspan><tspan x="1104.26" y="1429.6">the app&#39;s own</tspan><tspan x="1104.26" y="1453.6">rules</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="184" height="178" viewBox="0 0 184 178" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m1hu06bc-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(16,16)">
+    <path d="M76,48 L76,87" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1hu06bc-arrow-0)"/>
+    <rect x="0" y="0" width="152" height="48" fill="#f99" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="29.6">A</tspan></text>
+    <rect x="0" y="98" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="127.6">B</tspan></text>
+  </g>
+</svg>

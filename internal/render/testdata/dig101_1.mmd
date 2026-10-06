@@ -1,0 +1,8 @@
+flowchart TD
+  R[Integrity run, export or prune] --> L[App takes its anchor lock]
+  L --> Q{Signer configured?}
+  Q -- yes --> S[Signer: checks the chain follows its last verified anchor, signs the tip]
+  Q -- no --> K[App signs with its own key]
+  S --> F[Anchor file, log line, optional webhook]
+  K --> F
+  F --> V[Each run: last anchor held to the database; each window: every anchor judged]

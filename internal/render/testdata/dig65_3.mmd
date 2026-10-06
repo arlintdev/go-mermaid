@@ -1,0 +1,19 @@
+flowchart TD
+  T[digin-backup.timer] --> S[make backup-nightly: tools/backups.sh]
+  S --> L{"lock: .locks/digin-backup.lock in the checkout, the directory mode 700; both the running account's and open to nobody else"}
+  L -- held by a run of ours --> SK["Skipped: nothing done, backup_skipped, exit 0"]
+  L -- not ours, open to others, a link, cannot be made --> LF["refused: nothing done, backup_failed at lock, exit 1"]
+  L -- taken --> B["make backup: pg_dump in the db container, sealed by the host's openssl to DIGIN_BACKUP_CERT, into the digin-backups volume"]
+  B --> F["take the files: digin files snapshot in the app's container, unpacked beside the dump as digin-moment.files.part, each file named by the hash of its sealed bytes; what the night before holds with the same bytes hard-linked by its sum, not sent; the INDEX (snapshot name to data-volume name) sealed to DIGIN_BACKUP_CERT as INDEX.cms, plain only with no certificate"]
+  F --> V["verify the dump: make backup-verify parses the whole CMS envelope; the envelope names the certificate's issuer and serial; size at least 64 KB. With DIGIN_BACKUP_KEY, or a plain dump, pg_restore reads the contents too"]
+  V --> VF["verify the files: the app found every file the database points at and each opened to its name; sha256sum -c SHA256SUMS beside the dumps; INDEX.cms addressed to the certificate; then renamed to .files"]
+  VF --> C["copy to DIGIN_BACKUP_COPY_TO: the dump (SHA-256 checked) and the snapshot (linked to the one before by sum, read back whole, or with DIGIN_BACKUP_COPY_CHECK=new only what was sent and all of it weekly; or a tar to a command); sealed only, index sealed only; never removes a copy"]
+  C --> P["prune: dumps and snapshots older than DIGIN_BACKUP_RETAIN days, never the newest; skipped when the files did not verify"]
+  S -. each step .-> R["digin backup record, in the app's container: backup_taken / verified / files_taken / files_verified / copied / pruned / failed / skipped"]
+  S -. the unit fails, however .-> OF["OnFailure=: digin-backup-failed.service, make backup-failed: tools/backups.sh unit-failed"]
+  OF --> R
+  MR["make restore / make restore-files, by hand: tools/backups.sh restore, restore-files"] -. once the database is back .-> R2["digin backup record restored / files-restored, into the log put back"]
+  R --> A[(audit_events)]
+  R2 --> A
+  A -. backup_failed, backup_restored; backup_skipped the second time in 36 hours .-> AL["security alert: the organisation's administrators and auditors, and the webhook"]
+  A -. newest backup_verified, backup_files_verified .-> BL["integrity run: backup.never / backup.stale, a baseline finding; baseline_departed is an alert"]

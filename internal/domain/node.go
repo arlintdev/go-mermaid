@@ -1,6 +1,7 @@
 package domain
 
 // Style holds optional per-node visual overrides from classDef/class/style.
+// Every value has been validated as a plain colour, number or keyword.
 type Style struct {
 	Fill   string
 	Stroke string
@@ -10,6 +11,9 @@ type Style struct {
 	StrokeWidth string
 	// StrokeDash is an SVG stroke-dasharray, empty for a solid line.
 	StrokeDash string
+	// FontWeight and FontStyle style the label text, empty for the default.
+	FontWeight string
+	FontStyle  string
 }
 
 // Node is a vertex in a flowchart.
@@ -24,6 +28,10 @@ type Node struct {
 	Style *Style
 	// Link, when set, wraps the node in an SVG hyperlink (click ID href URL).
 	Link string
+
+	// Lines is the label broken into the lines it is drawn on. Set by
+	// layouts that wrap labels; empty otherwise.
+	Lines []string
 
 	// Pos is the laid-out top-left position. Zero until layout runs.
 	Pos Point

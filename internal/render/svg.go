@@ -1,10 +1,16 @@
 // Package render turns a laid-out graph into SVG bytes. Output is
 // deterministic so it can be compared against golden files.
+//
+// The SVG is static and plain: presentation attributes only, no style
+// attribute or element, no foreignObject, no links or scripts. Every text
+// node and attribute value is either a number, a constant, a value checked
+// by cssval, or escaped.
 package render
 
 import (
 	"fmt"
 	"math"
+	"regexp"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/domain"
@@ -21,328 +27,481 @@ type Options struct {
 	Padding  float64
 	Title    string
 	Curved   bool
+	// Vars overrides palette colors (from a diagram's init directive); its
+	// values must already be validated.
+	Vars theme.Palette
+	// IDPrefix starts every id in the picture (markers), so two pictures on
+	// one page never share one. It must be letters, digits, '-' or '_' and
+	// start with a letter; anything else is replaced by "m".
+	IDPrefix string
 }
 
-// smoothPath builds a quadratic-smoothed path through the waypoints, rounding
-// the interior corners of an orthogonal polyline.
-func smoothPath(pts []domain.Point) string {
-	var b strings.Builder
-	fmt.Fprintf(&b, "M%s,%s ", num(pts[0].X), num(pts[0].Y))
-	for i := 1; i < len(pts); i++ {
-		mx, my := (pts[i-1].X+pts[i].X)/2, (pts[i-1].Y+pts[i].Y)/2
-		fmt.Fprintf(&b, "Q%s,%s %s,%s ", num(pts[i-1].X), num(pts[i-1].Y), num(mx), num(my))
+var idPrefixRe = regexp.MustCompile(`^[A-Za-z][A-Za-z0-9_-]{0,63}$`)
+
+func (o Options) prefix() string {
+	if idPrefixRe.MatchString(o.IDPrefix) {
+		return o.IDPrefix
 	}
-	last := pts[len(pts)-1]
-	fmt.Fprintf(&b, "L%s,%s", num(last.X), num(last.Y))
-	return strings.TrimSpace(b.String())
+	return "m"
 }
 
-// writeTitle draws a centered, bold diagram title at (x, y) if non-empty.
-func writeTitle(b *strings.Builder, title string, x, y float64, pal theme.Palette) {
-	if title == "" {
-		return
-	}
-	fmt.Fprintf(b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle" font-weight="bold">%s</text>`,
-		num(x), num(y), pal.Text, esc(title))
-	b.WriteByte('\n')
+// Edge stroke widths and marker sizes, as mermaid.js draws them.
+const (
+	edgeWidth      = 1.5
+	thickWidth     = 3.5
+	arrowLen       = 11.0
+	arrowWide      = 12.0
+	circleMarker   = 13.0
+	crossMarker    = 13.0
+	cornerRadius   = 5.0
+	curvedRadius   = 14.0
+	titleFontScale = 1.15
+)
+
+// renderer carries the per-picture state.
+type renderer struct {
+	b       strings.Builder
+	opts    Options
+	pal     theme.Palette
+	face    svgutil.Face
+	markers map[string]string // kind|color -> id
+	defs    strings.Builder
 }
 
-// SVG renders a laid-out graph to an SVG document.
+// SVG renders a laid-out graph to an SVG document. Graphs laid out by
+// layout.Flow carry wrapped lines and subgraph boxes; older layouts are
+// drawn with their labels split at explicit line breaks.
 func SVG(res *layout.Result, opts Options) ([]byte, error) {
-	pal := theme.For(opts.Theme)
-	pad := opts.Padding
-	titleH := svgutil.TitleHeight(opts.Title, opts.FontSize)
-
-	// Union node bounds with subgraph boxes (which can extend past the nodes
-	// and into negative coordinates) so nothing clips.
-	minX, minY, maxX, maxY := 0.0, 0.0, res.Width, res.Height
-	for _, sg := range res.Graph.Subgraphs {
-		if bx, by, bw, bh, ok := subgraphBox(sg, res.Graph, opts); ok {
-			minX, minY = math.Min(minX, bx), math.Min(minY, by)
-			maxX, maxY = math.Max(maxX, bx+bw), math.Max(maxY, by+bh)
-		}
+	if opts.FontSize <= 0 {
+		opts.FontSize = 16
 	}
-	contentW := maxX - minX
-	face := svgutil.FaceFor(opts.FontFace)
-	if tw := face.Width(opts.Title, opts.FontSize); tw > contentW {
+	r := &renderer{
+		opts:    opts,
+		pal:     theme.For(opts.Theme).Over(opts.Vars).Flow(),
+		face:    svgutil.FaceFor(opts.FontFace),
+		markers: map[string]string{},
+	}
+	return r.render(res), nil
+}
+
+func (r *renderer) render(res *layout.Result) []byte {
+	g := res.Graph
+	pad := r.opts.Padding
+	titleH := 0.0
+	titleSize := r.opts.FontSize * titleFontScale
+	if r.opts.Title != "" {
+		titleH = titleSize*1.5 + 8
+	}
+	contentW := res.Width
+	if tw := r.face.Width(r.opts.Title, titleSize); tw > contentW {
 		contentW = tw
 	}
-	shiftX, shiftY := -minX, -minY
-	w := contentW + pad*2
-	h := (maxY - minY) + titleH + pad*2
+	shiftX := (contentW - res.Width) / 2
+	w := contentW + 2*pad
+	h := res.Height + titleH + 2*pad
 
-	var b strings.Builder
-	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`,
-		num(w), num(h), num(w), num(h), esc(opts.FontFace), num(opts.FontSize))
-	b.WriteByte('\n')
+	var body strings.Builder
+	r.drawBody(&body, g)
 
-	// Arrowhead marker.
-	fmt.Fprintf(&b, `  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="%s"/></marker></defs>`, pal.Edge)
-	b.WriteByte('\n')
-
-	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`, pal.Background)
-	b.WriteByte('\n')
-
-	writeTitle(&b, opts.Title, w/2, pad+opts.FontSize, pal)
-
-	fmt.Fprintf(&b, `  <g transform="translate(%s,%s)">`, num(pad+shiftX), num(pad+titleH+shiftY))
-	b.WriteByte('\n')
-
-	for _, sg := range res.Graph.Subgraphs {
-		writeSubgraph(&b, sg, res.Graph, pal, opts)
+	fmt.Fprintf(&r.b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
+		num(w), num(h), num(w), num(h), esc(r.opts.FontFace), num(r.opts.FontSize))
+	if r.defs.Len() > 0 {
+		r.b.WriteString("  <defs>\n")
+		r.b.WriteString(r.defs.String())
+		r.b.WriteString("  </defs>\n")
 	}
-	for _, e := range res.Graph.Edges {
-		writeEdge(&b, e, pal, opts.Curved, face, opts.FontSize)
+	fmt.Fprintf(&r.b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", esc(r.pal.Background))
+	if r.opts.Title != "" {
+		fmt.Fprintf(&r.b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle" font-size="%s" font-weight="bold">%s</text>`+"\n",
+			num(w/2), num(pad+titleSize), esc(r.pal.Text), num(titleSize), esc(r.opts.Title))
 	}
-	for _, n := range res.Graph.Nodes {
-		writeNode(&b, n, pal, opts)
-	}
-
-	b.WriteString("  </g>\n</svg>\n")
-	return []byte(b.String()), nil
+	fmt.Fprintf(&r.b, `  <g transform="translate(%s,%s)">`+"\n", num(pad+shiftX), num(pad+titleH))
+	r.b.WriteString(body.String())
+	r.b.WriteString("  </g>\n</svg>\n")
+	return []byte(r.b.String())
 }
 
-func writeEdge(b *strings.Builder, e *domain.Edge, pal theme.Palette, curved bool, face svgutil.Face, fontSize float64) {
-	if len(e.Points) < 2 {
+func (r *renderer) drawBody(b *strings.Builder, g *domain.Graph) {
+	clusters := clusterOrder(g)
+	for _, sg := range clusters {
+		r.drawCluster(b, sg)
+	}
+	for _, e := range g.Edges {
+		r.drawEdge(b, e)
+	}
+	// Titles go over the edges: one an edge must cross is drawn on a patch
+	// of its box's fill, so the line passes behind the words.
+	for _, sg := range clusters {
+		r.drawClusterTitle(b, sg, g.Edges)
+	}
+	for _, e := range g.Edges {
+		r.drawEdgeLabel(b, e)
+	}
+	for _, n := range g.Nodes {
+		r.drawNode(b, n)
+	}
+}
+
+// clusterOrder lists subgraphs outermost first, so inner boxes are drawn on
+// top of the boxes around them.
+func clusterOrder(g *domain.Graph) []*domain.Subgraph {
+	depth := func(sg *domain.Subgraph) int {
+		d := 0
+		for p := sg.Parent; p != "" && d <= len(g.Subgraphs); d++ {
+			parent := g.SubgraphByID(p)
+			if parent == nil {
+				break
+			}
+			p = parent.Parent
+		}
+		return d
+	}
+	out := append([]*domain.Subgraph(nil), g.Subgraphs...)
+	for i := 1; i < len(out); i++ {
+		for j := i; j > 0 && depth(out[j]) < depth(out[j-1]); j-- {
+			out[j], out[j-1] = out[j-1], out[j]
+		}
+	}
+	return out
+}
+
+func (r *renderer) drawCluster(b *strings.Builder, sg *domain.Subgraph) {
+	box := sg.Box
+	if box.Size.W <= 0 || box.Size.H <= 0 {
 		return
 	}
-	var d strings.Builder
-	if curved && len(e.Points) > 2 {
-		d.WriteString(smoothPath(e.Points))
-	} else {
-		for i, p := range e.Points {
-			cmd := "L"
-			if i == 0 {
-				cmd = "M"
+	fill, stroke := r.pal.ClusterFill, r.pal.ClusterStroke
+	extra := ""
+	if st := sg.Style; st != nil {
+		fill, stroke = pick(st.Fill, fill), pick(st.Stroke, stroke)
+		extra = strokeExtras(st)
+	}
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"%s/>`+"\n",
+		num(box.Min.X), num(box.Min.Y), num(box.Size.W), num(box.Size.H), esc(fill), esc(stroke), extra)
+}
+
+func (r *renderer) drawClusterTitle(b *strings.Builder, sg *domain.Subgraph, edges []*domain.Edge) {
+	box := sg.Box
+	lines := sg.TitleLines
+	if len(lines) == 0 && sg.Title != "" {
+		lines = svgutil.SplitLines(sg.Title)
+	}
+	if box.Size.W <= 0 || len(lines) == 0 {
+		return
+	}
+	fill, text := r.pal.ClusterFill, r.pal.Text
+	if st := sg.Style; st != nil {
+		fill, text = pick(st.Fill, fill), pick(st.Color, text)
+	}
+	lh := r.opts.FontSize * 1.5
+	top := box.Min.Y + 6
+	cx := box.Min.X + box.Size.W/2
+	if sg.TitleX != 0 {
+		cx = sg.TitleX
+	}
+	tw := r.face.LinesWidth(lines, r.opts.FontSize) + 8
+	th := lh * float64(len(lines))
+	x0, x1, y0, y1 := cx-tw/2, cx+tw/2, top, top+th
+	for _, e := range edges {
+		if e.Line == domain.LineInvisible {
+			continue
+		}
+		crossed := false
+		for i := 1; i < len(e.Points); i++ {
+			p, q := e.Points[i-1], e.Points[i]
+			if math.Min(p.X, q.X) < x1 && math.Max(p.X, q.X) > x0 && math.Min(p.Y, q.Y) < y1 && math.Max(p.Y, q.Y) > y0 {
+				crossed = true
+				break
 			}
-			fmt.Fprintf(&d, "%s%s,%s ", cmd, num(p.X), num(p.Y))
+		}
+		if crossed {
+			fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s"/>`+"\n",
+				num(x0), num(y0), num(tw), num(th), esc(fill))
+			break
 		}
 	}
+	r.writeLines(b, lines, cx, top+th/2, text, fontAttrs(sg.Style))
+}
+
+func pick(v, def string) string {
+	if v != "" {
+		return v
+	}
+	return def
+}
+
+// strokeExtras returns the stroke-width and dash attributes a style sets.
+func strokeExtras(st *domain.Style) string {
+	s := ""
+	if st.StrokeWidth != "" {
+		s += fmt.Sprintf(` stroke-width="%s"`, esc(st.StrokeWidth))
+	}
+	if st.StrokeDash != "" {
+		s += fmt.Sprintf(` stroke-dasharray="%s"`, esc(st.StrokeDash))
+	}
+	return s
+}
+
+func fontAttrs(st *domain.Style) string {
+	if st == nil {
+		return ""
+	}
+	s := ""
+	if st.FontWeight != "" {
+		s += fmt.Sprintf(` font-weight="%s"`, esc(st.FontWeight))
+	}
+	if st.FontStyle != "" {
+		s += fmt.Sprintf(` font-style="%s"`, esc(st.FontStyle))
+	}
+	return s
+}
+
+// writeLines writes centred lines of text around (cx, cy).
+func (r *renderer) writeLines(b *strings.Builder, lines []string, cx, cy float64, fill, attrs string) {
+	if len(lines) == 0 {
+		return
+	}
+	lh := r.opts.FontSize * 1.5
+	first := cy - lh*float64(len(lines)-1)/2 + r.opts.FontSize*0.35
+	fmt.Fprintf(b, `    <text fill="%s" text-anchor="middle"%s>`, esc(fill), attrs)
+	for i, ln := range lines {
+		fmt.Fprintf(b, `<tspan x="%s" y="%s">%s</tspan>`, num(cx), num(first+lh*float64(i)), esc(ln))
+	}
+	b.WriteString("</text>\n")
+}
+
+// markerID returns the id of a marker of the given kind and colour,
+// defining it on first use.
+func (r *renderer) markerID(kind domain.Marker, color string) string {
+	key := string(kind) + "|" + color
+	if id, ok := r.markers[key]; ok {
+		return id
+	}
+	id := fmt.Sprintf("%s-%s-%d", r.opts.prefix(), kind, len(r.markers))
+	r.markers[key] = id
+	c := esc(color)
+	switch kind {
+	case domain.MarkerCircle:
+		fmt.Fprintf(&r.defs, `    <marker id="%s" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="userSpaceOnUse" markerWidth="%s" markerHeight="%s" orient="auto-start-reverse"><circle cx="5" cy="5" r="4.5" fill="%s"/></marker>`+"\n",
+			id, num(circleMarker), num(circleMarker), c)
+	case domain.MarkerCross:
+		fmt.Fprintf(&r.defs, `    <marker id="%s" viewBox="0 0 11 11" refX="5.5" refY="5.5" markerUnits="userSpaceOnUse" markerWidth="%s" markerHeight="%s" orient="auto-start-reverse"><path d="M1.5,1.5 L9.5,9.5 M9.5,1.5 L1.5,9.5" stroke="%s" stroke-width="2" fill="none"/></marker>`+"\n",
+			id, num(crossMarker), num(crossMarker), c)
+	default:
+		fmt.Fprintf(&r.defs, `    <marker id="%s" viewBox="0 0 %s %s" refX="0" refY="%s" markerUnits="userSpaceOnUse" markerWidth="%s" markerHeight="%s" orient="auto-start-reverse"><path d="M0,0 L%s,%s L0,%s z" fill="%s"/></marker>`+"\n",
+			id, num(arrowLen), num(arrowWide), num(arrowWide/2), num(arrowLen), num(arrowWide),
+			num(arrowLen), num(arrowWide/2), num(arrowWide), c)
+	}
+	return id
+}
+
+// markerSetback is how far the line stops short of the end so the marker
+// reaches it exactly.
+func markerSetback(m domain.Marker) float64 {
+	switch m {
+	case domain.MarkerArrow:
+		return arrowLen
+	case domain.MarkerCircle:
+		return circleMarker
+	case domain.MarkerCross:
+		return crossMarker / 2
+	}
+	return 0
+}
+
+func (r *renderer) drawEdge(b *strings.Builder, e *domain.Edge) {
+	if len(e.Points) < 2 || e.Line == domain.LineInvisible {
+		return
+	}
+	start, end := e.Start, e.End
+	if start == "" && end == "" && e.Arrow != domain.ArrowOpen && e.Arrow != "" {
+		end = domain.MarkerArrow // laid out by an older pipeline
+	}
+	pts := append([]domain.Point(nil), e.Points...)
+	pts[0] = setBack(pts[0], pts[1], markerSetback(start))
+	n := len(pts)
+	pts[n-1] = setBack(pts[n-1], pts[n-2], markerSetback(end))
+
+	stroke := r.pal.Edge
+	width := edgeWidth
 	dash := ""
-	if e.Arrow == domain.ArrowDotted {
-		dash = ` stroke-dasharray="4,4"`
+	if e.Line == domain.LineThick || e.Arrow == domain.ArrowThick {
+		width = thickWidth
 	}
-	width := "1.5"
-	if e.Arrow == domain.ArrowThick {
-		width = "3"
+	if e.Line == domain.LineDotted || e.Arrow == domain.ArrowDotted {
+		dash = "3 4"
 	}
-	stroke := pal.Edge
-	// A linkStyle directive overrides the colour, width and dash pattern.
+	widthAttr := num(width)
 	if st := e.Style; st != nil {
-		if st.Stroke != "" {
-			stroke = st.Stroke
-		}
+		stroke = pick(st.Stroke, stroke)
 		if st.StrokeWidth != "" {
-			width = st.StrokeWidth
+			widthAttr = st.StrokeWidth
 		}
 		if st.StrokeDash != "" {
-			dash = fmt.Sprintf(` stroke-dasharray="%s"`, esc(st.StrokeDash))
+			dash = st.StrokeDash
 		}
 	}
-	marker := ` marker-end="url(#arrow)"`
-	if e.Arrow == domain.ArrowOpen {
-		marker = ""
+	radius := cornerRadius
+	if r.opts.Curved {
+		radius = curvedRadius
 	}
-	fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s" stroke-width="%s"%s%s/>`,
-		strings.TrimSpace(d.String()), esc(stroke), width, dash, marker)
-	b.WriteByte('\n')
-
-	if e.Label != "" {
-		// Layout anchors the label on the routed path and staggers labels
-		// of parallel edges so they never paint over each other. LabelPos is
-		// the baseline of the last line, so a multi-line label grows upward.
-		midX, midY := e.LabelPos.X, e.LabelPos.Y
-		lines := svgutil.SplitLines(e.Label)
-		tw := 0.0
-		for _, ln := range lines {
-			if lw := face.Width(ln, fontSize); lw > tw {
-				tw = lw
-			}
-		}
-		tw += 6
-		th := fontSize * float64(len(lines))
-		fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="%s"/>`,
-			num(midX-tw/2), num(midY-th), num(tw), num(th+4), pal.Background)
-		b.WriteByte('\n')
-		for i, ln := range lines {
-			y := midY - fontSize*float64(len(lines)-1-i)
-			fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" dy="-2">%s</text>`,
-				num(midX), num(y), pal.Text, esc(ln))
-			b.WriteByte('\n')
-		}
+	fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s" stroke-width="%s"`, roundedPath(pts, radius), esc(stroke), esc(widthAttr))
+	if dash != "" {
+		fmt.Fprintf(b, ` stroke-dasharray="%s"`, esc(dash))
 	}
+	if start != domain.MarkerNone {
+		fmt.Fprintf(b, ` marker-start="url(#%s)"`, r.markerID(start, stroke))
+	}
+	if end != domain.MarkerNone {
+		fmt.Fprintf(b, ` marker-end="url(#%s)"`, r.markerID(end, stroke))
+	}
+	b.WriteString("/>\n")
 }
 
-// subgraphBox returns the cluster box (x, y, w, h) enclosing a subgraph's
-// member nodes, with padding and title space. ok is false if it has no
-// positioned members.
-func subgraphBox(sg *domain.Subgraph, g *domain.Graph, opts Options) (x, y, w, h float64, ok bool) {
-	const pad = 14.0
-	first := true
-	var minX, minY, maxX, maxY float64
-	for _, id := range sg.NodeIDs {
-		n := g.NodeByID(id)
-		if n == nil {
-			continue
-		}
-		if first {
-			minX, minY = n.Pos.X, n.Pos.Y
-			maxX, maxY = n.Pos.X+n.Size.W, n.Pos.Y+n.Size.H
-			first = false
-			continue
-		}
-		minX = math.Min(minX, n.Pos.X)
-		minY = math.Min(minY, n.Pos.Y)
-		maxX = math.Max(maxX, n.Pos.X+n.Size.W)
-		maxY = math.Max(maxY, n.Pos.Y+n.Size.H)
+// setBack moves p toward q by d, keeping at least a sliver of the segment.
+func setBack(p, q domain.Point, d float64) domain.Point {
+	l := math.Hypot(q.X-p.X, q.Y-p.Y)
+	if d <= 0 || l == 0 {
+		return p
 	}
-	if first {
-		return 0, 0, 0, 0, false
-	}
-	titleH := 0.0
-	if sg.Title != "" {
-		titleH = opts.FontSize + 6
-	}
-	x, y = minX-pad, minY-pad-titleH
-	w, h = maxX-minX+2*pad, maxY-minY+2*pad+titleH
-	// The title is drawn inside the box at x+titleInset. Widen the box to fit
-	// it, or a title longer than the member nodes overflows the cluster and
-	// then the canvas.
-	if sg.Title != "" {
-		if tw := svgutil.FaceFor(opts.FontFace).Width(sg.Title, opts.FontSize) + titleInset*2; tw > w {
-			w = tw
-		}
-	}
-	return x, y, w, h, true
+	d = math.Min(d, l*0.9)
+	return domain.Point{X: p.X + (q.X-p.X)/l*d, Y: p.Y + (q.Y-p.Y)/l*d}
 }
 
-// titleInset is the gap between a subgraph box edge and its title text.
-const titleInset = 6.0
+// roundedPath draws the polyline with its corners rounded.
+func roundedPath(pts []domain.Point, radius float64) string {
+	var d strings.Builder
+	fmt.Fprintf(&d, "M%s,%s", num(pts[0].X), num(pts[0].Y))
+	for i := 1; i < len(pts)-1; i++ {
+		a, p, c := pts[i-1], pts[i], pts[i+1]
+		l1 := math.Hypot(p.X-a.X, p.Y-a.Y)
+		l2 := math.Hypot(c.X-p.X, c.Y-p.Y)
+		rr := math.Min(radius, math.Min(l1, l2)/2)
+		if rr < 0.5 || l1 == 0 || l2 == 0 {
+			fmt.Fprintf(&d, " L%s,%s", num(p.X), num(p.Y))
+			continue
+		}
+		in := domain.Point{X: p.X - (p.X-a.X)/l1*rr, Y: p.Y - (p.Y-a.Y)/l1*rr}
+		out := domain.Point{X: p.X + (c.X-p.X)/l2*rr, Y: p.Y + (c.Y-p.Y)/l2*rr}
+		fmt.Fprintf(&d, " L%s,%s Q%s,%s %s,%s", num(in.X), num(in.Y), num(p.X), num(p.Y), num(out.X), num(out.Y))
+	}
+	last := pts[len(pts)-1]
+	fmt.Fprintf(&d, " L%s,%s", num(last.X), num(last.Y))
+	return d.String()
+}
 
-// writeSubgraph draws a dashed cluster box around a subgraph's member nodes.
-func writeSubgraph(b *strings.Builder, sg *domain.Subgraph, g *domain.Graph, pal theme.Palette, opts Options) {
-	x, y, w, h, ok := subgraphBox(sg, g, opts)
-	if !ok {
+func (r *renderer) drawEdgeLabel(b *strings.Builder, e *domain.Edge) {
+	if e.Label == "" || len(e.Points) < 2 || e.Line == domain.LineInvisible {
 		return
 	}
-	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="none" stroke="%s" stroke-dasharray="4,3" rx="4"/>`,
-		num(x), num(y), num(w), num(h), pal.NodeStroke)
-	b.WriteByte('\n')
-	if sg.Title != "" {
-		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s">%s</text>`,
-			num(x+titleInset), num(y+opts.FontSize), pal.Text, esc(sg.Title))
-		b.WriteByte('\n')
+	lines := e.LabelLines
+	size := e.LabelSize
+	if len(lines) == 0 {
+		lines = svgutil.SplitLines(e.Label)
+		size = domain.Size{W: r.face.LinesWidth(lines, r.opts.FontSize) + 8, H: r.opts.FontSize * 1.5 * float64(len(lines))}
 	}
+	c := e.LabelPos
+	if !e.LabelCenter {
+		c.Y -= size.H/2 - 4
+	}
+	text := r.pal.Text
+	if e.Style != nil {
+		text = pick(e.Style.Color, text)
+	}
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s" fill-opacity="0.85"/>`+"\n",
+		num(c.X-size.W/2), num(c.Y-size.H/2), num(size.W), num(size.H), esc(r.pal.LabelBackground))
+	r.writeLines(b, lines, c.X, c.Y, text, "")
 }
 
-func writeNode(b *strings.Builder, n *domain.Node, pal theme.Palette, opts Options) {
-	if n.Link != "" {
-		fmt.Fprintf(b, `    <a href="%s" target="_blank">`, esc(n.Link))
-		b.WriteByte('\n')
-	}
+func (r *renderer) drawNode(b *strings.Builder, n *domain.Node) {
 	x, y, w, h := n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H
-	fill, stroke, textColor := pal.NodeFill, pal.NodeStroke, pal.Text
+	fill, stroke, text := r.pal.NodeFill, r.pal.NodeStroke, r.pal.Text
 	extra := ""
-	if n.Style != nil {
-		if n.Style.Fill != "" {
-			fill = n.Style.Fill
-		}
-		if n.Style.Stroke != "" {
-			stroke = n.Style.Stroke
-		}
-		if n.Style.Color != "" {
-			textColor = n.Style.Color
-		}
-		if n.Style.StrokeWidth != "" {
-			extra += fmt.Sprintf(` stroke-width="%s"`, esc(n.Style.StrokeWidth))
-		}
-		if n.Style.StrokeDash != "" {
-			extra += fmt.Sprintf(` stroke-dasharray="%s"`, esc(n.Style.StrokeDash))
-		}
+	if st := n.Style; st != nil {
+		fill, stroke, text = pick(st.Fill, fill), pick(st.Stroke, stroke), pick(st.Color, text)
+		extra = strokeExtras(st)
 	}
-	// stroke-width and stroke-dasharray are inherited, so one wrapping group
-	// applies them to whichever shape is drawn below.
-	if extra != "" {
-		fmt.Fprintf(b, `    <g%s>`, extra)
-		b.WriteByte('\n')
-	}
-	switch n.Shape {
-	case domain.ShapeRound, domain.ShapeStadium:
-		rx := h / 2
-		if n.Shape == domain.ShapeRound {
-			rx = 6
-		}
-		fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="%s" fill="%s" stroke="%s"/>`,
-			num(x), num(y), num(w), num(h), num(rx), fill, stroke)
-	case domain.ShapeCircle:
-		fmt.Fprintf(b, `    <circle cx="%s" cy="%s" r="%s" fill="%s" stroke="%s"/>`,
-			num(x+w/2), num(y+h/2), num(w/2), fill, stroke)
-	case domain.ShapeDiamond:
-		cx, cy := x+w/2, y+h/2
-		pts := fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
-			num(cx), num(y), num(x+w), num(cy), num(cx), num(y+h), num(x), num(cy))
-		fmt.Fprintf(b, `    <polygon points="%s" fill="%s" stroke="%s"/>`, pts, fill, stroke)
-	case domain.ShapeHexagon:
-		k := h / 2
-		pts := fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s %s,%s %s,%s",
-			num(x), num(y+h/2), num(x+k), num(y), num(x+w-k), num(y),
-			num(x+w), num(y+h/2), num(x+w-k), num(y+h), num(x+k), num(y+h))
-		fmt.Fprintf(b, `    <polygon points="%s" fill="%s" stroke="%s"/>`, pts, fill, stroke)
-	case domain.ShapeParallelogram:
-		k := h / 2
-		pts := fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
-			num(x+k), num(y), num(x+w), num(y), num(x+w-k), num(y+h), num(x), num(y+h))
-		fmt.Fprintf(b, `    <polygon points="%s" fill="%s" stroke="%s"/>`, pts, fill, stroke)
-	case domain.ShapeParallelogramAlt:
-		k := h / 2
-		pts := fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
-			num(x), num(y), num(x+w-k), num(y), num(x+w), num(y+h), num(x+k), num(y+h))
-		fmt.Fprintf(b, `    <polygon points="%s" fill="%s" stroke="%s"/>`, pts, fill, stroke)
-	case domain.ShapeTrapezoid:
-		k := h / 2
-		pts := fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
-			num(x+k), num(y), num(x+w-k), num(y), num(x+w), num(y+h), num(x), num(y+h))
-		fmt.Fprintf(b, `    <polygon points="%s" fill="%s" stroke="%s"/>`, pts, fill, stroke)
-	case domain.ShapeTrapezoidAlt:
-		k := h / 2
-		pts := fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
-			num(x), num(y), num(x+w), num(y), num(x+w-k), num(y+h), num(x+k), num(y+h))
-		fmt.Fprintf(b, `    <polygon points="%s" fill="%s" stroke="%s"/>`, pts, fill, stroke)
-	case domain.ShapeCylinder:
-		ry := h * 0.12
-		// Body: down the left, curve under the bottom, up the right, dome over
-		// the top. The front lip is overdrawn so the top reads as a 3-D rim.
-		fmt.Fprintf(b, `    <path d="M%s,%s L%s,%s A%s,%s 0 0 0 %s,%s L%s,%s A%s,%s 0 0 0 %s,%s Z" fill="%s" stroke="%s"/>`,
-			num(x), num(y+ry), num(x), num(y+h-ry),
-			num(w/2), num(ry), num(x+w), num(y+h-ry),
-			num(x+w), num(y+ry),
-			num(w/2), num(ry), num(x), num(y+ry),
-			fill, stroke)
-		fmt.Fprintf(b, `<path d="M%s,%s A%s,%s 0 0 0 %s,%s" fill="none" stroke="%s"/>`,
-			num(x), num(y+ry), num(w/2), num(ry), num(x+w), num(y+ry), stroke)
-	case domain.ShapeSubroutine:
-		fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"/>`,
-			num(x), num(y), num(w), num(h), fill, stroke)
-		fmt.Fprintf(b, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s"/><line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s"/>`,
-			num(x+6), num(y), num(x+6), num(y+h), stroke,
-			num(x+w-6), num(y), num(x+w-6), num(y+h), stroke)
-	default: // rect
-		fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"/>`,
-			num(x), num(y), num(w), num(h), fill, stroke)
-	}
-	b.WriteByte('\n')
-
-	label := n.Label
-	if label == "" {
-		label = n.ID
-	}
-	if extra != "" {
-		b.WriteString("    </g>\n")
-	}
+	paint := fmt.Sprintf(` fill="%s" stroke="%s"%s`, esc(fill), esc(stroke), extra)
+	cx, cy := x+w/2, y+h/2
 	b.WriteString("    ")
-	svgutil.MultilineText(b, svgutil.SplitLines(label), x+w/2, y+h/2+opts.FontSize*0.35, opts.FontSize+2, textColor, "")
-	b.WriteByte('\n')
-	if n.Link != "" {
-		b.WriteString("    </a>\n")
+	switch n.Shape {
+	case domain.ShapeRound:
+		fmt.Fprintf(b, `<rect x="%s" y="%s" width="%s" height="%s" rx="5"%s/>`, num(x), num(y), num(w), num(h), paint)
+	case domain.ShapeStadium:
+		fmt.Fprintf(b, `<rect x="%s" y="%s" width="%s" height="%s" rx="%s"%s/>`, num(x), num(y), num(w), num(h), num(h/2), paint)
+	case domain.ShapeCircle:
+		fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="%s"%s/>`, num(cx), num(cy), num(w/2), paint)
+	case domain.ShapeDoubleCircle:
+		fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="%s"%s/>`, num(cx), num(cy), num(w/2), paint)
+		fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="%s"%s/>`, num(cx), num(cy), num(w/2-5), paint)
+	case domain.ShapeSmallCircle:
+		fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="%s" fill="%s" stroke="%s"/>`, num(cx), num(cy), num(w/2), esc(text), esc(text))
+	case domain.ShapeFramedCircle:
+		fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="%s" fill="none" stroke="%s" stroke-width="1.5"/>`, num(cx), num(cy), num(w/2), esc(text))
+		fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="%s" fill="%s"/>`, num(cx), num(cy), num(w/2-4), esc(text))
+	case domain.ShapeDiamond:
+		polygon(b, paint, cx, y, x+w, cy, cx, y+h, x, cy)
+	case domain.ShapeHexagon:
+		k := h / 4
+		polygon(b, paint, x, cy, x+k, y, x+w-k, y, x+w, cy, x+w-k, y+h, x+k, y+h)
+	case domain.ShapeParallelogram:
+		k := h / 3
+		polygon(b, paint, x+k, y, x+w, y, x+w-k, y+h, x, y+h)
+	case domain.ShapeParallelogramAlt:
+		k := h / 3
+		polygon(b, paint, x, y, x+w-k, y, x+w, y+h, x+k, y+h)
+	case domain.ShapeTrapezoid:
+		k := h / 3
+		polygon(b, paint, x+k, y, x+w-k, y, x+w, y+h, x, y+h)
+	case domain.ShapeTrapezoidAlt:
+		k := h / 3
+		polygon(b, paint, x, y, x+w, y, x+w-k, y+h, x+k, y+h)
+	case domain.ShapeAsymmetric:
+		k := h / 3
+		polygon(b, paint, x, y, x+w, y, x+w, y+h, x, y+h, x+k, cy)
+	case domain.ShapeCylinder:
+		rx, ry := w/2, layout.CylinderRY(w)
+		fmt.Fprintf(b, `<path d="M%s,%s A%s,%s 0 0 1 %s,%s L%s,%s A%s,%s 0 0 1 %s,%s Z"%s/>`,
+			num(x), num(y+ry), num(rx), num(ry), num(x+w), num(y+ry), num(x+w), num(y+h-ry),
+			num(rx), num(ry), num(x), num(y+h-ry), paint)
+		fmt.Fprintf(b, `<path d="M%s,%s A%s,%s 0 0 0 %s,%s" fill="none" stroke="%s"%s/>`,
+			num(x), num(y+ry), num(rx), num(ry), num(x+w), num(y+ry), esc(stroke), extra)
+		cy += ry / 2
+	case domain.ShapeSubroutine:
+		fmt.Fprintf(b, `<rect x="%s" y="%s" width="%s" height="%s"%s/>`, num(x), num(y), num(w), num(h), paint)
+		fmt.Fprintf(b, `<path d="M%s,%s V%s M%s,%s V%s" fill="none" stroke="%s"%s/>`,
+			num(x+8), num(y), num(y+h), num(x+w-8), num(y), num(y+h), esc(stroke), extra)
+	case domain.ShapeDocument:
+		wave := h * 0.15 / (1 + 0.15)
+		base := y + h - wave
+		fmt.Fprintf(b, `<path d="M%s,%s H%s V%s C%s,%s %s,%s %s,%s S%s,%s %s,%s Z"%s/>`,
+			num(x), num(y), num(x+w), num(base),
+			num(x+w*0.75), num(base-wave), num(x+w*0.75), num(base+wave), num(x+w/2), num(base),
+			num(x+w*0.25), num(base-wave), num(x), num(base), paint)
+		cy -= wave / 2
+	case domain.ShapeText:
+	default:
+		fmt.Fprintf(b, `<rect x="%s" y="%s" width="%s" height="%s"%s/>`, num(x), num(y), num(w), num(h), paint)
 	}
+	b.WriteByte('\n')
+	lines := n.Lines
+	if len(lines) == 0 && n.Shape != domain.ShapeSmallCircle && n.Shape != domain.ShapeFramedCircle {
+		label := n.Label
+		if label == "" {
+			label = n.ID
+		}
+		lines = svgutil.SplitLines(label)
+	}
+	r.writeLines(b, lines, cx, cy, text, fontAttrs(n.Style))
+}
+
+func polygon(b *strings.Builder, paint string, xy ...float64) {
+	b.WriteString(`<polygon points="`)
+	for i := 0; i+1 < len(xy); i += 2 {
+		if i > 0 {
+			b.WriteByte(' ')
+		}
+		fmt.Fprintf(b, "%s,%s", num(xy[i]), num(xy[i+1]))
+	}
+	fmt.Fprintf(b, `"%s/>`, paint)
 }

@@ -23,6 +23,24 @@ type Subgraph struct {
 	ID      string
 	Title   string
 	NodeIDs []string
+
+	// Parent is the ID of the enclosing subgraph, empty at the top level.
+	Parent string
+	// Direction is the flow inside the subgraph when the source sets one
+	// with "direction"; empty means the enclosing direction.
+	Direction Direction
+	// Style holds optional overrides from style/class lines; nil means use
+	// the theme.
+	Style *Style
+
+	// Box is the laid-out cluster box and TitleLines the title as drawn.
+	// Set by layouts that place subgraphs; zero otherwise.
+	Box        Rect
+	TitleLines []string
+	// TitleX is the centre of the title across the box, when a layout has
+	// moved it off the middle to keep it clear of the edges entering the
+	// box; zero means the middle.
+	TitleX float64
 }
 
 // Graph is a parsed flowchart, independent of layout or rendering.
@@ -32,6 +50,16 @@ type Graph struct {
 	Nodes     []*Node
 	Edges     []*Edge
 	Subgraphs []*Subgraph
+}
+
+// SubgraphByID returns the subgraph with the given id, or nil if absent.
+func (g *Graph) SubgraphByID(id string) *Subgraph {
+	for _, sg := range g.Subgraphs {
+		if sg.ID == id {
+			return sg
+		}
+	}
+	return nil
 }
 
 // NodeByID returns the node with the given id, or nil if absent.

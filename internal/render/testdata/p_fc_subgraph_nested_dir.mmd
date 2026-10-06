@@ -1,0 +1,8 @@
+flowchart LR
+  subgraph O[Outer]
+    direction TB
+    subgraph I[Inner]
+      A --> B
+    end
+  end
+  I --> C

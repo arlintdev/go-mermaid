@@ -25,7 +25,7 @@ source → lexer → parser → domain.Graph → layout → render → SVG
 | `internal/domain`   | Pure flowchart model (Graph, Node, Edge, geometry). No I/O. |
 | `internal/lexer`    | Flowchart source text → tokens.                            |
 | `internal/parser`   | Tokens → `domain.Graph`.                                   |
-| `internal/layout`   | Sugiyama layout: acyclic → rank → order → position.        |
+| `internal/layout`   | Layered layout. `Flow` (flowcharts): wrap → rank → order → place (VPSC) → route. `Compute` (older; class/state/ER/C4/requirement). |
 | `internal/render`   | Laid-out flowchart graph → SVG bytes.                      |
 | `internal/sequence` | Self-contained sequence pipeline: parse → layout → render. |
 | `internal/theme`    | Shared color palettes (all diagram types).                 |
@@ -144,13 +144,16 @@ func TestParse(t *testing.T) {
 
 ## Roadmap context
 
-The flowchart layout is Sugiyama-style: cycle removal, longest-path ranking,
-median crossing minimization with dummy nodes for long edges, and barycenter
-x-positioning. Edges are orthogonal by default with an optional curved mode.
-Ranking is still longest-path (network-simplex would tighten it). Remaining
-ideas: network-simplex ranking and spline routing (PNG export now lives in the
-raster subpackage). Keep new code behind the existing stage interfaces so these
-land without API churn.
+The flowchart layout (`layout.Flow`) follows mermaid.js (dagre): ranks are
+doubled so each edge label is a node of its own; ranking is longest-path then
+tightened toward neighbours; ordering keeps subgraphs contiguous and nested;
+placement aligns one-to-one links into straight blocks and solves the rest
+with a small VPSC under separation constraints that include subgraph borders;
+edges are orthogonal, on per-gap tracks, ending on the shape outline. A
+subgraph with its own direction and no crossing edges is laid out on its own.
+`internal/layout/flow_quality_test.go` checks the corpus and random charts
+against overlap and routing rules; keep it passing. The older `Compute` still
+serves the class, state, ER, C4 and requirement diagrams.
 
 Label sizing uses `svgutil.TextWidth` (Helvetica advance widths, dependency-
 free) so wide glyphs reserve room correctly; non-ASCII falls back to a 0.6em

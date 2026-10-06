@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="851.26" height="1046.44" viewBox="0 0 851.26 1046.44" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m1fuhpbr-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#333333"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(16,16)">
+    <path d="M367.06,48 L367.06,123.5 Q367.06,128.5 372.06,128.5 L396.81,128.5 Q400.06,128.5 400.06,131.75 L400.06,135" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M569.06,48 L569.06,123.5 Q569.06,128.5 564.06,128.5 L539.31,128.5 Q536.06,128.5 536.06,131.75 L536.06,135" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M468.06,218 L468.06,305" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M400.06,364 L400.06,369 Q400.06,374 395.06,374 L124.26,374 Q119.26,374 119.26,379 L119.26,418" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M522.06,364 L522.06,379 Q522.06,384 527.06,384 L628.26,384 Q633.26,384 633.26,389 L633.26,900.94 Q633.26,905.94 628.26,905.94 L618.45,905.94 Q617.7,905.94 617.7,906.69 L617.7,907.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M414.06,364 L414.06,379 Q414.06,384 409.06,384 L326.26,384 Q321.26,384 321.26,389 L321.26,418" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M508.06,364 L508.06,389 Q508.06,394 513.06,394 L518.26,394 Q523.26,394 523.26,399 L523.26,418" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M536.06,364 L536.06,369 Q536.06,374 541.06,374 L738.26,374 Q743.26,374 743.26,379 L743.26,418" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M187.26,501 L187.26,532.5 Q187.26,537.5 192.26,537.5 L216.31,537.5 Q221.31,537.5 221.31,542.5 L221.31,557.5 Q221.31,562.5 226.31,562.5 L254.61,562.5 Q255.36,562.5 255.36,563.25 L255.36,564" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M321.26,525 L321.26,564" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M264.14,695 L264.14,782" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M98.68,501 L98.68,564" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M391.36,695 L391.36,707.5 Q391.36,712.5 396.36,712.5 L461.14,712.5 Q466.14,712.5 466.14,717.5 L466.14,782" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <path d="M466.14,865 L466.14,900.94 Q466.14,905.94 471.14,905.94 L480.95,905.94 Q481.7,905.94 481.7,906.69 L481.7,907.44" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1fuhpbr-arrow-0)"/>
+    <rect x="336.84" y="83" width="60.45" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="367.06" y="102.6">HTTPS</tspan></text>
+    <rect x="538.84" y="83" width="60.45" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="569.06" y="102.6">HTTPS</tspan></text>
+    <rect x="378.7" y="253" width="178.74" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="468.06" y="272.6">HTTP or TLS, port 3000</tspan></text>
+    <rect x="382.12" y="730" width="168.05" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="466.14" y="749.6">publishes after commit</tspan></text>
+    <rect x="291.06" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="367.06" y="29.6">Browser tab</tspan></text>
+    <rect x="392.06" y="146" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="468.06" y="175.6">Proxy: Traefik,</tspan><tspan x="468.06" y="199.6">or any other</tspan></text>
+    <rect x="493.06" y="0" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="569.06" y="29.6">MCP client</tspan></text>
+    <rect x="392.06" y="316" width="152" height="48" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="468.06" y="345.6">digin serve</tspan></text>
+    <rect x="43.26" y="429" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="119.26" y="458.6">/api/v1: JSON</tspan><tspan x="119.26" y="482.6">API</tspan></text>
+    <rect x="473.7" y="918.44" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="549.7" y="948.04">/api/v1/live:</tspan><tspan x="549.7" y="972.04">server-sent</tspan><tspan x="549.7" y="996.04">events</tspan></text>
+    <rect x="245.26" y="429" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="321.26" y="458.6">/mcp and /oauth:</tspan><tspan x="321.26" y="482.6">MCP and its</tspan><tspan x="321.26" y="506.6">OAuth server</tspan></text>
+    <rect x="447.26" y="429" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="523.26" y="458.6">/auth: OIDC</tspan><tspan x="523.26" y="482.6">sign-in, when</tspan><tspan x="523.26" y="506.6">configured</tspan></text>
+    <rect x="667.26" y="429" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="743.26" y="458.6">/: the embedded</tspan><tspan x="743.26" y="482.6">web app</tspan></text>
+    <rect x="247.36" y="575" width="152" height="120" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="323.36" y="604.6">store: the only</tspan><tspan x="323.36" y="628.6">package that</tspan><tspan x="323.36" y="652.6">talks to</tspan><tspan x="323.36" y="676.6">PostgreSQL</tspan></text>
+    <path d="M188.14,806.72 A76,13.72 0 0 1 340.14,806.72 L340.14,854.72 A76,13.72 0 0 1 188.14,854.72 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M188.14,806.72 A76,13.72 0 0 0 340.14,806.72" fill="none" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="264.14" y="843.18">PostgreSQL 17</tspan></text>
+    <rect x="0" y="575" width="197.36" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="98.68" y="604.6">vault: sealed</tspan><tspan x="98.68" y="628.6">files under</tspan><tspan x="98.68" y="652.6">DIGIN_DATA_DIR/files</tspan></text>
+    <rect x="390.14" y="793" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="466.14" y="822.6">realtime hub, in</tspan><tspan x="466.14" y="846.6">memory</tspan></text>
+  </g>
+</svg>
