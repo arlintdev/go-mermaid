@@ -80,8 +80,8 @@ type GitColors struct {
 	Lanes []GitLane
 	// Mark draws the cross or dots inside a reverse or cherry-pick commit.
 	Mark string
-	// TagFill is the background of a tag label.
-	TagFill string
+	// IDFill is the background of a commit id.
+	IDFill string
 }
 
 // GitLane is one branch's color, the color of its name drawn on it, and

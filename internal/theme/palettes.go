@@ -75,7 +75,7 @@ var defaultPalette = Palette{
 			{"#ec0000", "#000000", "#009393"},
 		},
 		Mark:    "#ffffff",
-		TagFill: "#ffffde",
+		IDFill:  "#ffffde",
 	},
 	Journey: JourneyColors{
 		Sections:    []string{"#ececff", "#ffffde", "#ffecfe", "#deffe0", "#ecfffe", "#ffdee0", "#ffefec", "#defbff"},
@@ -183,7 +183,7 @@ var darkPalette = Palette{
 			{"#dd4a4a", "#1e1e1e", "#99e6e6"},
 		},
 		Mark:    "#1e1e1e",
-		TagFill: "#4a4630",
+		IDFill:  "#474949",
 	},
 	Journey: JourneyColors{
 		Sections:    []string{"#30305a", "#5a5a30", "#5a3057", "#305a33", "#305a57", "#5a3033", "#5a3730", "#30545a"},
