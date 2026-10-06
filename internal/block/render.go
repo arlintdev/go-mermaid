@@ -710,10 +710,17 @@ func wrap(face svgutil.Face, s string, size, maxW float64) []string {
 					lines = append(lines, cur)
 					cur = ""
 				}
+				// The longest prefix that fits, measured rune by rune so a
+				// very long word costs linear time.
 				r := []rune(wd)
-				k := len(r) - 1
-				for k > 1 && face.Width(string(r[:k]), size) > maxW {
-					k--
+				k, w := 0, 0.0
+				for k < len(r) {
+					cw := face.Width(string(r[k]), size)
+					if k > 0 && w+cw > maxW {
+						break
+					}
+					w += cw
+					k++
 				}
 				lines = append(lines, string(r[:k]))
 				wd = string(r[k:])

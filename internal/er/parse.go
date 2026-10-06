@@ -311,7 +311,7 @@ func (d *Diagram) parseRelation(from *Entity, s string, lineNo int) error {
 		r.LeftKind, r.RightKind, r.Dashed = l, rc, op[2:4] == ".."
 		rest = strings.TrimSpace(s[len(op):])
 	} else {
-		lower := strings.ToLower(s)
+		lower := lowerASCII(s)
 		sep, dashed := " optionally to ", true
 		at := strings.Index(lower, sep)
 		if at < 0 {
@@ -327,7 +327,7 @@ func (d *Diagram) parseRelation(from *Entity, s string, lineNo int) error {
 		}
 		tail := strings.TrimSpace(s[at+len(sep):])
 		var rc Card
-		best, lt := "", strings.ToLower(tail)
+		best, lt := "", lowerASCII(tail)
 		for phrase, k := range wordCards {
 			if strings.HasPrefix(lt, phrase+" ") && len(phrase) > len(best) {
 				best, rc = phrase, k
@@ -350,6 +350,18 @@ func (d *Diagram) parseRelation(from *Entity, s string, lineNo int) error {
 	r.To = to.Name
 	d.Relationships = append(d.Relationships, r)
 	return nil
+}
+
+// lowerASCII lowers ASCII letters only, so indexes into the result are
+// indexes into s even when s is not valid UTF-8.
+func lowerASCII(s string) string {
+	b := []byte(s)
+	for i, c := range b {
+		if c >= 'A' && c <= 'Z' {
+			b[i] = c + 'a' - 'A'
+		}
+	}
+	return string(b)
 }
 
 // labelColon is the index of the colon that starts a relationship label,

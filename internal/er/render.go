@@ -27,7 +27,7 @@ const (
 )
 
 type metrics struct {
-	face                      svgutil.Face
+	face                     svgutil.Face
 	fs, cellPad, headH, rowH float64
 }
 
