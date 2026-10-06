@@ -94,3 +94,22 @@ func BackdropOpacity(fill, text string) float64 {
 	}
 	return 0.3
 }
+
+// Node returns the fill, stroke and text colors of a shape whose source
+// may have styled it: each color given, else the palette's node colors.
+// Text not given is the palette's text, or a contrasting color when a fill
+// the source chose would hide it.
+func (p Palette) Node(fill, stroke, text string) (string, string, string) {
+	f, s, t := p.NodeFill, p.NodeStroke, p.Text
+	if fill != "" {
+		f = fill
+		t = TextOn(fill, p.Text)
+	}
+	if stroke != "" {
+		s = stroke
+	}
+	if text != "" {
+		t = text
+	}
+	return f, s, t
+}

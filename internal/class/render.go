@@ -224,16 +224,8 @@ func writeClass(b *strings.Builder, d *Diagram, c *Class, n *domain.Node, pal th
 	for i := len(c.Classes) - 1; i >= 0; i-- {
 		st = st.Over(d.ClassDefs[c.Classes[i]])
 	}
-	fill, stroke, text := svgutil.Esc(pal.NodeFill), svgutil.Esc(pal.NodeStroke), svgutil.Esc(pal.Text)
-	if st.Fill != "" {
-		fill = svgutil.Esc(st.Fill)
-	}
-	if st.Stroke != "" {
-		stroke = svgutil.Esc(st.Stroke)
-	}
-	if st.Color != "" {
-		text = svgutil.Esc(st.Color)
-	}
+	fill, stroke, text := pal.Node(st.Fill, st.Stroke, st.Color)
+	fill, stroke, text = svgutil.Esc(fill), svgutil.Esc(stroke), svgutil.Esc(text)
 	extra := ""
 	if st.StrokeWidth != "" {
 		extra += ` stroke-width="` + svgutil.Esc(st.StrokeWidth) + `"`
@@ -342,8 +334,8 @@ func writeEdgeLabel(b *strings.Builder, r *Relation, e *domain.Edge, sh curve.Sh
 	if sh.Curved {
 		x, y = sh.Mid.X, sh.Mid.Y+fs*0.35
 	}
-	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>`+"\n",
-		svgutil.Num(x-tw/2-4), svgutil.Num(y-fs*0.95), svgutil.Num(tw+8), svgutil.Num(fs*1.3))
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s" fill-opacity="0.85"/>`+"\n",
+		svgutil.Num(x-tw/2-4), svgutil.Num(y-fs*0.95), svgutil.Num(tw+8), svgutil.Num(fs*1.3), svgutil.Esc(pal.RelationLabel))
 	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" font-size="%s">%s</text>`+"\n",
 		svgutil.Num(x), svgutil.Num(y), svgutil.Esc(pal.Text), svgutil.Num(fs), svgutil.Esc(text))
 }
@@ -419,8 +411,8 @@ func writeNamespace(b *strings.Builder, ns *Namespace, g *domain.Graph, pal them
 	if !ok {
 		return
 	}
-	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="#ffffde" stroke="#aaaa33"/>`+"\n",
-		svgutil.Num(x), svgutil.Num(y), svgutil.Num(w), svgutil.Num(h))
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="%s" stroke="%s"/>`+"\n",
+		svgutil.Num(x), svgutil.Num(y), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(pal.ClusterFill), svgutil.Esc(pal.ClusterStroke))
 	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle">%s</text>`+"\n",
 		svgutil.Num(x+w/2), svgutil.Num(y+m.fs+4), svgutil.Esc(pal.Text), svgutil.Esc(ns.Name))
 }
@@ -460,12 +452,12 @@ func writeNote(b *strings.Builder, i int, nt *Note, g *domain.Graph, edgeBase in
 			}
 		}
 	}
-	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="#fff5ad" stroke="#aaaa33"/>`+"\n",
-		svgutil.Num(n.Pos.X), svgutil.Num(n.Pos.Y), svgutil.Num(n.Size.W), svgutil.Num(n.Size.H))
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"/>`+"\n",
+		svgutil.Num(n.Pos.X), svgutil.Num(n.Pos.Y), svgutil.Num(n.Size.W), svgutil.Num(n.Size.H), svgutil.Esc(pal.NoteFill), svgutil.Esc(pal.NoteStroke))
 	y := n.Pos.Y + m.cp + 2
 	for _, l := range noteLines(nt.Text, m) {
 		y += m.lh
-		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="#333333">%s</text>`+"\n",
-			svgutil.Num(n.Pos.X+m.padX), svgutil.Num(y-m.lh*0.3), svgutil.Esc(l))
+		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s">%s</text>`+"\n",
+			svgutil.Num(n.Pos.X+m.padX), svgutil.Num(y-m.lh*0.3), svgutil.Esc(pal.NoteText), svgutil.Esc(l))
 	}
 }
