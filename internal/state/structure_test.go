@@ -69,8 +69,8 @@ func TestCompositeStates(t *testing.T) {
 				So(svg, ShouldContainSubstring, ">Ready<")
 			})
 
-			Convey("Then a dashed cluster box is drawn with the composite name", func() {
-				So(svg, ShouldContainSubstring, `stroke-dasharray="4,3"`)
+			Convey("Then a composite box is drawn with the composite name", func() {
+				So(svg, ShouldContainSubstring, `rx="5"`)
 				So(svg, ShouldContainSubstring, ">Outer<")
 			})
 		})
@@ -128,7 +128,7 @@ func TestStateNotes(t *testing.T) {
 		Convey("When parsing", func() {
 			Convey("Then the body is joined and no state is invented", func() {
 				So(len(d.Notes), ShouldEqual, 1)
-				So(d.Notes[0].Text, ShouldEqual, "first line second line")
+				So(d.Notes[0].Text, ShouldEqual, "first line\nsecond line")
 				So(len(d.States), ShouldEqual, 2)
 			})
 		})
@@ -229,7 +229,7 @@ func TestStateRegression(t *testing.T) {
 			})
 
 			Convey("Then no cluster box is drawn", func() {
-				So(strings.Contains(svg, `stroke-dasharray="4,3"`), ShouldBeFalse)
+				So(strings.Contains(svg, `stroke-dasharray="6 4"`), ShouldBeFalse)
 			})
 		})
 	})

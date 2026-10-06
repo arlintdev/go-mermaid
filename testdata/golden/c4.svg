@@ -1,23 +1,26 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="215.49" height="438" viewBox="0 0 215.49 438" font-family="sans-serif" font-size="14">
-  <defs><marker id="c4-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="420.56" height="487.48" viewBox="0 0 420.56 487.48" font-family="sans-serif" font-size="14">
   <rect width="100%" height="100%" fill="#ffffff"/>
-  <g transform="translate(16,16)">
-    <path d="M91.74,64 L91.74,164" fill="none" stroke="#333333" stroke-dasharray="4,3" marker-end="url(#c4-arrow)"/>
-    <text x="91.74" y="114" fill="#333333" text-anchor="middle" dy="-2">Uses</text>
-    <path d="M91.74,242 L91.74,342" fill="none" stroke="#333333" stroke-dasharray="4,3" marker-end="url(#c4-arrow)"/>
-    <text x="91.74" y="292" fill="#333333" text-anchor="middle" dy="-2">Sends notifications</text>
-    <rect x="7.76" y="0" width="167.96" height="64" rx="16" fill="#08427b" stroke="#08427b"/>
-    <text x="91.74" y="18" fill="#ffffff" text-anchor="middle" font-weight="bold">Banking Customer</text>
-    <text x="91.74" y="28" fill="#e6e6e6" text-anchor="middle" font-size="11.2">[Person]</text>
-    <text x="91.74" y="42" fill="#f0f0f0" text-anchor="middle" font-size="11.2">A customer of the bank</text>
-    <rect x="3.49" y="164" width="176.52" height="78" rx="4" fill="#1168bd" stroke="#1168bd"/>
-    <text x="91.74" y="182" fill="#ffffff" text-anchor="middle" font-weight="bold">Internet Banking System</text>
-    <text x="91.74" y="192" fill="#e6e6e6" text-anchor="middle" font-size="11.2">[System]</text>
-    <text x="91.74" y="206" fill="#f0f0f0" text-anchor="middle" font-size="11.2">Allows customers to view</text>
-    <text x="91.74" y="220" fill="#f0f0f0" text-anchor="middle" font-size="11.2">information</text>
-    <rect x="0" y="342" width="183.49" height="64" rx="4" fill="#999999" stroke="#999999"/>
-    <text x="91.74" y="360" fill="#ffffff" text-anchor="middle" font-weight="bold">E-mail System</text>
-    <text x="91.74" y="370" fill="#e6e6e6" text-anchor="middle" font-size="11.2">[System]</text>
-    <text x="91.74" y="384" fill="#f0f0f0" text-anchor="middle" font-size="11.2">The internal email system</text>
+  <defs><marker id="m1xwkpkn-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#444444"/></marker></defs>
+  <text x="16" y="34.2" fill="#333333" font-size="18.2" font-weight="bold">System Context diagram for Internet Banking</text>
+  <g transform="translate(16,49.48)">
+    <path d="M110,106 C110,146 110,146 110,186" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m1xwkpkn-arrow)"/>
+    <path d="M110,264 C110,304 110,304 110,344" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#m1xwkpkn-arrow)"/>
+    <rect x="25" y="28" width="170" height="78" rx="14" fill="#08427b" stroke="#073b6f"/>
+    <circle cx="110" cy="17.5" r="17.5" fill="#08427b" stroke="#073b6f"/>
+    <text x="110" y="53.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Banking Customer</text>
+    <text x="110" y="68.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Person]</text>
+    <text x="110" y="89.77" fill="#ffffff" font-size="11.9" text-anchor="middle">A customer of the bank</text>
+    <rect x="0" y="186" width="220" height="78" rx="4" fill="#1168bd" stroke="#3c7fc0"/>
+    <text x="110" y="211.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Internet Banking System</text>
+    <text x="110" y="226.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[Software System]</text>
+    <text x="110" y="247.77" fill="#ffffff" font-size="11.9" text-anchor="middle">Allows customers to view information</text>
+    <rect x="25" y="344" width="170" height="78" rx="4" fill="#999999" stroke="#8a8a8a"/>
+    <text x="110" y="369.37" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">E-mail System</text>
+    <text x="110" y="384.64" fill="#ffffff" font-size="10.92" text-anchor="middle">[External System]</text>
+    <text x="110" y="405.77" fill="#ffffff" font-size="11.9" text-anchor="middle">The internal email system</text>
+    <rect x="92.45" y="136.26" width="35.11" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="110" y="149.57" fill="#333333" font-size="11.9" text-anchor="middle">Uses</text>
+    <rect x="56.06" y="294.26" width="107.88" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="110" y="307.57" fill="#333333" font-size="11.9" text-anchor="middle">Sends notifications</text>
   </g>
 </svg>

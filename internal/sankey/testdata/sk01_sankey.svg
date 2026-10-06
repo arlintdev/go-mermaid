@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="632" height="392" viewBox="0 0 632 392" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<path d="M26,103.83 C316,103.83 316,97.6 606,97.6" fill="none" stroke="#4e79a7" stroke-opacity="0.5" stroke-width="163.2"/>
+<path d="M26,273.83 C168.5,273.83 168.5,307.56 311,307.56" fill="none" stroke="#4e79a7" stroke-opacity="0.5" stroke-width="40.8"/>
+<path d="M26,199.03 C316,199.03 316,214.8 606,214.8" fill="none" stroke="#4e79a7" stroke-opacity="0.5" stroke-width="27.2"/>
+<path d="M26,233.03 C316,233.03 316,270.8 606,270.8" fill="none" stroke="#4e79a7" stroke-opacity="0.5" stroke-width="40.8"/>
+<path d="M321,299.4 C463.5,299.4 463.5,325.44 606,325.44" fill="none" stroke="#e15759" stroke-opacity="0.5" stroke-width="24.48"/>
+<path d="M321,319.8 C463.5,319.8 463.5,367.84 606,367.84" fill="none" stroke="#e15759" stroke-opacity="0.5" stroke-width="16.32"/>
+<rect x="16" y="22.23" width="10" height="272" fill="#4e79a7"/>
+<rect x="606" y="16" width="10" height="163.2" fill="#f28e2c"/>
+<rect x="311" y="287.16" width="10" height="40.8" fill="#e15759"/>
+<rect x="606" y="201.2" width="10" height="27.2" fill="#76b7b2"/>
+<rect x="606" y="250.4" width="10" height="40.8" fill="#59a14f"/>
+<rect x="606" y="313.2" width="10" height="24.48" fill="#edc949"/>
+<rect x="606" y="359.68" width="10" height="16.32" fill="#af7aa1"/>
+<text x="32" y="163.13" fill="#333333" text-anchor="start">Income 100</text>
+<text x="600" y="102.5" fill="#333333" text-anchor="end">Salaries 60</text>
+<text x="327" y="312.46" fill="#333333" text-anchor="start">Hosting 15</text>
+<text x="600" y="219.7" fill="#333333" text-anchor="end">Tools 10</text>
+<text x="600" y="275.7" fill="#333333" text-anchor="end">Reserve 15</text>
+<text x="600" y="330.34" fill="#333333" text-anchor="end">Compute 9</text>
+<text x="600" y="372.74" fill="#333333" text-anchor="end">Storage 6</text>
+</svg>

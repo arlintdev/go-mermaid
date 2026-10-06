@@ -1,0 +1,28 @@
+classDiagram
+  class Animal {
+    <<abstract>>
+    +String name
+    -int age
+    +makeSound()* void
+    +move(int distance) bool
+  }
+  class Dog {
+    +String breed
+    +bark() void
+  }
+  class Repository~T~ {
+    <<interface>>
+    +find(id) T
+    +save(T item)
+  }
+  Animal <|-- Dog
+  Animal <|-- Cat
+  Owner "1" --> "*" Dog : owns
+  Dog ..> Repository~T~ : uses
+  Kennel o-- Dog : houses
+  Body *-- Heart : composition
+  Cat ..|> Pet
+  namespace Shapes {
+    class Circle
+    class Square
+  }

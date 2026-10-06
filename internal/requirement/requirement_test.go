@@ -1,58 +1,79 @@
 package requirement
 
 import (
+	"strings"
 	"testing"
 
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/arlintdev/go-mermaid/internal/goldentest"
 )
 
+var defaultOptions = RenderOptions{Theme: "default", FontFace: "sans-serif", FontSize: 14, Padding: 16}
+
+func render(src string) ([]byte, error) { return Render(src, defaultOptions) }
+
+func TestGolden(t *testing.T) { goldentest.Golden(t, "testdata", render) }
+
 func TestParse(t *testing.T) {
-	Convey("Given a requirement diagram", t, func() {
-		src := "requirementDiagram\nrequirement test_req {\nid: 1\ntext: the test\nrisk: high\n}\nelement test_entity {\ntype: simulation\n}\ntest_entity - satisfies -> test_req"
-
-		Convey("When parsing", func() {
-			d, err := Parse(src)
-
-			Convey("Then requirement and element nodes parse with fields", func() {
-				So(err, ShouldBeNil)
-				So(len(d.Nodes), ShouldEqual, 2)
-				req := d.node("test_req")
-				So(req.Kind, ShouldEqual, "requirement")
-				So(req.Fields["risk"], ShouldEqual, "high")
-				So(d.node("test_entity").IsElement, ShouldBeTrue)
-			})
-
-			Convey("Then the relationship is typed", func() {
-				So(len(d.Rels), ShouldEqual, 1)
-				So(d.Rels[0].From, ShouldEqual, "test_entity")
-				So(d.Rels[0].To, ShouldEqual, "test_req")
-				So(d.Rels[0].Type, ShouldEqual, "satisfies")
-			})
-		})
-	})
-
-	Convey("Given no header", t, func() {
-		Convey("When parsing", func() {
-			_, err := Parse("requirement x {")
-
-			Convey("Then it returns an error", func() {
-				So(err, ShouldNotBeNil)
-			})
-		})
-	})
+	d, err := Parse("requirementDiagram\ndirection LR\nrequirement test_req {\nid: 1\ntext: \"quoted: text\"\nrisk: High\nverifyMethod: test\n}\n" +
+		"designConstraint \"c 1\" {\nid: 2\n}\nelement e {\ntype: sim\ndocRef: x\n}\ne - satisfies -> test_req\ntest_req <- contains - \"c 1\"\nclassDef k fill:#f00\nclass e k")
+	if err != nil {
+		t.Fatal(err)
+	}
+	r := d.node("test_req")
+	if r.Kind != "requirement" || r.Fields["text"] != "quoted: text" || r.Fields["verifymethod"] != "test" {
+		t.Errorf("requirement: %+v", r)
+	}
+	if c := d.node("c 1"); c == nil || c.Kind != "designconstraint" {
+		t.Errorf("quoted name: %+v", c)
+	}
+	if d.Rels[0].From != "e" || d.Rels[0].To != "test_req" || d.Rels[0].Type != "satisfies" {
+		t.Errorf("forward: %+v", d.Rels[0])
+	}
+	if d.Rels[1].From != "c 1" || d.Rels[1].To != "test_req" || d.Rels[1].Type != "contains" {
+		t.Errorf("backward: %+v", d.Rels[1])
+	}
+	if d.Direction != "LR" || len(d.node("e").Classes) != 1 {
+		t.Errorf("direction/class: %q %+v", d.Direction, d.node("e"))
+	}
+	got := fields(r)
+	if len(got) != 4 || got[2] != [2]string{"Risk", "High"} || got[3] != [2]string{"Verification", "Test"} {
+		t.Errorf("fields: %v", got)
+	}
+	for _, bad := range []string{"requirement x {", "requirementDiagram\nwidget w {\n}", "requirementDiagram\na b c"} {
+		if _, err := Parse(bad); err == nil {
+			t.Errorf("expected an error for %q", bad)
+		}
+	}
 }
 
-func TestRender(t *testing.T) {
-	Convey("Given a requirement diagram, when rendering", t, func() {
-		out, err := Render("requirementDiagram\nrequirement r {\nid: 1\n}\nelement e {\ntype: test\n}\ne - satisfies -> r",
-			RenderOptions{Theme: "default", FontSize: 14, Padding: 16})
-		svg := string(out)
-
-		Convey("Then it draws nodes and a typed relationship", func() {
-			So(err, ShouldBeNil)
-			So(svg, ShouldStartWith, "<svg")
-			So(svg, ShouldContainSubstring, ">r<")
-			So(svg, ShouldContainSubstring, "«satisfies»")
-		})
-	})
+func TestHostile(t *testing.T) {
+	x := goldentest.Injection
+	q := strings.ReplaceAll(x, `"`, "'")
+	src := strings.Join([]string{
+		"requirementDiagram",
+		"requirement r {",
+		"  id: " + x,
+		"  text: " + x,
+		"  risk: " + x,
+		"}",
+		`element "` + q + `" {`,
+		"  type: " + x,
+		"  docref: " + x,
+		"}",
+		`"` + q + `" - satisfies -> r`,
+		"classDef k fill:" + x + ",stroke:" + x + ",color:" + x,
+		"class r k",
+		"style r stroke-width:" + x,
+	}, "\n")
+	goldentest.Hostile(t, render, src)
+	out, err := render(src)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(out), x) || strings.Contains(string(out), q) {
+		t.Error("injection written unescaped")
+	}
+	f := defaultOptions
+	f.FontFace = x
+	goldentest.Hostile(t, func(s string) ([]byte, error) { return Render(s, f) }, src)
 }

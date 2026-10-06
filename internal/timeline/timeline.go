@@ -46,6 +46,7 @@ func (d *Diagram) Periods() []*Period {
 func Parse(src string) (*Diagram, error) {
 	d := &Diagram{}
 	var cur *Section
+	var last *Period
 
 	headerSeen := false
 	for i, raw := range strings.Split(src, "\n") {
@@ -61,34 +62,45 @@ func Parse(src string) (*Diagram, error) {
 			headerSeen = true
 			continue
 		}
+		key := firstWord(line)
+		rest := strings.TrimSpace(line[len(key):])
 		switch {
-		case strings.HasPrefix(line, "title "):
-			d.Title = strings.TrimSpace(line[len("title "):])
-		case strings.HasPrefix(line, "section "):
-			cur = &Section{Name: strings.TrimSpace(line[len("section "):])}
+		case key == "title":
+			d.Title = rest
+		case key == "section":
+			cur = &Section{Name: rest}
 			d.Sections = append(d.Sections, cur)
+		case strings.HasPrefix(line, ":"):
+			// A continuation line adds events to the period above it.
+			if last == nil {
+				return nil, syntax.Errorf(lineNo, 1, "event before any time period")
+			}
+			last.Events = append(last.Events, events(line[1:])...)
 		default:
-			parts := strings.Split(line, ":")
-			if len(parts) < 2 {
-				return nil, syntax.Errorf(lineNo, 1, "expected 'time : event'")
-			}
-			p := &Period{Time: strings.TrimSpace(parts[0])}
-			for _, ev := range parts[1:] {
-				if ev = strings.TrimSpace(ev); ev != "" {
-					p.Events = append(p.Events, ev)
-				}
-			}
+			t, evs, _ := strings.Cut(line, ":")
+			last = &Period{Time: strings.TrimSpace(t), Events: events(evs)}
 			if cur == nil {
 				cur = &Section{}
 				d.Sections = append(d.Sections, cur)
 			}
-			cur.Periods = append(cur.Periods, p)
+			cur.Periods = append(cur.Periods, last)
 		}
 	}
 	if !headerSeen {
 		return nil, syntax.Errorf(1, 1, "expected 'timeline' header")
 	}
 	return d, nil
+}
+
+// events splits "a : b : c" into its non-empty events.
+func events(s string) []string {
+	var out []string
+	for _, ev := range strings.Split(s, ":") {
+		if ev = strings.TrimSpace(ev); ev != "" {
+			out = append(out, ev)
+		}
+	}
+	return out
 }
 
 func firstWord(s string) string {

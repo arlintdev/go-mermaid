@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="270.8" height="72.2" viewBox="0 0 270.8 72.2" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<path d="M135.4,35.1 C176.43,35.1 176.43,35.1 217.46,35.1" fill="none" stroke="#ffff78" stroke-width="11" stroke-linecap="round"/>
+<path d="M135.4,35.1 C94.37,35.1 94.37,35.1 53.34,35.1" fill="none" stroke="#d7ff86" stroke-width="11" stroke-linecap="round"/>
+<rect x="109.34" y="16" width="52.12" height="38.2" rx="5" fill="#0000ec"/>
+<text fill="#ffffff" text-anchor="middle"><tspan x="135.4" y="40">root</tspan></text>
+<path d="M217.46,54.2 V21 Q217.46,16 222.46,16 H249.8 Q254.8,16 254.8,21 V54.2 Z" fill="#ffff78"/>
+<line x1="217.46" y1="54.2" x2="254.8" y2="54.2" stroke="#ababff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="236.13" y="40">A</tspan></text>
+<path d="M16,54.2 V21 Q16,16 21,16 H48.34 Q53.34,16 53.34,21 V54.2 Z" fill="#d7ff86"/>
+<line x1="16" y1="54.2" x2="53.34" y2="54.2" stroke="#d0b9ff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="34.67" y="40">B</tspan></text>
+</svg>

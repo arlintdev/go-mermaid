@@ -1,19 +1,39 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="576" height="387.6" viewBox="0 0 576 387.6" font-family="sans-serif" font-size="14">
-  <rect width="100%" height="100%" fill="#ffffff"/>
-  <text x="288" y="30" fill="#333333" text-anchor="middle" font-weight="bold">Sales Revenue</text>
-  <text x="30" y="187.6" fill="#333333" text-anchor="middle" transform="rotate(-90 30 187.6)">Revenue (USD)</text>
-  <line x1="80" y1="47.6" x2="80" y2="327.6" stroke="#9370DB"/><line x1="80" y1="327.6" x2="560" y2="327.6" stroke="#9370DB"/>
-  <text x="74" y="327.6" fill="#333333" text-anchor="end">4000</text>
-  <text x="74" y="61.6" fill="#333333" text-anchor="end">11000</text>
-  <text x="128" y="345.6" fill="#333333" text-anchor="middle">jan</text>
-  <text x="224" y="345.6" fill="#333333" text-anchor="middle">feb</text>
-  <text x="320" y="345.6" fill="#333333" text-anchor="middle">mar</text>
-  <text x="416" y="345.6" fill="#333333" text-anchor="middle">apr</text>
-  <text x="512" y="345.6" fill="#333333" text-anchor="middle">may</text>
-  <rect x="94.4" y="287.6" width="67.2" height="40" fill="#5B8FF9"/>
-  <rect x="190.4" y="247.6" width="67.2" height="80" fill="#5B8FF9"/>
-  <rect x="286.4" y="187.6" width="67.2" height="140" fill="#5B8FF9"/>
-  <rect x="382.4" y="159.6" width="67.2" height="168" fill="#5B8FF9"/>
-  <rect x="478.4" y="107.6" width="67.2" height="220" fill="#5B8FF9"/>
-  <path d="M128,287.6 L224,247.6 L320,187.6 L416,159.6 L512,107.6" fill="none" stroke="#F6BD16" stroke-width="2"/>
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="668.12" height="418" viewBox="0 0 668.12 418" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="334.06" y="36" fill="#333333" font-size="20" text-anchor="middle">Sales Revenue</text>
+<rect x="110.52" y="331.29" width="67.2" height="45.71" fill="#ececff" stroke="#9d9daa"/>
+<rect x="222.52" y="285.57" width="67.2" height="91.43" fill="#ececff" stroke="#9d9daa"/>
+<rect x="334.52" y="217" width="67.2" height="160" fill="#ececff" stroke="#9d9daa"/>
+<rect x="446.52" y="185" width="67.2" height="192" fill="#ececff" stroke="#9d9daa"/>
+<rect x="558.52" y="125.57" width="67.2" height="251.43" fill="#ececff" stroke="#9d9daa"/>
+<path d="M144.12,331.29 L256.12,285.57 L368.12,217 L480.12,185 L592.12,125.57" fill="none" stroke="#8493a6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="88.12" y1="57" x2="88.12" y2="377" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<line x1="88.12" y1="377" x2="648.12" y2="377" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<line x1="83.12" y1="377" x2="88.12" y2="377" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="77.12" y="381.9" fill="#333333" text-anchor="end">4000</text>
+<line x1="83.12" y1="331.29" x2="88.12" y2="331.29" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="77.12" y="336.19" fill="#333333" text-anchor="end">5000</text>
+<line x1="83.12" y1="285.57" x2="88.12" y2="285.57" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="77.12" y="290.47" fill="#333333" text-anchor="end">6000</text>
+<line x1="83.12" y1="239.86" x2="88.12" y2="239.86" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="77.12" y="244.76" fill="#333333" text-anchor="end">7000</text>
+<line x1="83.12" y1="194.14" x2="88.12" y2="194.14" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="77.12" y="199.04" fill="#333333" text-anchor="end">8000</text>
+<line x1="83.12" y1="148.43" x2="88.12" y2="148.43" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="77.12" y="153.33" fill="#333333" text-anchor="end">9000</text>
+<line x1="83.12" y1="102.71" x2="88.12" y2="102.71" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="77.12" y="107.61" fill="#333333" text-anchor="end">10000</text>
+<line x1="83.12" y1="57" x2="88.12" y2="57" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="77.12" y="61.9" fill="#333333" text-anchor="end">11000</text>
+<line x1="144.12" y1="377" x2="144.12" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="144.12" y="399.2" fill="#333333" text-anchor="middle">jan</text>
+<line x1="256.12" y1="377" x2="256.12" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="256.12" y="399.2" fill="#333333" text-anchor="middle">feb</text>
+<line x1="368.12" y1="377" x2="368.12" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="368.12" y="399.2" fill="#333333" text-anchor="middle">mar</text>
+<line x1="480.12" y1="377" x2="480.12" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="480.12" y="399.2" fill="#333333" text-anchor="middle">apr</text>
+<line x1="592.12" y1="377" x2="592.12" y2="382" stroke="#333333" stroke-width="2" stroke-linecap="square"/>
+<text x="592.12" y="399.2" fill="#333333" text-anchor="middle">may</text>
+<text x="30" y="217" fill="#333333" text-anchor="middle" transform="rotate(-90 30 217)">Revenue (USD)</text>
 </svg>

@@ -1,27 +1,34 @@
 package class
 
 import (
+	"regexp"
+	"strconv"
 	"strings"
 
+	"github.com/arlintdev/go-mermaid/internal/cssval"
 	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
-// relOps are class relationship operators, ordered so the longest match at a
-// position wins. Every operator contains "--" or ".." as its line.
-var relOps = []string{
-	"<|--", "--|>", "<|..", "..|>",
-	"*--", "--*", "o--", "--o",
-	"-->", "<--", "..>", "<..",
-	"--", "..",
-}
+const maxClasses = 5000
+
+var (
+	name      = "(`[^`]+`|[\\p{L}\\p{N}_~.,\\-]+?)"
+	relRe     = regexp.MustCompile(`^` + name + `\s*(?:"([^"]*)")?\s*(<\||\*|o|<|\(\))?(--|\.\.)(\|>|\*|o|>|\(\))?\s*(?:"([^"]*)")?\s*` + name + `\s*$`)
+	classRe   = regexp.MustCompile(`^class\s+` + name + `\s*(?:\["([^"]*)"\])?\s*(?::::([\w-]+))?\s*(\{)?\s*(\})?$`)
+	annotRe   = regexp.MustCompile(`^<<\s*([^<>]+?)\s*>>\s*` + name + `$`)
+	noteForRe = regexp.MustCompile(`^note\s+for\s+` + name + `\s+"(.*)"$`)
+	noteRe    = regexp.MustCompile(`^note\s+"(.*)"$`)
+	nsRe      = regexp.MustCompile(`^namespace\s+([\p{L}\p{N}_.\-]+)\s*\{$`)
+)
 
 // Parse builds a Diagram from class diagram source.
 func Parse(src string) (*Diagram, error) {
-	d := &Diagram{}
+	d := &Diagram{ClassDefs: map[string]Style{}}
 	lines := strings.Split(src, "\n")
 
 	headerSeen := false
 	ns := "" // name of the enclosing namespace block, empty at the top level
+	var styleLines, classLines [][2]string
 	for i := 0; i < len(lines); i++ {
 		lineNo := i + 1
 		line := strings.TrimSpace(stripComment(lines[i]))
@@ -29,47 +36,163 @@ func Parse(src string) (*Diagram, error) {
 			continue
 		}
 		if !headerSeen {
-			if firstWord(line) != "classDiagram" {
+			if firstWord(line) != "classDiagram" && firstWord(line) != "classDiagram-v2" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'classDiagram' header")
 			}
 			headerSeen = true
 			continue
 		}
+		if len(d.Classes) > maxClasses {
+			return nil, syntax.Errorf(lineNo, 1, "too many classes")
+		}
+		kw := firstWord(line)
+		rest := strings.TrimSpace(line[len(kw):])
 
 		switch {
 		case line == "}":
 			ns = ""
 
-		case strings.HasPrefix(line, "namespace ") && strings.HasSuffix(line, "{"):
-			ns = strings.TrimSpace(strings.TrimSuffix(strings.TrimPrefix(line, "namespace "), "{"))
+		case nsRe.MatchString(line):
+			ns = nsRe.FindStringSubmatch(line)[1]
 			if d.namespace(ns) == nil {
 				d.Namespaces = append(d.Namespaces, &Namespace{Name: ns})
 			}
 
-		case strings.HasPrefix(line, "direction "):
-			d.Direction = strings.ToUpper(strings.TrimSpace(strings.TrimPrefix(line, "direction ")))
+		case kw == "direction":
+			d.Direction = strings.ToUpper(rest)
 
-		case strings.HasPrefix(line, "class ") && strings.HasSuffix(line, "{"):
-			name := strings.TrimSpace(strings.TrimSuffix(strings.TrimPrefix(line, "class "), "{"))
-			c := d.declare(name, ns)
-			i = d.consumeBlock(c, lines, i+1) // advance past the block
-		case strings.HasPrefix(line, "class "):
-			d.declare(strings.TrimSpace(strings.TrimPrefix(line, "class ")), ns)
-		case relIndex(line) >= 0:
-			if err := d.parseRelation(line, lineNo); err != nil {
-				return nil, err
+		case kw == "class":
+			m := classRe.FindStringSubmatch(line)
+			if m == nil {
+				return nil, syntax.Errorf(lineNo, 1, "invalid class declaration %q", clip(line))
 			}
-		case strings.Contains(line, ":"):
-			d.parseShorthandMember(line)
+			c := d.declare(m[1], ns)
+			if m[2] != "" {
+				c.Display = m[2]
+			}
+			if m[3] != "" {
+				c.Classes = append(c.Classes, m[3])
+			}
+			if m[4] != "" && m[5] == "" {
+				i = d.consumeBlock(c, lines, i+1)
+			}
+
+		case strings.HasPrefix(line, "<<"):
+			m := annotRe.FindStringSubmatch(line)
+			if m == nil {
+				return nil, syntax.Errorf(lineNo, 1, "invalid annotation %q", clip(line))
+			}
+			d.declare(m[2], ns).Annotation = m[1]
+
+		case kw == "note":
+			if m := noteForRe.FindStringSubmatch(line); m != nil {
+				c := d.declare(m[1], ns)
+				d.Notes = append(d.Notes, &Note{For: c.Name, Text: m[2]})
+			} else if m := noteRe.FindStringSubmatch(line); m != nil {
+				d.Notes = append(d.Notes, &Note{Text: m[1]})
+			} else {
+				return nil, syntax.Errorf(lineNo, 1, "invalid note %q", clip(line))
+			}
+
+		case kw == "style":
+			id := firstWord(rest)
+			styleLines = append(styleLines, [2]string{id, strings.TrimSpace(rest[len(id):])})
+
+		case kw == "classDef":
+			n := firstWord(rest)
+			st := parseCSS(strings.TrimSpace(rest[len(n):]))
+			for _, one := range strings.Split(n, ",") {
+				if one = strings.TrimSpace(one); one != "" {
+					d.ClassDefs[one] = st
+				}
+			}
+
+		case kw == "cssClass":
+			// cssClass "A,B" name
+			q := strings.Trim(firstWord(rest), `"`)
+			classLines = append(classLines, [2]string{q, strings.TrimSpace(rest[len(firstWord(rest)):])})
+
+		case kw == "click" || kw == "link" || kw == "callback":
+			// Interactive bindings: a static picture has nothing to bind.
+
 		default:
-			return nil, syntax.Errorf(lineNo, 1, "unrecognized statement %q", line)
+			core, label := line, ""
+			if c := labelColon(line); c >= 0 {
+				core, label = strings.TrimSpace(line[:c]), strings.TrimSpace(line[c+1:])
+			}
+			if m := relRe.FindStringSubmatch(core); m != nil {
+				d.addRelation(m, label)
+				continue
+			}
+			if label != "" && !strings.ContainsAny(core, " \t") {
+				d.declare(core, ns).addMember(label)
+				continue
+			}
+			return nil, syntax.Errorf(lineNo, 1, "unrecognized statement %q", clip(line))
 		}
 	}
 
 	if !headerSeen {
 		return nil, syntax.Errorf(1, 1, "expected 'classDiagram' header")
 	}
+	for _, s := range styleLines {
+		if c := d.class(className(s[0])); c != nil {
+			c.Style = parseCSS(s[1]).over(c.Style)
+		}
+	}
+	for _, cl := range classLines {
+		for _, id := range strings.Split(cl[0], ",") {
+			if c := d.class(className(id)); c != nil && cl[1] != "" {
+				c.Classes = append(c.Classes, cl[1])
+			}
+		}
+	}
 	return d, nil
+}
+
+// labelColon is the index of the colon that starts a relation's label or
+// a member, skipping colons inside quoted multiplicities; -1 if none.
+func labelColon(line string) int {
+	quoted := false
+	for i, r := range line {
+		switch {
+		case r == '"':
+			quoted = !quoted
+		case r == ':' && !quoted:
+			return i
+		}
+	}
+	return -1
+}
+
+func (d *Diagram) addRelation(m []string, label string) {
+	leftName, leftCard, lh, line, rh, rightCard, rightName := m[1], m[2], m[3], m[4], m[5], m[6], m[7]
+	from := d.declare(leftName, "").Name
+	to := d.declare(rightName, "").Name
+	d.Relations = append(d.Relations, &Relation{
+		From: from, To: to, Label: label,
+		Dashed:    line == "..",
+		Left:      head(lh),
+		Right:     head(rh),
+		LeftCard:  leftCard,
+		RightCard: rightCard,
+	})
+}
+
+func head(s string) headKind {
+	switch s {
+	case "<|", "|>":
+		return headTriangle
+	case "*":
+		return headDiamondFilled
+	case "o":
+		return headDiamondHollow
+	case "<", ">":
+		return headArrow
+	case "()":
+		return headLollipop
+	}
+	return headNone
 }
 
 // consumeBlock reads member lines until a closing "}" and returns the index of
@@ -90,83 +213,19 @@ func (d *Diagram) consumeBlock(c *Class, lines []string, start int) int {
 
 // declare registers a class written as `Box~T~`, keeping the generic
 // parameters for display while using the bare name as the identity.
-func (d *Diagram) declare(name, ns string) *Class {
-	name = strings.TrimSpace(name)
-	c := d.ensureClass(className(name))
-	if strings.ContainsRune(name, '~') && c.Display == "" {
-		c.Display = name
+func (d *Diagram) declare(raw, ns string) *Class {
+	raw = strings.Trim(strings.TrimSpace(raw), "`")
+	c := d.ensureClass(className(raw))
+	if strings.ContainsRune(raw, '~') && c.Display == "" {
+		c.Display = raw
 	}
-	if ns != "" {
+	if ns != "" && c.Namespace == "" {
 		c.Namespace = ns
 		if n := d.namespace(ns); n != nil {
-			for _, m := range n.Members {
-				if m == c.Name {
-					return c
-				}
-			}
 			n.Members = append(n.Members, c.Name)
 		}
 	}
 	return c
-}
-
-func (d *Diagram) parseShorthandMember(line string) {
-	name, member, _ := strings.Cut(line, ":")
-	c := d.ensureClass(className(strings.TrimSpace(name)))
-	c.addMember(strings.TrimSpace(member))
-}
-
-func (d *Diagram) parseRelation(line string, lineNo int) error {
-	core := line
-	label := ""
-	if c := strings.Index(line, ":"); c >= 0 {
-		core = line[:c]
-		label = strings.TrimSpace(line[c+1:])
-	}
-	idx, op := findRelOp(core)
-	if idx < 0 {
-		return syntax.Errorf(lineNo, 1, "invalid relationship")
-	}
-	leftName, leftCard := splitCardinality(core[:idx], true)
-	rightName, rightCard := splitCardinality(core[idx+len(op):], false)
-	from := className(leftName)
-	to := className(rightName)
-	if from == "" || to == "" {
-		return syntax.Errorf(lineNo, 1, "relationship needs two classes")
-	}
-	d.declare(leftName, "")
-	d.declare(rightName, "")
-	d.Relations = append(d.Relations, &Relation{
-		From: from, To: to, Label: label,
-		Dashed:    strings.Contains(op, ".."),
-		Left:      leftHead(op),
-		Right:     rightHead(op),
-		LeftCard:  leftCard,
-		RightCard: rightCard,
-	})
-	return nil
-}
-
-// splitCardinality separates a quoted multiplicity from the class name beside
-// it. Mermaid writes the multiplicity next to the operator, so it trails the
-// name on the left of the arrow and leads it on the right. Without this the
-// quoted text became part of the class name.
-func splitCardinality(s string, trailing bool) (name, card string) {
-	s = strings.TrimSpace(s)
-	if trailing {
-		if i := strings.LastIndexByte(s, '"'); i == len(s)-1 {
-			if j := strings.LastIndexByte(s[:i], '"'); j >= 0 {
-				return strings.TrimSpace(s[:j]), s[j+1 : i]
-			}
-		}
-		return s, ""
-	}
-	if strings.HasPrefix(s, `"`) {
-		if j := strings.IndexByte(s[1:], '"'); j >= 0 {
-			return strings.TrimSpace(s[j+2:]), s[1 : j+1]
-		}
-	}
-	return s, ""
 }
 
 // addMember classifies a member as a method (contains "("), an annotation
@@ -188,60 +247,132 @@ func (c *Class) addMember(m string) {
 
 // className strips a generic suffix like "List~T~" down to "List".
 func className(s string) string {
+	s = strings.Trim(strings.TrimSpace(s), "`")
 	if i := strings.IndexByte(s, '~'); i >= 0 {
 		return strings.TrimSpace(s[:i])
 	}
-	return strings.TrimSpace(s)
+	return s
 }
 
-// relIndex reports the operator index in a line (ignoring any label), or -1.
-func relIndex(line string) int {
-	core := line
-	if c := strings.Index(line, ":"); c >= 0 {
-		core = line[:c]
+// generics writes Mermaid's ~T~ generic markers as angle brackets:
+// List~List~int~~ becomes List<List<int>>. A ~ between two word
+// characters opens a parameter list; any other closes one.
+func generics(s string) string {
+	if !strings.ContainsRune(s, '~') {
+		return s
 	}
-	idx, _ := findRelOp(core)
-	return idx
+	r := []rune(s)
+	word := func(i int) bool {
+		if i < 0 || i >= len(r) {
+			return false
+		}
+		c := r[i]
+		return c == '_' || c >= '0' && c <= '9' || c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c > 127
+	}
+	var b strings.Builder
+	depth := 0
+	for i, c := range r {
+		if c != '~' {
+			b.WriteRune(c)
+			continue
+		}
+		if word(i-1) && (word(i+1) || i+1 < len(r) && r[i+1] == '[') || depth == 0 {
+			b.WriteByte('<')
+			depth++
+		} else {
+			b.WriteByte('>')
+			depth--
+		}
+	}
+	return b.String()
 }
 
-// findRelOp returns the earliest (longest at that position) operator in s.
-func findRelOp(s string) (int, string) {
-	for i := 0; i < len(s); i++ {
-		for _, op := range relOps {
-			if strings.HasPrefix(s[i:], op) {
-				return i, op
+// member is a class member formatted the way Mermaid draws it.
+type member struct {
+	text      string
+	italic    bool // abstract (*)
+	underline bool // static ($)
+}
+
+// formatMember turns "+move(int d)* bool" into "+move(int d) : bool",
+// marked italic, and "count$" into an underlined "count".
+func formatMember(m string, method bool) member {
+	var out member
+	m = strings.TrimSpace(m)
+	if !method {
+		if strings.HasSuffix(m, "$") {
+			m, out.underline = strings.TrimSuffix(m, "$"), true
+		} else if strings.HasSuffix(m, "*") {
+			m, out.italic = strings.TrimSuffix(m, "*"), true
+		}
+		out.text = generics(m)
+		return out
+	}
+	close := strings.LastIndexByte(m, ')')
+	if close < 0 {
+		out.text = generics(m)
+		return out
+	}
+	sig, ret := m[:close+1], strings.TrimSpace(m[close+1:])
+	for _, mark := range []string{"*", "$"} {
+		if strings.HasPrefix(ret, mark) || strings.HasSuffix(ret, mark) {
+			ret = strings.TrimSpace(strings.TrimSuffix(strings.TrimPrefix(ret, mark), mark))
+			if mark == "*" {
+				out.italic = true
+			} else {
+				out.underline = true
 			}
 		}
 	}
-	return -1, ""
+	out.text = generics(sig)
+	if ret != "" {
+		out.text += " : " + generics(ret)
+	}
+	return out
 }
 
-func leftHead(op string) headKind {
-	switch {
-	case strings.HasPrefix(op, "<|"):
-		return headTriangle
-	case strings.HasPrefix(op, "*"):
-		return headDiamondFilled
-	case strings.HasPrefix(op, "o"):
-		return headDiamondHollow
-	case strings.HasPrefix(op, "<"):
-		return headArrow
+// parseCSS reads "fill:#f9f,stroke:#333,stroke-width:4px" keeping only
+// values that validate.
+func parseCSS(s string) Style {
+	var st Style
+	for _, part := range strings.FieldsFunc(s, func(r rune) bool { return r == ',' || r == ';' }) {
+		k, v, ok := strings.Cut(part, ":")
+		if !ok {
+			continue
+		}
+		v = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(v), "!important"))
+		switch strings.ToLower(strings.TrimSpace(k)) {
+		case "fill":
+			if c, ok := cssval.Color(v); ok {
+				st.Fill = c
+			}
+		case "stroke":
+			if c, ok := cssval.Color(v); ok {
+				st.Stroke = c
+			}
+		case "color":
+			if c, ok := cssval.Color(v); ok {
+				st.Color = c
+			}
+		case "stroke-width":
+			if w, ok := cssval.Pixels(v, 20); ok {
+				st.StrokeWidth = strconv.FormatFloat(w, 'f', -1, 64)
+			}
+		case "stroke-dasharray":
+			if dsh, ok := cssval.Dash(v); ok {
+				st.Dash = dsh
+			}
+		}
 	}
-	return headNone
+	return st
 }
 
-func rightHead(op string) headKind {
-	switch {
-	case strings.HasSuffix(op, "|>"):
-		return headTriangle
-	case strings.HasSuffix(op, "*"):
-		return headDiamondFilled
-	case strings.HasSuffix(op, "o"):
-		return headDiamondHollow
-	case strings.HasSuffix(op, ">"):
-		return headArrow
+func clip(s string) string {
+	r := []rune(s)
+	if len(r) > 30 {
+		return string(r[:30]) + "…"
 	}
-	return headNone
+	return s
 }
 
 func firstWord(s string) string {

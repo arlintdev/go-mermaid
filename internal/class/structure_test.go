@@ -77,13 +77,13 @@ func TestGenericsAndAnnotations(t *testing.T) {
 			Convey("Then the bare name identifies it and the generic form is kept for display", func() {
 				So(d.class("Box"), ShouldNotBeNil)
 				So(d.class("Box").Display, ShouldEqual, "Box~T~")
-				So(d.class("Box").Label(), ShouldEqual, "Box~T~")
+				So(d.class("Box").Label(), ShouldEqual, "Box<T>")
 			})
 		})
 
 		Convey("When rendering", func() {
 			Convey("Then the type parameter is visible", func() {
-				So(rendered("classDiagram\nclass Box~T~ {\n+items List~T~\n}"), ShouldContainSubstring, "Box~T~")
+				So(rendered("classDiagram\nclass Box~T~ {\n+items List~T~\n}"), ShouldContainSubstring, "Box&lt;T&gt;")
 			})
 		})
 	})
@@ -130,8 +130,8 @@ func TestNamespacesAndDirection(t *testing.T) {
 		Convey("When rendering", func() {
 			svg := rendered(src)
 
-			Convey("Then a dashed box is drawn with the namespace name", func() {
-				So(svg, ShouldContainSubstring, `stroke-dasharray="4,3"`)
+			Convey("Then a box is drawn with the namespace name", func() {
+				So(svg, ShouldContainSubstring, `stroke="#aaaa33"`)
 				So(svg, ShouldContainSubstring, ">app<")
 			})
 		})

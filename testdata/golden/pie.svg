@@ -1,13 +1,18 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="467.2" height="303.6" viewBox="0 0 467.2 303.6" font-family="sans-serif" font-size="14">
-  <rect width="100%" height="100%" fill="#ffffff"/>
-  <text x="136" y="30" fill="#333333" text-anchor="middle" font-weight="bold">Pets adopted</text>
-  <path d="M136,167.6 L136,47.6 A120,120 0 1 1 20.61,134.67 Z" fill="#5B8FF9" stroke="#ffffff"/>
-  <path d="M136,167.6 L20.61,134.67 A120,120 0 0 1 112.87,49.85 Z" fill="#61DDAA" stroke="#ffffff"/>
-  <path d="M136,167.6 L112.87,49.85 A120,120 0 0 1 136,47.6 Z" fill="#65789B" stroke="#ffffff"/>
-  <rect x="280" y="47.6" width="14" height="14" fill="#5B8FF9"/>
-  <text x="300" y="59.5" fill="#333333">Dogs: 386 (79.4%)</text>
-  <rect x="280" y="69.6" width="14" height="14" fill="#61DDAA"/>
-  <text x="300" y="81.5" fill="#333333">Cats: 85 (17.5%)</text>
-  <rect x="280" y="91.6" width="14" height="14" fill="#65789B"/>
-  <text x="300" y="103.5" fill="#333333">Rats: 15 (3.1%)</text>
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="436.91" height="385.82" viewBox="0 0 436.91 385.82" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="218.45" y="34" fill="#333333" font-size="18" text-anchor="middle">Pets adopted</text>
+<path d="M201.23,209.51 L201.23,76.51 A133,133 0 1 1 73.33,173.02 Z" fill="#ececff" stroke="#000000" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<path d="M201.23,209.51 L73.33,173.02 A133,133 0 0 1 175.6,79 Z" fill="#ffffde" stroke="#000000" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<path d="M201.23,209.51 L175.6,79 A133,133 0 0 1 201.23,76.51 Z" fill="#b5ff20" stroke="#000000" stroke-width="2" stroke-linejoin="round" opacity="0.7"/>
+<circle cx="201.23" cy="209.51" r="134" fill="none" stroke="#000000" stroke-width="2"/>
+<text x="258.91" y="290.85" fill="#333333" text-anchor="middle">79%</text>
+<text x="136.42" y="143.91" fill="#333333" text-anchor="middle">17%</text>
+<polyline points="188.35,77.13 56.23,58.3 50.23,58.3" fill="none" stroke="#333333" stroke-width="1"/>
+<text x="47.23" y="63.2" fill="#333333" text-anchor="end">3%</text>
+<rect x="364.23" y="178.51" width="18" height="18" fill="#ececff" stroke="#ececff"/>
+<text x="388.23" y="192.41" fill="#333333">Dogs</text>
+<rect x="364.23" y="200.51" width="18" height="18" fill="#ffffde" stroke="#ffffde"/>
+<text x="388.23" y="214.41" fill="#333333">Cats</text>
+<rect x="364.23" y="222.51" width="18" height="18" fill="#b5ff20" stroke="#b5ff20"/>
+<text x="388.23" y="236.41" fill="#333333">Rats</text>
 </svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="745.91" height="228.8" viewBox="0 0 745.91 228.8" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<path d="M319.31,113.4 C360.49,113.4 360.49,61.2 401.67,61.2" fill="none" stroke="#ffff78" stroke-width="11" stroke-linecap="round"/>
+<path d="M319.31,113.4 C360.49,113.4 360.49,165.6 401.67,165.6" fill="none" stroke="#d7ff86" stroke-width="11" stroke-linecap="round"/>
+<path d="M319.31,113.4 C278.13,113.4 278.13,113.4 236.95,113.4" fill="none" stroke="#c286ff" stroke-width="11" stroke-linecap="round"/>
+<path d="M456.36,61.2 C485.8,61.2 485.8,35.1 515.24,35.1" fill="none" stroke="#ffff78" stroke-width="8" stroke-linecap="round"/>
+<path d="M456.36,61.2 C485.8,61.2 485.8,87.3 515.24,87.3" fill="none" stroke="#ffff78" stroke-width="8" stroke-linecap="round"/>
+<path d="M459.3,165.6 C488.81,165.6 488.81,139.5 518.33,139.5" fill="none" stroke="#d7ff86" stroke-width="8" stroke-linecap="round"/>
+<path d="M459.3,165.6 C488.81,165.6 488.81,191.7 518.33,191.7" fill="none" stroke="#d7ff86" stroke-width="8" stroke-linecap="round"/>
+<path d="M582.64,191.7 C612.33,191.7 612.33,191.7 642.02,191.7" fill="none" stroke="#d7ff86" stroke-width="5" stroke-linecap="round"/>
+<path d="M156.39,113.4 C126.27,113.4 126.27,87.3 96.15,87.3" fill="none" stroke="#c286ff" stroke-width="8" stroke-linecap="round"/>
+<path d="M156.39,113.4 C126.27,113.4 126.27,139.5 96.15,139.5" fill="none" stroke="#c286ff" stroke-width="8" stroke-linecap="round"/>
+<circle cx="319.31" cy="113.4" r="26.36" fill="#0000ec"/>
+<text fill="#ffffff" text-anchor="middle"><tspan x="319.31" y="118.3">Digin</tspan></text>
+<path d="M401.67,80.3 V47.1 Q401.67,42.1 406.67,42.1 H454.24 Q459.24,42.1 459.24,47.1 V80.3 Z" fill="#ffff78"/>
+<line x1="401.67" y1="80.3" x2="459.24" y2="80.3" stroke="#ababff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="430.45" y="66.1">Chat</tspan></text>
+<path d="M515.24,54.2 V21 Q515.24,16 520.24,16 H597.37 Q602.37,16 602.37,21 V54.2 Z" fill="#ffff78"/>
+<line x1="515.24" y1="54.2" x2="602.37" y2="54.2" stroke="#ababff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="558.8" y="40">Channels</tspan></text>
+<path d="M515.24,106.4 V73.2 Q515.24,68.2 520.24,68.2 H567.01 Q572.01,68.2 572.01,73.2 V106.4 Z" fill="#ffff78"/>
+<line x1="515.24" y1="106.4" x2="572.01" y2="106.4" stroke="#ababff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="543.62" y="92.2">DMs</tspan></text>
+<path d="M401.67,184.7 V151.5 Q401.67,146.5 406.67,146.5 H457.33 Q462.33,146.5 462.33,151.5 V184.7 Z" fill="#d7ff86"/>
+<line x1="401.67" y1="184.7" x2="462.33" y2="184.7" stroke="#d0b9ff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="432" y="170.5">Work</tspan></text>
+<path d="M518.33,158.6 V125.4 Q518.33,120.4 523.33,120.4 H581.79 Q586.79,120.4 586.79,125.4 V158.6 Z" fill="#d7ff86"/>
+<line x1="518.33" y1="158.6" x2="586.79" y2="158.6" stroke="#d0b9ff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="552.56" y="144.4">Issues</tspan></text>
+<path d="M518.33,210.8 V177.6 Q518.33,172.6 523.33,172.6 H581.02 Q586.02,172.6 586.02,177.6 V210.8 Z" fill="#d7ff86"/>
+<line x1="518.33" y1="210.8" x2="586.02" y2="210.8" stroke="#d0b9ff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="552.17" y="196.6">Pages</tspan></text>
+<path d="M642.02,210.8 V177.6 Q642.02,172.6 647.02,172.6 H724.91 Q729.91,172.6 729.91,177.6 V210.8 Z" fill="#d7ff86"/>
+<line x1="642.02" y1="210.8" x2="729.91" y2="210.8" stroke="#d0b9ff" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="685.97" y="196.6">Diagrams</tspan></text>
+<path d="M152.15,132.5 V99.3 Q152.15,94.3 157.15,94.3 H231.95 Q236.95,94.3 236.95,99.3 V132.5 Z" fill="#c286ff"/>
+<line x1="152.15" y1="132.5" x2="236.95" y2="132.5" stroke="#dcffb9" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="194.55" y="118.3">Meetings</tspan></text>
+<path d="M16,106.4 V73.2 Q16,68.2 21,68.2 H91.15 Q96.15,68.2 96.15,73.2 V106.4 Z" fill="#c286ff"/>
+<line x1="16" y1="106.4" x2="96.15" y2="106.4" stroke="#dcffb9" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="56.07" y="92.2">Standup</tspan></text>
+<path d="M33.92,158.6 V125.4 Q33.92,120.4 38.92,120.4 H91.15 Q96.15,120.4 96.15,125.4 V158.6 Z" fill="#c286ff"/>
+<line x1="33.92" y1="158.6" x2="96.15" y2="158.6" stroke="#dcffb9" stroke-width="3"/>
+<text fill="#000000" text-anchor="middle"><tspan x="65.03" y="144.4">Retro</tspan></text>
+</svg>

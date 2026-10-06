@@ -2,8 +2,11 @@ package journey
 
 import (
 	"fmt"
+	"math"
+	"sort"
 	"strings"
 
+	"github.com/arlintdev/go-mermaid/internal/svgid"
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
 	"github.com/arlintdev/go-mermaid/internal/theme"
 )
@@ -17,17 +20,21 @@ type RenderOptions struct {
 	Title    string
 }
 
-// scoreColors maps satisfaction scores 1..5 to colors (red to green).
-var scoreColors = map[int]string{
-	1: "#e74c3c", 2: "#e67e22", 3: "#f1c40f", 4: "#2ecc71", 5: "#27ae60",
-}
+// Mermaid's default journey colours.
+var (
+	sectionFills = []string{"#ececff", "#ffffde", "#ffecfe", "#deffe0", "#ecfffe", "#ffdee0", "#ffefec", "#defbff"}
+	actorFills   = []string{"#8fbc8f", "#7cfc00", "#00ffff", "#20b2aa", "#b0e0e6", "#ffffe0"}
+)
 
 const (
-	colW   = 110.0
-	chartH = 150.0
-	bandH  = 22.0
-	labelH = 40.0
-	pointR = 9.0
+	boxStroke  = "#666666"
+	faceFill   = "#fff8dc"
+	faceStroke = "#999999"
+	taskW      = 150.0
+	taskGap    = 50.0
+	minBoxH    = 50.0
+	faceR      = 15.0
+	scoreStep  = 30.0
 )
 
 // Render parses and renders journey source to SVG.
@@ -39,107 +46,165 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	if o.Title == "" {
 		o.Title = d.Title
 	}
-	return svg(d, o), nil
+	return svg(d, o, svgid.Prefix(src)), nil
 }
 
-func svg(d *Diagram, o RenderOptions) []byte {
+func svg(d *Diagram, o RenderOptions, id string) []byte {
+	if o.FontSize <= 0 {
+		o.FontSize = 14
+	}
+	o.FontFace = fontFamily(o.FontFace)
 	pal := theme.For(o.Theme)
+	face := svgutil.FaceFor(o.FontFace)
+	fs := o.FontSize
 	pad := o.Padding
-	titleH := svgutil.TitleHeight(o.Title, o.FontSize)
+	lh := fs * 1.25
+	titleFs := math.Round(fs * 1.6)
 	tasks := d.Tasks()
-	n := len(tasks)
 
-	w := pad*2 + float64(maxInt(n, 1))*colW
-	chartTop := pad + titleH + bandH
-	h := chartTop + chartH + labelH + pad
+	// Actors, coloured in name order as Mermaid does.
+	seen := map[string]bool{}
+	var actors []string
+	for _, t := range tasks {
+		for _, a := range t.Actors {
+			if !seen[a] {
+				seen[a] = true
+				actors = append(actors, a)
+			}
+		}
+	}
+	sort.Strings(actors)
+	colour := map[string]string{}
+	legendW := 0.0
+	for i, a := range actors {
+		colour[a] = actorFills[i%len(actorFills)]
+		legendW = math.Max(legendW, 24+face.Width(a, fs))
+	}
+	if legendW > 0 {
+		legendW += 24
+	}
+
+	// Box heights fit the longest wrapped label.
+	inner := taskW - 16
+	boxH := minBoxH
+	taskLines := make([][]string, len(tasks))
+	for i, t := range tasks {
+		taskLines[i] = wrap(face, t.Name, fs, inner)
+		boxH = math.Max(boxH, float64(len(taskLines[i]))*lh+26)
+	}
+	secLines := make([][]string, len(d.Sections))
+	secH := minBoxH
+	x := pad + legendW
+	for i, s := range d.Sections {
+		n := float64(len(s.Tasks))
+		w := n*taskW + (n-1)*taskGap
+		secLines[i] = wrap(face, s.Name, fs, w-16)
+		secH = math.Max(secH, float64(len(secLines[i]))*lh+16)
+	}
+
+	top := pad
+	if o.Title != "" {
+		top += titleFs*1.2 + 12
+	}
+	secY := top
+	taskY := secY + secH + 10
+	arrowY := taskY + boxH + 40
+	faceTop := arrowY + 60 + faceR // centre of a score-5 face
+	lineEnd := faceTop + 4*scoreStep + faceR + 15
+	lastRight := x + float64(len(tasks))*(taskW+taskGap) - taskGap
+	arrowEnd := lastRight + 46
+	w := math.Max(arrowEnd+8+pad, pad+face.Width(o.Title, titleFs)+pad)
+	h := lineEnd + pad
+	if lh := secY + float64(len(actors))*20 + pad; lh > h {
+		h = lh
+	}
 
 	var b strings.Builder
-	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`,
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(o.FontSize))
-	b.WriteByte('\n')
-	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`, pal.Background)
-	b.WriteByte('\n')
+	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(fs))
+	fmt.Fprintf(&b, `<rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(pal.Background))
+	marker := id + "-arrowhead"
+	fmt.Fprintf(&b, `<defs><marker id="%s" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M0,0 V4 L6,2 Z" fill="%s"/></marker></defs>`+"\n",
+		marker, pal.Text)
 	if o.Title != "" {
-		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle" font-weight="bold">%s</text>`,
-			svgutil.Num(w/2), svgutil.Num(pad+o.FontSize), pal.Text, svgutil.Esc(o.Title))
+		fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" font-size="%s" font-weight="bold">%s</text>`+"\n",
+			svgutil.Num(pad+legendW), svgutil.Num(pad+titleFs), pal.Text, svgutil.Num(titleFs), svgutil.Esc(o.Title))
+	}
+
+	// Actor legend.
+	for i, a := range actors {
+		cy := secY + 10 + float64(i)*20
+		fmt.Fprintf(&b, `<circle cx="%s" cy="%s" r="7" fill="%s" stroke="#000000"/>`+"\n",
+			svgutil.Num(pad+7), svgutil.Num(cy), colour[a])
+		fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s">%s</text>`+"\n",
+			svgutil.Num(pad+24), svgutil.Num(cy+fs*0.35), pal.Text, svgutil.Esc(a))
+	}
+
+	label := func(lines []string, cx, cy float64) {
+		svgutil.MultilineText(&b, lines, cx, cy+fs*0.35, lh, pal.Text, "")
 		b.WriteByte('\n')
 	}
 
-	// Score-to-y mapping: score 5 near the top, 1 near the bottom.
-	yFor := func(score int) float64 {
-		s := float64(clamp(score, 1, 5))
-		return chartTop + (5-s)/4*chartH
-	}
-
-	// Section bands across their task columns.
-	idx := 0
-	for si, sec := range d.Sections {
-		if len(sec.Tasks) == 0 {
+	i := 0
+	for si, s := range d.Sections {
+		fill := sectionFills[si%len(sectionFills)]
+		if len(s.Tasks) == 0 {
 			continue
 		}
-		x := pad + float64(idx)*colW
-		bw := float64(len(sec.Tasks)) * colW
-		band := scoreColors[(si%5)+1]
-		fmt.Fprintf(&b, `  <rect x="%s" y="%s" width="%s" height="%s" fill="%s" fill-opacity="0.25"/>`,
-			svgutil.Num(x), svgutil.Num(pad+titleH), svgutil.Num(bw), svgutil.Num(bandH), band)
-		b.WriteByte('\n')
-		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle">%s</text>`,
-			svgutil.Num(x+bw/2), svgutil.Num(pad+titleH+bandH*0.7), pal.Text, svgutil.Esc(sec.Name))
-		b.WriteByte('\n')
-		idx += len(sec.Tasks)
-	}
-
-	// Journey line connecting task points.
-	var path strings.Builder
-	for i, t := range tasks {
-		x := pad + float64(i)*colW + colW/2
-		cmd := "L"
-		if i == 0 {
-			cmd = "M"
+		n := float64(len(s.Tasks))
+		sw := n*taskW + (n-1)*taskGap
+		if s.Name != "" {
+			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="3" fill="%s" stroke="%s"/>`+"\n",
+				svgutil.Num(x), svgutil.Num(secY), svgutil.Num(sw), svgutil.Num(secH), fill, boxStroke)
+			label(secLines[si], x+sw/2, secY+secH/2)
 		}
-		fmt.Fprintf(&path, "%s%s,%s ", cmd, svgutil.Num(x), svgutil.Num(yFor(t.Score)))
-	}
-	if n > 1 {
-		fmt.Fprintf(&b, `  <path d="%s" fill="none" stroke="%s" stroke-width="2"/>`, strings.TrimSpace(path.String()), pal.Edge)
-		b.WriteByte('\n')
-	}
-
-	// Task points and labels.
-	for i, t := range tasks {
-		x := pad + float64(i)*colW + colW/2
-		y := yFor(t.Score)
-		fmt.Fprintf(&b, `  <circle cx="%s" cy="%s" r="%s" fill="%s" stroke="%s"/>`,
-			svgutil.Num(x), svgutil.Num(y), svgutil.Num(pointR), scoreColors[clamp(t.Score, 1, 5)], pal.NodeStroke)
-		b.WriteByte('\n')
-		ly := chartTop + chartH + o.FontSize
-		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle">%s</text>`,
-			svgutil.Num(x), svgutil.Num(ly), pal.Text, svgutil.Esc(t.Name))
-		b.WriteByte('\n')
-		if len(t.Actors) > 0 {
-			fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle" font-size="%s">%s</text>`,
-				svgutil.Num(x), svgutil.Num(ly+o.FontSize), pal.Text, svgutil.Num(o.FontSize*0.8),
-				svgutil.Esc(strings.Join(t.Actors, ", ")))
-			b.WriteByte('\n')
+		for _, t := range s.Tasks {
+			cx := x + taskW/2
+			score := min(max(t.Score, 1), 5)
+			fy := faceTop + float64(5-score)*scoreStep
+			fmt.Fprintf(&b, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s" stroke-dasharray="4 2"/>`+"\n",
+				svgutil.Num(cx), svgutil.Num(taskY+boxH), svgutil.Num(cx), svgutil.Num(lineEnd), boxStroke)
+			writeFace(&b, cx, fy, score)
+			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="3" fill="%s" stroke="%s"/>`+"\n",
+				svgutil.Num(x), svgutil.Num(taskY), svgutil.Num(taskW), svgutil.Num(boxH), fill, boxStroke)
+			for k, a := range t.Actors {
+				fmt.Fprintf(&b, `<circle cx="%s" cy="%s" r="7" fill="%s" stroke="#000000"><title>%s</title></circle>`+"\n",
+					svgutil.Num(x+14+float64(k)*10), svgutil.Num(taskY), colour[a], svgutil.Esc(a))
+			}
+			label(taskLines[i], cx, taskY+boxH/2+3)
+			x += taskW + taskGap
+			i++
 		}
 	}
 
+	if len(tasks) > 0 {
+		fmt.Fprintf(&b, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s" stroke-width="4" marker-end="url(#%s)"/>`+"\n",
+			svgutil.Num(pad+legendW), svgutil.Num(arrowY), svgutil.Num(arrowEnd), svgutil.Num(arrowY), pal.Text, marker)
+	}
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
 }
 
-func clamp(v, lo, hi int) int {
-	if v < lo {
-		return lo
+// writeFace draws Mermaid's score face: a smile above 3, a frown below,
+// a straight mouth at 3.
+func writeFace(b *strings.Builder, cx, cy float64, score int) {
+	fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="%s" fill="%s" stroke="%s" stroke-width="2"/>`+"\n",
+		svgutil.Num(cx), svgutil.Num(cy), svgutil.Num(faceR), faceFill, faceStroke)
+	for _, dx := range []float64{-5, 5} {
+		fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>`+"\n",
+			svgutil.Num(cx+dx), svgutil.Num(cy-5))
 	}
-	if v > hi {
-		return hi
+	switch {
+	case score > 3:
+		my := cy + 2
+		fmt.Fprintf(b, `<path d="M%s,%s A7.5,7.5 0 0 0 %s,%s" fill="none" stroke="#666666" stroke-width="1.2"/>`+"\n",
+			svgutil.Num(cx-6.5), svgutil.Num(my), svgutil.Num(cx+6.5), svgutil.Num(my))
+	case score < 3:
+		my := cy + 9
+		fmt.Fprintf(b, `<path d="M%s,%s A7.5,7.5 0 0 1 %s,%s" fill="none" stroke="#666666" stroke-width="1.2"/>`+"\n",
+			svgutil.Num(cx-6.5), svgutil.Num(my), svgutil.Num(cx+6.5), svgutil.Num(my))
+	default:
+		fmt.Fprintf(b, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="#666666"/>`+"\n",
+			svgutil.Num(cx-5), svgutil.Num(cy+7), svgutil.Num(cx+5), svgutil.Num(cy+7))
 	}
-	return v
-}
-
-func maxInt(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }

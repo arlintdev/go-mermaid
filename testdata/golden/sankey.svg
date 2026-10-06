@@ -1,22 +1,22 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="746" height="392" viewBox="0 0 746 392" font-family="sans-serif" font-size="14">
-  <rect width="100%" height="100%" fill="#ffffff"/>
-  <path d="M30,16 C113,16 113,16 196,16 L196,222.67 C113,222.67 113,222.67 30,222.67 Z" fill="#5B8FF9" fill-opacity="0.4"/>
-  <path d="M210,16 C293,16 293,16 376,16 L376,69.33 C293,69.33 293,69.33 210,69.33 Z" fill="#61DDAA" fill-opacity="0.4"/>
-  <path d="M210,69.33 C293,69.33 293,79.33 376,79.33 L376,122.67 C293,122.67 293,112.67 210,112.67 Z" fill="#61DDAA" fill-opacity="0.4"/>
-  <path d="M210,112.67 C293,112.67 293,132.67 376,132.67 L376,242.67 C293,242.67 293,222.67 210,222.67 Z" fill="#61DDAA" fill-opacity="0.4"/>
-  <path d="M30,222.67 C203,222.67 203,242.67 376,242.67 L376,376 C203,376 203,356 30,356 Z" fill="#5B8FF9" fill-opacity="0.4"/>
-  <path d="M390,132.67 C473,132.67 473,16 556,16 L556,82.67 C473,82.67 473,199.33 390,199.33 Z" fill="#7262FD" fill-opacity="0.4"/>
-  <path d="M390,16 C473,16 473,82.67 556,82.67 L556,116 C473,116 473,49.33 390,49.33 Z" fill="#65789B" fill-opacity="0.4"/>
-  <rect x="16" y="16" width="14" height="340" fill="#5B8FF9"/>
-  <text x="34" y="190.9" fill="#333333">Agricultural</text>
-  <rect x="196" y="16" width="14" height="206.67" fill="#61DDAA"/>
-  <text x="214" y="124.23" fill="#333333">Bio-conversion</text>
-  <rect x="376" y="16" width="14" height="53.33" fill="#65789B"/>
-  <text x="394" y="47.57" fill="#333333">Liquid</text>
-  <rect x="376" y="79.33" width="14" height="43.33" fill="#F6BD16"/>
-  <text x="394" y="105.9" fill="#333333">Losses</text>
-  <rect x="376" y="132.67" width="14" height="243.33" fill="#7262FD"/>
-  <text x="394" y="259.23" fill="#333333">Solid</text>
-  <rect x="556" y="16" width="14" height="100" fill="#78D3F8"/>
-  <text x="574" y="70.9" fill="#333333">Electricity</text>
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="632" height="192" viewBox="0 0 632 192" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<path d="M26,65.91 C119.33,65.91 119.33,64.07 212.67,64.07" fill="none" stroke="#4e79a7" stroke-opacity="0.5" stroke-width="96.13"/>
+<path d="M222.67,28.4 C316,28.4 316,28.4 409.33,28.4" fill="none" stroke="#f28e2c" stroke-opacity="0.5" stroke-width="24.81"/>
+<path d="M222.67,50.89 C414.33,50.89 414.33,26.08 606,26.08" fill="none" stroke="#f28e2c" stroke-opacity="0.5" stroke-width="20.16"/>
+<path d="M222.67,86.55 C316,86.55 316,88.39 409.33,88.39" fill="none" stroke="#f28e2c" stroke-opacity="0.5" stroke-width="51.17"/>
+<path d="M26,144.99 C217.67,144.99 217.67,144.99 409.33,144.99" fill="none" stroke="#4e79a7" stroke-opacity="0.5" stroke-width="62.02"/>
+<path d="M419.33,78.31 C512.67,78.31 512.67,89.17 606,89.17" fill="none" stroke="#59a14f" stroke-opacity="0.5" stroke-width="31.01"/>
+<path d="M419.33,23.75 C512.67,23.75 512.67,65.91 606,65.91" fill="none" stroke="#e15759" stroke-opacity="0.5" stroke-width="15.51"/>
+<rect x="16" y="17.84" width="10" height="158.16" fill="#4e79a7"/>
+<rect x="212.67" y="16" width="10" height="96.13" fill="#f28e2c"/>
+<rect x="409.33" y="16" width="10" height="24.81" fill="#e15759"/>
+<rect x="606" y="16" width="10" height="20.16" fill="#76b7b2"/>
+<rect x="409.33" y="62.81" width="10" height="113.19" fill="#59a14f"/>
+<rect x="606" y="58.16" width="10" height="46.52" fill="#edc949"/>
+<text x="32" y="101.82" fill="#333333" text-anchor="start">Agricultural 204</text>
+<text x="228.67" y="68.97" fill="#333333" text-anchor="start">Bio-conversion 124</text>
+<text x="403.33" y="33.3" fill="#333333" text-anchor="end">Liquid 32</text>
+<text x="600" y="30.98" fill="#333333" text-anchor="end">Losses 26</text>
+<text x="403.33" y="124.3" fill="#333333" text-anchor="end">Solid 146</text>
+<text x="600" y="86.32" fill="#333333" text-anchor="end">Electricity 60</text>
 </svg>

@@ -3,6 +3,8 @@ package class
 import (
 	"fmt"
 	"math"
+	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/domain"
@@ -21,9 +23,29 @@ type RenderOptions struct {
 }
 
 const (
-	boxPadX = 10.0
-	rowPad  = 6.0
+	clusterPad = 16.0 // gap between a namespace box and its classes
+	cardGap    = 6.0  // gap between a relationship end and its multiplicity
+	noteMaxW   = 200.0
 )
+
+// noteID names the layout node of the i-th note; the NUL keeps it apart
+// from every class name.
+func noteID(i int) string { return "\x00note" + strconv.Itoa(i) }
+
+// metrics are the box measurements, scaled to the font size.
+type metrics struct {
+	face                      svgutil.Face
+	fs, lh, padX, headPad, cp float64
+	empty                     float64 // height of an empty compartment
+}
+
+func newMetrics(o RenderOptions) metrics {
+	fs := o.FontSize
+	if fs <= 0 {
+		fs = 14
+	}
+	return metrics{face: svgutil.FaceFor(o.FontFace), fs: fs, lh: fs * 1.45, padX: fs * 0.8, headPad: fs * 0.6, cp: fs * 0.45, empty: fs * 0.55}
+}
 
 // Render parses and renders class diagram source to SVG.
 func Render(src string, o RenderOptions) ([]byte, error) {
@@ -31,28 +53,60 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	m := newMetrics(o)
+	o.FontSize = m.fs
 
 	g := &domain.Graph{Direction: directionOf(d.Direction)}
 	for _, c := range d.Classes {
 		n := &domain.Node{ID: c.Name, Label: c.Name, Shape: domain.ShapeRect}
-		n.Size = classSize(c, svgutil.FaceFor(o.FontFace), o.FontSize)
+		n.Size = classSize(c, m)
 		g.Nodes = append(g.Nodes, n)
+	}
+	for i, nt := range d.Notes {
+		w, h := noteSize(nt.Text, m)
+		g.Nodes = append(g.Nodes, &domain.Node{ID: noteID(i), Label: " ", Shape: domain.ShapeRect, Size: domain.Size{W: w, H: h}})
 	}
 	for _, r := range d.Relations {
 		g.Edges = append(g.Edges, &domain.Edge{From: r.From, To: r.To, Label: r.Label})
 	}
+	for i, nt := range d.Notes {
+		if nt.For != "" {
+			g.Edges = append(g.Edges, &domain.Edge{From: noteID(i), To: nt.For})
+		}
+	}
+	for _, ns := range d.Namespaces {
+		if len(ns.Members) > 0 {
+			g.Subgraphs = append(g.Subgraphs, &domain.Subgraph{ID: ns.Name, Title: ns.Name, NodeIDs: ns.Members})
+		}
+	}
 
-	res, err := layout.Compute(g, layout.Options{NodeSep: 50, RankSep: 90, FontSize: o.FontSize, FontFace: o.FontFace})
+	// Multiplicities sit at both ends of a line and the label between
+	// them; give such lines the length to hold all three.
+	rankSep := 60.0
+	across := d.Direction == "LR" || d.Direction == "RL"
+	for _, r := range d.Relations {
+		need := 0.0
+		if r.Label != "" {
+			need = 70
+			if across {
+				need = m.face.Width(generics(r.Label), m.fs*0.9) + 40
+			}
+		}
+		if r.LeftCard != "" || r.RightCard != "" {
+			if across {
+				need += m.face.Width(r.LeftCard, m.fs*0.85) + m.face.Width(r.RightCard, m.fs*0.85) + 40
+			} else {
+				need = max(need, 70) + m.fs*2
+			}
+		}
+		rankSep = max(rankSep, need)
+	}
+	res, err := layout.Compute(g, layout.Options{NodeSep: 50, RankSep: rankSep, FontSize: m.fs * 0.9, FontFace: o.FontFace})
 	if err != nil {
 		return nil, err
 	}
-	return svg(d, g, res, o), nil
+	return svg(d, g, res, o, m), nil
 }
-
-const (
-	clusterPad = 14.0 // gap between a namespace box and its classes
-	cardGap    = 6.0  // gap between a relationship end and its multiplicity
-)
 
 // directionOf maps a `direction` line onto a layout direction.
 func directionOf(dir string) domain.Direction {
@@ -70,7 +124,7 @@ func directionOf(dir string) domain.Direction {
 
 // namespaceBox returns the box enclosing a namespace's classes, with room for
 // its title. ok is false when no member was placed.
-func namespaceBox(ns *Namespace, g *domain.Graph, fontSize float64) (x, y, w, h float64, ok bool) {
+func namespaceBox(ns *Namespace, g *domain.Graph, m metrics) (x, y, w, h float64, ok bool) {
 	var bd svgutil.Bounds
 	for _, name := range ns.Members {
 		n := g.NodeByID(name)
@@ -82,22 +136,34 @@ func namespaceBox(ns *Namespace, g *domain.Graph, fontSize float64) (x, y, w, h 
 	if bd.Empty() {
 		return 0, 0, 0, 0, false
 	}
-	titleH := fontSize + 6
-	return bd.MinX - clusterPad, bd.MinY - clusterPad - titleH,
-		bd.MaxX - bd.MinX + clusterPad*2, bd.MaxY - bd.MinY + clusterPad*2 + titleH, true
+	titleH := m.fs + 8
+	w = max(bd.MaxX-bd.MinX+clusterPad*2, m.face.Width(ns.Name, m.fs)+20)
+	cx := (bd.MinX + bd.MaxX) / 2
+	return cx - w/2, bd.MinY - clusterPad - titleH, w, bd.MaxY - bd.MinY + clusterPad*2 + titleH, true
 }
 
-func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions) []byte {
+func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m metrics) []byte {
 	pal := theme.For(o.Theme)
 	pad := o.Padding
-	titleH := svgutil.TitleHeight(o.Title, o.FontSize)
+	titleH := svgutil.TitleHeight(o.Title, m.fs)
 
-	// Namespace boxes reach outside the class extents the layout reported.
+	// Namespace boxes, labels and multiplicities reach outside the class
+	// extents the layout reported.
 	var bd svgutil.Bounds
 	bd.AddRect(0, 0, res.Width, res.Height)
 	for _, ns := range d.Namespaces {
-		if nx, ny, nw, nh, ok := namespaceBox(ns, g, o.FontSize); ok {
+		if nx, ny, nw, nh, ok := namespaceBox(ns, g, m); ok {
 			bd.AddRect(nx, ny, nw, nh)
+		}
+	}
+	for i, r := range d.Relations {
+		e := g.Edges[i]
+		if r.Label != "" {
+			lw := m.face.Width(r.Label, m.fs*0.9) + 8
+			bd.AddRect(e.LabelPos.X-lw/2, e.LabelPos.Y-m.fs, lw, m.fs*1.4)
+		}
+		for _, p := range e.Points {
+			bd.AddRect(p.X-20, p.Y-20, 40, 40)
 		}
 	}
 	shiftX, shiftY := bd.Offset()
@@ -106,119 +172,203 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions) []byt
 	h := contentH + titleH + pad*2
 
 	var b strings.Builder
-	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`,
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(o.FontSize))
-	b.WriteByte('\n')
-	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`, pal.Background)
-	b.WriteByte('\n')
+	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(o.FontFace)), svgutil.Num(m.fs))
+	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(pal.Background))
 	if o.Title != "" {
-		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle" font-weight="bold">%s</text>`,
-			svgutil.Num(w/2), svgutil.Num(pad+o.FontSize), pal.Text, svgutil.Esc(o.Title))
-		b.WriteByte('\n')
+		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle" font-weight="bold">%s</text>`+"\n",
+			svgutil.Num(w/2), svgutil.Num(pad+m.fs), svgutil.Esc(pal.Text), svgutil.Esc(o.Title))
 	}
-	fmt.Fprintf(&b, `  <g transform="translate(%s,%s)">`, svgutil.Num(pad+shiftX), svgutil.Num(pad+titleH+shiftY))
-	b.WriteByte('\n')
+	fmt.Fprintf(&b, `  <g transform="translate(%s,%s)">`+"\n", svgutil.Num(pad+shiftX), svgutil.Num(pad+titleH+shiftY))
 
 	for _, ns := range d.Namespaces {
-		writeNamespace(&b, ns, g, pal, o)
+		writeNamespace(&b, ns, g, pal, m)
 	}
+	shapes := make([]edgeShape, len(d.Relations))
+	vertical := g.Direction == domain.TopBottom || g.Direction == domain.BottomTop
 	for i, r := range d.Relations {
-		writeRelation(&b, r, g.Edges[i], pal, o)
+		e := g.Edges[i]
+		if len(e.Points) < 2 {
+			continue
+		}
+		var obs []box
+		for _, n := range g.Nodes {
+			if n.ID != r.From && n.ID != r.To {
+				obs = append(obs, box{n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H})
+			}
+		}
+		shapes[i] = shapeEdge(e.Points, vertical, obs, headLen(r.Left), headLen(r.Right))
+		writeRelation(&b, r, shapes[i], pal, m)
+	}
+	for i, nt := range d.Notes {
+		writeNote(&b, i, nt, g, len(d.Relations), pal, m)
 	}
 	for _, c := range d.Classes {
-		writeClass(&b, c, g.NodeByID(c.Name), pal, o)
+		writeClass(&b, d, c, g.NodeByID(c.Name), pal, m)
+	}
+	// Relationship labels last, so no line or box covers them.
+	for i, r := range d.Relations {
+		writeEdgeLabel(&b, r, g.Edges[i], shapes[i], pal, m)
 	}
 
 	b.WriteString("  </g>\n</svg>\n")
 	return []byte(b.String())
 }
 
-func writeClass(b *strings.Builder, c *Class, n *domain.Node, pal theme.Palette, o RenderOptions) {
+func writeClass(b *strings.Builder, d *Diagram, c *Class, n *domain.Node, pal theme.Palette, m metrics) {
 	if n == nil {
 		return
 	}
+	st := c.Style
+	for i := len(c.Classes) - 1; i >= 0; i-- {
+		st = st.over(d.ClassDefs[c.Classes[i]])
+	}
+	fill, stroke, text := svgutil.Esc(pal.NodeFill), svgutil.Esc(pal.NodeStroke), svgutil.Esc(pal.Text)
+	if st.Fill != "" {
+		fill = svgutil.Esc(st.Fill)
+	}
+	if st.Stroke != "" {
+		stroke = svgutil.Esc(st.Stroke)
+	}
+	if st.Color != "" {
+		text = svgutil.Esc(st.Color)
+	}
+	extra := ""
+	if st.StrokeWidth != "" {
+		extra += ` stroke-width="` + svgutil.Esc(st.StrokeWidth) + `"`
+	}
+	if st.Dash != "" {
+		extra += ` stroke-dasharray="` + svgutil.Esc(st.Dash) + `"`
+	}
+
 	x, y, w := n.Pos.X, n.Pos.Y, n.Size.W
-	row := o.FontSize + rowPad
-	header := o.FontSize + 10
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"%s/>`+"\n",
+		svgutil.Num(x), svgutil.Num(y), svgutil.Num(w), svgutil.Num(n.Size.H), fill, stroke, extra)
 
-	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"/>`,
-		svgutil.Num(x), svgutil.Num(y), svgutil.Num(w), svgutil.Num(n.Size.H), pal.NodeFill, pal.NodeStroke)
-	b.WriteByte('\n')
-	nameY := y + o.FontSize
+	cy := y + m.headPad
 	if c.Annotation != "" {
-		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle">%s</text>`,
-			svgutil.Num(x+w/2), svgutil.Num(nameY), pal.Text, svgutil.Esc("«"+c.Annotation+"»"))
-		b.WriteByte('\n')
-		nameY += o.FontSize + 2
-		header += o.FontSize + 2
+		cy += m.lh
+		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" font-size="%s">%s</text>`+"\n",
+			svgutil.Num(x+w/2), svgutil.Num(cy-m.lh*0.3), text, svgutil.Num(m.fs*0.9), svgutil.Esc("«"+c.Annotation+"»"))
 	}
-	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" font-weight="bold">%s</text>`,
-		svgutil.Num(x+w/2), svgutil.Num(nameY), pal.Text, svgutil.Esc(c.Label()))
-	b.WriteByte('\n')
+	cy += m.lh
+	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" font-weight="bold">%s</text>`+"\n",
+		svgutil.Num(x+w/2), svgutil.Num(cy-m.lh*0.3), text, svgutil.Esc(c.Label()))
+	cy += m.headPad
 
-	cy := y + header
-	writeDivider := func() {
-		fmt.Fprintf(b, `    <line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s"/>`,
-			svgutil.Num(x), svgutil.Num(cy), svgutil.Num(x+w), svgutil.Num(cy), pal.NodeStroke)
-		b.WriteByte('\n')
-	}
-	writeRows := func(rows []string) {
-		for _, m := range rows {
-			cy += row
-			fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s">%s</text>`,
-				svgutil.Num(x+boxPadX), svgutil.Num(cy-rowPad/2), pal.Text, svgutil.Esc(m))
-			b.WriteByte('\n')
+	compartment := func(rows []string, method bool) {
+		fmt.Fprintf(b, `    <line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s"/>`+"\n",
+			svgutil.Num(x), svgutil.Num(cy), svgutil.Num(x+w), svgutil.Num(cy), stroke)
+		if len(rows) == 0 {
+			cy += m.empty
+			return
 		}
-	}
-
-	if len(c.Attributes) > 0 || len(c.Methods) > 0 {
-		writeDivider()
-	}
-	writeRows(c.Attributes)
-	if len(c.Methods) > 0 {
-		if len(c.Attributes) > 0 {
-			writeDivider()
+		cy += m.cp
+		for _, raw := range rows {
+			mb := formatMember(raw, method)
+			cy += m.lh
+			ty := cy - m.lh*0.3
+			style := ""
+			if mb.italic {
+				style = ` font-style="italic"`
+			}
+			fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s"%s>%s</text>`+"\n",
+				svgutil.Num(x+m.padX), svgutil.Num(ty), text, style, svgutil.Esc(mb.text))
+			if mb.underline {
+				uw := m.face.Width(mb.text, m.fs)
+				fmt.Fprintf(b, `    <line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s"/>`+"\n",
+					svgutil.Num(x+m.padX), svgutil.Num(ty+2), svgutil.Num(x+m.padX+uw), svgutil.Num(ty+2), text)
+			}
 		}
-		writeRows(c.Methods)
+		cy += m.cp
 	}
+	compartment(c.Attributes, false)
+	compartment(c.Methods, true)
 }
 
-func writeRelation(b *strings.Builder, r *Relation, e *domain.Edge, pal theme.Palette, o RenderOptions) {
-	if len(e.Points) < 2 {
-		return
+// classSize computes a box size that fits the name and all members.
+func classSize(c *Class, m metrics) domain.Size {
+	maxW := m.face.Width(c.Label(), m.fs) * 1.05 // bold
+	if c.Annotation != "" {
+		maxW = max(maxW, m.face.Width("«"+c.Annotation+"»", m.fs*0.9))
 	}
+	for _, a := range c.Attributes {
+		maxW = max(maxW, m.face.Width(formatMember(a, false).text, m.fs))
+	}
+	for _, a := range c.Methods {
+		maxW = max(maxW, m.face.Width(formatMember(a, true).text, m.fs))
+	}
+	w := max(maxW+m.padX*2, m.fs*4.5)
+	h := 2*m.headPad + m.lh
+	if c.Annotation != "" {
+		h += m.lh
+	}
+	for _, rows := range [][]string{c.Attributes, c.Methods} {
+		if len(rows) == 0 {
+			h += m.empty
+		} else {
+			h += float64(len(rows))*m.lh + 2*m.cp
+		}
+	}
+	return domain.Size{W: math.Ceil(w), H: math.Ceil(h)}
+}
+
+func path(pts []domain.Point) string {
 	var d strings.Builder
-	for i, p := range e.Points {
+	for i, p := range pts {
 		cmd := "L"
 		if i == 0 {
 			cmd = "M"
 		}
 		fmt.Fprintf(&d, "%s%s,%s ", cmd, svgutil.Num(p.X), svgutil.Num(p.Y))
 	}
+	return strings.TrimSpace(d.String())
+}
+
+func writeRelation(b *strings.Builder, r *Relation, sh edgeShape, pal theme.Palette, m metrics) {
+	edge := svgutil.Esc(pal.Edge)
 	dash := ""
 	if r.Dashed {
-		dash = ` stroke-dasharray="5,4"`
+		dash = ` stroke-dasharray="5 4"`
 	}
-	fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s"%s/>`, strings.TrimSpace(d.String()), pal.Edge, dash)
-	b.WriteByte('\n')
+	fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s"%s/>`+"\n", sh.d, edge, dash)
+	writeHead(b, r.Left, sh.start, sh.sdir[0], sh.sdir[1], pal)
+	writeHead(b, r.Right, sh.end, sh.edir[0], sh.edir[1], pal)
+	writeCardinality(b, r.LeftCard, sh.start, sh.sdir, pal, m)
+	writeCardinality(b, r.RightCard, sh.end, sh.edir, pal, m)
+}
 
-	p0, p1 := e.Points[0], e.Points[1]
-	ldx, ldy := unit(p0, p1)
-	writeHead(b, r.Left, p0, ldx, ldy, pal)
-	pn, pm := e.Points[len(e.Points)-1], e.Points[len(e.Points)-2]
-	rdx, rdy := unit(pn, pm)
-	writeHead(b, r.Right, pn, rdx, rdy, pal)
-
-	writeCardinality(b, r.LeftCard, e.Points[0], e.Points[1], pal, o)
-	last := len(e.Points) - 1
-	writeCardinality(b, r.RightCard, e.Points[last], e.Points[last-1], pal, o)
-
-	if r.Label != "" {
-		mid := e.LabelPos
-		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" dy="-2">%s</text>`,
-			svgutil.Num(mid.X), svgutil.Num(mid.Y), pal.Text, svgutil.Esc(r.Label))
-		b.WriteByte('\n')
+// writeEdgeLabel draws a relationship's label on a soft background at the
+// position the layout reserved for it.
+func writeEdgeLabel(b *strings.Builder, r *Relation, e *domain.Edge, sh edgeShape, pal theme.Palette, m metrics) {
+	if r.Label == "" || len(e.Points) < 2 {
+		return
 	}
+	fs := m.fs * 0.9
+	text := generics(r.Label)
+	tw := m.face.Width(text, fs)
+	// LabelPos is the text baseline; a curved line takes its label at its
+	// middle instead.
+	x, y := e.LabelPos.X, e.LabelPos.Y
+	if sh.curved {
+		x, y = sh.mid.X, sh.mid.Y+fs*0.35
+	}
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>`+"\n",
+		svgutil.Num(x-tw/2-4), svgutil.Num(y-fs*0.95), svgutil.Num(tw+8), svgutil.Num(fs*1.3))
+	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" font-size="%s">%s</text>`+"\n",
+		svgutil.Num(x), svgutil.Num(y), svgutil.Esc(pal.Text), svgutil.Num(fs), svgutil.Esc(text))
+}
+
+func headLen(k headKind) float64 {
+	switch k {
+	case headTriangle:
+		return 14
+	case headDiamondFilled, headDiamondHollow:
+		return 16
+	case headLollipop:
+		return 10
+	}
+	return 0
 }
 
 // writeHead draws a relationship decoration at tip pointing in direction (dx,dy).
@@ -226,33 +376,33 @@ func writeHead(b *strings.Builder, kind headKind, tip domain.Point, dx, dy float
 	if kind == headNone {
 		return
 	}
-	const l, hw = 12.0, 6.0
-	bx, by := tip.X+dx*l, tip.Y+dy*l // base, back along the line
-	px, py := -dy, dx                // perpendicular
+	edge, bg := svgutil.Esc(pal.Edge), svgutil.Esc(pal.Background)
+	px, py := -dy, dx // perpendicular
+	n := svgutil.Num
 	switch kind {
 	case headArrow:
-		fmt.Fprintf(b, `    <path d="M%s,%s L%s,%s L%s,%s Z" fill="%s"/>`,
-			svgutil.Num(tip.X), svgutil.Num(tip.Y),
-			svgutil.Num(bx+px*hw), svgutil.Num(by+py*hw),
-			svgutil.Num(bx-px*hw), svgutil.Num(by-py*hw), pal.Edge)
+		const l, hw = 10.0, 5.0
+		bx, by := tip.X+dx*l, tip.Y+dy*l
+		fmt.Fprintf(b, `    <path d="M%s,%s L%s,%s L%s,%s Z" fill="%s"/>`+"\n",
+			n(tip.X), n(tip.Y), n(bx+px*hw), n(by+py*hw), n(bx-px*hw), n(by-py*hw), edge)
 	case headTriangle:
-		fmt.Fprintf(b, `    <path d="M%s,%s L%s,%s L%s,%s Z" fill="%s" stroke="%s"/>`,
-			svgutil.Num(tip.X), svgutil.Num(tip.Y),
-			svgutil.Num(bx+px*hw), svgutil.Num(by+py*hw),
-			svgutil.Num(bx-px*hw), svgutil.Num(by-py*hw), pal.Background, pal.Edge)
+		const l, hw = 14.0, 8.0
+		bx, by := tip.X+dx*l, tip.Y+dy*l
+		fmt.Fprintf(b, `    <path d="M%s,%s L%s,%s L%s,%s Z" fill="%s" stroke="%s"/>`+"\n",
+			n(tip.X), n(tip.Y), n(bx+px*hw), n(by+py*hw), n(bx-px*hw), n(by-py*hw), bg, edge)
 	case headDiamondFilled, headDiamondHollow:
+		const l, hw = 16.0, 6.0
+		bx, by := tip.X+dx*l, tip.Y+dy*l
 		mx, my := tip.X+dx*l/2, tip.Y+dy*l/2
-		fill := pal.Edge
+		fill := edge
 		if kind == headDiamondHollow {
-			fill = pal.Background
+			fill = bg
 		}
-		fmt.Fprintf(b, `    <path d="M%s,%s L%s,%s L%s,%s L%s,%s Z" fill="%s" stroke="%s"/>`,
-			svgutil.Num(tip.X), svgutil.Num(tip.Y),
-			svgutil.Num(mx+px*hw), svgutil.Num(my+py*hw),
-			svgutil.Num(bx), svgutil.Num(by),
-			svgutil.Num(mx-px*hw), svgutil.Num(my-py*hw), fill, pal.Edge)
+		fmt.Fprintf(b, `    <path d="M%s,%s L%s,%s L%s,%s L%s,%s Z" fill="%s" stroke="%s"/>`+"\n",
+			n(tip.X), n(tip.Y), n(mx+px*hw), n(my+py*hw), n(bx), n(by), n(mx-px*hw), n(my-py*hw), fill, edge)
+	case headLollipop:
+		fmt.Fprintf(b, `    <circle cx="%s" cy="%s" r="5" fill="%s" stroke="%s"/>`+"\n", n(tip.X+dx*5), n(tip.Y+dy*5), bg, edge)
 	}
-	b.WriteByte('\n')
 }
 
 // unit returns the unit vector from a toward b (zero if coincident).
@@ -265,61 +415,109 @@ func unit(a, b domain.Point) (float64, float64) {
 	return dx / d, dy / d
 }
 
-// classSize computes a box size that fits the name and all members.
-func classSize(c *Class, face svgutil.Face, fontSize float64) domain.Size {
-	maxW := face.Width(c.Label(), fontSize)
-	if c.Annotation != "" {
-		if wd := face.Width("«"+c.Annotation+"»", fontSize); wd > maxW {
-			maxW = wd
-		}
-	}
-	for _, m := range append(append([]string{}, c.Attributes...), c.Methods...) {
-		if wd := face.Width(m, fontSize); wd > maxW {
-			maxW = wd
-		}
-	}
-	w := maxW + boxPadX*2
-	if w < 80 {
-		w = 80
-	}
-	h := fontSize + 10 // header
-	if c.Annotation != "" {
-		h += fontSize + 2
-	}
-	rows := len(c.Attributes) + len(c.Methods)
-	if rows > 0 {
-		h += float64(rows) * (fontSize + rowPad)
-	}
-	return domain.Size{W: w, H: h}
-}
-
 // writeCardinality draws a multiplicity label just inside the end of a
 // relationship line. tip is the end point and next is the neighbouring
 // waypoint, so the label sits along the line rather than on top of the class.
-func writeCardinality(b *strings.Builder, card string, tip, next domain.Point, pal theme.Palette, o RenderOptions) {
+func writeCardinality(b *strings.Builder, card string, tip domain.Point, dir [2]float64, pal theme.Palette, m metrics) {
 	if card == "" {
 		return
 	}
-	dx, dy := unit(tip, next)
-	// Step along the line past the end decoration, then offset perpendicular
-	// so the line does not strike through the text.
-	x := tip.X + dx*(cardGap+10) - dy*9
-	y := tip.Y + dy*(cardGap+10) + dx*9 + o.FontSize*0.35
-	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" font-size="%s">%s</text>`,
-		svgutil.Num(x), svgutil.Num(y), pal.Text, svgutil.Num(o.FontSize-2), svgutil.Esc(card))
-	b.WriteByte('\n')
+	dx, dy := dir[0], dir[1]
+	fs := m.fs * 0.85
+	// Step along the line past the end decoration, then to the side, far
+	// enough that the line does not strike through the text.
+	off := 7 + m.face.Width(card, fs)/2
+	x := tip.X + dx*(cardGap+12) - dy*off
+	y := tip.Y + dy*(cardGap+12) + dx*off*0.6 + fs*0.35
+	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle" font-size="%s">%s</text>`+"\n",
+		svgutil.Num(x), svgutil.Num(y), svgutil.Esc(pal.Text), svgutil.Num(fs), svgutil.Esc(card))
 }
 
-// writeNamespace draws the dashed box and title of a namespace block.
-func writeNamespace(b *strings.Builder, ns *Namespace, g *domain.Graph, pal theme.Palette, o RenderOptions) {
-	x, y, w, h, ok := namespaceBox(ns, g, o.FontSize)
+// writeNamespace draws the box and title of a namespace block, in
+// Mermaid's cluster colours.
+func writeNamespace(b *strings.Builder, ns *Namespace, g *domain.Graph, pal theme.Palette, m metrics) {
+	x, y, w, h, ok := namespaceBox(ns, g, m)
 	if !ok {
 		return
 	}
-	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="none" stroke="%s" stroke-dasharray="4,3" rx="6"/>`,
-		svgutil.Num(x), svgutil.Num(y), svgutil.Num(w), svgutil.Num(h), pal.NodeStroke)
-	b.WriteByte('\n')
-	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s">%s</text>`,
-		svgutil.Num(x+6), svgutil.Num(y+o.FontSize), pal.Text, svgutil.Esc(ns.Name))
-	b.WriteByte('\n')
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="#ffffde" stroke="#aaaa33"/>`+"\n",
+		svgutil.Num(x), svgutil.Num(y), svgutil.Num(w), svgutil.Num(h))
+	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" text-anchor="middle">%s</text>`+"\n",
+		svgutil.Num(x+w/2), svgutil.Num(y+m.fs+4), svgutil.Esc(pal.Text), svgutil.Esc(ns.Name))
+}
+
+func noteLines(text string, m metrics) []string {
+	var out []string
+	for _, para := range svgutil.SplitLines(text) {
+		cur := ""
+		for _, wd := range strings.Fields(para) {
+			try := wd
+			if cur != "" {
+				try = cur + " " + wd
+			}
+			if cur != "" && m.face.Width(try, m.fs) > noteMaxW {
+				out = append(out, cur)
+				cur = wd
+				continue
+			}
+			cur = try
+		}
+		out = append(out, cur)
+	}
+	return out
+}
+
+func noteSize(text string, m metrics) (float64, float64) {
+	lines := noteLines(text, m)
+	tw := 0.0
+	for _, l := range lines {
+		tw = max(tw, m.face.Width(l, m.fs))
+	}
+	return math.Ceil(tw + 2*m.padX), math.Ceil(float64(len(lines))*m.lh + 2*m.cp + 4)
+}
+
+// writeNote draws a note box and the dashed line to its class.
+func writeNote(b *strings.Builder, i int, nt *Note, g *domain.Graph, edgeBase int, pal theme.Palette, m metrics) {
+	n := g.NodeByID(noteID(i))
+	if n == nil {
+		return
+	}
+	if nt.For != "" {
+		for _, e := range g.Edges[edgeBase:] {
+			if e.From == noteID(i) && len(e.Points) >= 2 {
+				var obs []box
+				for _, o := range g.Nodes {
+					if o.ID != e.From && o.ID != e.To {
+						obs = append(obs, box{o.Pos.X, o.Pos.Y, o.Size.W, o.Size.H})
+					}
+				}
+				sh := shapeEdge([]domain.Point{e.Points[0], e.Points[len(e.Points)-1]}, g.Direction == domain.TopBottom || g.Direction == domain.BottomTop, obs, 0, 0)
+				if !sh.curved {
+					sh.d = path(e.Points)
+				}
+				fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s" stroke-dasharray="3 3"/>`+"\n", sh.d, svgutil.Esc(pal.Edge))
+				break
+			}
+		}
+	}
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" fill="#fff5ad" stroke="#aaaa33"/>`+"\n",
+		svgutil.Num(n.Pos.X), svgutil.Num(n.Pos.Y), svgutil.Num(n.Size.W), svgutil.Num(n.Size.H))
+	y := n.Pos.Y + m.cp + 2
+	for _, l := range noteLines(nt.Text, m) {
+		y += m.lh
+		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="#333333">%s</text>`+"\n",
+			svgutil.Num(n.Pos.X+m.padX), svgutil.Num(y-m.lh*0.3), svgutil.Esc(l))
+	}
+}
+
+var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
+
+// fontFamily returns face when it is a plain font list, else sans-serif:
+// a font option is written into an attribute, so it must carry nothing else.
+func fontFamily(face string) string {
+	l := strings.ToLower(face)
+	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
+		return "sans-serif"
+	}
+	return face
 }

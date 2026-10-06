@@ -64,8 +64,8 @@ func TestRender(t *testing.T) {
 		Convey("Then it draws node bars, flow bands, and labels", func() {
 			So(err, ShouldBeNil)
 			So(svg, ShouldStartWith, "<svg")
-			So(svg, ShouldContainSubstring, "fill-opacity=\"0.4\"") // band
-			So(svg, ShouldContainSubstring, ">A<")
+			So(svg, ShouldContainSubstring, "stroke-opacity=\"0.5\"") // band
+			So(svg, ShouldContainSubstring, ">A 10<")
 		})
 	})
 }

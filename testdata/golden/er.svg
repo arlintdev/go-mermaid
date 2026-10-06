@@ -1,35 +1,45 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="132.11" height="374" viewBox="0 0 132.11 374" font-family="sans-serif" font-size="14">
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="146" height="441" viewBox="0 0 146 441" font-family="sans-serif" font-size="14">
   <rect width="100%" height="100%" fill="#ffffff"/>
   <g transform="translate(16,16)">
-    <path d="M50.05,64 L50.05,159" fill="none" stroke="#333333"/>
-    <line x1="55.05" y1="71" x2="45.05" y2="71" stroke="#333333"/>
-    <line x1="50.05" y1="147" x2="44.05" y2="159" stroke="#333333"/>
-    <line x1="50.05" y1="147" x2="56.05" y2="159" stroke="#333333"/>
-    <line x1="50.05" y1="147" x2="50.05" y2="159" stroke="#333333"/>
-    <circle cx="50.05" cy="141" r="4" fill="#ffffff" stroke="#333333"/>
-    <text x="58.05" y="90.9" fill="#333333" text-anchor="middle" font-size="12">1</text>
-    <text x="42.05" y="141.9" fill="#333333" text-anchor="middle" font-size="12">0..N</text>
-    <text x="50.05" y="111.5" fill="#333333" text-anchor="middle" dy="-2">places</text>
-    <path d="M50.05,223 L50.05,318" fill="none" stroke="#333333"/>
-    <line x1="55.05" y1="230" x2="45.05" y2="230" stroke="#333333"/>
-    <line x1="50.05" y1="306" x2="44.05" y2="318" stroke="#333333"/>
-    <line x1="50.05" y1="306" x2="56.05" y2="318" stroke="#333333"/>
-    <line x1="50.05" y1="306" x2="50.05" y2="318" stroke="#333333"/>
-    <line x1="45.05" y1="304" x2="55.05" y2="304" stroke="#333333"/>
-    <text x="58.05" y="249.9" fill="#333333" text-anchor="middle" font-size="12">1</text>
-    <text x="42.05" y="300.9" fill="#333333" text-anchor="middle" font-size="12">1..N</text>
-    <text x="50.05" y="270.5" fill="#333333" text-anchor="middle" dy="-2">contains</text>
-    <rect x="0" y="0" width="100.11" height="64" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="50.05" y="14" fill="#333333" text-anchor="middle" font-weight="bold">CUSTOMER</text>
-    <line x1="0" y1="24" x2="100.11" y2="24" stroke="#9370DB"/>
-    <text x="10" y="41" fill="#333333">string name</text>
-    <text x="10" y="61" fill="#333333">string email</text>
-    <rect x="1.14" y="159" width="97.83" height="64" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="50.05" y="173" fill="#333333" text-anchor="middle" font-weight="bold">ORDER</text>
-    <line x1="1.14" y1="183" x2="98.97" y2="183" stroke="#9370DB"/>
-    <text x="11.14" y="200" fill="#333333">int id</text>
-    <text x="11.14" y="220" fill="#333333">date created</text>
-    <rect x="3.88" y="318" width="92.35" height="24" fill="#ECECFF" stroke="#9370DB"/>
-    <text x="50.05" y="332" fill="#333333" text-anchor="middle" font-weight="bold">LINE_ITEM</text>
+    <path d="M57,86 C57,134 57,134 57,182" fill="none" stroke="#333333" stroke-width="1.3"/>
+    <path d="M57,268 C57,316 57,316 57,364" fill="none" stroke="#333333" stroke-width="1.3"/>
+    <rect x="0" y="0" width="114" height="86" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="57" y="21">CUSTOMER</tspan></text>
+    <rect x="0.5" y="32.2" width="113" height="26.6" fill="#ffffff"/>
+    <text fill="#333333" font-size="13.3" text-anchor="start"><tspan x="8.4" y="50.15">string</tspan></text>
+    <text fill="#333333" font-size="13.3" text-anchor="start"><tspan x="57.72" y="50.15">name</tspan></text>
+    <rect x="0.5" y="58.8" width="113" height="26.6" fill="#f6f6ff"/>
+    <text fill="#333333" font-size="13.3" text-anchor="start"><tspan x="8.4" y="76.75">string</tspan></text>
+    <text fill="#333333" font-size="13.3" text-anchor="start"><tspan x="57.72" y="76.75">email</tspan></text>
+    <line x1="0" y1="32.2" x2="114" y2="32.2" stroke="#9370DB"/>
+    <line x1="0" y1="58.8" x2="114" y2="58.8" stroke="#9370DB" stroke-opacity="0.35"/>
+    <line x1="49.32" y1="32.2" x2="49.32" y2="86" stroke="#9370DB" stroke-opacity="0.35"/>
+    <rect x="0" y="0" width="114" height="86" fill="none" stroke="#9370DB"/>
+    <rect x="5" y="182" width="104" height="86" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="57" y="203">ORDER</tspan></text>
+    <rect x="5.5" y="214.2" width="103" height="26.6" fill="#ffffff"/>
+    <text fill="#333333" font-size="13.3" text-anchor="start"><tspan x="13.4" y="232.16">int</tspan></text>
+    <text fill="#333333" font-size="13.3" text-anchor="start"><tspan x="56.08" y="232.16">id</tspan></text>
+    <rect x="5.5" y="240.8" width="103" height="26.6" fill="#f6f6ff"/>
+    <text fill="#333333" font-size="13.3" text-anchor="start"><tspan x="13.4" y="258.75">date</tspan></text>
+    <text fill="#333333" font-size="13.3" text-anchor="start"><tspan x="56.08" y="258.75">created</tspan></text>
+    <line x1="5" y1="214.2" x2="109" y2="214.2" stroke="#9370DB"/>
+    <line x1="5" y1="240.8" x2="109" y2="240.8" stroke="#9370DB" stroke-opacity="0.35"/>
+    <line x1="47.68" y1="214.2" x2="47.68" y2="268" stroke="#9370DB" stroke-opacity="0.35"/>
+    <rect x="5" y="182" width="104" height="86" fill="none" stroke="#9370DB"/>
+    <rect x="4" y="364" width="106" height="45" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="57" y="391.4">LINE_ITEM</tspan></text>
+    <line x1="50" y1="94" x2="64" y2="94" stroke="#333333" stroke-width="1.3"/>
+    <line x1="50" y1="100" x2="64" y2="100" stroke="#333333" stroke-width="1.3"/>
+    <path d="M65,182 L57,168 M49,182 L57,168 M57,182 L57,168" fill="none" stroke="#333333" stroke-width="1.3"/>
+    <circle cx="57" cy="159" r="5" fill="#ffffff" stroke="#333333" stroke-width="1.3"/>
+    <line x1="50" y1="276" x2="64" y2="276" stroke="#333333" stroke-width="1.3"/>
+    <line x1="50" y1="282" x2="64" y2="282" stroke="#333333" stroke-width="1.3"/>
+    <path d="M65,364 L57,350 M49,364 L57,350 M57,364 L57,350" fill="none" stroke="#333333" stroke-width="1.3"/>
+    <line x1="64" y1="345" x2="50" y2="345" stroke="#333333" stroke-width="1.3"/>
+    <rect x="34.79" y="123.81" width="44.41" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="57" y="138.41">places</tspan></text>
+    <rect x="29.54" y="305.81" width="54.92" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="57" y="320.41">contains</tspan></text>
   </g>
 </svg>

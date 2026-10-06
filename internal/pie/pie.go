@@ -8,6 +8,7 @@
 package pie
 
 import (
+	"math"
 	"strconv"
 	"strings"
 
@@ -90,7 +91,7 @@ func (d *Diagram) parseSlice(line string, lineNo int) error {
 	}
 	label := strings.Trim(strings.TrimSpace(line[:idx]), `"`)
 	v, err := strconv.ParseFloat(strings.TrimSpace(line[idx+1:]), 64)
-	if err != nil {
+	if err != nil || math.IsNaN(v) || math.IsInf(v, 0) || v > 1e300 {
 		return syntax.Errorf(lineNo, 1, "invalid slice value")
 	}
 	if v < 0 {

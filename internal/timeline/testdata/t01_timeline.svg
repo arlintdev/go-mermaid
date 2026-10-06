@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="644" height="321.12" viewBox="0 0 644 321.12" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><marker id="muintar-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker><marker id="muintar-arrow-sm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
+  <text x="16" y="38.4" fill="#333333" font-size="22.4" font-weight="bold">History of the project</text>
+  <line x1="130" y1="94.62" x2="130" y2="287.12" stroke="#333333" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#muintar-arrow-sm)"/>
+  <line x1="322" y1="94.62" x2="322" y2="287.12" stroke="#333333" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#muintar-arrow-sm)"/>
+  <line x1="514" y1="94.62" x2="514" y2="287.12" stroke="#333333" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#muintar-arrow-sm)"/>
+  <line x1="16" y1="122.62" x2="628" y2="122.62" stroke="#333333" stroke-width="3" marker-end="url(#muintar-arrow)"/>
+  <rect x="40" y="59.12" width="180" height="35.5" rx="5" fill="#8686ff"/>
+  <line x1="41" y1="93.12" x2="219" y2="93.12" stroke="#6060b8" stroke-width="3"/>
+  <text fill="#1f1f1f" text-anchor="middle" font-weight="bold"><tspan x="130" y="81.77">2024</tspan></text>
+  <rect x="40" y="150.62" width="180" height="35.5" rx="5" fill="#bcbcff"/>
+  <line x1="41" y1="184.62" x2="219" y2="184.62" stroke="#8686ff" stroke-width="3"/>
+  <text fill="#1f1f1f" text-anchor="middle"><tspan x="130" y="173.27">Started</tspan></text>
+  <rect x="40" y="194.12" width="180" height="35.5" rx="5" fill="#bcbcff"/>
+  <line x1="41" y1="228.12" x2="219" y2="228.12" stroke="#8686ff" stroke-width="3"/>
+  <text fill="#1f1f1f" text-anchor="middle"><tspan x="130" y="216.77">First users</tspan></text>
+  <rect x="232" y="59.12" width="180" height="35.5" rx="5" fill="#ffff78"/>
+  <line x1="233" y1="93.12" x2="411" y2="93.12" stroke="#b8b856" stroke-width="3"/>
+  <text fill="#1f1f1f" text-anchor="middle" font-weight="bold"><tspan x="322" y="81.77">2025</tspan></text>
+  <rect x="232" y="150.62" width="180" height="35.5" rx="5" fill="#ffffb5"/>
+  <line x1="233" y1="184.62" x2="411" y2="184.62" stroke="#ffff78" stroke-width="3"/>
+  <text fill="#1f1f1f" text-anchor="middle"><tspan x="322" y="173.27">PostgreSQL</tspan></text>
+  <rect x="424" y="59.12" width="180" height="35.5" rx="5" fill="#d7ff86"/>
+  <line x1="425" y1="93.12" x2="603" y2="93.12" stroke="#9bb860" stroke-width="3"/>
+  <text fill="#1f1f1f" text-anchor="middle" font-weight="bold"><tspan x="514" y="81.77">2026</tspan></text>
+  <rect x="424" y="150.62" width="180" height="35.5" rx="5" fill="#e9ffbc"/>
+  <line x1="425" y1="184.62" x2="603" y2="184.62" stroke="#d7ff86" stroke-width="3"/>
+  <text fill="#1f1f1f" text-anchor="middle"><tspan x="514" y="173.27">Bots</tspan></text>
+  <rect x="424" y="194.12" width="180" height="35.5" rx="5" fill="#e9ffbc"/>
+  <line x1="425" y1="228.12" x2="603" y2="228.12" stroke="#d7ff86" stroke-width="3"/>
+  <text fill="#1f1f1f" text-anchor="middle"><tspan x="514" y="216.77">Meetings</tspan></text>
+  <rect x="424" y="237.62" width="180" height="35.5" rx="5" fill="#e9ffbc"/>
+  <line x1="425" y1="271.62" x2="603" y2="271.62" stroke="#d7ff86" stroke-width="3"/>
+  <text fill="#1f1f1f" text-anchor="middle"><tspan x="514" y="260.27">FISMA</tspan></text>
+</svg>

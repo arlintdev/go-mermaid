@@ -1,0 +1,20 @@
+classDiagram
+  direction LR
+  class Shape~T~ {
+    <<abstract>>
+    +List~List~int~~ points
+    +count$
+    +area()* double
+    +make(T seed)$ Shape~T~
+  }
+  class Circle["Round thing"]
+  Shape <|-- Circle
+  Circle "1" *-- "many" Point : centre
+  Circle --() Drawable
+  Point <|..|> Vector
+  style Circle fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+  classDef warm fill:#fff3e0
+  class Point:::warm
+  note for Point "x and y in pixels,\nfrom the top left"
+  note "free-standing note"
+  click Circle href "https://example.com"

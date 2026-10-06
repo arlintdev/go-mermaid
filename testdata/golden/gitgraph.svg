@@ -1,17 +1,39 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="466" height="152" viewBox="0 0 466 152" font-family="sans-serif" font-size="14">
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="478.03" height="224.9" viewBox="0 0 478.03 224.9" font-family="sans-serif" font-size="14">
   <rect width="100%" height="100%" fill="#ffffff"/>
-  <line x1="86" y1="36" x2="398" y2="36" stroke="#5B8FF9" stroke-width="2"/>
-  <text x="74" y="40.9" fill="#333333" text-anchor="end">main</text>
-  <line x1="86" y1="86" x2="242" y2="86" stroke="#61DDAA" stroke-width="2"/>
-  <text x="74" y="90.9" fill="#333333" text-anchor="end">develop</text>
-  <line x1="242" y1="86" x2="346" y2="36" stroke="#333333" stroke-dasharray="3,3"/>
-  <circle cx="86" cy="36" r="7" fill="#5B8FF9" stroke="#9370DB"/>
-  <circle cx="138" cy="36" r="7" fill="#5B8FF9" stroke="#9370DB"/>
-  <text x="138" y="25" fill="#333333" text-anchor="middle">init</text>
-  <circle cx="190" cy="86" r="7" fill="#61DDAA" stroke="#9370DB"/>
-  <circle cx="242" cy="86" r="7" fill="#61DDAA" stroke="#9370DB"/>
-  <circle cx="294" cy="36" r="7" fill="#5B8FF9" stroke="#9370DB"/>
-  <circle cx="346" cy="36" r="7" fill="#5B8FF9" stroke="#9370DB"/>
-  <text x="346" y="25" fill="#333333" text-anchor="middle">v1.0</text>
-  <circle cx="398" cy="36" r="7" fill="#5B8FF9" stroke="#9370DB"/>
+  <line x1="102.03" y1="53" x2="452.03" y2="53" stroke="#333333" stroke-width="1" stroke-dasharray="2"/>
+  <rect x="34.69" y="42.5" width="48.34" height="21" rx="4" fill="#0000ec"/>
+  <text x="58.86" y="57.9" fill="#ffffff" text-anchor="middle">main</text>
+  <line x1="102.03" y1="143" x2="452.03" y2="143" stroke="#333333" stroke-width="1" stroke-dasharray="2"/>
+  <rect x="16" y="132.5" width="67.03" height="21" rx="4" fill="#dede00"/>
+  <text x="49.51" y="147.9" fill="#000000" text-anchor="middle">develop</text>
+  <path d="M112.03,53 L162.03,53" fill="none" stroke="#0000ec" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M162.03,53 L162.03,123 A20,20 0 0 0 182.03,143 L212.03,143" fill="none" stroke="#dede00" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M212.03,143 L262.03,143" fill="none" stroke="#dede00" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M162.03,53 L312.03,53" fill="none" stroke="#0000ec" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M312.03,53 L362.03,53" fill="none" stroke="#0000ec" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M262.03,143 L342.03,143 A20,20 0 0 0 362.03,123 L362.03,53" fill="none" stroke="#dede00" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M362.03,53 L412.03,53" fill="none" stroke="#0000ec" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="112.03" cy="53" r="10" fill="#0000ec"/>
+  <circle cx="162.03" cy="53" r="10" fill="#0000ec"/>
+  <circle cx="212.03" cy="143" r="10" fill="#dede00"/>
+  <circle cx="262.03" cy="143" r="10" fill="#dede00"/>
+  <circle cx="312.03" cy="53" r="10" fill="#0000ec"/>
+  <circle cx="362.03" cy="53" r="10" fill="#0000ec"/>
+  <circle cx="362.03" cy="53" r="6" fill="#ECECFF"/>
+  <circle cx="412.03" cy="53" r="10" fill="#0000ec"/>
+  <rect x="52.83" y="59.08" width="56.2" height="13.12" fill="#ffffde" fill-opacity="0.6" transform="rotate(-45 106.03 68)"/>
+  <text x="106.03" y="69.05" fill="#333333" font-size="10.5" text-anchor="end" transform="rotate(-45 106.03 68)">0-3899d6e</text>
+  <rect x="139.61" y="59.08" width="19.42" height="13.12" fill="#ffffde" fill-opacity="0.6" transform="rotate(-45 156.03 68)"/>
+  <text x="156.03" y="69.05" fill="#333333" font-size="10.5" text-anchor="end" transform="rotate(-45 156.03 68)">init</text>
+  <rect x="159.25" y="149.07" width="49.77" height="13.12" fill="#ffffde" fill-opacity="0.6" transform="rotate(-45 206.03 158)"/>
+  <text x="206.03" y="159.05" fill="#333333" font-size="10.5" text-anchor="end" transform="rotate(-45 206.03 158)">2-0df1efc</text>
+  <rect x="202.83" y="149.07" width="56.2" height="13.12" fill="#ffffde" fill-opacity="0.6" transform="rotate(-45 256.03 158)"/>
+  <text x="256.03" y="159.05" fill="#333333" font-size="10.5" text-anchor="end" transform="rotate(-45 256.03 158)">3-4bad917</text>
+  <rect x="252.83" y="59.08" width="56.2" height="13.12" fill="#ffffde" fill-opacity="0.6" transform="rotate(-45 306.03 68)"/>
+  <text x="306.03" y="69.05" fill="#333333" font-size="10.5" text-anchor="end" transform="rotate(-45 306.03 68)">4-0d9aeba</text>
+  <polygon points="342.11,29.25 342.11,25.25 349.11,19.5 377.95,19.5 377.95,35 349.11,35" fill="#ECECFF" stroke="#c4b4ef"/>
+  <circle cx="346.11" cy="27.25" r="1.5" fill="#333333"/>
+  <text x="352.11" y="30.93" fill="#333333" font-size="10.5">v1.0</text>
+  <rect x="352.83" y="59.08" width="56.2" height="13.12" fill="#ffffde" fill-opacity="0.6" transform="rotate(-45 406.03 68)"/>
+  <text x="406.03" y="69.05" fill="#333333" font-size="10.5" text-anchor="end" transform="rotate(-45 406.03 68)">6-955e028</text>
 </svg>

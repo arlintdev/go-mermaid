@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="532" height="532" viewBox="0 0 532 532" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text fill="#333333" font-size="17.5" text-anchor="middle"><tspan x="266" y="35.88">Reach and engagement</tspan></text>
+  <rect x="275.8" y="52" width="235.2" height="218.3" fill="#ECECFF"/>
+  <rect x="40.6" y="52" width="235.2" height="218.3" fill="#f1f1ff"/>
+  <rect x="40.6" y="270.3" width="235.2" height="218.3" fill="#f6f6ff"/>
+  <rect x="275.8" y="270.3" width="235.2" height="218.3" fill="#fbfbff"/>
+  <rect x="40.6" y="52" width="470.4" height="436.6" fill="none" stroke="#c8baf1" stroke-width="2"/>
+  <line x1="275.8" y1="52" x2="275.8" y2="488.6" stroke="#c8baf1"/><line x1="40.6" y1="270.3" x2="511" y2="270.3" stroke="#c8baf1"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="393.4" y="68.9">We should expand</tspan></text>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="158.2" y="68.9">Need to promote</tspan></text>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="158.2" y="287.2">Re-evaluate</tspan></text>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="393.4" y="287.2">May be improved</tspan></text>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="158.2" y="505.5">Low Reach</tspan></text>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="393.4" y="505.5">High Reach</tspan></text>
+  <text fill="#333333" font-size="14" text-anchor="middle" transform="rotate(-90 31.4 161.15)"><tspan x="31.4" y="161.15">High Engagement</tspan></text>
+  <text fill="#333333" font-size="14" text-anchor="middle" transform="rotate(-90 31.4 379.45)"><tspan x="31.4" y="379.45">Low Engagement</tspan></text>
+  <circle cx="181.72" cy="226.64" r="5" fill="#9370DB"/>
+  <text fill="#333333" font-size="11.2" text-anchor="middle"><tspan x="181.72" y="243.16">Campaign A</tspan></text>
+  <circle cx="252.28" cy="388.18" r="5" fill="#9370DB"/>
+  <text fill="#333333" font-size="11.2" text-anchor="middle"><tspan x="252.28" y="404.7">Campaign B</tspan></text>
+  <circle cx="308.73" cy="187.35" r="5" fill="#9370DB"/>
+  <text fill="#333333" font-size="11.2" text-anchor="middle"><tspan x="308.73" y="203.87">Campaign C</tspan></text>
+  <circle cx="407.51" cy="340.16" r="5" fill="#9370DB"/>
+  <text fill="#333333" font-size="11.2" text-anchor="middle"><tspan x="407.51" y="356.68">Campaign D</tspan></text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512.9" height="361.94" viewBox="0 0 512.9 361.94" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><marker id="mi0yw52-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
+  <rect x="16" y="16" width="115.49" height="63.52" rx="3" fill="#ECECFF" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="73.75" y="52.66">Start</tspan></text>
+  <circle cx="256.45" cy="47.76" r="24.84" fill="#ffe0b2" stroke="#e65100" stroke-width="2"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="256.45" y="52.66">Hub</tspan></text>
+  <polygon points="439.16,16 496.9,47.76 439.16,79.52 381.41,47.76" fill="#ECECFF" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="439.16" y="52.66">Ready?</tspan></text>
+  <rect x="16" y="146.73" width="298.2" height="76" rx="4" fill="#f6f6ff" stroke="#9370DB"/>
+  <path d="M26,164.73 A52.75,8 0 0 1 131.49,164.73 V204.73 A52.75,8 0 0 1 26,204.73 Z" fill="#ECECFF" stroke="#9370DB"/>
+  <path d="M26,164.73 A52.75,8 0 0 0 131.49,164.73" fill="none" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="78.75" y="193.63">Store</tspan></text>
+  <polygon points="212.71,156.73 290.2,156.73 304.2,184.73 290.2,212.73 212.71,212.73 198.71,184.73" fill="#ECECFF" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="251.45" y="189.63">Queue</tspan></text>
+  <polygon points="381.41,146.73 496.9,146.73 496.9,222.73 381.41,222.73 406.74,184.73" fill="#ECECFF" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="439.16" y="189.63">Flag</tspan></text>
+  <rect x="16" y="289.94" width="115.49" height="56" rx="28" fill="#fff3e0" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="73.75" y="322.84">Pill</tspan></text>
+  <polygon points="198.71,302.26 286.2,302.26 286.2,289.94 314.2,317.94 286.2,345.94 286.2,333.62 198.71,333.62" fill="#ECECFF" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="256.45" y="322.84">send</tspan></text>
+  <rect x="381.41" y="289.94" width="115.49" height="56" fill="#ECECFF" stroke="#9370DB"/>
+  <path d="M389.41,289.94 V345.94 M488.9,289.94 V345.94" fill="none" stroke="#9370DB"/>
+  <text fill="#333333" font-size="14" text-anchor="middle"><tspan x="439.16" y="322.84">Sub</tspan></text>
+  <path d="M131.49,47.76 L231.61,47.76" fill="none" stroke="#333333" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#mi0yw52-arrow)"/>
+  <path d="M281.29,47.76 L381.41,47.76" fill="none" stroke="#333333" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#mi0yw52-arrow)"/>
+  <path d="M439.16,79.52 L439.16,146.73" fill="none" stroke="#333333" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#mi0yw52-arrow)"/>
+  <path d="M131.49,184.73 L198.71,184.73" fill="none" stroke="#333333" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#mi0yw52-arrow)" marker-start="url(#mi0yw52-arrow)"/>
+  <rect x="307.74" y="37.89" width="47.21" height="19.75" rx="3" fill="#e8e8e8" fill-opacity="0.9"/>
+  <text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="331.35" y="52.17">checks</tspan></text>
+</svg>

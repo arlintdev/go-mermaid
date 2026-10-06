@@ -10,7 +10,9 @@ const (
 	HeadNone Head = iota
 	// HeadArrow is a solid triangular arrowhead (->> / -->>).
 	HeadArrow
-	// HeadCross is an X at the end, denoting a lost/async-end message (-x / --x).
+	// HeadOpen is an open arrowhead for an asynchronous message (-) / --)).
+	HeadOpen
+	// HeadCross is an X at the end, denoting a lost message (-x / --x).
 	HeadCross
 )
 
@@ -18,17 +20,51 @@ const (
 type Arrow struct {
 	Dashed bool
 	Head   Head
+	// Both draws the head at the sender's end too (<<->> / <<-->>).
+	Both bool
 }
+
+// Kind is how a participant is drawn.
+type Kind int
+
+const (
+	// KindParticipant is drawn as a box.
+	KindParticipant Kind = iota
+	// KindActor is drawn as a stick figure with its name below.
+	KindActor
+)
 
 // Participant is an actor with a vertical lifeline.
 type Participant struct {
 	ID    string
 	Label string
+	Kind  Kind
+	Box   *Box
 
-	// X is the lifeline's horizontal center; set during layout.
-	X float64
-	// Width is the header box width; set during layout.
-	Width float64
+	// Created is set by `create participant`: the header is drawn where the
+	// creating message lands instead of at the top.
+	Created bool
+	// Destroyed is set by `destroy`: the lifeline ends at the destroying
+	// message and there is no header at the bottom.
+	Destroyed bool
+
+	// Layout results.
+	X         float64  // lifeline centre
+	Width     float64  // header width
+	Lines     []string // label lines
+	TopY      float64  // top of the (first) header
+	LifeStart float64  // where the lifeline starts
+	LifeEnd   float64  // where the lifeline stops
+}
+
+// Box groups participants under a label and an optional background colour.
+type Box struct {
+	Label   string
+	Color   string // validated colour, or "" for none
+	Members []*Participant
+
+	Lines  []string
+	X0, X1 float64
 }
 
 // Message is a single arrow from one participant to another.
@@ -38,9 +74,16 @@ type Message struct {
 	Text  string
 	Arrow Arrow
 
-	Num int     // autonumber sequence (0 = unnumbered)
-	Row int     // ordinal row in the diagram (messages and notes share rows)
-	Y   float64 // vertical position of the message line; set during layout
+	Num        int  // autonumber value (0 = unnumbered)
+	Activate   bool // `+` before the receiver
+	Deactivate bool // `-` before the receiver: the sender's activation ends
+	Creates    string
+	Destroys   []string
+
+	// Layout results.
+	Lines  []string
+	Y      float64 // y of the arrow line
+	X1, X2 float64 // start and end of the arrow line
 }
 
 // NotePos is where a note sits relative to its participant(s).
@@ -55,59 +98,86 @@ const (
 	NoteOver
 )
 
-// Note is an annotation box occupying its own row.
+// Note is an annotation box.
 type Note struct {
 	Pos  NotePos
 	Of   []string
 	Text string
 
-	Row int
-	Y   float64
+	Lines      []string
+	X, Y, W, H float64
 }
 
-// Bar is an activation lifespan on a participant's lifeline, in rows.
+// Bar is an activation on a participant's lifeline.
 type Bar struct {
 	Participant string
-	StartRow    int
-	EndRow      int
+	Depth       int // 0 for the outermost activation
+	Y1, Y2      float64
 }
 
-// Section is an else/and divider inside a frame.
+// Section is an else/and/option divider inside a frame.
 type Section struct {
-	Row   int
 	Label string
+
+	Lines []string
+	Y     float64
 }
 
-// Frame is a grouping box (loop/alt/opt/par/rect/critical/break) spanning rows.
+// Frame is a grouping box (loop/alt/opt/par/critical/break/rect).
 type Frame struct {
-	Type     string
+	Kind     string
 	Label    string
-	StartRow int
-	EndRow   int
 	Sections []*Section
 
-	// Color is the background written as `rect rgb(0, 0, 255)`. It is empty
-	// for every other frame kind.
+	// Color is the background of a `rect` frame, validated; empty otherwise.
 	Color string
+
+	Lines          []string // condition lines
+	X0, X1, Y0, Y1 float64
+	Depth          int
+}
+
+type itemKind int
+
+const (
+	itMessage itemKind = iota
+	itNote
+	itFrameStart
+	itSection
+	itFrameEnd
+	itActivate
+	itDeactivate
+	itDestroy
+)
+
+// item is one statement in source order; the layout walks them top to bottom.
+type item struct {
+	kind    itemKind
+	msg     *Message
+	note    *Note
+	frame   *Frame
+	section *Section
+	who     string
 }
 
 // Diagram is a parsed sequence diagram.
 type Diagram struct {
+	Title        string
 	Participants []*Participant
+	Boxes        []*Box
 	Messages     []*Message
 	Notes        []*Note
-	Bars         []*Bar
 	Frames       []*Frame
+	Bars         []*Bar
 
-	rows int // number of allocated rows
+	items []item
+	index map[string]int
 }
 
 // participant returns the participant with id, or nil.
 func (d *Diagram) participant(id string) *Participant {
-	for _, p := range d.Participants {
-		if p.ID == id {
-			return p
-		}
+	if i, ok := d.index[id]; ok {
+		return d.Participants[i]
 	}
 	return nil
 }

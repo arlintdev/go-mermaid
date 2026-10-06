@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="198" height="228" viewBox="0 0 198 228" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><marker id="m1pzkk88-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
+  <g transform="translate(16,16)">
+<g transform="translate(0,0)">
+<path d="M83,14 C83,44 83,44 83,74" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1pzkk88-arrow)"/>
+<path d="M78.33,102 C78.33,132 31.5,132 31.5,162" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1pzkk88-arrow)"/>
+<path d="M87.67,102 C87.67,132 134.5,132 134.5,162" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1pzkk88-arrow)"/>
+<polygon points="83,74 97,88 83,102 69,88" fill="#ECECFF" stroke="#9370DB"/>
+<circle cx="83" cy="7" r="7" fill="#333333"/>
+<rect x="0" y="162" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="31.5" y="183.9">A</tspan></text>
+<rect x="103" y="162" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="134.5" y="183.9">B</tspan></text>
+<rect x="47.77" y="121.81" width="14.3" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="54.92" y="136.41">x</tspan></text>
+<rect x="103.93" y="121.81" width="14.3" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="111.08" y="136.41">y</tspan></text>
+</g>
+  </g>
+</svg>
