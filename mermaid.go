@@ -101,96 +101,115 @@ func Render(src string, opts ...Option) (out []byte, err error) {
 	case kindSequence:
 		raw, err = sequence.Render(body, sequence.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindPie:
 		raw, err = pie.Render(body, pie.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindClass:
 		raw, err = class.Render(body, class.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindState:
 		raw, err = state.Render(body, state.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindER:
 		raw, err = er.Render(body, er.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindJourney:
 		raw, err = journey.Render(body, journey.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindQuadrant:
 		raw, err = quadrant.Render(body, quadrant.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindGit:
 		raw, err = gitgraph.Render(body, gitgraph.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindTimeline:
 		raw, err = timeline.Render(body, timeline.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindMindmap:
 		raw, err = mindmap.Render(body, mindmap.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindGantt:
 		raw, err = gantt.Render(body, gantt.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindC4:
 		raw, err = c4.Render(body, c4.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindRequirement:
 		raw, err = requirement.Render(body, requirement.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindSankey:
 		raw, err = sankey.Render(body, sankey.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindXYChart:
 		raw, err = xychart.Render(body, xychart.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindBlock:
 		raw, err = block.Render(body, block.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindKanban:
 		raw, err = kanban.Render(body, kanban.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindPacket:
 		raw, err = packet.Render(body, packet.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	case kindRadar:
 		raw, err = radar.Render(body, radar.RenderOptions{
 			Theme: string(cfg.theme), FontFace: cfg.fontFace, FontSize: cfg.fontSize, Padding: cfg.padding, Title: title,
+			IDPrefix: cfg.idPrefix,
 		})
 		err = wrapParse(err)
 	default:
@@ -251,10 +270,7 @@ func renderFlowchart(src string, cfg config, title string) ([]byte, error) {
 	if !cfg.themeSet {
 		ro.Vars = cfg.themeVars
 	}
-	ro.IDPrefix = cfg.idPrefix
-	if ro.IDPrefix == "" {
-		ro.IDPrefix = svgid.Prefix(src)
-	}
+	ro.IDPrefix = svgid.For(cfg.idPrefix, src)
 	svg, err := render.SVG(laid, ro)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrRender, err)

@@ -21,6 +21,9 @@ type RenderOptions struct {
 	FontSize float64
 	Padding  float64
 	Title    string
+	// IDPrefix starts every id in the picture; empty derives one from the
+	// source (see svgid.For).
+	IDPrefix string
 }
 
 const (
@@ -47,7 +50,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		fs = 14
 	}
 	c := &ctx{d: d, o: o, pal: theme.For(o.Theme), face: svgutil.FaceFor(o.FontFace), fs: fs, lh: fs * 1.3,
-		id: svgid.Prefix(src), dir: domain.DirectionOf(d.Direction), done: map[string]bool{}}
+		id: svgid.For(o.IDPrefix, src), dir: domain.DirectionOf(d.Direction), done: map[string]bool{}}
 	root, err := c.region("", 0, c.dir)
 	if err != nil {
 		return nil, err

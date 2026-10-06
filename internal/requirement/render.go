@@ -21,6 +21,9 @@ type RenderOptions struct {
 	FontSize float64
 	Padding  float64
 	Title    string
+	// IDPrefix starts every id in the picture; empty derives one from the
+	// source (see svgid.For).
+	IDPrefix string
 }
 
 const maxTextW = 220.0 // field values wrap near this width
@@ -55,7 +58,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return svg(d, g, res, o, m, svgid.Prefix(src)), nil
+	return svg(d, g, res, o, m, svgid.For(o.IDPrefix, src)), nil
 }
 
 // header is the stereotype and name lines of a node.

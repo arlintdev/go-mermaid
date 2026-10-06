@@ -17,6 +17,9 @@ type RenderOptions struct {
 	FontSize float64
 	Padding  float64
 	Title    string
+	// IDPrefix starts every id in the picture; empty derives one from the
+	// source (see svgid.For).
+	IDPrefix string
 }
 
 // Render parses, lays out, and renders sequence diagram source to SVG.
@@ -32,7 +35,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		o.Title = d.Title
 	}
 	lay := Compute(d, Options{FontSize: o.FontSize, Padding: o.Padding, FontFace: o.FontFace})
-	return svg(lay, o, svgid.Prefix(src)), nil
+	return svg(lay, o, svgid.For(o.IDPrefix, src)), nil
 }
 
 // colours are the escaped colours of a sequence diagram.
