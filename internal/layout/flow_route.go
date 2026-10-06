@@ -209,17 +209,37 @@ func (f *flowGraph) trackY(g, t int) float64 {
 	return top + (bottom-top)*float64(t+1)/float64(n+1)
 }
 
-// routeSelf draws a loop on the trailing cross side of the node.
+// routeSelf draws a loop on the trailing cross side of the node, nested
+// outside any loop drawn before it, with its label beyond the outermost.
 func (f *flowGraph) routeSelf(e *fedge) {
 	n := e.from
-	out := 22.0
+	out := loopOut + loopStep*float64(e.loop)
 	side := n.x + n.cs/2
-	q := n.ps / 4
+	q := n.ps/4 + 3*float64(e.loop)
+	q = math.Min(q, n.ps/2-2)
 	e.rpts = []rpt{{side, n.p - q}, {side + out, n.p - q}, {side + out, n.p + q}, {side, n.p + q}}
-	if e.e.Label != "" {
-		lps, lcs := f.toRank(e.e.LabelSize)
-		_ = lps
-		e.labelAt = rpt{side + out + 4 + lcs/2, n.p}
+	if e.e.Label == "" {
+		return
+	}
+	// Stack the labels of this node's loops along the rank axis.
+	var mine []*fedge
+	total := 0.0
+	for _, o := range f.edges {
+		if o.self && o.from == n && o.e.Label != "" && !o.invisible {
+			mine = append(mine, o)
+			ps, _ := f.toRank(o.e.LabelSize)
+			total += ps + 4
+		}
+	}
+	p := n.p - total/2
+	maxOut := n.loopRoom
+	for _, o := range mine {
+		ps, cs := f.toRank(o.e.LabelSize)
+		if o == e {
+			e.labelAt = rpt{side + maxOut - cs/2, p + ps/2 + 2}
+			return
+		}
+		p += ps + 4
 	}
 }
 

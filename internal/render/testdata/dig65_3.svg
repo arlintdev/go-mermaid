@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1073.02" height="2961.18" viewBox="0 0 1073.02 2961.18" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m1kjdka4-arrow-0" viewBox="0 0 10 11" refX="0" refY="5.5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="11" orient="auto-start-reverse"><path d="M0,0 L10,5.5 L0,11 z" fill="#333333"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(16,16)">
+    <path d="M547.8,72 L547.8,112" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M479.8,218 L479.8,225.5 Q479.8,230.5 474.8,230.5 L354.72,230.5 Q349.72,230.5 349.72,235.5 L349.72,286" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M254.43,581.89 L254.43,684.68 Q254.43,689.68 249.43,689.68 L81.93,689.68 Q76.93,689.68 76.93,694.68 L76.93,769.18" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M278.96,606.42 L278.96,769.18" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M445.02,581.89 L445.02,684.68 Q445.02,689.68 450.02,689.68 L503.98,689.68 Q508.98,689.68 508.98,694.68 L508.98,769.18" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M508.98,995.18 L508.98,1059.18" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M508.98,1453.18 L508.98,1593.18" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M508.98,1915.18 L508.98,1955.18" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M508.98,2277.18 L508.98,2317.18" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M508.98,2663.18 L508.98,2703.18" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M574.31,218 L574.31,761.68 Q574.31,766.68 579.31,766.68 L669.74,766.68 Q670.99,766.68 670.99,767.93 L670.99,769.18" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M615.8,218 L615.8,225.5 Q615.8,230.5 620.8,230.5 L714.37,230.5 Q719.37,230.5 719.37,235.5 L719.37,286" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M719.37,488 L719.37,769.18" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M940.99,464 L940.99,769.18" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M738.99,1019.18 L738.99,1051.68 Q738.99,1056.68 743.99,1056.68 L768.1,1056.68 Q773.1,1056.68 773.1,1061.68 L773.1,1066.78" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M940.99,923.18 L940.99,1051.68 Q940.99,1056.68 935.99,1056.68 L914.1,1056.68 Q909.1,1056.68 909.1,1061.68 L909.1,1066.78" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M773.1,1137.03 L773.1,1460.68 Q773.1,1465.68 768.1,1465.68 L738.22,1465.68 Q733.22,1465.68 733.22,1470.68 L733.22,1593.18" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <path d="M909.1,1137.03 L909.1,1460.68 Q909.1,1465.68 914.1,1465.68 L946.21,1465.68 Q951.21,1465.68 951.21,1470.68 L951.21,1593.18" fill="none" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#m1kjdka4-arrow-0)"/>
+    <rect x="0" y="714.18" width="153.86" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76.93" y="733.78">held by a run of ours</tspan></text>
+    <rect x="181.57" y="702.18" width="194.78" height="52" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278.96" y="721.78">not ours, open to others, a</tspan><tspan x="278.96" y="745.78">link, cannot be made</tspan></text>
+    <rect x="485.41" y="714.18" width="47.14" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="508.98" y="733.78">taken</tspan></text>
+    <rect x="535.63" y="243" width="77.38" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="574.31" y="262.6">each step</tspan></text>
+    <rect x="638" y="243" width="162.74" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="719.37" y="262.6">the unit fails, however</tspan></text>
+    <rect x="844.05" y="714.18" width="193.89" height="28" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="940.99" y="733.78">once the database is back</tspan></text>
+    <rect x="630.06" y="1478.18" width="206.34" height="100" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="733.22" y="1497.78">backup_failed,</tspan><tspan x="733.22" y="1521.78">backup_restored;</tspan><tspan x="733.22" y="1545.78">backup_skipped the second</tspan><tspan x="733.22" y="1569.78">time in 36 hours</tspan></text>
+    <rect x="861.39" y="1502.18" width="179.63" height="52" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="951.21" y="1521.78">newest backup_verified,</tspan><tspan x="951.21" y="1545.78">backup_files_verified</tspan></text>
+    <rect x="471.8" y="0" width="152" height="72" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="547.8" y="29.6">digin-</tspan><tspan x="547.8" y="53.6">backup.timer</tspan></text>
+    <rect x="471.8" y="122" width="152" height="96" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="547.8" y="151.6">make backup-</tspan><tspan x="547.8" y="175.6">nightly:</tspan><tspan x="547.8" y="199.6">tools/backups.sh</tspan></text>
+    <polygon points="349.72,296 540.31,486.59 349.72,677.18 159.13,486.59" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="349.72" y="384.19">lock:</tspan><tspan x="349.72" y="408.19">.locks/digin-</tspan><tspan x="349.72" y="432.19">backup.lock in</tspan><tspan x="349.72" y="456.19">the checkout,</tspan><tspan x="349.72" y="480.19">the directory</tspan><tspan x="349.72" y="504.19">mode 700; both</tspan><tspan x="349.72" y="528.19">the running</tspan><tspan x="349.72" y="552.19">account&#39;s and</tspan><tspan x="349.72" y="576.19">open to nobody</tspan><tspan x="349.72" y="600.19">else</tspan></text>
+    <rect x="0.9" y="779.18" width="152.06" height="120" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76.93" y="808.78">Skipped: nothing</tspan><tspan x="76.93" y="832.78">done,</tspan><tspan x="76.93" y="856.78">backup_skipped,</tspan><tspan x="76.93" y="880.78">exit 0</tspan></text>
+    <rect x="202.96" y="779.18" width="152" height="120" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278.96" y="808.78">refused: nothing</tspan><tspan x="278.96" y="832.78">done,</tspan><tspan x="278.96" y="856.78">backup_failed at</tspan><tspan x="278.96" y="880.78">lock, exit 1</tspan></text>
+    <rect x="404.96" y="779.18" width="208.03" height="216" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="508.98" y="808.78">make backup:</tspan><tspan x="508.98" y="832.78">pg_dump in the</tspan><tspan x="508.98" y="856.78">db container,</tspan><tspan x="508.98" y="880.78">sealed by the</tspan><tspan x="508.98" y="904.78">host&#39;s openssl to</tspan><tspan x="508.98" y="928.78">DIGIN_BACKUP_CERT,</tspan><tspan x="508.98" y="952.78">into the digin-</tspan><tspan x="508.98" y="976.78">backups volume</tspan></text>
+    <rect x="397.38" y="1069.18" width="223.18" height="384" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="508.98" y="1098.78">take the files: digin files</tspan><tspan x="508.98" y="1122.78">snapshot in the app&#39;s</tspan><tspan x="508.98" y="1146.78">container, unpacked</tspan><tspan x="508.98" y="1170.78">beside the dump as digin-</tspan><tspan x="508.98" y="1194.78">moment.files.part, each file</tspan><tspan x="508.98" y="1218.78">named by the hash of its</tspan><tspan x="508.98" y="1242.78">sealed bytes; what the</tspan><tspan x="508.98" y="1266.78">night before holds with the</tspan><tspan x="508.98" y="1290.78">same bytes hard-linked by</tspan><tspan x="508.98" y="1314.78">its sum, not sent; the</tspan><tspan x="508.98" y="1338.78">INDEX (snapshot name to</tspan><tspan x="508.98" y="1362.78">data-volume name) sealed</tspan><tspan x="508.98" y="1386.78">to DIGIN_BACKUP_CERT</tspan><tspan x="508.98" y="1410.78">as INDEX.cms, plain only</tspan><tspan x="508.98" y="1434.78">with no certificate</tspan></text>
+    <rect x="410.73" y="1603.18" width="196.5" height="312" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="508.98" y="1632.78">verify the dump:</tspan><tspan x="508.98" y="1656.78">make backup-verify</tspan><tspan x="508.98" y="1680.78">parses the whole</tspan><tspan x="508.98" y="1704.78">CMS envelope; the</tspan><tspan x="508.98" y="1728.78">envelope names the</tspan><tspan x="508.98" y="1752.78">certificate&#39;s issuer</tspan><tspan x="508.98" y="1776.78">and serial; size at</tspan><tspan x="508.98" y="1800.78">least 64 KB. With</tspan><tspan x="508.98" y="1824.78">DIGIN_BACKUP_KEY,</tspan><tspan x="508.98" y="1848.78">or a plain dump,</tspan><tspan x="508.98" y="1872.78">pg_restore reads the</tspan><tspan x="508.98" y="1896.78">contents too</tspan></text>
+    <rect x="422.26" y="1965.18" width="173.44" height="312" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="508.98" y="1994.78">verify the files: the</tspan><tspan x="508.98" y="2018.78">app found every file</tspan><tspan x="508.98" y="2042.78">the database points</tspan><tspan x="508.98" y="2066.78">at and each opened</tspan><tspan x="508.98" y="2090.78">to its name;</tspan><tspan x="508.98" y="2114.78">sha256sum -c</tspan><tspan x="508.98" y="2138.78">SHA256SUMS</tspan><tspan x="508.98" y="2162.78">beside the dumps;</tspan><tspan x="508.98" y="2186.78">INDEX.cms</tspan><tspan x="508.98" y="2210.78">addressed to the</tspan><tspan x="508.98" y="2234.78">certificate; then</tspan><tspan x="508.98" y="2258.78">renamed to .files</tspan></text>
+    <rect x="354.5" y="2327.18" width="308.96" height="336" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="508.98" y="2356.78">copy to</tspan><tspan x="508.98" y="2380.78">DIGIN_BACKUP_COPY_TO:</tspan><tspan x="508.98" y="2404.78">the dump (SHA-256</tspan><tspan x="508.98" y="2428.78">checked) and the</tspan><tspan x="508.98" y="2452.78">snapshot (linked to the</tspan><tspan x="508.98" y="2476.78">one before by sum, read</tspan><tspan x="508.98" y="2500.78">back whole, or with</tspan><tspan x="508.98" y="2524.78">DIGIN_BACKUP_COPY_CHECK=new</tspan><tspan x="508.98" y="2548.78">only what was sent and</tspan><tspan x="508.98" y="2572.78">all of it weekly; or a tar</tspan><tspan x="508.98" y="2596.78">to a command); sealed</tspan><tspan x="508.98" y="2620.78">only, index sealed only;</tspan><tspan x="508.98" y="2644.78">never removes a copy</tspan></text>
+    <rect x="399.62" y="2713.18" width="218.7" height="216" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="508.98" y="2742.78">prune: dumps</tspan><tspan x="508.98" y="2766.78">and snapshots</tspan><tspan x="508.98" y="2790.78">older than</tspan><tspan x="508.98" y="2814.78">DIGIN_BACKUP_RETAIN</tspan><tspan x="508.98" y="2838.78">days, never the</tspan><tspan x="508.98" y="2862.78">newest; skipped</tspan><tspan x="508.98" y="2886.78">when the files</tspan><tspan x="508.98" y="2910.78">did not verify</tspan></text>
+    <rect x="662.99" y="779.18" width="152" height="240" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="738.99" y="808.78">digin backup</tspan><tspan x="738.99" y="832.78">record, in the</tspan><tspan x="738.99" y="856.78">app&#39;s container:</tspan><tspan x="738.99" y="880.78">backup_taken /</tspan><tspan x="738.99" y="904.78">verified /</tspan><tspan x="738.99" y="928.78">files_taken /</tspan><tspan x="738.99" y="952.78">files_verified /</tspan><tspan x="738.99" y="976.78">copied / pruned /</tspan><tspan x="738.99" y="1000.78">failed / skipped</tspan></text>
+    <rect x="643.37" y="296" width="152" height="192" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="719.37" y="325.6">OnFailure=:</tspan><tspan x="719.37" y="349.6">digin-backup-</tspan><tspan x="719.37" y="373.6">failed.service,</tspan><tspan x="719.37" y="397.6">make backup-</tspan><tspan x="719.37" y="421.6">failed:</tspan><tspan x="719.37" y="445.6">tools/backups.sh</tspan><tspan x="719.37" y="469.6">unit-failed</tspan></text>
+    <rect x="864.99" y="296" width="152" height="168" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="940.99" y="325.6">make restore /</tspan><tspan x="940.99" y="349.6">make restore-</tspan><tspan x="940.99" y="373.6">files, by hand:</tspan><tspan x="940.99" y="397.6">tools/backups.sh</tspan><tspan x="940.99" y="421.6">restore, restore-</tspan><tspan x="940.99" y="445.6">files</tspan></text>
+    <rect x="864.99" y="779.18" width="152" height="144" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="940.99" y="808.78">digin backup</tspan><tspan x="940.99" y="832.78">record restored /</tspan><tspan x="940.99" y="856.78">files-restored,</tspan><tspan x="940.99" y="880.78">into the log put</tspan><tspan x="940.99" y="904.78">back</tspan></text>
+    <path d="M765.1,1082.9 A76,13.72 0 0 1 917.1,1082.9 L917.1,1130.9 A76,13.72 0 0 1 765.1,1130.9 Z" fill="#ECECFF" stroke="#9370DB"/><path d="M765.1,1082.9 A76,13.72 0 0 0 917.1,1082.9" fill="none" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="841.1" y="1119.36">audit_events</tspan></text>
+    <rect x="657.22" y="1603.18" width="152" height="192" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="733.22" y="1632.78">security alert:</tspan><tspan x="733.22" y="1656.78">the</tspan><tspan x="733.22" y="1680.78">organisation&#39;s</tspan><tspan x="733.22" y="1704.78">administrators</tspan><tspan x="733.22" y="1728.78">and auditors,</tspan><tspan x="733.22" y="1752.78">and the</tspan><tspan x="733.22" y="1776.78">webhook</tspan></text>
+    <rect x="869.39" y="1603.18" width="163.63" height="168" fill="#ECECFF" stroke="#9370DB"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="951.21" y="1632.78">integrity run:</tspan><tspan x="951.21" y="1656.78">backup.never /</tspan><tspan x="951.21" y="1680.78">backup.stale, a</tspan><tspan x="951.21" y="1704.78">baseline finding;</tspan><tspan x="951.21" y="1728.78">baseline_departed</tspan><tspan x="951.21" y="1752.78">is an alert</tspan></text>
+  </g>
+</svg>

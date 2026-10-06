@@ -1,0 +1,17 @@
+flowchart TD
+  A[Start] -->|piped| B[Two]
+  A -- bare words --> C[Three]
+  A -- "quoted, with a comma: and colon" --> D[Four]
+  B -. dotted label .-> E[Five]
+  C == thick label ==> E
+  D -->|"piped, quoted (parens)"| E
+  E ---|open link label| F[Six]
+  E --o G[Circle end]
+  E --x H[Cross end]
+  F <--> G
+  G -.-> H
+  H ==> I[Nine]
+  I ~~~ J[Invisible link]
+  J ----> K[Long arrow]
+  A & B --> L[Fan-in]
+  L --> M --> N[Chain]

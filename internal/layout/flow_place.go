@@ -74,12 +74,12 @@ func (f *flowGraph) placeCross() {
 	for _, layer := range f.layers {
 		x := 0.0
 		for _, n := range layer {
-			x += n.cs / 2
+			x += n.lx()
 			root := blockOf[n]
 			if bv[root] == nil {
 				bv[root] = s.addVar(x, 1)
 			}
-			x += n.cs/2 + f.sepOf(n)
+			x += n.rx() + f.sepOf(n)
 		}
 	}
 	varOf := func(n *fnode) *vvar { return bv[blockOf[n]] }
@@ -109,15 +109,15 @@ func (f *flowGraph) placeCross() {
 			a, b := toks[i-1], toks[i]
 			switch {
 			case a.n != nil && b.n != nil:
-				s.constrain(varOf(a.n), varOf(b.n), (a.n.cs+b.n.cs)/2+(f.sepOf(a.n)+f.sepOf(b.n))/2)
+				s.constrain(varOf(a.n), varOf(b.n), a.n.rx()+b.n.lx()+(f.sepOf(a.n)+f.sepOf(b.n))/2)
 			case a.n != nil && !b.close:
-				s.constrain(varOf(a.n), lo[b.cl], a.n.cs/2+f.outerGap(a.n))
+				s.constrain(varOf(a.n), lo[b.cl], a.n.rx()+f.outerGap(a.n))
 			case a.n != nil && b.close:
-				s.constrain(varOf(a.n), hi[b.cl], a.n.cs/2+f.innerGap(a.n))
+				s.constrain(varOf(a.n), hi[b.cl], a.n.rx()+f.innerGap(a.n))
 			case !a.close && b.n != nil:
-				s.constrain(lo[a.cl], varOf(b.n), b.n.cs/2+f.innerGap(b.n)+titleRoom(a.cl))
+				s.constrain(lo[a.cl], varOf(b.n), b.n.lx()+f.innerGap(b.n)+titleRoom(a.cl))
 			case a.close && b.n != nil:
-				s.constrain(hi[a.cl], varOf(b.n), b.n.cs/2+f.outerGap(b.n))
+				s.constrain(hi[a.cl], varOf(b.n), b.n.lx()+f.outerGap(b.n))
 			case !a.close && !b.close:
 				s.constrain(lo[a.cl], lo[b.cl], clusterPad+titleRoom(a.cl))
 			case a.close && b.close:
@@ -164,7 +164,7 @@ func (f *flowGraph) placeCross() {
 	minX := math.Inf(1)
 	for _, n := range f.nodes {
 		n.x = varOf(n).x
-		minX = math.Min(minX, n.x-n.cs/2)
+		minX = math.Min(minX, n.x-n.lx())
 	}
 	for i, c := range f.clusters {
 		if lo[i] != nil {
@@ -250,8 +250,19 @@ func (f *flowGraph) alignBlocks() map[*fnode]*fnode {
 
 // alignable reports whether u (one layer up) and v may share an x: neither
 // may sit, outside a cluster, on a layer that cluster spans while the other
-// is inside it.
+// is inside it, and both must lie on the same side of every cluster that
+// holds neither of them on both their layers.
 func (f *flowGraph) alignable(u, v *fnode) bool {
+	for c := range f.clusters {
+		if containsInt(u.path, c) || containsInt(v.path, c) {
+			continue
+		}
+		su, okU := f.sideOf(u, c)
+		sv, okV := f.sideOf(v, c)
+		if okU && okV && su != sv {
+			return false
+		}
+	}
 	for _, c := range v.path {
 		if !containsInt(u.path, c) && f.clusters[c].minRank <= u.rank {
 			return false
@@ -263,6 +274,29 @@ func (f *flowGraph) alignable(u, v *fnode) bool {
 		}
 	}
 	return true
+}
+
+// sideOf tells whether n lies left (-1) or right (1) of cluster c's members
+// on n's layer; ok is false when c has no members there.
+func (f *flowGraph) sideOf(n *fnode, c int) (side int, ok bool) {
+	lo, hi := -1, -1
+	for _, m := range f.layers[n.rank] {
+		if containsInt(m.path, c) {
+			if lo < 0 {
+				lo = m.order
+			}
+			hi = m.order
+		}
+	}
+	switch {
+	case lo < 0:
+		return 0, false
+	case n.order < lo:
+		return -1, true
+	case n.order > hi:
+		return 1, true
+	}
+	return 0, true
 }
 
 func sortStable(n int, less func(i, j int) bool, swap func(i, j int)) {
@@ -301,7 +335,7 @@ func (f *flowGraph) placePrimary() {
 	f.bandH = make([]float64, nl)
 	for r, layer := range f.layers {
 		for _, n := range layer {
-			f.bandH[r] = math.Max(f.bandH[r], n.ps)
+			f.bandH[r] = math.Max(f.bandH[r], math.Max(n.ps, n.loopPS))
 		}
 	}
 	// Extra room at the top (start) and bottom (end) of each layer for

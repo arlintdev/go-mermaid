@@ -1,0 +1,15 @@
+flowchart TD
+  B[Browser tab] -->|HTTPS| P[Proxy: Traefik, or any other]
+  A[MCP client] -->|HTTPS| P
+  P -->|HTTP or TLS, port 3000| S[digin serve]
+  S --> R["/api/v1: JSON API"]
+  S --> L["/api/v1/live: server-sent events"]
+  S --> M["/mcp and /oauth: MCP and its OAuth server"]
+  S --> AU["/auth: OIDC sign-in, when configured"]
+  S --> W["/: the embedded web app"]
+  R --> ST[store: the only package that talks to PostgreSQL]
+  M --> ST
+  ST --> PG[(PostgreSQL 17)]
+  R --> V[vault: sealed files under DIGIN_DATA_DIR/files]
+  ST -. publishes after commit .-> H[realtime hub, in memory]
+  H --> L

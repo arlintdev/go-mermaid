@@ -1,0 +1,10 @@
+flowchart TD
+  A[Critical]:::danger --> B[Normal]
+  B --> C[Done]
+  B --> D[Warning]
+  classDef danger fill:#ffcccc,stroke:#c0392b,stroke-width:3px,color:#7b241c;
+  classDef ok fill:#d5f5e3,stroke:#1e8449;
+  class C ok;
+  style D fill:#fdebd0,stroke:#d68910,stroke-width:2px,stroke-dasharray: 5 5
+  linkStyle 0 stroke:#c0392b,stroke-width:3px;
+  linkStyle 2 stroke:#d68910,stroke-dasharray: 4 2

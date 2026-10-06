@@ -1,0 +1,15 @@
+flowchart LR
+  subgraph cloud[Cloud]
+    direction TB
+    subgraph web[Web tier]
+      lb[Load balancer] --> app1[App 1]
+      lb --> app2[App 2]
+    end
+    subgraph data[Data tier]
+      db[(Primary)] --> rep[(Replica)]
+    end
+    app1 --> db
+    app2 --> db
+  end
+  user((User)) --> lb
+  data --> backup[Backups]

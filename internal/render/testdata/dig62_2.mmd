@@ -1,0 +1,7 @@
+flowchart TD
+  A[Browser A] <-->|audio, video, screen| B[Browser B]
+  A <-->|audio, video, screen| C[Browser C]
+  B <-->|audio, video, screen| C
+  A -. call setup over HTTP POST .-> S[Digin server: hub]
+  S -. setup down the SSE stream .-> B
+  S -. setup down the SSE stream .-> C

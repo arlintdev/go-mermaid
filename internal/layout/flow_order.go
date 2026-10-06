@@ -1,6 +1,9 @@
 package layout
 
-import "sort"
+import (
+	"math"
+	"sort"
+)
 
 // endPath is the cluster path an edge end lives in: a node's own path, or
 // for an end that names a subgraph, the path of the subgraph's parent, since
@@ -70,10 +73,47 @@ func (f *flowGraph) buildLayers() {
 			b.ups = append(b.ups, nbr{a, w})
 		}
 	}
+	f.reserveLoops()
 	f.addFillers(maxRank)
 	f.layers = make([][]*fnode, maxRank+1)
 	for _, n := range f.nodes {
 		f.layers[n.rank] = append(f.layers[n.rank], n)
+	}
+}
+
+// Self-loop geometry: the first loop reaches loopOut beyond the node, each
+// further one loopStep more, and labels sit past the outermost loop.
+const (
+	loopOut  = 18.0
+	loopStep = 12.0
+)
+
+// reserveLoops makes room beside each node for its self-loops and their
+// labels, so neither lands on a neighbour.
+func (f *flowGraph) reserveLoops() {
+	count := map[*fnode]int{}
+	for _, e := range f.edges {
+		if !e.self || e.invisible {
+			continue
+		}
+		n := e.from
+		e.loop = count[n]
+		count[n]++
+		n.loopRoom = math.Max(n.loopRoom, loopOut+loopStep*float64(e.loop)+2)
+	}
+	labelW := map[*fnode]float64{}
+	labelH := map[*fnode]float64{}
+	for _, e := range f.edges {
+		if !e.self || e.invisible || e.e.Label == "" {
+			continue
+		}
+		ps, cs := f.toRank(e.e.LabelSize)
+		labelW[e.from] = math.Max(labelW[e.from], cs)
+		labelH[e.from] += ps + 4
+	}
+	for n, w := range labelW {
+		n.loopRoom += 6 + w
+		n.loopPS = labelH[n]
 	}
 }
 

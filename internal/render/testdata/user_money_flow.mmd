@@ -1,0 +1,14 @@
+flowchart TD
+    A["Client pays invoice"] --> B["Business checking"]
+    B --> C["Card payments<br/>(expenses, subscriptions)"]
+    B --> D["Tax reserve (30% off the top)"]
+    B --> E["Owner's account<br/>(draw — not payroll)"]
+    B --> F["25th of each month: payroll runs"]
+    F --> G["Salary → provider → 401(k) deferral"]
+    F --> H["Payroll taxes → federal & state"]
+    classDef business fill:#e3f2fd,stroke:#1565c0;
+    classDef out fill:#fff3e0,stroke:#e65100;
+    classDef personal fill:#f1f8e9,stroke:#558b2f;
+    class B,C,D,F business;
+    class E personal;
+    class G,H out;

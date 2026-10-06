@@ -1,0 +1,21 @@
+flowchart TD
+  subgraph HOST[The app's host: one compose project]
+    A[digin: port 3000, from the proxy]
+    M[migrate: once, before the app]
+    D[(digin-db: PostgreSQL 17)]
+    PV[(digin-pgdata)]
+    FV[(digin-data: sealed files)]
+    S[Malware scanner]
+    subgraph SIGNER[The anchor signer]
+      SG[anchor-signer: holds the key]
+      AN[(Anchor file: append-only)]
+    end
+  end
+  M -->|as the owner| D
+  A -->|owns nothing| D
+  D --- PV
+  A -->|sealed| FV
+  A --> S
+  A -->|why an anchor| SG
+  SG -->|the audit log only| D
+  SG -->|signed tip| AN

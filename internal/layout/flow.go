@@ -186,7 +186,15 @@ type fnode struct {
 	ups     []nbr
 	downs   []nbr
 	sepKind int // sepReal, sepLabel or sepDummy
+	// loopRoom is extra room on the trailing cross side for self-loops and
+	// their labels, and loopPS the depth their labels need.
+	loopRoom, loopPS float64
 }
+
+// lx and rx are how far the node reaches left and right of its centre on
+// the cross axis, self-loops included.
+func (n *fnode) lx() float64 { return n.cs / 2 }
+func (n *fnode) rx() float64 { return n.cs/2 + n.loopRoom }
 
 type nbr struct {
 	n *fnode
@@ -210,6 +218,7 @@ type fedge struct {
 	chain        []*fnode
 	label        *fnode
 	self         bool
+	loop         int // which self-loop on its node, from the inside out
 	invisible    bool
 	// routed, in rank space
 	rpts    []rpt

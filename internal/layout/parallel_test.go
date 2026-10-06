@@ -4,8 +4,8 @@ import (
 	"math"
 	"testing"
 
-	. "github.com/smartystreets/goconvey/convey"
 	"github.com/arlintdev/go-mermaid/internal/domain"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 // overlaps reports whether two axis-aligned rects intersect.

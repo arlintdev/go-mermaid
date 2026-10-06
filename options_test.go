@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	. "github.com/smartystreets/goconvey/convey"
 	mermaid "github.com/arlintdev/go-mermaid"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestOptions(t *testing.T) {

@@ -1,0 +1,24 @@
+flowchart TD
+  A[Request] --> N["asNobody: store.Nobody(ctx)"]
+  N --> B[authenticator.middleware or the MCP endpoint: ScopeFor]
+  B --> C["store.AsPerson(ctx, user, scope)"]
+  W[A bot is woken: named, handed an issue, a watch, a task] --> BB["store.AsBot(ctx, bot), or AsBotFor(ctx, bot, person) for a task"]
+  FH[A forge delivery whose signature holds] --> FC["store.AsConnection(ctx, connection)"]
+  SC[A SCIM request whose token holds] --> SP["store.AsProvisioning(ctx, token)"]
+  SP --> D
+  C --> D["scopedConn.hold before each statement, with digin.proof, the store's HMAC of whose it is"]
+  N -->|no one known yet| D
+  BB --> D
+  FC --> D
+  D -->|a person| E["SET role digin_app, digin.actor = user id, digin.reach"]
+  D -->|a bot| EB["SET role digin_app, digin.actor = bot's user id, digin.reach = bot:B or bot:B@U"]
+  D -->|nobody| EN["SET role digin_app, digin.actor = nobody"]
+  D -->|a forge connection| EF["SET role digin_app, digin.actor = forge, digin.reach = connection:C"]
+  D -->|the identity provider| ES["SET role digin_app, digin.actor = provisioning, digin.reach = scim:T"]
+  D -->|no actor in ctx, or store.Unscoped| F["The server's own work: on its own login as digin_system; on one login of the server's, the same; as the login itself where that is a superuser or the tables' owner; inside somebody's transaction, digin_app vouched for as system. digin.actor = system"]
+  E --> G["Policies: member workspaces, their projects, what is under them, their own conversations"]
+  EB --> GB["Policies: digin_bot_reach, its workspace, granted projects, its channels; no writes where read-only"]
+  EN --> GN[Policies: no row of any table]
+  EF --> GF["Policies: the connection's workspace while it is on"]
+  ES --> GS["Policies: accounts, memberships as member, its groups, no administrator, default channels by id; no workspace's work"]
+  F --> H["Planned with no policy, or past them as system; the app's own rules"]

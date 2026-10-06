@@ -4,8 +4,8 @@ import (
 	"math"
 	"testing"
 
-	. "github.com/smartystreets/goconvey/convey"
 	"github.com/arlintdev/go-mermaid/internal/domain"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 // primarySpan returns the extent of a node along the layout's rank axis.
