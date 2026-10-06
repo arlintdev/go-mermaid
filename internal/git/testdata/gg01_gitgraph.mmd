@@ -1,0 +1,13 @@
+gitGraph
+  commit
+  commit id: "feat"
+  branch develop
+  checkout develop
+  commit
+  commit tag: "v1.1-rc"
+  checkout main
+  merge develop tag: "v1.1"
+  branch hotfix
+  commit type: HIGHLIGHT
+  checkout main
+  merge hotfix
