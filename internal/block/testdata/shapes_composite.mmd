@@ -1,0 +1,16 @@
+block-beta
+  columns 3
+  a["Start"] b(("Hub")) c{"Ready?"}
+  block:grp:2
+    columns 2
+    d[("Store")] e{{"Queue"}}
+  end
+  f>"Flag"]
+  g(["Pill"]) arr<["send"]>(right) h[["Sub"]]
+  a --> b
+  b -- "checks" --> c
+  c --> f
+  d <--> e
+  style b fill:#ffe0b2,stroke:#e65100,stroke-width:2px
+  classDef warm fill:#fff3e0
+  class g warm

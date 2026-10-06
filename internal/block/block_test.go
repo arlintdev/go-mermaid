@@ -2,66 +2,98 @@ package block
 
 import (
 	"testing"
-
-	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestParse(t *testing.T) {
-	Convey("Given a block diagram with columns and spans", t, func() {
-		src := "block-beta\ncolumns 3\na b c\nd[\"wide block\"]:2 e"
-
-		Convey("When parsing", func() {
-			d, err := Parse(src)
-
-			Convey("Then columns and rows parse", func() {
-				So(err, ShouldBeNil)
-				So(d.Columns, ShouldEqual, 3)
-				So(len(d.Rows), ShouldEqual, 2)
-				So(len(d.Rows[0]), ShouldEqual, 3)
-			})
-
-			Convey("Then a labeled spanning block parses", func() {
-				wide := d.Rows[1][0]
-				So(wide.ID, ShouldEqual, "d")
-				So(wide.Label, ShouldEqual, "wide block")
-				So(wide.Span, ShouldEqual, 2)
-			})
-		})
-	})
-
-	Convey("Given no explicit columns", t, func() {
-		Convey("When parsing", func() {
-			d, err := Parse("block-beta\na b c d")
-
-			Convey("Then columns default to the widest row", func() {
-				So(err, ShouldBeNil)
-				So(d.Columns, ShouldEqual, 4)
-			})
-		})
-	})
-
-	Convey("Given no header", t, func() {
-		Convey("When parsing", func() {
-			_, err := Parse("columns 2")
-
-			Convey("Then it returns an error", func() {
-				So(err, ShouldNotBeNil)
-			})
-		})
-	})
+func TestParseFlow(t *testing.T) {
+	d, err := Parse("block-beta\ncolumns 3\na b c\nd[\"wide block\"]:2 e")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if d.Columns() != 3 || len(d.Root.Children) != 5 {
+		t.Fatalf("columns %d, children %d", d.Columns(), len(d.Root.Children))
+	}
+	wide := d.Root.Children[3]
+	if wide.ID != "d" || wide.Label != "wide block" || wide.Span != 2 {
+		t.Errorf("wide block: %+v", wide)
+	}
+	if _, err := Parse("columns 2"); err == nil {
+		t.Error("source without a header must be refused")
+	}
 }
 
-func TestRender(t *testing.T) {
-	Convey("Given a block diagram, when rendering", t, func() {
-		out, err := Render("block-beta\ncolumns 2\na b\nc[\"wide\"]:2",
-			RenderOptions{Theme: "default", FontSize: 14, Padding: 16})
-		svg := string(out)
+func TestParseEdges(t *testing.T) {
+	d, err := Parse("block-beta\na[\"A\"] b((\"B\"))\na --> b\nb -- \"reads\" --> c\nc --- a\na <--> b\nb ==> c\nc -.-> a\na-->|lbl|b")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n := len(d.Root.Children); n != 3 {
+		t.Fatalf("edges must not add blocks already defined; got %d blocks", n)
+	}
+	if d.Block("b").Shape != ShapeCircle {
+		t.Errorf("b should be a circle")
+	}
+	want := []Edge{
+		{From: "a", To: "b", ArrowEnd: true},
+		{From: "b", To: "c", Label: "reads", ArrowEnd: true},
+		{From: "c", To: "a"},
+		{From: "a", To: "b", ArrowEnd: true, ArrowBack: true},
+		{From: "b", To: "c", ArrowEnd: true, Thick: true},
+		{From: "c", To: "a", ArrowEnd: true, Dotted: true},
+		{From: "a", To: "b", ArrowEnd: true, Label: "lbl"},
+	}
+	if len(d.Edges) != len(want) {
+		t.Fatalf("got %d edges: %+v", len(d.Edges), d.Edges)
+	}
+	for i, e := range want {
+		if d.Edges[i] != e {
+			t.Errorf("edge %d: got %+v, want %+v", i, d.Edges[i], e)
+		}
+	}
+}
 
-		Convey("Then it draws block cells and labels", func() {
-			So(err, ShouldBeNil)
-			So(svg, ShouldStartWith, "<svg")
-			So(svg, ShouldContainSubstring, ">a<")
-			So(svg, ShouldContainSubstring, ">wide<")
-		})
-	})
+func TestParseShapesSpacesComposites(t *testing.T) {
+	src := "block-beta\ncolumns 3\na space:2\nb[(\"DB\")] c{{\"hex\"}} d>\"flag\"]\n" +
+		"block:grp:2\n  columns 2\n  e f\nend\narr<[\"go\"]>(down)\ng[/\"p\"/] h[\\\"q\"/] i([\"s\"]) j[[\"sub\"]] k{\"r\"} l(((\"dc\")))"
+	d, err := Parse(src)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sp := d.Root.Children[1]
+	if !sp.Space || sp.Span != 2 {
+		t.Errorf("space:2: %+v", sp)
+	}
+	shapes := map[string]Shape{"b": ShapeCylinder, "c": ShapeHexagon, "d": ShapeAsymmetric, "g": ShapeParallelogram,
+		"h": ShapeTrapezoidAlt, "i": ShapeStadium, "j": ShapeSubroutine, "k": ShapeRhombus, "l": ShapeDoubleCircle, "arr": ShapeArrow}
+	for id, s := range shapes {
+		if b := d.Block(id); b == nil || b.Shape != s {
+			t.Errorf("%s: got %+v, want shape %d", id, b, s)
+		}
+	}
+	if d.Block("arr").ArrowDir != "down" || d.Block("arr").Label != "go" {
+		t.Errorf("block arrow: %+v", d.Block("arr"))
+	}
+	g := d.Block("grp")
+	if g == nil || !g.Composite || g.Span != 2 || g.Columns != 2 || len(g.Children) != 2 {
+		t.Errorf("composite: %+v", g)
+	}
+	if _, err := Parse("block-beta\nend"); err == nil {
+		t.Error("a stray end must be refused")
+	}
+}
+
+func TestStyles(t *testing.T) {
+	d, err := Parse("block-beta\na b\nstyle a fill:#f9f,stroke:#333,stroke-width:4px,color:url(#x)\nclassDef hot fill:red,stroke-dasharray:5 5\nclass b hot")
+	if err != nil {
+		t.Fatal(err)
+	}
+	a := d.Block("a").Style
+	if a.Fill != "#f9f" || a.Stroke != "#333" || a.StrokeWidth != "4" || a.Color != "" {
+		t.Errorf("style a: %+v", a)
+	}
+	if c := d.Classes["hot"]; c.Fill != "red" || c.Dash != "5 5" {
+		t.Errorf("classDef hot: %+v", c)
+	}
+	if got := d.Block("b").Classes; len(got) != 1 || got[0] != "hot" {
+		t.Errorf("class b: %v", got)
+	}
 }
