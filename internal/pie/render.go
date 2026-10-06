@@ -19,13 +19,7 @@ type RenderOptions struct {
 	Title    string
 }
 
-// sliceColors is Mermaid's default pie palette (pie1..pie12).
-var sliceColors = []string{
-	"#ececff", "#ffffde", "#b5ff20", "#b9b9ff", "#ffffab", "#9dec00",
-	"#ffb9ff", "#b9ffff", "#ffecec", "#ff86ff", "#86ffff", "#ffb9b9",
-}
 
-const strokeColor = "#000000"
 
 // Render parses and renders pie chart source to SVG.
 func Render(src string, o RenderOptions) ([]byte, error) {
@@ -53,7 +47,8 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	pal := theme.For(o.Theme)
+	pal := theme.For(o.Theme).Escaped()
+	slices, strokeColor := pal.Pie.Slices, pal.Pie.Stroke
 	face := svgutil.FaceFor(o.FontFace)
 	fs := o.FontSize
 	pad := o.Padding
@@ -163,7 +158,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 			svgutil.Num(w/2), svgutil.Num(pad+titleFs), pal.Text, svgutil.Num(titleFs), svgutil.Esc(o.Title))
 	}
 
-	writeSlices(&b, d, total, cx, cy, r)
+	writeSlices(&b, d, total, cx, cy, r, pal.Pie)
 	fmt.Fprintf(&b, `<circle cx="%s" cy="%s" r="%s" fill="none" stroke="%s" stroke-width="2"/>`+"\n",
 		svgutil.Num(cx), svgutil.Num(cy), svgutil.Num(r+1), strokeColor)
 
@@ -197,7 +192,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	ly := cy - legendH/2
 	for i := range d.Slices {
 		y := ly + float64(i)*rowH
-		c := sliceColors[i%len(sliceColors)]
+		c := slices[i%len(slices)]
 		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"/>`+"\n",
 			svgutil.Num(legendX), svgutil.Num(y), svgutil.Num(sw), svgutil.Num(sw), c, c)
 		fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s">%s</text>`+"\n",
@@ -207,7 +202,8 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	return []byte(b.String())
 }
 
-func writeSlices(b *strings.Builder, d *Diagram, total, cx, cy, r float64) {
+func writeSlices(b *strings.Builder, d *Diagram, total, cx, cy, r float64, pc theme.PieColors) {
+	slices, strokeColor := pc.Slices, pc.Stroke
 	if total <= 0 {
 		return
 	}
@@ -217,7 +213,7 @@ func writeSlices(b *strings.Builder, d *Diagram, total, cx, cy, r float64) {
 			continue
 		}
 		sweep := s.Value / total * 2 * math.Pi
-		color := sliceColors[i%len(sliceColors)]
+		color := slices[i%len(slices)]
 		if sweep >= 2*math.Pi-1e-9 {
 			fmt.Fprintf(b, `<circle cx="%s" cy="%s" r="%s" fill="%s" stroke="%s" stroke-width="2" opacity="0.7"/>`+"\n",
 				svgutil.Num(cx), svgutil.Num(cy), svgutil.Num(r), color, strokeColor)
