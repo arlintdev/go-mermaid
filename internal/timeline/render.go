@@ -118,7 +118,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 	}
 
 	var b strings.Builder
-	ff := svgutil.Esc(fontFamily(o.FontFace))
+	ff := svgutil.Esc(o.FontFace)
 
 	// Event columns, to size the canvas before writing it.
 	bottom := axisY + rowGap*2
@@ -248,16 +248,6 @@ func wrap(face svgutil.Face, s string, size, maxW float64) []string {
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif:
-// a font option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
-}
 
 // hsl converts a hue (degrees), saturation and lightness (0..1) to RGB.
 func hsl(h, s, l float64) (r, g, b float64) {

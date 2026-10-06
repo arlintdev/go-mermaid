@@ -53,7 +53,6 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	o.FontFace = fontFamily(o.FontFace)
 	pal := theme.For(o.Theme)
 	face := svgutil.FaceFor(o.FontFace)
 	fs := o.FontSize
@@ -190,7 +189,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 		}
 		ky := cy + l.y
 		fmt.Fprintf(&b, `<polyline points="%s,%s %s,%s %s,%s" fill="none" stroke="%s" stroke-width="1"/>`+"\n",
-			svgutil.Num(ex), svgutil.Num(ey), svgutil.Num(kx), svgutil.Num(ky - fs*0.35), svgutil.Num(kx+side*6), svgutil.Num(ky-fs*0.35), pal.Text)
+			svgutil.Num(ex), svgutil.Num(ey), svgutil.Num(kx), svgutil.Num(ky-fs*0.35), svgutil.Num(kx+side*6), svgutil.Num(ky-fs*0.35), pal.Text)
 		fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" text-anchor="%s">%s</text>`+"\n",
 			svgutil.Num(kx+side*9), svgutil.Num(ky), pal.Text, anchor, svgutil.Esc(l.text))
 	}
@@ -242,19 +241,4 @@ func trimNum(f float64) string {
 		return fmt.Sprintf("%d", int64(f))
 	}
 	return svgutil.Num(f)
-}
-
-// fontFamily keeps a font-family option only when it is a plain list of
-// family names, so the option can never carry markup into the picture.
-func fontFamily(s string) string {
-	if strings.TrimSpace(s) == "" || len(s) > 200 {
-		return "sans-serif"
-	}
-	for _, r := range s {
-		if !(r == ' ' || r == ',' || r == '-' || r == '_' || r == '\'' || r == '"' ||
-			(r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9')) {
-			return "sans-serif"
-		}
-	}
-	return s
 }

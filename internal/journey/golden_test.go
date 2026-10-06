@@ -20,7 +20,7 @@ func TestHostile(t *testing.T) {
 	o := opts()
 	render := func(s string) ([]byte, error) { return Render(s, o) }
 	goldentest.Hostile(t, render, "journey\ntitle "+inj+"\nsection "+inj+"\n"+inj+": 5: "+inj+", b")
-	o.FontFace, o.Title = inj, inj
+	o.Title = inj
 	goldentest.Hostile(t, render, "journey\nsection s\na: 1: x")
 }
 

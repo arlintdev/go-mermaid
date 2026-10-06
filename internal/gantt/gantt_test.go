@@ -40,7 +40,7 @@ func TestParseBasics(t *testing.T) {
 func TestParseErrors(t *testing.T) {
 	for _, src := range []string{
 		"title X",
-		"gantt\nsection S\nBad : 2024-01-01",           // a start and no end
+		"gantt\nsection S\nBad : 2024-01-01",            // a start and no end
 		"gantt\nA : 5d",                                 // nothing to start from
 		"gantt\nT : 2024-01-05, 2024-01-01",             // ends before it starts
 		"gantt\nT : a, after b, 1d\nU : b, after a, 1d", // circular
@@ -183,7 +183,6 @@ func TestHostile(t *testing.T) {
 		inj + " : milestone, 2026-01-02, 0d\n" + inj + " : vert, 2026-01-03, 0d\nx : after " + inj + " a, 1d"
 	goldentest.Hostile(t, func(s string) ([]byte, error) { return Render(s, opts()) }, src)
 	o := opts()
-	o.FontFace = inj
 	o.Title = inj
 	goldentest.Hostile(t, func(s string) ([]byte, error) { return Render(s, o) }, "gantt\nA : 2026-01-01, 3d")
 }

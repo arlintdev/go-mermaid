@@ -32,7 +32,6 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	if o.Title == "" {
 		o.Title = d.Title
 	}
-	o.FontFace = fontFamily(o.FontFace)
 	lay := Compute(d, Options{FontSize: o.FontSize, Padding: o.Padding, FontFace: o.FontFace})
 	return svg(lay, o, svgid.Prefix(src)), nil
 }
@@ -349,13 +348,3 @@ func (w *writer) note(n *Note) {
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif: the
-// option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
-}

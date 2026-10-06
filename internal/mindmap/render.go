@@ -125,7 +125,6 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	o.FontFace = fontFamily(o.FontFace)
 	pal := theme.For(o.Theme)
 	l := &layout{face: svgutil.FaceFor(o.FontFace), fs: o.FontSize, lh: o.FontSize * 1.3}
 	pad := o.Padding

@@ -25,14 +25,14 @@ const chartW = 720.0
 
 // Mermaid's default gantt colours.
 const (
-	taskFill, taskStroke     = "#8a90dd", "#534fbc"
-	activeFill               = "#bfc7ff"
-	doneFill, doneStroke     = "#d3d3d3", "#808080"
-	critFill, critStroke     = "#ff0000", "#ff8888"
-	excludeFill              = "#eeeeee"
-	gridStroke               = "#d3d3d3"
-	vertStroke               = "#000080"
-	sectionTitleMaxW float64 = 150
+	taskFill, taskStroke         = "#8a90dd", "#534fbc"
+	activeFill                   = "#bfc7ff"
+	doneFill, doneStroke         = "#d3d3d3", "#808080"
+	critFill, critStroke         = "#ff0000", "#ff8888"
+	excludeFill                  = "#eeeeee"
+	gridStroke                   = "#d3d3d3"
+	vertStroke                   = "#000080"
+	sectionTitleMaxW     float64 = 150
 )
 
 // sectionBands are Mermaid's four alternating row backgrounds.
@@ -75,7 +75,6 @@ func svg(d *Diagram, o RenderOptions) []byte {
 		o.FontSize = 14
 	}
 	pal := theme.For(o.Theme)
-	o.FontFace = fontFamily(o.FontFace)
 	l := &layout{o: o, face: svgutil.FaceFor(o.FontFace), fs: o.FontSize}
 	l.taskFs = math.Round(o.FontSize * 0.86)
 	l.tickFs = math.Round(o.FontSize * 0.79)
@@ -388,19 +387,4 @@ func wrap(face svgutil.Face, s string, fs, maxW float64) []string {
 		out = append(out, line)
 	}
 	return out
-}
-
-// fontFamily keeps a font-family option only when it is a plain list of
-// family names, so the option can never carry markup into the picture.
-func fontFamily(s string) string {
-	for _, r := range s {
-		if !(r == ' ' || r == ',' || r == '-' || r == '_' || r == '\'' || r == '"' ||
-			(r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9')) {
-			return "sans-serif"
-		}
-	}
-	if strings.TrimSpace(s) == "" || len(s) > 200 {
-		return "sans-serif"
-	}
-	return s
 }

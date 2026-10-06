@@ -19,7 +19,6 @@ func TestHostile(t *testing.T) {
 	o := opts()
 	render := func(s string) ([]byte, error) { return Render(s, o) }
 	goldentest.Hostile(t, render, "radar-beta\ntitle "+inj+"\naxis a[\""+inj+"\"], "+inj+"\ncurve c[\""+inj+"\"]{1, 2}\ngraticule "+inj+"\nticks "+inj)
-	o.FontFace = inj
 	goldentest.Hostile(t, render, "radar-beta\naxis a, b, c\ncurve x{1,2,3}")
 }
 

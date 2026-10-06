@@ -656,7 +656,7 @@ func (c *ctx) svg(root block) []byte {
 	}
 	var b strings.Builder
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(c.o.FontFace)), svgutil.Num(c.fs))
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(c.o.FontFace), svgutil.Num(c.fs))
 	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(c.pal.Background))
 	fmt.Fprintf(&b, `  <defs><marker id="%s-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="%s"/></marker></defs>`+"\n",
 		c.id, svgutil.Esc(c.pal.Edge))
@@ -670,16 +670,6 @@ func (c *ctx) svg(root block) []byte {
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif:
-// a font option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
-}
 
 // mix blends hex colour a toward hex colour b by t (0 keeps a). When either
 // is not a #rrggbb colour it returns fallback.

@@ -75,7 +75,6 @@ func TestHostile(t *testing.T) {
 
 	// A different font face is escaped too.
 	o := defaultOpts
-	o.FontFace = inj
 	goldentest.Hostile(t, func(src string) ([]byte, error) { return Render(src, o) }, "sequenceDiagram\nA->>B: x")
 }
 

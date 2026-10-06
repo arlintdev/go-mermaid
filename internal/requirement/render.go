@@ -219,7 +219,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 	var b strings.Builder
 	edge := svgutil.Esc(pal.Edge)
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(o.FontFace)), svgutil.Num(m.fs))
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(m.fs))
 	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(pal.Background))
 	// An open arrowhead for the relationship's target, and a circled plus
 	// for the container end of "contains", as Mermaid draws them.
@@ -357,13 +357,3 @@ func wrap(face svgutil.Face, s string, size, maxW float64) []string {
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif:
-// a font option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
-}

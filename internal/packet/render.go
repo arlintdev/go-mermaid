@@ -45,7 +45,6 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	o.FontFace = fontFamily(o.FontFace)
 	pal := theme.For(o.Theme)
 	face := svgutil.FaceFor(o.FontFace)
 	labelFs := math.Round(o.FontSize * 0.86)
@@ -152,4 +151,3 @@ func clip(face svgutil.Face, s string, fs, maxW float64) string {
 	}
 	return string(r) + "…"
 }
-

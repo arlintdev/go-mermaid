@@ -46,7 +46,6 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	o.FontFace = fontFamily(o.FontFace)
 	pal := theme.For(o.Theme)
 	face := svgutil.FaceFor(o.FontFace)
 	fs := o.FontSize
@@ -227,19 +226,4 @@ func closedCurve(pts [][2]float64) string {
 	}
 	p.WriteString(" Z")
 	return p.String()
-}
-
-// fontFamily keeps a font-family option only when it is a plain list of
-// family names, so the option can never carry markup into the picture.
-func fontFamily(s string) string {
-	if strings.TrimSpace(s) == "" || len(s) > 200 {
-		return "sans-serif"
-	}
-	for _, r := range s {
-		if !(r == ' ' || r == ',' || r == '-' || r == '_' || r == '\'' || r == '"' ||
-			(r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9')) {
-			return "sans-serif"
-		}
-	}
-	return s
 }

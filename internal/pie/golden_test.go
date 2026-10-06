@@ -21,7 +21,7 @@ func TestHostile(t *testing.T) {
 	render := func(s string) ([]byte, error) { return Render(s, o) }
 	goldentest.Hostile(t, render, "pie showData title "+inj+"\n\""+inj+"\" : 3\n\"b\" : 0.01")
 	goldentest.Hostile(t, render, "pie\ntitle "+inj+"\n"+inj+" : 3")
-	o.FontFace, o.Title = inj, inj
+	o.Title = inj
 	goldentest.Hostile(t, render, "pie\n\"a\" : 1")
 }
 

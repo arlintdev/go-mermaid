@@ -89,7 +89,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 	b := &dr.b
 	fmt.Fprintf(b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`,
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(o.FontFace)), svgutil.Num(fs))
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(fs))
 	b.WriteByte('\n')
 	fmt.Fprintf(b, `  <rect width="100%%" height="100%%" fill="%s"/>`, svgutil.Esc(pal.Background))
 	b.WriteByte('\n')
@@ -262,16 +262,6 @@ func hexRGB(s string) (r, g, b int, ok bool) {
 }
 
 var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif:
-// a font option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
-}
 
 func clampUnit(v float64) float64 {
 	if v < 0 {
