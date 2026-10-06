@@ -5,10 +5,10 @@ import (
 	"math"
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/domain"
-	"github.com/zkrebbekx/go-mermaid/internal/layout"
-	"github.com/zkrebbekx/go-mermaid/internal/svgutil"
-	"github.com/zkrebbekx/go-mermaid/internal/theme"
+	"github.com/arlintdev/go-mermaid/internal/domain"
+	"github.com/arlintdev/go-mermaid/internal/layout"
+	"github.com/arlintdev/go-mermaid/internal/svgutil"
+	"github.com/arlintdev/go-mermaid/internal/theme"
 )
 
 // RenderOptions controls class diagram appearance.

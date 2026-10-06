@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	"github.com/zkrebbekx/go-mermaid/internal/domain"
-	"github.com/zkrebbekx/go-mermaid/internal/lexer"
+	"github.com/arlintdev/go-mermaid/internal/domain"
+	"github.com/arlintdev/go-mermaid/internal/lexer"
 )
 
 func graphOf(src string) *domain.Graph {

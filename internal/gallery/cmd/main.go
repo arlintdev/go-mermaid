@@ -14,7 +14,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/gallery"
+	"github.com/arlintdev/go-mermaid/internal/gallery"
 )
 
 func main() {

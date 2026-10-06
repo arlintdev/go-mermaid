@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/syntax"
+	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
 // Flow is a weighted link from a source node to a target node.

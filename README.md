@@ -1,9 +1,15 @@
+> **This is Digin's fork of [zkrebbekx/go-mermaid](https://github.com/zkrebbekx/go-mermaid)** (MIT), kept by
+> [arlintdev](https://github.com/arlintdev) for [Digin](https://digin.work), which draws Mermaid diagrams on the
+> server as static SVG under a strict Content-Security-Policy. It adds label wrapping, layout and syntax fixes,
+> and safe output for that use. Fixes that suit the original are offered upstream. The original's licence and
+> copyright notice are kept in LICENSE.
+
 # go-mermaid
 
-[![CI](https://github.com/zkrebbekx/go-mermaid/actions/workflows/ci.yml/badge.svg)](https://github.com/zkrebbekx/go-mermaid/actions/workflows/ci.yml)
+[![CI](https://github.com/arlintdev/go-mermaid/actions/workflows/ci.yml/badge.svg)](https://github.com/arlintdev/go-mermaid/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/zkrebbekx/go-mermaid/branch/main/graph/badge.svg)](https://codecov.io/gh/zkrebbekx/go-mermaid)
-[![Go Reference](https://pkg.go.dev/badge/github.com/zkrebbekx/go-mermaid.svg)](https://pkg.go.dev/github.com/zkrebbekx/go-mermaid)
-[![Go Report Card](https://goreportcard.com/badge/github.com/zkrebbekx/go-mermaid)](https://goreportcard.com/report/github.com/zkrebbekx/go-mermaid)
+[![Go Reference](https://pkg.go.dev/badge/github.com/arlintdev/go-mermaid.svg)](https://pkg.go.dev/github.com/arlintdev/go-mermaid)
+[![Go Report Card](https://goreportcard.com/badge/github.com/arlintdev/go-mermaid)](https://goreportcard.com/report/github.com/arlintdev/go-mermaid)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Render [Mermaid](https://mermaid.js.org) diagrams to SVG in **pure Go** — no
@@ -45,13 +51,13 @@ or CLI with zero external dependencies.
 Library:
 
 ```bash
-go get github.com/zkrebbekx/go-mermaid
+go get github.com/arlintdev/go-mermaid
 ```
 
 CLI:
 
 ```bash
-go install github.com/zkrebbekx/go-mermaid/cmd/mermaid@latest
+go install github.com/arlintdev/go-mermaid/cmd/mermaid@latest
 ```
 
 Homebrew:
@@ -67,7 +73,7 @@ echo "graph LR; A-->B" | docker run -i --rm ghcr.io/zkrebbekx/go-mermaid > out.s
 ```
 
 Prebuilt binaries for Linux/macOS/Windows (amd64/arm64) are attached to each
-[GitHub release](https://github.com/zkrebbekx/go-mermaid/releases).
+[GitHub release](https://github.com/arlintdev/go-mermaid/releases).
 
 ## Usage
 
@@ -79,7 +85,7 @@ package main
 import (
 	"os"
 
-	mermaid "github.com/zkrebbekx/go-mermaid"
+	mermaid "github.com/arlintdev/go-mermaid"
 )
 
 func main() {
@@ -120,7 +126,7 @@ The core library is dependency-free and emits SVG. PNG rasterization lives in
 a separate package so only PNG users pull the rasterizer dependency:
 
 ```go
-import "github.com/zkrebbekx/go-mermaid/raster"
+import "github.com/arlintdev/go-mermaid/raster"
 
 img, err := raster.PNG("graph TD\n A --> B", 2) // 2 = scale factor
 ```

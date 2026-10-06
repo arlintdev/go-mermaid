@@ -3,7 +3,7 @@ package class
 import (
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/syntax"
+	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
 // relOps are class relationship operators, ordered so the longest match at a

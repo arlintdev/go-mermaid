@@ -3,7 +3,7 @@ package mermaid_test
 import (
 	"testing"
 
-	mermaid "github.com/zkrebbekx/go-mermaid"
+	mermaid "github.com/arlintdev/go-mermaid"
 )
 
 var benchSources = map[string]string{

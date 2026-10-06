@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/syntax"
+	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
 // Task is a single journey step with a satisfaction score (1-5) and actors.

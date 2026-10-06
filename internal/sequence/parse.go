@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/syntax"
+	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
 // arrowTokens are message operators, longest first so the longest match at a

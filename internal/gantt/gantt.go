@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/zkrebbekx/go-mermaid/internal/syntax"
+	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
 // Task is a single bar with a resolved start date and duration in days.

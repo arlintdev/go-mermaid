@@ -15,7 +15,7 @@ import (
 
 	"github.com/srwiley/oksvg"
 	"github.com/srwiley/rasterx"
-	mermaid "github.com/zkrebbekx/go-mermaid"
+	mermaid "github.com/arlintdev/go-mermaid"
 )
 
 // PNG renders Mermaid source to SVG and rasterizes it to a PNG image. The

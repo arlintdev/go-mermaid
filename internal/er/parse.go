@@ -3,7 +3,7 @@ package er
 import (
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/syntax"
+	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
 // Parse builds a Diagram from ER diagram source.

@@ -20,8 +20,8 @@ import (
 	"sort"
 	"strings"
 
-	mermaid "github.com/zkrebbekx/go-mermaid"
-	"github.com/zkrebbekx/go-mermaid/raster"
+	mermaid "github.com/arlintdev/go-mermaid"
+	"github.com/arlintdev/go-mermaid/raster"
 )
 
 // Scale is the pixel density of the generated images.

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	mermaid "github.com/zkrebbekx/go-mermaid"
+	mermaid "github.com/arlintdev/go-mermaid"
 )
 
 func TestOptions(t *testing.T) {

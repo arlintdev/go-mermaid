@@ -14,7 +14,7 @@ package kanban
 import (
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/syntax"
+	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
 // Card is a single item within a column.

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	mermaid "github.com/zkrebbekx/go-mermaid"
+	mermaid "github.com/arlintdev/go-mermaid"
 )
 
 // FuzzRender checks that Render never panics on arbitrary input and that a

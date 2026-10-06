@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/svgutil"
-	"github.com/zkrebbekx/go-mermaid/internal/theme"
+	"github.com/arlintdev/go-mermaid/internal/svgutil"
+	"github.com/arlintdev/go-mermaid/internal/theme"
 )
 
 // RenderOptions controls block diagram appearance.

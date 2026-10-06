@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	mermaid "github.com/zkrebbekx/go-mermaid"
+	mermaid "github.com/arlintdev/go-mermaid"
 )
 
 // Render a simple flowchart to SVG.

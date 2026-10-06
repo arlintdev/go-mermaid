@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	"github.com/zkrebbekx/go-mermaid/internal/domain"
+	"github.com/arlintdev/go-mermaid/internal/domain"
 )
 
 func TestDirections(t *testing.T) {

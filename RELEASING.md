@@ -10,7 +10,7 @@ and [GoReleaser](https://goreleaser.com).
 | --- | --- | --- |
 | Pre-1.0 (now) | `v0.x.y` | No API stability promise. `feat:` → minor, `fix:` → patch. Breaking changes allowed in minors. |
 | Stable | `v1.0.0`+ | Public API frozen. Breaking changes require a major bump. |
-| Post-v1 breaking | `v2.0.0`+ | **Go requirement:** the module path must gain a `/v2` suffix (`github.com/zkrebbekx/go-mermaid/v2`) and imports must update. |
+| Post-v1 breaking | `v2.0.0`+ | **Go requirement:** the module path must gain a `/v2` suffix (`github.com/arlintdev/go-mermaid/v2`) and imports must update. |
 
 Go modules have no registry to publish to — a release *is* a git tag.
 `pkg.go.dev` and the module proxy index a version the first time it is fetched.
@@ -27,7 +27,7 @@ Go modules have no registry to publish to — a release *is* a git tag.
 4. The same workflow runs **GoReleaser**, which cross-compiles the `mermaid`
    CLI (linux/darwin/windows × amd64/arm64), attaches archives + checksums to
    the release (`release.mode: append`), pushes a multi-arch Docker image to
-   `ghcr.io/zkrebbekx/go-mermaid`, and (when configured) updates the Homebrew
+   `ghcr.io/arlintdev/go-mermaid`, and (when configured) updates the Homebrew
    cask.
 
 No manual tagging needed. Configuration:
@@ -38,8 +38,8 @@ No manual tagging needed. Configuration:
 | Artifact | Where | Setup needed |
 | --- | --- | --- |
 | Archives + checksums | GitHub Release assets | none (uses `GITHUB_TOKEN`) |
-| Docker image | `ghcr.io/zkrebbekx/go-mermaid:{version, latest}` | none — `packages: write` + ghcr login are wired in the workflow |
-| Homebrew cask | `zkrebbekx/homebrew-tap` | one-time, see below |
+| Docker image | `ghcr.io/arlintdev/go-mermaid:{version, latest}` | none — `packages: write` + ghcr login are wired in the workflow |
+| Homebrew cask | `arlintdev/homebrew-tap` | one-time, see below |
 
 ### Enabling the Homebrew cask
 
@@ -47,15 +47,15 @@ The cask step **auto-skips** until a tap token is present, so it never blocks a
 release. To turn it on, once:
 
 1. Create a public repo named **`homebrew-tap`** under your account
-   (`gh repo create zkrebbekx/homebrew-tap --public`).
+   (`gh repo create arlintdev/homebrew-tap --public`).
 2. Create a PAT with `contents: write` (classic: `repo`) scope on that tap repo.
 3. Add it as a secret on this repo:
    ```bash
-   gh secret set HOMEBREW_TAP_GITHUB_TOKEN --repo zkrebbekx/go-mermaid
+   gh secret set HOMEBREW_TAP_GITHUB_TOKEN --repo arlintdev/go-mermaid
    ```
 
 The next release publishes `Casks/mermaid.rb`, installable with
-`brew install zkrebbekx/tap/mermaid`. (The cask ships an unsigned binary; if
+`brew install arlintdev/tap/mermaid`. (The cask ships an unsigned binary; if
 Gatekeeper quarantines it, `xattr -dr com.apple.quarantine $(which mermaid)`.)
 
 > Note: the release PR is created with the default `GITHUB_TOKEN`, so its CI
@@ -98,7 +98,7 @@ To enable it with a **Claude Pro/Max subscription** (no separate API key):
 2. Add it as a repository secret named `CLAUDE_CODE_OAUTH_TOKEN`
    (Settings → Secrets and variables → Actions), or:
    ```bash
-   gh secret set CLAUDE_CODE_OAUTH_TOKEN --repo zkrebbekx/go-mermaid
+   gh secret set CLAUDE_CODE_OAUTH_TOKEN --repo arlintdev/go-mermaid
    ```
 3. (For `@claude` mentions in issues/PRs) install the Claude GitHub App:
    <https://github.com/apps/claude>, or run `/install-github-app` from Claude

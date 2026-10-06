@@ -9,10 +9,10 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	"github.com/zkrebbekx/go-mermaid/internal/layout"
-	"github.com/zkrebbekx/go-mermaid/internal/lexer"
-	"github.com/zkrebbekx/go-mermaid/internal/parser"
-	"github.com/zkrebbekx/go-mermaid/internal/svgutil"
+	"github.com/arlintdev/go-mermaid/internal/layout"
+	"github.com/arlintdev/go-mermaid/internal/lexer"
+	"github.com/arlintdev/go-mermaid/internal/parser"
+	"github.com/arlintdev/go-mermaid/internal/svgutil"
 )
 
 func laidOut(src string) *layout.Result {

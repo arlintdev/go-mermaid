@@ -1,4 +1,4 @@
-module github.com/zkrebbekx/go-mermaid
+module github.com/arlintdev/go-mermaid
 
 go 1.25.0
 

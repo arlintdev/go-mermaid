@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/domain"
+	"github.com/arlintdev/go-mermaid/internal/domain"
 )
 
 // classAssign records a pending "apply class name to these node ids".

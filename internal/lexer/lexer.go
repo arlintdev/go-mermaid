@@ -7,7 +7,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/zkrebbekx/go-mermaid/internal/syntax"
+	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
 // Lex scans src and returns its tokens, always terminated by an EOF token.

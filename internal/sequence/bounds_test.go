@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	"github.com/zkrebbekx/go-mermaid/internal/svgutil"
+	"github.com/arlintdev/go-mermaid/internal/svgutil"
 )
 
 func layoutOf(src string) *Layout {

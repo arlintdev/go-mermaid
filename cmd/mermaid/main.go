@@ -25,8 +25,8 @@ import (
 	"strconv"
 	"strings"
 
-	mermaid "github.com/zkrebbekx/go-mermaid"
-	"github.com/zkrebbekx/go-mermaid/raster"
+	mermaid "github.com/arlintdev/go-mermaid"
+	"github.com/arlintdev/go-mermaid/raster"
 )
 
 // version is set at build time via -ldflags "-X main.version=...".

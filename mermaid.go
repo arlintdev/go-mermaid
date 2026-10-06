@@ -7,7 +7,7 @@
 // gantt, C4 (C4Context/C4Container), requirementDiagram, sankey-beta, and
 // xychart-beta. Unsupported types return ErrUnsupported; see DiagramTypes.
 //
-// Render returns SVG. For PNG, use the github.com/zkrebbekx/go-mermaid/raster
+// Render returns SVG. For PNG, use the github.com/arlintdev/go-mermaid/raster
 // subpackage, which keeps the rasterizer dependency out of the core library.
 //
 // Basic use:
@@ -30,30 +30,30 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/zkrebbekx/go-mermaid/internal/block"
-	"github.com/zkrebbekx/go-mermaid/internal/c4"
-	"github.com/zkrebbekx/go-mermaid/internal/class"
-	"github.com/zkrebbekx/go-mermaid/internal/er"
-	"github.com/zkrebbekx/go-mermaid/internal/gantt"
-	gitgraph "github.com/zkrebbekx/go-mermaid/internal/git"
-	"github.com/zkrebbekx/go-mermaid/internal/journey"
-	"github.com/zkrebbekx/go-mermaid/internal/kanban"
-	"github.com/zkrebbekx/go-mermaid/internal/layout"
-	"github.com/zkrebbekx/go-mermaid/internal/lexer"
-	"github.com/zkrebbekx/go-mermaid/internal/mindmap"
-	"github.com/zkrebbekx/go-mermaid/internal/packet"
-	"github.com/zkrebbekx/go-mermaid/internal/parser"
-	"github.com/zkrebbekx/go-mermaid/internal/pie"
-	"github.com/zkrebbekx/go-mermaid/internal/quadrant"
-	"github.com/zkrebbekx/go-mermaid/internal/radar"
-	"github.com/zkrebbekx/go-mermaid/internal/render"
-	"github.com/zkrebbekx/go-mermaid/internal/requirement"
-	"github.com/zkrebbekx/go-mermaid/internal/sankey"
-	"github.com/zkrebbekx/go-mermaid/internal/sequence"
-	"github.com/zkrebbekx/go-mermaid/internal/state"
-	"github.com/zkrebbekx/go-mermaid/internal/syntax"
-	"github.com/zkrebbekx/go-mermaid/internal/timeline"
-	"github.com/zkrebbekx/go-mermaid/internal/xychart"
+	"github.com/arlintdev/go-mermaid/internal/block"
+	"github.com/arlintdev/go-mermaid/internal/c4"
+	"github.com/arlintdev/go-mermaid/internal/class"
+	"github.com/arlintdev/go-mermaid/internal/er"
+	"github.com/arlintdev/go-mermaid/internal/gantt"
+	gitgraph "github.com/arlintdev/go-mermaid/internal/git"
+	"github.com/arlintdev/go-mermaid/internal/journey"
+	"github.com/arlintdev/go-mermaid/internal/kanban"
+	"github.com/arlintdev/go-mermaid/internal/layout"
+	"github.com/arlintdev/go-mermaid/internal/lexer"
+	"github.com/arlintdev/go-mermaid/internal/mindmap"
+	"github.com/arlintdev/go-mermaid/internal/packet"
+	"github.com/arlintdev/go-mermaid/internal/parser"
+	"github.com/arlintdev/go-mermaid/internal/pie"
+	"github.com/arlintdev/go-mermaid/internal/quadrant"
+	"github.com/arlintdev/go-mermaid/internal/radar"
+	"github.com/arlintdev/go-mermaid/internal/render"
+	"github.com/arlintdev/go-mermaid/internal/requirement"
+	"github.com/arlintdev/go-mermaid/internal/sankey"
+	"github.com/arlintdev/go-mermaid/internal/sequence"
+	"github.com/arlintdev/go-mermaid/internal/state"
+	"github.com/arlintdev/go-mermaid/internal/syntax"
+	"github.com/arlintdev/go-mermaid/internal/timeline"
+	"github.com/arlintdev/go-mermaid/internal/xychart"
 )
 
 // ParseError reports a lexing or parsing failure with its source position

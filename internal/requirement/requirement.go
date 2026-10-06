@@ -18,7 +18,7 @@ package requirement
 import (
 	"strings"
 
-	"github.com/zkrebbekx/go-mermaid/internal/syntax"
+	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
 // Node is a requirement or an element.

@@ -3,7 +3,7 @@ package sequence
 import (
 	"fmt"
 
-	"github.com/zkrebbekx/go-mermaid/internal/svgutil"
+	"github.com/arlintdev/go-mermaid/internal/svgutil"
 )
 
 // Options tunes sequence diagram spacing and metrics.
