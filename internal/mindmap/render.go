@@ -18,18 +18,6 @@ type RenderOptions struct {
 	Title    string
 }
 
-// Mermaid's default mindmap colours: the root, then one colour per branch
-// (child of the root), with a lighter underline for plain nodes.
-const (
-	rootFill = "#0000ec"
-	rootText = "#ffffff"
-)
-
-var (
-	branchFills = []string{"#ffff78", "#d7ff86", "#c286ff", "#ff86ff", "#ff86c2", "#ff8686", "#ffc286", "#c2ff86", "#86ffc2", "#86ffff", "#86c2ff"}
-	branchLines = []string{"#ababff", "#d0b9ff", "#dcffb9", "#b9ffb9", "#b9ffdc", "#b9ffff", "#b9dcff", "#dcb9ff", "#ffb9dc", "#ffb9b9", "#ffdcb9"}
-)
-
 const (
 	maxTextW = 200.0
 	levelGap = 56.0
@@ -46,6 +34,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 }
 
 type layout struct {
+	c    theme.MindmapColors
 	face svgutil.Face
 	fs   float64
 	lh   float64
@@ -125,8 +114,8 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	pal := theme.For(o.Theme)
-	l := &layout{face: svgutil.FaceFor(o.FontFace), fs: o.FontSize, lh: o.FontSize * 1.3}
+	pal := theme.For(o.Theme).Escaped()
+	l := &layout{c: pal.Mindmap, face: svgutil.FaceFor(o.FontFace), fs: o.FontSize, lh: o.FontSize * 1.3}
 	pad := o.Padding
 	root := d.Root
 	l.measure(root, 0)
@@ -216,7 +205,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 			mx := (x1 + x2) / 2
 			fmt.Fprintf(&b, `<path d="M%s,%s C%s,%s %s,%s %s,%s" fill="none" stroke="%s" stroke-width="%s" stroke-linecap="round"/>`+"\n",
 				svgutil.Num(x1), svgutil.Num(n.Y), svgutil.Num(mx), svgutil.Num(n.Y), svgutil.Num(mx), svgutil.Num(c.Y),
-				svgutil.Num(x2), svgutil.Num(c.Y), branchFills[c.section%len(branchFills)],
+				svgutil.Num(x2), svgutil.Num(c.Y), l.c.Edges[c.section%len(l.c.Edges)],
 				svgutil.Num(math.Max(2, 14-3*float64(c.Depth))))
 		}
 	})
@@ -226,10 +215,10 @@ func svg(d *Diagram, o RenderOptions) []byte {
 }
 
 func writeNode(b *strings.Builder, n *Node, l *layout) {
-	fill, text, line := rootFill, rootText, ""
+	fill, text, line := l.c.RootFill, l.c.RootText, ""
 	if n.section >= 0 {
-		k := n.section % len(branchFills)
-		fill, text, line = branchFills[k], "#000000", branchLines[k]
+		fill, text = l.c.Fills[n.section%len(l.c.Fills)], l.c.Text
+		line = l.c.Lines[n.section%len(l.c.Lines)]
 	}
 	x0, y0, x1, y1 := n.X-n.W/2, n.Y-n.H/2, n.X+n.W/2, n.Y+n.H/2
 	switch n.Shape {

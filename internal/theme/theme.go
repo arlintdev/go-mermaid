@@ -103,6 +103,7 @@ type JourneyColors struct {
 type MindmapColors struct {
 	RootFill, RootText string
 	Fills              []string // one per top-level branch
+	Edges              []string // the links within each branch
 	Lines              []string // the underline of each branch's nodes
 	Text               string
 }

@@ -89,6 +89,7 @@ var defaultPalette = Palette{
 	Mindmap: MindmapColors{
 		RootFill: "#0000ec", RootText: "#ffffff",
 		Fills: []string{"#ffff78", "#d7ff86", "#c286ff", "#ff86ff", "#ff86c2", "#ff8686", "#ffc286", "#c2ff86", "#86ffc2", "#86ffff", "#86c2ff"},
+		Edges: []string{"#ffff78", "#d7ff86", "#c286ff", "#ff86ff", "#ff86c2", "#ff8686", "#ffc286", "#c2ff86", "#86ffc2", "#86ffff", "#86c2ff"},
 		Lines: []string{"#ababff", "#d0b9ff", "#dcffb9", "#b9ffb9", "#b9ffdc", "#b9ffff", "#b9dcff", "#dcb9ff", "#ffb9dc", "#ffb9b9", "#ffdcb9"},
 		Text:  "#000000",
 	},
@@ -197,6 +198,7 @@ var darkPalette = Palette{
 	Mindmap: MindmapColors{
 		RootFill: "#3b3bb8", RootText: "#ffffff",
 		Fills: []string{"#76762d", "#5e762d", "#512d76", "#762d76", "#762d51", "#762d2d", "#76512d", "#51762d", "#2d7651", "#2d7676", "#2d5176"},
+		Edges: []string{"#a1a136", "#7da136", "#6b36a1", "#a136a1", "#a1366b", "#a13636", "#a16b36", "#6ba136", "#36a16b", "#36a1a1", "#366ba1"},
 		Lines: []string{"#d1d147", "#a4d147", "#8c47d1", "#d147d1", "#d1478c", "#d14747", "#d18c47", "#8cd147", "#47d18c", "#47d1d1", "#478cd1"},
 		Text:  "#f0f0f0",
 	},
