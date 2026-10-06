@@ -1,0 +1,84 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="830.42" height="614" viewBox="0 0 830.42 614" font-family="sans-serif" font-size="14">
+  <g transform="translate(16,16)">
+    <rect x="583.42" y="17.5" width="215" height="107" rx="4" fill="#2a2a33" stroke="#77775a"/>
+    <text x="690.92" y="35.5" fill="#e6e6e6" text-anchor="middle">Shapes</text>
+    <path d="M140.08,178 C140.08,213 160.58,213 160.58,262" fill="none" stroke="#bbbbbb"/>
+    <path d="M140.08,164 L132.08,178 L148.08,178 Z" fill="#1e1e1e" stroke="#bbbbbb"/>
+    <path d="M78.75,178 C78.75,225.5 31.5,225.5 31.5,287" fill="none" stroke="#bbbbbb"/>
+    <path d="M78.75,164 L70.75,178 L86.75,178 Z" fill="#1e1e1e" stroke="#bbbbbb"/>
+    <path d="M284.42,108.5 C284.42,185.25 187.33,185.25 187.33,262" fill="none" stroke="#bbbbbb"/>
+    <path d="M187.33,262 L192.33,252 L182.33,252 Z" fill="#bbbbbb"/>
+    <text x="274.11" y="130.66" fill="#e6e6e6" text-anchor="middle" font-size="11.9">1</text>
+    <text x="196.65" y="248.16" fill="#e6e6e6" text-anchor="middle" font-size="11.9">*</text>
+    <path d="M187.33,365 C187.33,414 187.33,414 187.33,463" fill="none" stroke="#bbbbbb" stroke-dasharray="5 4"/>
+    <path d="M187.33,463 L192.33,453 L182.33,453 Z" fill="#bbbbbb"/>
+    <path d="M401.92,124.5 C401.92,185.25 214.08,185.25 214.08,262" fill="none" stroke="#bbbbbb"/>
+    <path d="M401.92,108.5 L395.92,116.5 L401.92,124.5 L407.92,116.5 Z" fill="#1e1e1e" stroke="#bbbbbb"/>
+    <path d="M517.92,124.5 C517.92,197.75 440,197.75 440,287" fill="none" stroke="#bbbbbb"/>
+    <path d="M517.92,108.5 L511.92,116.5 L517.92,124.5 L523.92,116.5 Z" fill="#bbbbbb" stroke="#bbbbbb"/>
+    <path d="M31.5,340 C31.5,418 31.5,418 31.5,482" fill="none" stroke="#bbbbbb" stroke-dasharray="5 4"/>
+    <path d="M31.5,496 L39.5,482 L23.5,482 Z" fill="#1e1e1e" stroke="#bbbbbb"/>
+    <rect x="17.42" y="0" width="184" height="164" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="109.42" y="22.61" fill="#e6e6e6" text-anchor="middle" font-size="12.6">«abstract»</text>
+    <text x="109.42" y="42.91" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Animal</text>
+    <line x1="17.42" y1="57.4" x2="201.42" y2="57.4" stroke="#8888bb"/>
+    <text x="28.62" y="77.91" fill="#e6e6e6">+String name</text>
+    <text x="28.62" y="98.21" fill="#e6e6e6">-int age</text>
+    <line x1="17.42" y1="110.6" x2="201.42" y2="110.6" stroke="#8888bb"/>
+    <text x="28.62" y="131.11" fill="#e6e6e6" font-style="italic">+makeSound() : void</text>
+    <text x="28.62" y="151.41" fill="#e6e6e6">+move(int distance) : bool</text>
+    <rect x="133.83" y="262" width="107" height="103" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="187.33" y="284.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Dog</text>
+    <line x1="133.83" y1="299.1" x2="240.83" y2="299.1" stroke="#8888bb"/>
+    <text x="145.03" y="319.61" fill="#e6e6e6">+String breed</text>
+    <line x1="133.83" y1="332" x2="240.83" y2="332" stroke="#8888bb"/>
+    <text x="145.03" y="352.51" fill="#e6e6e6">+bark() : void</text>
+    <rect x="127.83" y="463" width="119" height="119" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="187.33" y="485.61" fill="#e6e6e6" text-anchor="middle" font-size="12.6">«interface»</text>
+    <text x="187.33" y="505.91" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Repository&lt;T&gt;</text>
+    <line x1="127.83" y1="520.4" x2="246.83" y2="520.4" stroke="#8888bb"/>
+    <line x1="127.83" y1="528.1" x2="246.83" y2="528.1" stroke="#8888bb"/>
+    <text x="139.03" y="548.61" fill="#e6e6e6">+find(id) : T</text>
+    <text x="139.03" y="568.91" fill="#e6e6e6">+save(T item)</text>
+    <rect x="0" y="287" width="63" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="31.5" y="309.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Cat</text>
+    <line x1="0" y1="324.1" x2="63" y2="324.1" stroke="#8888bb"/>
+    <line x1="0" y1="331.8" x2="63" y2="331.8" stroke="#8888bb"/>
+    <rect x="251.42" y="55.5" width="66" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="284.42" y="78.11" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Owner</text>
+    <line x1="251.42" y1="92.6" x2="317.42" y2="92.6" stroke="#8888bb"/>
+    <line x1="251.42" y1="100.3" x2="317.42" y2="100.3" stroke="#8888bb"/>
+    <rect x="367.42" y="55.5" width="69" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="401.92" y="78.11" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Kennel</text>
+    <line x1="367.42" y1="92.6" x2="436.42" y2="92.6" stroke="#8888bb"/>
+    <line x1="367.42" y1="100.3" x2="436.42" y2="100.3" stroke="#8888bb"/>
+    <rect x="486.42" y="55.5" width="63" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="517.92" y="78.11" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Body</text>
+    <line x1="486.42" y1="92.6" x2="549.42" y2="92.6" stroke="#8888bb"/>
+    <line x1="486.42" y1="100.3" x2="549.42" y2="100.3" stroke="#8888bb"/>
+    <rect x="408.5" y="287" width="63" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="440" y="309.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Heart</text>
+    <line x1="408.5" y1="324.1" x2="471.5" y2="324.1" stroke="#8888bb"/>
+    <line x1="408.5" y1="331.8" x2="471.5" y2="331.8" stroke="#8888bb"/>
+    <rect x="0" y="496" width="63" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="31.5" y="518.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Pet</text>
+    <line x1="0" y1="533.1" x2="63" y2="533.1" stroke="#8888bb"/>
+    <line x1="0" y1="540.8" x2="63" y2="540.8" stroke="#8888bb"/>
+    <rect x="599.42" y="55.5" width="63" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="630.92" y="78.11" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Circle</text>
+    <line x1="599.42" y1="92.6" x2="662.42" y2="92.6" stroke="#8888bb"/>
+    <line x1="599.42" y1="100.3" x2="662.42" y2="100.3" stroke="#8888bb"/>
+    <rect x="712.42" y="55.5" width="70" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="747.42" y="78.11" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Square</text>
+    <line x1="712.42" y1="92.6" x2="782.42" y2="92.6" stroke="#8888bb"/>
+    <line x1="712.42" y1="100.3" x2="782.42" y2="100.3" stroke="#8888bb"/>
+    <rect x="217.17" y="177.69" width="37.41" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="235.87" y="189.66" fill="#e6e6e6" text-anchor="middle" font-size="12.6">owns</text>
+    <rect x="170.03" y="406.44" width="34.61" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="187.33" y="418.41" fill="#e6e6e6" text-anchor="middle" font-size="12.6">uses</text>
+    <rect x="283.69" y="177.69" width="48.62" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="308" y="189.66" fill="#e6e6e6" text-anchor="middle" font-size="12.6">houses</text>
+    <rect x="441.35" y="190.19" width="75.22" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="478.96" y="202.16" fill="#e6e6e6" text-anchor="middle" font-size="12.6">composition</text>
+  </g>
+</svg>

@@ -46,12 +46,12 @@ func Parse(src string) (*Diagram, error) {
 	headerSeen := false
 	for i, raw := range strings.Split(src, "\n") {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(raw))
+		line := strings.TrimSpace(syntax.StripComment(raw))
 		if line == "" {
 			continue
 		}
 		if !headerSeen {
-			if firstWord(line) != "pie" {
+			if syntax.FirstWord(line) != "pie" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'pie' header")
 			}
 			rest := strings.TrimSpace(strings.TrimPrefix(line, "pie"))
@@ -99,18 +99,4 @@ func (d *Diagram) parseSlice(line string, lineNo int) error {
 	}
 	d.Slices = append(d.Slices, Slice{Label: label, Value: v})
 	return nil
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
-	}
-	return s
 }

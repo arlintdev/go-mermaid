@@ -1,0 +1,30 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="891" height="523" viewBox="0 0 891 523" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m1psqmxp-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#bbbbbb"/></marker>
+  </defs>
+  <g transform="translate(16,16)">
+    <path d="M379,72 L379,111" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1psqmxp-arrow-0)"/>
+    <path d="M311,194 L311,199 Q311,204 306,204 L81,204 Q76,204 76,209 L76,238" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1psqmxp-arrow-0)"/>
+    <path d="M325,194 L325,209 Q325,214 320,214 L283,214 Q278,214 278,219 L278,238" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1psqmxp-arrow-0)"/>
+    <path d="M433,194 L433,209 Q433,214 438,214 L475,214 Q480,214 480,219 L480,238" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1psqmxp-arrow-0)"/>
+    <path d="M447,194 L447,199 Q447,204 452,204 L677,204 Q682,204 682,209 L682,238" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1psqmxp-arrow-0)"/>
+    <path d="M614,345 L614,352.5 Q614,357.5 609,357.5 L586,357.5 Q581,357.5 581,362.5 L581,384" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1psqmxp-arrow-0)"/>
+    <path d="M750,345 L750,352.5 Q750,357.5 755,357.5 L778,357.5 Q783,357.5 783,362.5 L783,384" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1psqmxp-arrow-0)"/>
+    <rect x="303" y="0" width="152" height="72" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="379" y="29.6">Client pays</tspan><tspan x="379" y="53.6">invoice</tspan></text>
+    <rect x="303" y="122" width="152" height="72" fill="#e3f2fd" stroke="#1565c0"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="379" y="151.6">Business</tspan><tspan x="379" y="175.6">checking</tspan></text>
+    <rect x="0" y="249" width="152" height="96" fill="#e3f2fd" stroke="#1565c0"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="278.6">Card payments</tspan><tspan x="76" y="302.6">(expenses,</tspan><tspan x="76" y="326.6">subscriptions)</tspan></text>
+    <rect x="202" y="249" width="152" height="72" fill="#e3f2fd" stroke="#1565c0"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="278.6">Tax reserve</tspan><tspan x="278" y="302.6">(30% off the top)</tspan></text>
+    <rect x="404" y="249" width="152" height="96" fill="#f1f8e9" stroke="#558b2f"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="480" y="278.6">Owner&#39;s account</tspan><tspan x="480" y="302.6">(draw — not</tspan><tspan x="480" y="326.6">payroll)</tspan></text>
+    <rect x="606" y="249" width="152" height="96" fill="#e3f2fd" stroke="#1565c0"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="682" y="278.6">25th of each</tspan><tspan x="682" y="302.6">month: payroll</tspan><tspan x="682" y="326.6">runs</tspan></text>
+    <rect x="505" y="395" width="152" height="96" fill="#fff3e0" stroke="#e65100"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="581" y="424.6">Salary →</tspan><tspan x="581" y="448.6">provider →</tspan><tspan x="581" y="472.6">401(k) deferral</tspan></text>
+    <rect x="707" y="395" width="152" height="72" fill="#fff3e0" stroke="#e65100"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="783" y="424.6">Payroll taxes →</tspan><tspan x="783" y="448.6">federal &amp; state</tspan></text>
+  </g>
+</svg>

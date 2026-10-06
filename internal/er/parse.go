@@ -5,7 +5,6 @@
 package er
 
 import (
-	"strconv"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/cssval"
@@ -61,9 +60,7 @@ type Relationship struct {
 
 // Style is a validated look from a style or classDef line; an empty field
 // means "not set".
-type Style struct {
-	Fill, Stroke, StrokeWidth, Dash, Color string
-}
+type Style = cssval.Style
 
 // Diagram is a parsed ER diagram.
 type Diagram struct {
@@ -102,12 +99,12 @@ func Parse(src string) (*Diagram, error) {
 	var classLines [][2]string
 	for i := 0; i < len(lines); i++ {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(lines[i]))
+		line := strings.TrimSpace(syntax.StripComment(lines[i]))
 		if line == "" {
 			continue
 		}
 		if !headerSeen {
-			if firstWord(line) != "erDiagram" {
+			if syntax.FirstWord(line) != "erDiagram" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'erDiagram' header")
 			}
 			headerSeen = true
@@ -116,15 +113,15 @@ func Parse(src string) (*Diagram, error) {
 		if len(d.Entities) > maxEntities {
 			return nil, syntax.Errorf(lineNo, 1, "too many entities")
 		}
-		kw := firstWord(line)
+		kw := syntax.FirstWord(line)
 		rest := strings.TrimSpace(line[len(kw):])
 		switch kw {
 		case "direction":
 			d.Direction = strings.ToUpper(rest)
 			continue
 		case "classDef":
-			name := firstWord(rest)
-			st := parseCSS(strings.TrimSpace(rest[len(name):]))
+			name := syntax.FirstWord(rest)
+			st := cssval.Parse(strings.TrimSpace(rest[len(name):]))
 			for _, n := range strings.Split(name, ",") {
 				if n = strings.TrimSpace(n); n != "" {
 					d.ClassDefs[n] = st
@@ -132,13 +129,13 @@ func Parse(src string) (*Diagram, error) {
 			}
 			continue
 		case "class":
-			ids := firstWord(rest)
+			ids := syntax.FirstWord(rest)
 			classLines = append(classLines, [2]string{ids, strings.TrimSpace(rest[len(ids):])})
 			continue
 		case "style":
-			id := firstWord(rest)
+			id := syntax.FirstWord(rest)
 			name := "\x00style:" + id
-			d.ClassDefs[name] = parseCSS(strings.TrimSpace(rest[len(id):]))
+			d.ClassDefs[name] = cssval.Parse(strings.TrimSpace(rest[len(id):]))
 			classLines = append(classLines, [2]string{id, name})
 			continue
 		}
@@ -222,7 +219,7 @@ func isNameByte(c byte) bool {
 
 func (d *Diagram) consumeBlock(e *Entity, lines []string, start int) int {
 	for j := start; j < len(lines); j++ {
-		line := strings.TrimSpace(stripComment(lines[j]))
+		line := strings.TrimSpace(syntax.StripComment(lines[j]))
 		if line == "" {
 			continue
 		}
@@ -302,7 +299,7 @@ func (d *Diagram) parseRelation(from *Entity, s string, lineNo int) error {
 		s = strings.TrimSpace(s[:c])
 	}
 	var rest string
-	if op := firstWord(s); len(op) == 6 && (op[2:4] == "--" || op[2:4] == "..") {
+	if op := syntax.FirstWord(s); len(op) == 6 && (op[2:4] == "--" || op[2:4] == "..") {
 		l, okL := leftCards[op[:2]]
 		rc, okR := rightCards[op[4:]]
 		if !okL || !okR {
@@ -388,60 +385,10 @@ func labelColon(s string) int {
 	return -1
 }
 
-// parseCSS reads "fill:#f9f,stroke:#333,stroke-width:4px" keeping only
-// values that validate.
-func parseCSS(s string) Style {
-	var st Style
-	for _, part := range strings.FieldsFunc(s, func(r rune) bool { return r == ',' || r == ';' }) {
-		k, v, ok := strings.Cut(part, ":")
-		if !ok {
-			continue
-		}
-		v = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(v), "!important"))
-		switch strings.ToLower(strings.TrimSpace(k)) {
-		case "fill":
-			if c, ok := cssval.Color(v); ok {
-				st.Fill = c
-			}
-		case "stroke":
-			if c, ok := cssval.Color(v); ok {
-				st.Stroke = c
-			}
-		case "color":
-			if c, ok := cssval.Color(v); ok {
-				st.Color = c
-			}
-		case "stroke-width":
-			if w, ok := cssval.Pixels(v, 20); ok {
-				st.StrokeWidth = strconv.FormatFloat(w, 'f', -1, 64)
-			}
-		case "stroke-dasharray":
-			if dsh, ok := cssval.Dash(v); ok {
-				st.Dash = dsh
-			}
-		}
-	}
-	return st
-}
-
 func clip(s string) string {
 	r := []rune(s)
 	if len(r) > 30 {
 		return string(r[:30]) + "…"
-	}
-	return s
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
 	}
 	return s
 }

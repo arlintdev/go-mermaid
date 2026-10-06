@@ -3,7 +3,6 @@ package radar
 import (
 	"fmt"
 	"math"
-	"strconv"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
@@ -19,13 +18,8 @@ type RenderOptions struct {
 	Title    string
 }
 
-// curveColors are Mermaid's default radar curve colours.
-var curveColors = []string{"#8686ff", "#ffff78", "#d7ff86", "#c286ff", "#ff86ff", "#ff86c2", "#ff8686", "#ffc286", "#c2ff86", "#86ffc2", "#86ffff", "#86c2ff"}
-
 const (
 	radius      = 170.0
-	graticule   = "#dedede"
-	axisStroke  = "#333333"
 	tension     = 0.17 // Mermaid's curveTension
 	labelOffset = 14.0
 )
@@ -46,8 +40,9 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	o.FontFace = fontFamily(o.FontFace)
-	pal := theme.For(o.Theme)
+	pal := theme.For(o.Theme).Escaped()
+	graticule, axisStroke, curveColors := pal.Radar.Grid, pal.Radar.Axis, pal.Radar.Curves
+	outline := func(c string) string { return theme.LineOn(c, pal.Background) }
 	face := svgutil.FaceFor(o.FontFace)
 	fs := o.FontSize
 	labelFs := math.Round(fs * 0.93)
@@ -195,20 +190,6 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	return []byte(b.String())
 }
 
-// outline is the stroke for a curve colour: the colour itself, or a darker
-// shade when it is too pale (Mermaid's yellows) to see as a line.
-func outline(c string) string {
-	v, err := strconv.ParseUint(strings.TrimPrefix(c, "#"), 16, 32)
-	if err != nil {
-		return c
-	}
-	r, g, b := v>>16&0xff, v>>8&0xff, v&0xff
-	if (0.2126*float64(r)+0.7152*float64(g)+0.0722*float64(b))/255 <= 0.8 {
-		return c
-	}
-	return fmt.Sprintf("#%02x%02x%02x", r*2/3, g*2/3, b*2/3)
-}
-
 // closedCurve draws a smooth closed path through pts as Mermaid's radar
 // does: each segment a cubic whose control points follow the neighbours.
 func closedCurve(pts [][2]float64) string {
@@ -227,19 +208,4 @@ func closedCurve(pts [][2]float64) string {
 	}
 	p.WriteString(" Z")
 	return p.String()
-}
-
-// fontFamily keeps a font-family option only when it is a plain list of
-// family names, so the option can never carry markup into the picture.
-func fontFamily(s string) string {
-	if strings.TrimSpace(s) == "" || len(s) > 200 {
-		return "sans-serif"
-	}
-	for _, r := range s {
-		if !(r == ' ' || r == ',' || r == '-' || r == '_' || r == '\'' || r == '"' ||
-			(r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9')) {
-			return "sans-serif"
-		}
-	}
-	return s
 }

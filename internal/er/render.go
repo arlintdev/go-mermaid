@@ -3,8 +3,9 @@ package er
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strings"
+
+	"github.com/arlintdev/go-mermaid/internal/curve"
 
 	"github.com/arlintdev/go-mermaid/internal/domain"
 	"github.com/arlintdev/go-mermaid/internal/layout"
@@ -43,7 +44,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	}
 	m := metrics{face: svgutil.FaceFor(o.FontFace), fs: fs, cellPad: fs * 0.6, headH: fs * 2.3, rowH: fs * 1.9}
 
-	g := &domain.Graph{Direction: directionOf(d.Direction)}
+	g := &domain.Graph{Direction: domain.DirectionOf(d.Direction)}
 	vert := g.Direction == domain.TopBottom || g.Direction == domain.BottomTop
 	cols := map[*Entity][]float64{}
 	// A relationship of an entity to itself loops out of its side; the
@@ -51,7 +52,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	loopRoom := map[string]float64{}
 	for _, r := range d.Relationships {
 		if r.From == r.To {
-			tw, th := textSize(m.face, wrap(m.face, r.Label, fs*0.9, maxLabelW), fs*0.9)
+			tw, th := textSize(m.face, m.face.Wrap(r.Label, fs*0.9, maxLabelW), fs*0.9)
 			if !vert {
 				tw = th
 			}
@@ -78,7 +79,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		}
 		e := &domain.Edge{From: r.From, To: r.To}
 		if r.Label != "" {
-			e.Label = strings.Join(wrap(m.face, r.Label, fs*0.9, maxLabelW), "\n")
+			e.Label = strings.Join(m.face.Wrap(r.Label, fs*0.9, maxLabelW), "\n")
 		}
 		edgeOf[i] = e
 		g.Edges = append(g.Edges, e)
@@ -88,7 +89,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	rankSep := 96.0
 	if !vert {
 		for _, r := range d.Relationships {
-			tw, _ := textSize(m.face, wrap(m.face, r.Label, fs*0.9, maxLabelW), fs*0.9)
+			tw, _ := textSize(m.face, m.face.Wrap(r.Label, fs*0.9, maxLabelW), fs*0.9)
 			rankSep = max(rankSep, tw+80)
 		}
 	}
@@ -143,20 +144,6 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	}
 	spreadEnds(g, edgeOf)
 	return svg(d, g, res, edgeOf, cols, o, m), nil
-}
-
-// directionOf maps a `direction` line onto a layout direction.
-func directionOf(dir string) domain.Direction {
-	switch dir {
-	case "LR":
-		return domain.LeftRight
-	case "RL":
-		return domain.RightLeft
-	case "BT":
-		return domain.BottomTop
-	default:
-		return domain.TopBottom
-	}
 }
 
 // entitySize sizes an entity's table and returns its column widths: type,
@@ -214,7 +201,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 
 	type drawn struct {
 		r      *Relationship
-		sh     edgeShape
+		sh     curve.Shape
 		lx, ly float64
 		lines  []string
 	}
@@ -228,7 +215,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 	for i, r := range d.Relationships {
 		var lines []string
 		if r.Label != "" {
-			lines = wrap(m.face, r.Label, lfs, maxLabelW)
+			lines = m.face.Wrap(r.Label, lfs, maxLabelW)
 		}
 		tw, th := textSize(m.face, lines, lfs)
 		if r.From == r.To {
@@ -249,16 +236,16 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 		if e == nil || len(e.Points) < 2 {
 			continue
 		}
-		var obs []box
+		var obs []curve.Box
 		for _, n := range g.Nodes {
 			if n.ID != r.From && n.ID != r.To {
-				obs = append(obs, box{n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H})
+				obs = append(obs, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 			}
 		}
-		sh := shapeEdge(e.Points, vert, obs, 0, 0)
+		sh := curve.Edge(e.Points, vert, obs, 0, 0)
 		lx, ly := e.LabelPos.X, e.LabelPos.Y
-		if sh.curved {
-			lx, ly = sh.mid.X, sh.mid.Y
+		if sh.Curved {
+			lx, ly = sh.Mid.X, sh.Mid.Y
 		} else if len(lines) > 0 {
 			ly -= float64(len(lines)-1)*lfs*1.3/2 + lfs*0.3
 		}
@@ -315,7 +302,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 
 	var b strings.Builder
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(o.FontFace)), svgutil.Num(m.fs))
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(m.fs))
 	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(pal.Background))
 	if o.Title != "" {
 		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle" font-weight="bold">%s</text>`+"\n",
@@ -329,23 +316,23 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 		if de.r.Dashed {
 			dash = ` stroke-dasharray="6 4"`
 		}
-		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.3"%s/>`+"\n", de.sh.d, edge, dash)
+		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.3"%s/>`+"\n", de.sh.D, edge, dash)
 	}
 	for _, e := range d.Entities {
 		writeEntity(&b, d, e, g.NodeByID(e.Name), cols[e], pal, m)
 	}
 	// Glyphs sit over the entity border, and labels over everything.
 	for _, de := range rels {
-		writeCrow(&b, de.r.LeftKind, de.sh.start, de.sh.sdir, pal)
-		writeCrow(&b, de.r.RightKind, de.sh.end, de.sh.edir, pal)
+		writeCrow(&b, de.r.LeftKind, de.sh.Start, de.sh.StartDir, pal)
+		writeCrow(&b, de.r.RightKind, de.sh.End, de.sh.EndDir, pal)
 	}
 	for _, de := range rels {
 		if de.lines == nil {
 			continue
 		}
 		tw, th := textSize(m.face, de.lines, lfs)
-		fmt.Fprintf(&b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>`+"\n",
-			svgutil.Num(de.lx-tw/2-4), svgutil.Num(de.ly-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4))
+		fmt.Fprintf(&b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s" fill-opacity="0.85"/>`+"\n",
+			svgutil.Num(de.lx-tw/2-4), svgutil.Num(de.ly-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4), svgutil.Esc(pal.RelationLabel))
 		writeLines(&b, de.lines, de.lx, de.ly, lfs, svgutil.Esc(pal.Text), "middle")
 	}
 	b.WriteString("  </g>\n</svg>\n")
@@ -354,21 +341,21 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, edgeOf []*domain.Edge,
 
 // selfShape is the loop of a relationship from an entity to itself, with
 // where its label goes.
-func selfShape(n *domain.Node, vert bool, tw, th float64) (edgeShape, float64, float64) {
+func selfShape(n *domain.Node, vert bool, tw, th float64) (curve.Shape, float64, float64) {
 	num := svgutil.Num
 	if vert {
 		x, cy := n.Pos.X+n.Size.W, n.Pos.Y+n.Size.H/2
 		a, z := domain.Point{X: x, Y: cy - 14}, domain.Point{X: x, Y: cy + 14}
 		c1, c2 := domain.Point{X: x + selfLoop, Y: cy - 14 - selfLoop*0.6}, domain.Point{X: x + selfLoop, Y: cy + 14 + selfLoop*0.6}
-		sh := edgeShape{start: a, end: z, curved: true, sdir: unitTo(a, c1, z), edir: unitTo(z, c2, a),
-			d: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(a.X), num(a.Y), num(c1.X), num(c1.Y), num(c2.X), num(c2.Y), num(z.X), num(z.Y))}
+		sh := curve.Shape{Start: a, End: z, Curved: true, StartDir: curve.UnitTo(a, c1, z), EndDir: curve.UnitTo(z, c2, a),
+			D: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(a.X), num(a.Y), num(c1.X), num(c1.Y), num(c2.X), num(c2.Y), num(z.X), num(z.Y))}
 		return sh, x + selfLoop*0.75 + 8 + tw/2, cy
 	}
 	cx, y := n.Pos.X+n.Size.W/2, n.Pos.Y
 	a, z := domain.Point{X: cx - 14, Y: y}, domain.Point{X: cx + 14, Y: y}
 	c1, c2 := domain.Point{X: cx - 14 - selfLoop*0.6, Y: y - selfLoop}, domain.Point{X: cx + 14 + selfLoop*0.6, Y: y - selfLoop}
-	sh := edgeShape{start: a, end: z, curved: true, sdir: unitTo(a, c1, z), edir: unitTo(z, c2, a),
-		d: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(a.X), num(a.Y), num(c1.X), num(c1.Y), num(c2.X), num(c2.Y), num(z.X), num(z.Y))}
+	sh := curve.Shape{Start: a, End: z, Curved: true, StartDir: curve.UnitTo(a, c1, z), EndDir: curve.UnitTo(z, c2, a),
+		D: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(a.X), num(a.Y), num(c1.X), num(c1.Y), num(c2.X), num(c2.Y), num(z.X), num(z.Y))}
 	return sh, cx, y - selfLoop*0.75 - th/2 - 4
 }
 
@@ -385,15 +372,13 @@ func writeEntity(b *strings.Builder, d *Diagram, e *Entity, n *domain.Node, cols
 			}
 		}
 	}
-	fill, stroke, text := svgutil.Esc(pal.NodeFill), svgutil.Esc(pal.NodeStroke), svgutil.Esc(pal.Text)
-	if st.Fill != "" {
-		fill = svgutil.Esc(st.Fill)
-	}
-	if st.Stroke != "" {
-		stroke = svgutil.Esc(st.Stroke)
-	}
+	fill, stroke, text := pal.Node(st.Fill, st.Stroke, st.Color)
+	fill, stroke, text = svgutil.Esc(fill), svgutil.Esc(stroke), svgutil.Esc(text)
+	// The attribute rows keep the theme's fills, so their text does not
+	// follow a styled fill.
+	rowText := svgutil.Esc(pal.Text)
 	if st.Color != "" {
-		text = svgutil.Esc(st.Color)
+		rowText = svgutil.Esc(st.Color)
 	}
 	extra := ""
 	if st.StrokeWidth != "" {
@@ -415,7 +400,7 @@ func writeEntity(b *strings.Builder, d *Diagram, e *Entity, n *domain.Node, cols
 		hasKeys = hasKeys || len(a.Keys) > 0
 		hasComment = hasComment || a.Comment != ""
 	}
-	odd, even := svgutil.Esc(pal.Background), mix(pal.NodeFill, pal.Background, 0.55, svgutil.Esc(pal.Background))
+	odd, even := svgutil.Esc(pal.Background), theme.Mix(pal.NodeFill, pal.Background, 0.55, svgutil.Esc(pal.Background))
 	ry := y + m.headH
 	for i, a := range e.Attributes {
 		rowFill := odd
@@ -426,7 +411,7 @@ func writeEntity(b *strings.Builder, d *Diagram, e *Entity, n *domain.Node, cols
 		cx := x
 		for ci, c := range rowCells(a, hasKeys, hasComment) {
 			if c != "" {
-				writeLines(b, []string{c}, cx+m.cellPad, ry+m.rowH/2, m.fs*0.95, text, "start")
+				writeLines(b, []string{c}, cx+m.cellPad, ry+m.rowH/2, m.fs*0.95, rowText, "start")
 			}
 			cx += cols[ci]
 		}
@@ -508,67 +493,4 @@ func writeLines(b *strings.Builder, lines []string, x, cy, size float64, fill, a
 		fmt.Fprintf(b, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(x), svgutil.Num(y0+float64(i)*lh), svgutil.Esc(l))
 	}
 	b.WriteString("</text>\n")
-}
-
-// wrap breaks s into lines no wider than maxW, at spaces.
-func wrap(face svgutil.Face, s string, size, maxW float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && face.Width(try, size) > maxW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
-}
-
-func path(pts []domain.Point) string {
-	var d strings.Builder
-	for i, p := range pts {
-		cmd := "L"
-		if i == 0 {
-			cmd = "M"
-		}
-		fmt.Fprintf(&d, "%s%s,%s ", cmd, svgutil.Num(p.X), svgutil.Num(p.Y))
-	}
-	return strings.TrimSpace(d.String())
-}
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif:
-// a font option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
-}
-
-// mix blends hex colour a toward hex colour b by t (0 keeps a). When either
-// is not a #rrggbb colour it returns fallback.
-func mix(a, b string, t float64, fallback string) string {
-	var ra, ga, ba, rb, gb, bb int
-	if len(a) != 7 || len(b) != 7 {
-		return fallback
-	}
-	if _, err := fmt.Sscanf(strings.ToLower(a), "#%02x%02x%02x", &ra, &ga, &ba); err != nil {
-		return fallback
-	}
-	if _, err := fmt.Sscanf(strings.ToLower(b), "#%02x%02x%02x", &rb, &gb, &bb); err != nil {
-		return fallback
-	}
-	c := func(x, y int) int { return x + int(float64(y-x)*t+0.5) }
-	return fmt.Sprintf("#%02x%02x%02x", c(ra, rb), c(ga, gb), c(ba, bb))
 }

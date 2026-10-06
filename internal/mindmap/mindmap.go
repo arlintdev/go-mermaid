@@ -63,7 +63,7 @@ func Parse(src string) (*Diagram, error) {
 	headerSeen := false
 	for i, raw := range strings.Split(src, "\n") {
 		lineNo := i + 1
-		if strings.TrimSpace(stripComment(raw)) == "" {
+		if strings.TrimSpace(syntax.StripComment(raw)) == "" {
 			continue
 		}
 		if !headerSeen {
@@ -74,7 +74,7 @@ func Parse(src string) (*Diagram, error) {
 			continue
 		}
 		indent := leadingSpaces(raw)
-		trimmed := strings.TrimSpace(stripComment(raw))
+		trimmed := strings.TrimSpace(syntax.StripComment(raw))
 		// ::icon(...) and :::className decorate the node above them. Without
 		// this they became child nodes labelled with the decoration text.
 		if strings.HasPrefix(trimmed, "::") {
@@ -162,11 +162,4 @@ func leadingSpaces(s string) int {
 		}
 	}
 	return n
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
-	}
-	return s
 }

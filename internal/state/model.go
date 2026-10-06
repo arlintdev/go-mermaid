@@ -3,7 +3,11 @@
 // [*] start/end pseudostates render as filled and ringed circles.
 package state
 
-import "strconv"
+import (
+	"strconv"
+
+	"github.com/arlintdev/go-mermaid/internal/cssval"
+)
 
 const (
 	startID = "__start__"
@@ -45,9 +49,7 @@ type State struct {
 
 // Style is a validated look from a classDef line; an empty field means
 // "not set".
-type Style struct {
-	Fill, Stroke, StrokeWidth, Dash, Color, FontWeight string
-}
+type Style = cssval.Style
 
 // Transition is an arrow between two states.
 type Transition struct {

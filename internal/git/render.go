@@ -2,7 +2,6 @@ package git
 
 import (
 	"fmt"
-	"regexp"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
@@ -16,21 +15,6 @@ type RenderOptions struct {
 	FontSize float64
 	Padding  float64
 	Title    string
-}
-
-// laneColor is a branch's colour on Mermaid's default git scale, with the
-// text colour for its label and the colour of a highlighted commit on it.
-type laneColor struct{ fill, label, highlight string }
-
-var laneColors = []laneColor{
-	{"#0000ec", "#ffffff", "#131300"},
-	{"#dede00", "#000000", "#0000a1"},
-	{"#9eec00", "#000000", "#310093"},
-	{"#0076ec", "#ffffff", "#934900"},
-	{"#00ecec", "#000000", "#930000"},
-	{"#00ec76", "#000000", "#930049"},
-	{"#ec00ec", "#000000", "#009300"},
-	{"#ec0000", "#000000", "#009393"},
 }
 
 const (
@@ -65,7 +49,7 @@ type renderer struct {
 	gap      float64
 	pos      map[*Commit]pt
 	laneAt   map[string]float64
-	color    map[string]laneColor
+	color    map[string]theme.GitLane
 	ox, oy   float64 // where the time/lane origin sits on the canvas
 }
 
@@ -91,9 +75,9 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if fs <= 0 {
 		fs = 14
 	}
-	r := &renderer{d: d, o: o, pal: theme.For(o.Theme), face: svgutil.FaceFor(o.FontFace), fs: fs, sfs: fs * 0.75,
+	r := &renderer{d: d, o: o, pal: theme.For(o.Theme).Escaped(), face: svgutil.FaceFor(o.FontFace), fs: fs, sfs: fs * 0.75,
 		vertical: d.Direction != "LR", flip: d.Direction == "BT",
-		pos: map[*Commit]pt{}, laneAt: map[string]float64{}, color: map[string]laneColor{}}
+		pos: map[*Commit]pt{}, laneAt: map[string]float64{}, color: map[string]theme.GitLane{}}
 
 	// Lanes. Vertical graphs set commit ids beside the commit, so a lane
 	// is as wide as its longest id.
@@ -112,7 +96,8 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	r.gap = gap
 	for _, b := range d.Branches {
 		r.laneAt[b.Name] = float64(b.Lane) * gap
-		r.color[b.Name] = laneColors[b.Lane%len(laneColors)]
+		lanes := r.pal.Git.Lanes
+		r.color[b.Name] = lanes[b.Lane%len(lanes)]
 	}
 
 	// Commits along the time axis; a tagged commit gets room for its tag
@@ -186,7 +171,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 	var b strings.Builder
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(o.FontFace)), svgutil.Num(fs))
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(fs))
 	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(r.pal.Background))
 	if o.Title != "" {
 		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" font-size="%s" font-weight="bold" text-anchor="middle">%s</text>`+"\n",
@@ -260,9 +245,9 @@ func (r *renderer) lanes(b *strings.Builder) {
 			}
 		}
 		fmt.Fprintf(b, `  <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="%s"/>`+"\n",
-			svgutil.Num(bx), svgutil.Num(by), svgutil.Num(bw), svgutil.Num(bh), c.fill)
+			svgutil.Num(bx), svgutil.Num(by), svgutil.Num(bw), svgutil.Num(bh), c.Fill)
 		fmt.Fprintf(b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle">%s</text>`+"\n",
-			svgutil.Num(bx+bw/2), svgutil.Num(by+bh/2+r.fs*0.35), c.label, svgutil.Esc(br.Name))
+			svgutil.Num(bx+bw/2), svgutil.Num(by+bh/2+r.fs*0.35), c.Label, svgutil.Esc(br.Name))
 	}
 }
 
@@ -275,7 +260,7 @@ func (r *renderer) arrows(b *strings.Builder) {
 	for _, c := range r.d.Commits {
 		for i, p := range c.Parents {
 			from, to := r.pos[p], r.pos[c]
-			col := r.color[c.Branch].fill
+			col := r.color[c.Branch].Fill
 			var d string
 			switch {
 			case from.l == to.l:
@@ -289,7 +274,7 @@ func (r *renderer) arrows(b *strings.Builder) {
 				// A cherry-pick whose source lane has later commits on it
 				// leaves along its lane, then runs between the lanes, on the
 				// side the commit ids do not use, so it crosses no commit.
-				col = r.color[p.Branch].fill
+				col = r.color[p.Branch].Fill
 				s := sign(to.l - from.l)
 				m := max(from.l, to.l) - 30
 				if r.vertical {
@@ -305,7 +290,7 @@ func (r *renderer) arrows(b *strings.Builder) {
 					" " + r.arcR(pt{to.t - k, m}, pt{to.t, m}, pt{to.t, m + s*k}, k) + " L" + r.xys(to)
 			default:
 				// Merge or cherry-pick: along the source lane, then across.
-				col = r.color[p.Branch].fill
+				col = r.color[p.Branch].Fill
 				s := sign(to.l - from.l)
 				d = "M" + r.xys(from) + " L" + r.xys(pt{to.t - arcR, from.l}) +
 					" " + r.arc(pt{to.t - arcR, from.l}, pt{to.t, from.l}, pt{to.t, from.l + s*arcR}) + " L" + r.xys(to)
@@ -349,23 +334,23 @@ func (r *renderer) bullets(b *strings.Builder) {
 		n := svgutil.Num
 		switch {
 		case c.Type == Highlight:
-			fmt.Fprintf(b, `  <rect x="%s" y="%s" width="20" height="20" fill="%s"/>`+"\n", n(x-10), n(y-10), col.highlight)
+			fmt.Fprintf(b, `  <rect x="%s" y="%s" width="20" height="20" fill="%s"/>`+"\n", n(x-10), n(y-10), col.Highlight)
 			fmt.Fprintf(b, `  <rect x="%s" y="%s" width="12" height="12" fill="%s"/>`+"\n", n(x-6), n(y-6), inner)
 		case c.Type == Reverse:
-			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="%s" fill="%s"/>`+"\n", n(x), n(y), n(dotR), col.fill)
+			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="%s" fill="%s"/>`+"\n", n(x), n(y), n(dotR), col.Fill)
 			fmt.Fprintf(b, `  <path d="M%s,%s L%s,%s M%s,%s L%s,%s" stroke="%s" stroke-width="3" stroke-linecap="round"/>`+"\n",
 				n(x-5), n(y-5), n(x+5), n(y+5), n(x-5), n(y+5), n(x+5), n(y-5), inner)
 		case c.Type == CherryPick:
-			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="%s" fill="%s"/>`+"\n", n(x), n(y), n(dotR), col.fill)
-			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="2.75" fill="#ffffff"/><circle cx="%s" cy="%s" r="2.75" fill="#ffffff"/>`+"\n",
-				n(x-3), n(y+2), n(x+3), n(y+2))
-			fmt.Fprintf(b, `  <path d="M%s,%s L%s,%s M%s,%s L%s,%s" stroke="#ffffff" stroke-width="1.5" fill="none"/>`+"\n",
-				n(x+3), n(y+1), n(x), n(y-5), n(x-3), n(y+1), n(x), n(y-5))
+			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="%s" fill="%s"/>`+"\n", n(x), n(y), n(dotR), col.Fill)
+			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="2.75" fill="%s"/><circle cx="%s" cy="%s" r="2.75" fill="%s"/>`+"\n",
+				n(x-3), n(y+2), r.pal.Git.Mark, n(x+3), n(y+2), r.pal.Git.Mark)
+			fmt.Fprintf(b, `  <path d="M%s,%s L%s,%s M%s,%s L%s,%s" stroke="%s" stroke-width="1.5" fill="none"/>`+"\n",
+				n(x+3), n(y+1), n(x), n(y-5), n(x-3), n(y+1), n(x), n(y-5), r.pal.Git.Mark)
 		case c.Type == MergeCommit:
-			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="%s" fill="%s"/>`+"\n", n(x), n(y), n(dotR), col.fill)
+			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="%s" fill="%s"/>`+"\n", n(x), n(y), n(dotR), col.Fill)
 			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="6" fill="%s"/>`+"\n", n(x), n(y), inner)
 		default:
-			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="%s" fill="%s"/>`+"\n", n(x), n(y), n(dotR), col.fill)
+			fmt.Fprintf(b, `  <circle cx="%s" cy="%s" r="%s" fill="%s"/>`+"\n", n(x), n(y), n(dotR), col.Fill)
 		}
 	}
 }
@@ -382,14 +367,14 @@ func (r *renderer) labels(b *strings.Builder) {
 			if !r.vertical {
 				ax, ay := x-6, y+dotR+5
 				rot := fmt.Sprintf(` transform="rotate(-45 %s %s)"`, n(ax), n(ay))
-				fmt.Fprintf(b, `  <rect x="%s" y="%s" width="%s" height="%s" fill="#ffffde" fill-opacity="0.6"%s/>`+"\n",
-					n(ax-tw-3), n(ay-r.sfs*0.85), n(tw+6), n(r.sfs*1.25), rot)
+				fmt.Fprintf(b, `  <rect x="%s" y="%s" width="%s" height="%s" fill="%s" fill-opacity="0.6"%s/>`+"\n",
+					n(ax-tw-3), n(ay-r.sfs*0.85), n(tw+6), n(r.sfs*1.25), r.pal.Git.IDFill, rot)
 				fmt.Fprintf(b, `  <text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="end"%s>%s</text>`+"\n",
 					n(ax), n(ay+r.sfs*0.1), text, n(r.sfs), rot, svgutil.Esc(c.ID))
 			} else {
 				ax := x - dotR - 8
-				fmt.Fprintf(b, `  <rect x="%s" y="%s" width="%s" height="%s" fill="#ffffde" fill-opacity="0.6"/>`+"\n",
-					n(ax-tw-3), n(y-r.sfs*0.75), n(tw+6), n(r.sfs*1.4))
+				fmt.Fprintf(b, `  <rect x="%s" y="%s" width="%s" height="%s" fill="%s" fill-opacity="0.6"/>`+"\n",
+					n(ax-tw-3), n(y-r.sfs*0.75), n(tw+6), n(r.sfs*1.4), r.pal.Git.IDFill)
 				fmt.Fprintf(b, `  <text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="end">%s</text>`+"\n",
 					n(ax), n(y+r.sfs*0.35), text, n(r.sfs), svgutil.Esc(c.ID))
 			}
@@ -411,7 +396,7 @@ func (r *renderer) tag(b *strings.Builder, tag string, x, y float64, i int) {
 	tw := r.face.Width(tag, r.sfs)
 	th := r.sfs + 5
 	fill := svgutil.Esc(r.pal.NodeFill)
-	stroke := mix(r.pal.NodeStroke, r.pal.NodeFill, 0.55, svgutil.Esc(r.pal.NodeStroke))
+	stroke := theme.Mix(r.pal.NodeStroke, r.pal.NodeFill, 0.55, r.pal.NodeStroke)
 	text := svgutil.Esc(r.pal.Text)
 	if !r.vertical {
 		cy := y - dotR - 8 - th/2 - float64(i)*(th+4)
@@ -436,30 +421,4 @@ func sign(v float64) float64 {
 		return -1
 	}
 	return 1
-}
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif:
-// a font option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
-}
-
-// mix blends hex colour a toward hex colour b by t (0 keeps a). When either
-// is not a #rrggbb colour it returns fallback.
-func mix(a, b string, t float64, fallback string) string {
-	var ra, ga, ba, rb, gb, bb int
-	if _, err := fmt.Sscanf(strings.ToLower(a), "#%02x%02x%02x", &ra, &ga, &ba); err != nil || len(a) != 7 {
-		return fallback
-	}
-	if _, err := fmt.Sscanf(strings.ToLower(b), "#%02x%02x%02x", &rb, &gb, &bb); err != nil || len(b) != 7 {
-		return fallback
-	}
-	c := func(x, y int) int { return x + int(float64(y-x)*t+0.5) }
-	return fmt.Sprintf("#%02x%02x%02x", c(ra, rb), c(ga, gb), c(ba, bb))
 }

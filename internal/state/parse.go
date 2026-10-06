@@ -2,7 +2,6 @@ package state
 
 import (
 	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/cssval"
@@ -33,12 +32,12 @@ func Parse(src string) (*Diagram, error) {
 	var classLines [][2]string
 	for i := 0; i < len(lines); i++ {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(lines[i]))
+		line := strings.TrimSpace(syntax.StripComment(lines[i]))
 		if line == "" {
 			continue
 		}
 		if !headerSeen {
-			w := strings.ToLower(firstWord(line))
+			w := strings.ToLower(syntax.FirstWord(line))
 			if w != "statediagram-v2" && w != "statediagram" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'stateDiagram-v2' header")
 			}
@@ -50,7 +49,7 @@ func Parse(src string) (*Diagram, error) {
 		}
 
 		sc := scopes[len(scopes)-1]
-		kw := firstWord(line)
+		kw := syntax.FirstWord(line)
 
 		switch {
 		case line == "}":
@@ -84,8 +83,8 @@ func Parse(src string) (*Diagram, error) {
 
 		case kw == "classDef":
 			rest := strings.TrimSpace(line[len(kw):])
-			name := firstWord(rest)
-			st := parseCSS(strings.TrimSpace(rest[len(name):]))
+			name := syntax.FirstWord(rest)
+			st := cssval.Parse(strings.TrimSpace(rest[len(name):]))
 			for _, n := range strings.Split(name, ",") {
 				if n = strings.TrimSpace(n); n != "" {
 					d.ClassDefs[n] = st
@@ -94,15 +93,15 @@ func Parse(src string) (*Diagram, error) {
 
 		case kw == "class":
 			rest := strings.TrimSpace(line[len(kw):])
-			ids := firstWord(rest)
+			ids := syntax.FirstWord(rest)
 			classLines = append(classLines, [2]string{ids, strings.TrimSpace(rest[len(ids):])})
 
 		case kw == "style":
 			// style S fill:… applies like an anonymous class.
 			rest := strings.TrimSpace(line[len(kw):])
-			id := firstWord(rest)
+			id := syntax.FirstWord(rest)
 			name := "\x00style:" + id
-			d.ClassDefs[name] = parseCSS(strings.TrimSpace(rest[len(id):]))
+			d.ClassDefs[name] = cssval.Parse(strings.TrimSpace(rest[len(id):]))
 			classLines = append(classLines, [2]string{id, name})
 
 		case isNoteOpen(line):
@@ -119,7 +118,7 @@ func Parse(src string) (*Diagram, error) {
 			var text []string
 			for i+1 < len(lines) {
 				i++
-				n := strings.TrimSpace(stripComment(lines[i]))
+				n := strings.TrimSpace(syntax.StripComment(lines[i]))
 				if strings.EqualFold(n, "end note") {
 					break
 				}
@@ -368,64 +367,10 @@ func isTransition(line string) bool {
 	return c < 0 || a < c || strings.HasPrefix(line[c:], ":::") && a > c
 }
 
-// parseCSS reads "fill:#f9f,stroke:#333,stroke-width:4px" keeping only
-// values that validate.
-func parseCSS(s string) Style {
-	var st Style
-	for _, part := range strings.FieldsFunc(s, func(r rune) bool { return r == ',' || r == ';' }) {
-		k, v, ok := strings.Cut(part, ":")
-		if !ok {
-			continue
-		}
-		v = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(v), "!important"))
-		switch strings.ToLower(strings.TrimSpace(k)) {
-		case "fill":
-			if c, ok := cssval.Color(v); ok {
-				st.Fill = c
-			}
-		case "stroke":
-			if c, ok := cssval.Color(v); ok {
-				st.Stroke = c
-			}
-		case "color":
-			if c, ok := cssval.Color(v); ok {
-				st.Color = c
-			}
-		case "stroke-width":
-			if w, ok := cssval.Pixels(v, 20); ok {
-				st.StrokeWidth = strconv.FormatFloat(w, 'f', -1, 64)
-			}
-		case "stroke-dasharray":
-			if dsh, ok := cssval.Dash(v); ok {
-				st.Dash = dsh
-			}
-		case "font-weight":
-			if fw, ok := cssval.FontWeight(v); ok {
-				st.FontWeight = fw
-			}
-		}
-	}
-	return st
-}
-
 func clip(s string) string {
 	r := []rune(s)
 	if len(r) > 30 {
 		return string(r[:30]) + "…"
-	}
-	return s
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
 	}
 	return s
 }

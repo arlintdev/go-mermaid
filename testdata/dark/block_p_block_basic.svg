@@ -1,0 +1,8 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="121.57" height="122" viewBox="0 0 121.57 122" font-family="sans-serif" font-size="14">
+  <rect x="16" y="16" width="39.78" height="40" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+  <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="35.89" y="40.9">a</tspan></text>
+  <rect x="65.78" y="16" width="39.78" height="40" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+  <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="85.68" y="40.9">b</tspan></text>
+  <rect x="16" y="66" width="89.57" height="40" rx="3" fill="#2b2b40" stroke="#8888bb"/>
+  <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="60.78" y="90.9">c</tspan></text>
+</svg>

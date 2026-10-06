@@ -34,7 +34,4 @@ func TestHostile(t *testing.T) {
 	if strings.Contains(string(out), x) {
 		t.Errorf("injection written unescaped")
 	}
-	f := defaultOptions
-	f.FontFace = x
-	goldentest.Hostile(t, func(s string) ([]byte, error) { return Render(s, f) }, src)
 }

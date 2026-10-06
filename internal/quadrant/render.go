@@ -2,8 +2,6 @@ package quadrant
 
 import (
 	"fmt"
-	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
@@ -45,7 +43,7 @@ type drawer struct {
 // text writes s as one <text>, wrapped onto further lines below the first
 // when it is wider than maxW.
 func (dr *drawer) text(s string, x, y, size, maxW float64, fill, anchor, extra string) {
-	lines := wrap(dr.face, s, size, maxW)
+	lines := dr.face.Wrap(s, size, maxW)
 	lh := size * 1.2
 	fmt.Fprintf(&dr.b, `  <text fill="%s" font-size="%s" text-anchor="%s"%s>`, fill, svgutil.Num(size), anchor, extra)
 	for i, ln := range lines {
@@ -89,7 +87,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 	b := &dr.b
 	fmt.Fprintf(b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`,
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(o.FontFace)), svgutil.Num(fs))
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(fs))
 	b.WriteByte('\n')
 	fmt.Fprintf(b, `  <rect width="100%%" height="100%%" fill="%s"/>`, svgutil.Esc(pal.Background))
 	b.WriteByte('\n')
@@ -102,14 +100,14 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	// progressively lighter, as Mermaid shades them.
 	fill := svgutil.Esc(pal.NodeFill)
 	bg := pal.Background
-	fills := [4]string{fill, mix(pal.NodeFill, bg, 0.27, fill), mix(pal.NodeFill, bg, 0.53, fill), mix(pal.NodeFill, bg, 0.79, fill)}
+	fills := [4]string{fill, theme.Mix(pal.NodeFill, bg, 0.27, fill), theme.Mix(pal.NodeFill, bg, 0.53, fill), theme.Mix(pal.NodeFill, bg, 0.79, fill)}
 	origin := [4][2]float64{{midX, top}, {left, top}, {left, midY}, {midX, midY}}
 	for i, q := range origin {
 		fmt.Fprintf(b, `  <rect x="%s" y="%s" width="%s" height="%s" fill="%s"/>`,
 			svgutil.Num(q[0]), svgutil.Num(q[1]), svgutil.Num(halfW), svgutil.Num(halfH), fills[i])
 		b.WriteByte('\n')
 	}
-	border := mix(pal.NodeStroke, pal.NodeFill, 0.6, svgutil.Esc(pal.NodeStroke))
+	border := theme.Mix(pal.NodeStroke, pal.NodeFill, 0.6, svgutil.Esc(pal.NodeStroke))
 	fmt.Fprintf(b, `  <rect x="%s" y="%s" width="%s" height="%s" fill="none" stroke="%s" stroke-width="2"/>`,
 		svgutil.Num(left), svgutil.Num(top), svgutil.Num(plotW), svgutil.Num(plotH), border)
 	b.WriteByte('\n')
@@ -127,7 +125,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 		}
 		y := q[1] + edge + fs*0.85
 		if len(d.Points) == 0 {
-			n := len(wrap(dr.face, name, fs, halfW-2*edge))
+			n := len(dr.face.Wrap(name, fs, halfW-2*edge))
 			y = q[1] + halfH/2 - float64(n-1)*fs*0.6 + fs*0.35
 		}
 		dr.text(name, q[0]+halfW/2, y, fs, halfW-2*edge, text, "middle", "")
@@ -197,28 +195,6 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	return []byte(b.String())
 }
 
-// wrap breaks s into lines no wider than maxW, at spaces where it can.
-func wrap(face svgutil.Face, s string, size, maxW float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && face.Width(try, size) > maxW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
-}
-
 // oneLine keeps a rotated axis label on one line, shortened with an ellipsis
 // when it is longer than its half of the axis: a wrapped rotated label would
 // run into the plot.
@@ -232,45 +208,6 @@ func oneLine(face svgutil.Face, s string, size, maxW float64) string {
 		r = r[:len(r)-1]
 	}
 	return strings.TrimSpace(string(r)) + "…"
-}
-
-// mix blends hex colour a toward hex colour b by t (0 keeps a). When either
-// is not a #rgb or #rrggbb colour it returns fallback.
-func mix(a, b string, t float64, fallback string) string {
-	ra, ga, ba, ok1 := hexRGB(a)
-	rb, gb, bb, ok2 := hexRGB(b)
-	if !ok1 || !ok2 {
-		return fallback
-	}
-	c := func(x, y int) int { return x + int(float64(y-x)*t+0.5) }
-	return fmt.Sprintf("#%02x%02x%02x", c(ra, rb), c(ga, gb), c(ba, bb))
-}
-
-func hexRGB(s string) (r, g, b int, ok bool) {
-	s = strings.TrimPrefix(s, "#")
-	if len(s) == 3 {
-		s = string([]byte{s[0], s[0], s[1], s[1], s[2], s[2]})
-	}
-	if len(s) != 6 {
-		return 0, 0, 0, false
-	}
-	v, err := strconv.ParseUint(s, 16, 32)
-	if err != nil {
-		return 0, 0, 0, false
-	}
-	return int(v >> 16), int(v >> 8 & 0xff), int(v & 0xff), true
-}
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif:
-// a font option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
 }
 
 func clampUnit(v float64) float64 {

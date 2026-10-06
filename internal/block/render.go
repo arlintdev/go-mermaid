@@ -3,8 +3,6 @@ package block
 import (
 	"fmt"
 	"math"
-	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/svgid"
@@ -108,7 +106,7 @@ func (l *layout) natural(b *Block) (float64, float64) {
 		w += 2 * compPad
 		h += 2 * compPad
 	default:
-		lines := wrap(l.face, b.Label, l.fs, maxLabelW)
+		lines := l.face.WrapHard(b.Label, l.fs, maxLabelW)
 		l.lines[b] = lines
 		tw := 0.0
 		for _, ln := range lines {
@@ -214,7 +212,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 		if e.Label != "" {
 			// Room for the label between the blocks it joins, within reason.
 			w := 0.0
-			for _, ln := range wrap(l.face, e.Label, fs*0.9, maxLabelW) {
+			for _, ln := range l.face.WrapHard(e.Label, fs*0.9, maxLabelW) {
 				w = max(w, l.face.Width(ln, fs*0.9))
 			}
 			l.gap = max(l.gap, min(w+28, 110))
@@ -269,7 +267,7 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 
 	var b strings.Builder
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(o.FontFace)), svgutil.Num(fs))
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(fs))
 	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(pal.Background))
 	edgeColor := svgutil.Esc(pal.Edge)
 	if len(edges) > 0 {
@@ -323,15 +321,15 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 			continue
 		}
 		mx, my := midpoint(de.pts)
-		lines := wrap(l.face, de.e.Label, fs*0.9, maxLabelW)
+		lines := l.face.WrapHard(de.e.Label, fs*0.9, maxLabelW)
 		tw := 0.0
 		for _, ln := range lines {
 			tw = max(tw, l.face.Width(ln, fs*0.9))
 		}
 		lh := fs * 0.9 * 1.25
 		th := float64(len(lines)) * lh
-		fmt.Fprintf(&b, `  <rect x="%s" y="%s" width="%s" height="%s" rx="3" fill="#e8e8e8" fill-opacity="0.9"/>`+"\n",
-			svgutil.Num(mx-tw/2-4), svgutil.Num(my-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4))
+		fmt.Fprintf(&b, `  <rect x="%s" y="%s" width="%s" height="%s" rx="3" fill="%s" fill-opacity="0.9"/>`+"\n",
+			svgutil.Num(mx-tw/2-4), svgutil.Num(my-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4), svgutil.Esc(pal.RelationLabel))
 		writeLines(&b, lines, mx, my, lh, fs*0.9, svgutil.Esc(pal.Text), "")
 	}
 	if dx > 0 || dy > 0 {
@@ -345,21 +343,13 @@ func svg(d *Diagram, o RenderOptions, id string) []byte {
 func (l *layout) drawBlock(b *strings.Builder, d *Diagram, blk *Block, pal theme.Palette) {
 	st := blk.Style
 	for i := len(blk.Classes) - 1; i >= 0; i-- {
-		st = st.over(d.Classes[blk.Classes[i]])
+		st = st.Over(d.Classes[blk.Classes[i]])
 	}
-	fill, stroke, text := svgutil.Esc(pal.NodeFill), svgutil.Esc(pal.NodeStroke), svgutil.Esc(pal.Text)
 	if blk.Composite {
-		fill = mix(pal.NodeFill, pal.Background, 0.55, fill)
+		pal.NodeFill = theme.Mix(pal.NodeFill, pal.Background, 0.55, pal.NodeFill)
 	}
-	if st.Fill != "" {
-		fill = svgutil.Esc(st.Fill)
-	}
-	if st.Stroke != "" {
-		stroke = svgutil.Esc(st.Stroke)
-	}
-	if st.Color != "" {
-		text = svgutil.Esc(st.Color)
-	}
+	fill, stroke, text := pal.Node(st.Fill, st.Stroke, st.Color)
+	fill, stroke, text = svgutil.Esc(fill), svgutil.Esc(stroke), svgutil.Esc(text)
 	attrs := fmt.Sprintf(`fill="%s" stroke="%s"`, fill, stroke)
 	if st.StrokeWidth != "" {
 		attrs += ` stroke-width="` + svgutil.Esc(st.StrokeWidth) + `"`
@@ -696,86 +686,4 @@ func writeLines(b *strings.Builder, lines []string, cx, cy, lh, fs float64, fill
 		fmt.Fprintf(b, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(cx), svgutil.Num(y0+float64(i)*lh), svgutil.Esc(ln))
 	}
 	b.WriteString("</text>\n")
-}
-
-// wrap breaks s into lines no wider than maxW, at spaces where it can and
-// inside a word only when the word alone is too wide.
-func wrap(face svgutil.Face, s string, size, maxW float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			for face.Width(wd, size) > maxW && len([]rune(wd)) > 1 {
-				if cur != "" {
-					lines = append(lines, cur)
-					cur = ""
-				}
-				// The longest prefix that fits, measured rune by rune so a
-				// very long word costs linear time.
-				r := []rune(wd)
-				k, w := 0, 0.0
-				for k < len(r) {
-					cw := face.Width(string(r[k]), size)
-					if k > 0 && w+cw > maxW {
-						break
-					}
-					w += cw
-					k++
-				}
-				lines = append(lines, string(r[:k]))
-				wd = string(r[k:])
-			}
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && face.Width(try, size) > maxW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
-}
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif:
-// a font option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
-}
-
-// mix blends hex colour a toward hex colour b by t (0 keeps a). When either
-// is not a #rgb or #rrggbb colour it returns fallback.
-func mix(a, b string, t float64, fallback string) string {
-	ra, ga, ba, ok1 := hexRGB(a)
-	rb, gb, bb, ok2 := hexRGB(b)
-	if !ok1 || !ok2 {
-		return fallback
-	}
-	c := func(x, y int) int { return x + int(float64(y-x)*t+0.5) }
-	return fmt.Sprintf("#%02x%02x%02x", c(ra, rb), c(ga, gb), c(ba, bb))
-}
-
-func hexRGB(s string) (r, g, b int, ok bool) {
-	s = strings.TrimPrefix(s, "#")
-	if len(s) == 3 {
-		s = string([]byte{s[0], s[0], s[1], s[1], s[2], s[2]})
-	}
-	if len(s) != 6 {
-		return 0, 0, 0, false
-	}
-	v, err := strconv.ParseUint(s, 16, 32)
-	if err != nil {
-		return 0, 0, 0, false
-	}
-	return int(v >> 16), int(v >> 8 & 0xff), int(v & 0xff), true
 }

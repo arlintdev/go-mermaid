@@ -1,0 +1,19 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="660" height="224" viewBox="0 0 660 224" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m1yjgj8-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#bbbbbb"/></marker>
+  </defs>
+  <g transform="translate(16,16)">
+    <rect x="0" y="0" width="426" height="192" fill="#2a2a33" stroke="#77775a"/>
+    <rect x="18" y="54" width="390" height="120" fill="#2a2a33" stroke="#77775a"/>
+    <path d="M188,132 L227,132" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1yjgj8-arrow-0)"/>
+    <path d="M408,132 L465,132" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1yjgj8-arrow-0)"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="213" y="23.6">Outer</tspan></text>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="213" y="77.6">Inner</tspan></text>
+    <rect x="36" y="108" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="112" y="137.6">A</tspan></text>
+    <rect x="238" y="108" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="314" y="137.6">B</tspan></text>
+    <rect x="476" y="108" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="552" y="137.6">C</tspan></text>
+  </g>
+</svg>

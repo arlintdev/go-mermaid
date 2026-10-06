@@ -51,18 +51,18 @@ func Parse(src string) (*Diagram, error) {
 	headerSeen := false
 	for i, raw := range strings.Split(src, "\n") {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(raw))
+		line := strings.TrimSpace(syntax.StripComment(raw))
 		if line == "" {
 			continue
 		}
 		if !headerSeen {
-			if firstWord(line) != "timeline" {
+			if syntax.FirstWord(line) != "timeline" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'timeline' header")
 			}
 			headerSeen = true
 			continue
 		}
-		key := firstWord(line)
+		key := syntax.FirstWord(line)
 		rest := strings.TrimSpace(line[len(key):])
 		switch {
 		case key == "title":
@@ -101,18 +101,4 @@ func events(s string) []string {
 		}
 	}
 	return out
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
-	}
-	return s
 }

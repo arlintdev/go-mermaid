@@ -54,22 +54,7 @@ const (
 
 // Style is the validated look given by style, classDef and class lines.
 // An empty field means "not set".
-type Style struct {
-	Fill, Stroke, StrokeWidth, Dash, Color, FontWeight string
-}
-
-func (s Style) over(base Style) Style {
-	pick := func(a, b string) string {
-		if a != "" {
-			return a
-		}
-		return b
-	}
-	return Style{
-		Fill: pick(s.Fill, base.Fill), Stroke: pick(s.Stroke, base.Stroke), StrokeWidth: pick(s.StrokeWidth, base.StrokeWidth),
-		Dash: pick(s.Dash, base.Dash), Color: pick(s.Color, base.Color), FontWeight: pick(s.FontWeight, base.FontWeight),
-	}
-}
+type Style = cssval.Style
 
 // Block is one cell of a grid: a drawn block, a gap, or a composite block
 // holding a grid of its own.
@@ -131,19 +116,19 @@ func Parse(src string) (*Diagram, error) {
 	var classLines, styleLines [][2]string
 	for i, raw := range strings.Split(src, "\n") {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(raw))
+		line := strings.TrimSpace(syntax.StripComment(raw))
 		if line == "" {
 			continue
 		}
 		if !headerSeen {
-			if w := strings.ToLower(firstWord(line)); w != "block-beta" && w != "block" {
+			if w := strings.ToLower(syntax.FirstWord(line)); w != "block-beta" && w != "block" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'block-beta' header")
 			}
 			headerSeen = true
 			continue
 		}
 		cur := stack[len(stack)-1]
-		key := firstWord(line)
+		key := syntax.FirstWord(line)
 		rest := strings.TrimSpace(line[len(key):])
 		switch {
 		case key == "columns":
@@ -179,12 +164,12 @@ func Parse(src string) (*Diagram, error) {
 			stack = append(stack, c)
 			continue
 		case key == "style":
-			id := firstWord(rest)
+			id := syntax.FirstWord(rest)
 			styleLines = append(styleLines, [2]string{id, strings.TrimSpace(rest[len(id):])})
 			continue
 		case key == "classDef":
-			name := firstWord(rest)
-			css := parseCSS(strings.TrimSpace(rest[len(name):]))
+			name := syntax.FirstWord(rest)
+			css := cssval.Parse(strings.TrimSpace(rest[len(name):]))
 			for _, n := range strings.Split(name, ",") {
 				if n = strings.TrimSpace(n); n != "" {
 					d.Classes[n] = css
@@ -192,7 +177,7 @@ func Parse(src string) (*Diagram, error) {
 			}
 			continue
 		case key == "class":
-			ids := firstWord(rest)
+			ids := syntax.FirstWord(rest)
 			classLines = append(classLines, [2]string{ids, strings.TrimSpace(rest[len(ids):])})
 			continue
 		}
@@ -205,7 +190,7 @@ func Parse(src string) (*Diagram, error) {
 	}
 	for _, s := range styleLines {
 		if b := d.byID[s[0]]; b != nil {
-			b.Style = parseCSS(s[1]).over(b.Style)
+			b.Style = cssval.Parse(s[1]).Over(b.Style)
 		}
 	}
 	for _, c := range classLines {
@@ -398,64 +383,10 @@ func parseBlock(s string, lineNo int) (*Block, int, error) {
 	return b, n, nil
 }
 
-// parseCSS reads "fill:#f9f,stroke:#333,stroke-width:4px" keeping only
-// values that validate.
-func parseCSS(s string) Style {
-	var st Style
-	for _, part := range strings.FieldsFunc(s, func(r rune) bool { return r == ',' || r == ';' }) {
-		k, v, ok := strings.Cut(part, ":")
-		if !ok {
-			continue
-		}
-		v = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(v), "!important"))
-		switch strings.ToLower(strings.TrimSpace(k)) {
-		case "fill", "background", "background-color":
-			if c, ok := cssval.Color(v); ok {
-				st.Fill = c
-			}
-		case "stroke", "border-color":
-			if c, ok := cssval.Color(v); ok {
-				st.Stroke = c
-			}
-		case "color":
-			if c, ok := cssval.Color(v); ok {
-				st.Color = c
-			}
-		case "stroke-width":
-			if w, ok := cssval.Pixels(v, 20); ok {
-				st.StrokeWidth = strconv.FormatFloat(w, 'f', -1, 64)
-			}
-		case "stroke-dasharray":
-			if dsh, ok := cssval.Dash(v); ok {
-				st.Dash = dsh
-			}
-		case "font-weight":
-			if fw, ok := cssval.FontWeight(v); ok {
-				st.FontWeight = fw
-			}
-		}
-	}
-	return st
-}
-
 func clip(s string) string {
 	r := []rune(s)
 	if len(r) > 20 {
 		return string(r[:20]) + "…"
-	}
-	return s
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
 	}
 	return s
 }

@@ -21,10 +21,6 @@ type RenderOptions struct {
 	Title    string
 }
 
-// nodeColors is d3's Tableau10 scheme, which Mermaid colours nodes with in
-// the order they first appear.
-var nodeColors = []string{"#4e79a7", "#f28e2c", "#e15759", "#76b7b2", "#59a14f", "#edc949", "#af7aa1", "#ff9da7", "#9c755f", "#bab0ab"}
-
 const (
 	chartW = 600.0
 	nodeW  = 10.0
@@ -65,13 +61,12 @@ func svg(d *Diagram, o RenderOptions) ([]byte, error) {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	o.FontFace = fontFamily(o.FontFace)
-	pal := theme.For(o.Theme)
+	pal := theme.For(o.Theme).Escaped()
 	face := svgutil.FaceFor(o.FontFace)
 	fs := o.FontSize
 	pad := o.Padding
 
-	nodes, links, cols, err := build(d)
+	nodes, links, cols, err := build(d, pal.Sankey.Nodes)
 	if err != nil {
 		return nil, syntax.Errorf(1, 1, "%v", err)
 	}
@@ -149,7 +144,7 @@ func svg(d *Diagram, o RenderOptions) ([]byte, error) {
 // build makes the graph and its columns: each node's column is its depth
 // from the sources, and nodes with no outflow go to the last column, as
 // d3-sankey's justify alignment (Mermaid's default) places them.
-func build(d *Diagram) ([]*node, []*link, [][]*node, error) {
+func build(d *Diagram, nodeColors []string) ([]*node, []*link, [][]*node, error) {
 	byName := map[string]*node{}
 	var nodes []*node
 	for i, name := range d.Nodes {
@@ -387,19 +382,4 @@ func bottomToTop(c []*node, y float64, i int, alpha, py float64) {
 		}
 		y = n.y0 - py
 	}
-}
-
-// fontFamily keeps a font-family option only when it is a plain list of
-// family names, so the option can never carry markup into the picture.
-func fontFamily(s string) string {
-	if strings.TrimSpace(s) == "" || len(s) > 200 {
-		return "sans-serif"
-	}
-	for _, r := range s {
-		if !(r == ' ' || r == ',' || r == '-' || r == '_' || r == '\'' || r == '"' ||
-			(r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9')) {
-			return "sans-serif"
-		}
-	}
-	return s
 }

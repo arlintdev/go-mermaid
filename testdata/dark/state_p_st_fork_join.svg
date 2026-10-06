@@ -1,0 +1,19 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="201.5" height="246" viewBox="0 0 201.5 246" font-family="sans-serif" font-size="14">
+  <defs><marker id="m1gd5eb2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#bbbbbb"/></marker></defs>
+  <g transform="translate(16,16)">
+<g transform="translate(0,0)">
+<path d="M86.5,14 C86.5,39 86.5,39 86.5,64" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m1gd5eb2-arrow)"/>
+<path d="M57.5,72 C57.5,97 35,97 35,122" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m1gd5eb2-arrow)"/>
+<path d="M115.5,72 C115.5,97 138,97 138,122" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m1gd5eb2-arrow)"/>
+<path d="M35,156 C35,181 35,181 35,206" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m1gd5eb2-arrow)"/>
+<path d="M138,156 C138,181 64,181 64,206" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m1gd5eb2-arrow)"/>
+<rect x="51.5" y="64" width="70" height="8" rx="2" fill="#bbbbbb"/>
+<rect x="0" y="206" width="70" height="8" rx="2" fill="#bbbbbb"/>
+<circle cx="86.5" cy="7" r="7" fill="#bbbbbb"/>
+<rect x="3.5" y="122" width="63" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
+<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="35" y="143.9">A</tspan></text>
+<rect x="106.5" y="122" width="63" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
+<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="138" y="143.9">B</tspan></text>
+</g>
+  </g>
+</svg>

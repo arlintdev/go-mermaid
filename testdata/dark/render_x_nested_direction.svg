@@ -1,0 +1,32 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="660" height="555.11" viewBox="0 0 660 555.11" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m1wwwrt6-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#bbbbbb"/></marker>
+  </defs>
+  <g transform="translate(16,16)">
+    <rect x="18" y="207.11" width="188" height="316" fill="#2a2a33" stroke="#77775a"/>
+    <rect x="0" y="66" width="426" height="120" fill="#2a2a33" stroke="#77775a"/>
+    <path d="M170,24 L245,24" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1wwwrt6-arrow-0)"/>
+    <path d="M112,309.11 L112,348.11" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1wwwrt6-arrow-0)"/>
+    <path d="M112,407.11 L112,446.11" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1wwwrt6-arrow-0)"/>
+    <path d="M170,144 L245,144" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1wwwrt6-arrow-0)"/>
+    <path d="M408,24 L465,24" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1wwwrt6-arrow-0)"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="112" y="230.71">Steps, top to bottom</tspan></text>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="213" y="89.6">Also left to right</tspan></text>
+    <rect x="18" y="0" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="94" y="29.6">Start</tspan></text>
+    <rect x="256" y="0" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="332" y="29.6">Next</tspan></text>
+    <rect x="36" y="261.11" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="112" y="290.71">One</tspan></text>
+    <rect x="36" y="359.11" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="112" y="388.71">Two</tspan></text>
+    <rect x="36" y="457.11" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="112" y="486.71">Three</tspan></text>
+    <rect x="18" y="120" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="94" y="149.6">t1</tspan></text>
+    <rect x="256" y="120" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="332" y="149.6">t2</tspan></text>
+    <rect x="476" y="0" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="552" y="29.6">End</tspan></text>
+  </g>
+</svg>

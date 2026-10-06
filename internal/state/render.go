@@ -3,8 +3,9 @@ package state
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strings"
+
+	"github.com/arlintdev/go-mermaid/internal/curve"
 
 	"github.com/arlintdev/go-mermaid/internal/domain"
 	"github.com/arlintdev/go-mermaid/internal/layout"
@@ -46,7 +47,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		fs = 14
 	}
 	c := &ctx{d: d, o: o, pal: theme.For(o.Theme), face: svgutil.FaceFor(o.FontFace), fs: fs, lh: fs * 1.3,
-		id: svgid.Prefix(src), dir: directionOf(d.Direction), done: map[string]bool{}}
+		id: svgid.Prefix(src), dir: domain.DirectionOf(d.Direction), done: map[string]bool{}}
 	root, err := c.region("", 0, c.dir)
 	if err != nil {
 		return nil, err
@@ -73,21 +74,6 @@ type block struct {
 	body string
 }
 
-// directionOf maps a `direction` line onto a layout direction, defaulting to
-// top-to-bottom when the source does not ask for one.
-func directionOf(dir string) domain.Direction {
-	switch dir {
-	case "LR":
-		return domain.LeftRight
-	case "RL":
-		return domain.RightLeft
-	case "BT":
-		return domain.BottomTop
-	default:
-		return domain.TopBottom
-	}
-}
-
 func vertical(dir domain.Direction) bool { return dir == domain.TopBottom || dir == domain.BottomTop }
 
 // lift returns the member of scope (parent, region) that is or contains
@@ -109,26 +95,7 @@ func (c *ctx) lift(id, parent string, region int) string {
 	return ""
 }
 
-func (c *ctx) wrap(s string, size float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && c.face.Width(try, size) > maxTextW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
-}
+func (c *ctx) wrap(s string, size float64) []string { return c.face.Wrap(s, size, maxTextW) }
 
 func (c *ctx) textBlock(lines []string, size float64) (w, h float64) {
 	for _, l := range lines {
@@ -214,7 +181,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		edges = append(edges, edge{t: t, e: e})
 	}
 
-	var nodeBoxes []box
+	var nodeBoxes []curve.Box
 	if len(g.Nodes) > 0 {
 		rankSep := 50.0
 		if labelled {
@@ -224,7 +191,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 			return block{}, err
 		}
 		for _, n := range g.Nodes {
-			nodeBoxes = append(nodeBoxes, box{n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H})
+			nodeBoxes = append(nodeBoxes, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 		}
 	}
 
@@ -236,7 +203,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 	// Edge shapes and label boxes.
 	type drawnEdge struct {
 		t      *Transition
-		sh     edgeShape
+		sh     curve.Shape
 		lx, ly float64
 		lines  []string
 	}
@@ -252,21 +219,21 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 				continue
 			}
 			tw, th := c.textBlock(lines, c.fs*0.9)
-			var sh edgeShape
+			var sh curve.Shape
 			var lx, ly float64
 			num := svgutil.Num
 			if vertical(dir) {
 				// Out of the right side and back in.
 				x, cy := n.Pos.X+n.Size.W, n.Pos.Y+n.Size.H/2
-				sh = edgeShape{d: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(x), num(cy-6), num(x+selfLoop), num(cy-selfLoop*0.9),
-					num(x+selfLoop), num(cy+selfLoop*0.9), num(x+1), num(cy+6)), curved: true}
+				sh = curve.Shape{D: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(x), num(cy-6), num(x+selfLoop), num(cy-selfLoop*0.9),
+					num(x+selfLoop), num(cy+selfLoop*0.9), num(x+1), num(cy+6)), Curved: true}
 				lx, ly = x+selfLoop*0.75+6+tw/2, cy
 				bd.AddRect(x, cy-selfLoop, selfLoop+8, 2*selfLoop)
 			} else {
 				// Out of the top and back in, near the right end.
 				cx, y := n.Pos.X+n.Size.W-min(30, n.Size.W/3), n.Pos.Y
-				sh = edgeShape{d: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(cx-6), num(y), num(cx-selfLoop*0.9), num(y-selfLoop),
-					num(cx+selfLoop*0.9), num(y-selfLoop), num(cx+6), num(y-1)), curved: true}
+				sh = curve.Shape{D: fmt.Sprintf("M%s,%s C%s,%s %s,%s %s,%s", num(cx-6), num(y), num(cx-selfLoop*0.9), num(y-selfLoop),
+					num(cx+selfLoop*0.9), num(y-selfLoop), num(cx+6), num(y-1)), Curved: true}
 				lx, ly = cx, y-selfLoop*0.75-th/2-2
 				bd.AddRect(cx-selfLoop, y-selfLoop, 2*selfLoop, selfLoop)
 			}
@@ -279,20 +246,20 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		if len(ed.e.Points) < 2 {
 			continue
 		}
-		var obs []box
+		var obs []curve.Box
 		for _, n := range g.Nodes {
 			if n.ID != ed.e.From && n.ID != ed.e.To {
-				obs = append(obs, box{n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H})
+				obs = append(obs, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 			}
 		}
 		pts := c.barEnds(g, ed.e, dir)
-		sh := shapeEdge(pts, vertical(dir), obs, 0, 0)
+		sh := curve.Edge(pts, vertical(dir), obs, 0, 0)
 		for _, p := range ed.e.Points {
 			bd.Add(p.X, p.Y)
 		}
 		lx, ly := ed.e.LabelPos.X, ed.e.LabelPos.Y
-		if sh.curved {
-			lx, ly = sh.mid.X, sh.mid.Y
+		if sh.Curved {
+			lx, ly = sh.Mid.X, sh.Mid.Y
 		} else if len(lines) > 0 {
 			// LabelPos is the baseline of the label's last line.
 			ly -= float64(len(lines)-1)*c.fs*0.9*1.3/2 + c.fs*0.3
@@ -322,7 +289,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		w, h := tw+20, th+14
 		hits := func(x, y float64) bool {
 			for _, o := range nodeBoxes {
-				if x < o.x+o.w+8 && x+w > o.x-8 && y < o.y+o.h+8 && y+h > o.y-8 {
+				if x < o.X+o.W+8 && x+w > o.X-8 && y < o.Y+o.H+8 && y+h > o.Y-8 {
 					return true
 				}
 			}
@@ -346,11 +313,11 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		for tries := 0; !placed && tries < len(nodeBoxes)+1; tries++ {
 			moved := false
 			for _, o := range nodeBoxes {
-				if x < o.x+o.w+8 && x+w > o.x-8 && y < o.y+o.h+8 && y+h > o.y-8 {
+				if x < o.X+o.W+8 && x+w > o.X-8 && y < o.Y+o.H+8 && y+h > o.Y-8 {
 					if nt.Side == SideLeft {
-						x = o.x - noteGap - w
+						x = o.X - noteGap - w
 					} else {
-						x = o.x + o.w + noteGap
+						x = o.X + o.W + noteGap
 					}
 					moved = true
 				}
@@ -359,7 +326,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 				break
 			}
 		}
-		nodeBoxes = append(nodeBoxes, box{x, y, w, h})
+		nodeBoxes = append(nodeBoxes, curve.Box{X: x, Y: y, W: w, H: h})
 		bd.AddRect(x, y, w, h)
 		notes = append(notes, placedNote{nt, x, y, w, h, lines, tn})
 	}
@@ -391,7 +358,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 			svgutil.Num(a.X), svgutil.Num(a.Y), svgutil.Num(z.X), svgutil.Num(z.Y), edgeCol)
 	}
 	for _, de := range drawn {
-		fmt.Fprintf(&b, `<path d="%s" fill="none" stroke="%s" stroke-width="1.3" marker-end="url(#%s-arrow)"/>`+"\n", de.sh.d, edgeCol, c.id)
+		fmt.Fprintf(&b, `<path d="%s" fill="none" stroke="%s" stroke-width="1.3" marker-end="url(#%s-arrow)"/>`+"\n", de.sh.D, edgeCol, c.id)
 	}
 	for _, s := range members {
 		n := g.NodeByID(s.ID)
@@ -405,17 +372,17 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		c.writeState(&b, s, n)
 	}
 	for _, pn := range notes {
-		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" fill="#fff5ad" stroke="#aaaa33"/>`+"\n",
-			svgutil.Num(pn.x), svgutil.Num(pn.y), svgutil.Num(pn.w), svgutil.Num(pn.h))
-		c.lines(&b, pn.lines, pn.x+pn.w/2, pn.y+pn.h/2, c.fs*0.9, "#333333", "")
+		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"/>`+"\n",
+			svgutil.Num(pn.x), svgutil.Num(pn.y), svgutil.Num(pn.w), svgutil.Num(pn.h), svgutil.Esc(c.pal.NoteFill), svgutil.Esc(c.pal.NoteStroke))
+		c.lines(&b, pn.lines, pn.x+pn.w/2, pn.y+pn.h/2, c.fs*0.9, svgutil.Esc(c.pal.NoteText), "")
 	}
 	for _, de := range drawn {
 		if de.lines == nil {
 			continue
 		}
 		tw, th := c.textBlock(de.lines, c.fs*0.9)
-		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>`+"\n",
-			svgutil.Num(de.lx-tw/2-4), svgutil.Num(de.ly-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4))
+		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="2" fill="%s" fill-opacity="0.85"/>`+"\n",
+			svgutil.Num(de.lx-tw/2-4), svgutil.Num(de.ly-th/2-2), svgutil.Num(tw+8), svgutil.Num(th+4), svgutil.Esc(c.pal.RelationLabel))
 		c.lines(&b, de.lines, de.lx, de.ly, c.fs*0.9, svgutil.Esc(c.pal.Text), "")
 	}
 	b.WriteString("</g>\n")
@@ -546,7 +513,7 @@ func (c *ctx) composite(comp *Composite, dir domain.Direction) (block, error) {
 				rh = ch
 			}
 			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s" stroke-dasharray="6 4"/>`+"\n",
-				n(rx), n(ry), n(rw), n(rh), mix(c.pal.NodeFill, c.pal.Background, 0.5, fill), stroke)
+				n(rx), n(ry), n(rw), n(rh), theme.Mix(c.pal.NodeFill, c.pal.Background, 0.5, fill), stroke)
 			rx += (rw - r.w) / 2
 			ry += (rh - r.h) / 2
 		} else {
@@ -597,16 +564,8 @@ func (c *ctx) writeState(b *strings.Builder, s *State, n *domain.Node) {
 			num(n.Pos.X), num(n.Pos.Y), num(n.Size.W), num(n.Size.H), edge)
 	default:
 		st := c.style(s)
-		fill, stroke, text := svgutil.Esc(c.pal.NodeFill), svgutil.Esc(c.pal.NodeStroke), svgutil.Esc(c.pal.Text)
-		if st.Fill != "" {
-			fill = svgutil.Esc(st.Fill)
-		}
-		if st.Stroke != "" {
-			stroke = svgutil.Esc(st.Stroke)
-		}
-		if st.Color != "" {
-			text = svgutil.Esc(st.Color)
-		}
+		fill, stroke, text := c.pal.Node(st.Fill, st.Stroke, st.Color)
+		fill, stroke, text = svgutil.Esc(fill), svgutil.Esc(stroke), svgutil.Esc(text)
 		extra := ""
 		if st.StrokeWidth != "" {
 			extra += ` stroke-width="` + svgutil.Esc(st.StrokeWidth) + `"`
@@ -654,7 +613,7 @@ func (c *ctx) svg(root block) []byte {
 	}
 	var b strings.Builder
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(c.o.FontFace)), svgutil.Num(c.fs))
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(c.o.FontFace), svgutil.Num(c.fs))
 	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(c.pal.Background))
 	fmt.Fprintf(&b, `  <defs><marker id="%s-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="%s"/></marker></defs>`+"\n",
 		c.id, svgutil.Esc(c.pal.Edge))
@@ -665,45 +624,4 @@ func (c *ctx) svg(root block) []byte {
 	fmt.Fprintf(&b, `  <g transform="translate(%s,%s)">`+"\n%s  </g>\n", svgutil.Num((w-root.w)/2), svgutil.Num(pad+titleH), root.body)
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
-}
-
-func path(pts []domain.Point) string {
-	var d strings.Builder
-	for i, p := range pts {
-		cmd := "L"
-		if i == 0 {
-			cmd = "M"
-		}
-		fmt.Fprintf(&d, "%s%s,%s ", cmd, svgutil.Num(p.X), svgutil.Num(p.Y))
-	}
-	return strings.TrimSpace(d.String())
-}
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif:
-// a font option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
-}
-
-// mix blends hex colour a toward hex colour b by t (0 keeps a). When either
-// is not a #rrggbb colour it returns fallback.
-func mix(a, b string, t float64, fallback string) string {
-	var ra, ga, ba, rb, gb, bb int
-	if len(a) != 7 || len(b) != 7 {
-		return fallback
-	}
-	if _, err := fmt.Sscanf(strings.ToLower(a), "#%02x%02x%02x", &ra, &ga, &ba); err != nil {
-		return fallback
-	}
-	if _, err := fmt.Sscanf(strings.ToLower(b), "#%02x%02x%02x", &rb, &gb, &bb); err != nil {
-		return fallback
-	}
-	c := func(x, y int) int { return x + int(float64(y-x)*t+0.5) }
-	return fmt.Sprintf("#%02x%02x%02x", c(ra, rb), c(ga, gb), c(ba, bb))
 }

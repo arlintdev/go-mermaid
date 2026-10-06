@@ -23,7 +23,6 @@ func TestHostile(t *testing.T) {
 		goldentest.Hostile(t, render, head+"\ntitle "+inj+"\nx-axis "+inj+" ["+inj+", b]\ny-axis "+inj+"\nbar "+inj+" [1, 2]\nline [2, 1]")
 		goldentest.Hostile(t, render, head+"\nx-axis \""+inj+"\" 0 --> 10\ny-axis \""+inj+"\" 0 --> 5\nline [1, 2]")
 	}
-	o.FontFace = inj
 	goldentest.Hostile(t, render, "xychart-beta\nbar [1]")
 }
 

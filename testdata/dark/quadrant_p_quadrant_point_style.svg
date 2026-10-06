@@ -1,0 +1,14 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="532" height="532" viewBox="0 0 532 532" font-family="sans-serif" font-size="14">
+  <rect x="275.8" y="21" width="235.2" height="233.8" fill="#2b2b40"/>
+  <rect x="40.6" y="21" width="235.2" height="233.8" fill="#282838"/>
+  <rect x="40.6" y="254.8" width="235.2" height="233.8" fill="#25252f"/>
+  <rect x="275.8" y="254.8" width="235.2" height="233.8" fill="#222226"/>
+  <rect x="40.6" y="21" width="470.4" height="467.6" fill="none" stroke="#515172" stroke-width="2"/>
+  <line x1="275.8" y1="21" x2="275.8" y2="488.6" stroke="#515172"/><line x1="40.6" y1="254.8" x2="511" y2="254.8" stroke="#515172"/>
+  <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="158.2" y="505.5">L</tspan></text>
+  <text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="393.4" y="505.5">H</tspan></text>
+  <text fill="#e6e6e6" font-size="14" text-anchor="middle" transform="rotate(-90 31.4 137.9)"><tspan x="31.4" y="137.9">H</tspan></text>
+  <text fill="#e6e6e6" font-size="14" text-anchor="middle" transform="rotate(-90 31.4 371.7)"><tspan x="31.4" y="371.7">L</tspan></text>
+  <circle cx="134.68" cy="114.52" r="10" fill="#ff0000"/>
+  <text fill="#e6e6e6" font-size="11.2" text-anchor="middle"><tspan x="134.68" y="136.04">P</tspan></text>
+</svg>

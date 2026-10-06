@@ -1,0 +1,39 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="652.55" height="418" viewBox="0 0 652.55 418" font-family="sans-serif" font-size="14">
+<text x="326.28" y="36" fill="#e6e6e6" font-size="20" text-anchor="middle">Pages per month</text>
+<rect x="91.22" y="323.67" width="56" height="53.33" fill="#3498db" stroke="#226592"/>
+<rect x="184.55" y="283.67" width="56" height="93.33" fill="#3498db" stroke="#226592"/>
+<rect x="277.89" y="243.67" width="56" height="133.33" fill="#3498db" stroke="#226592"/>
+<rect x="371.22" y="190.33" width="56" height="186.67" fill="#3498db" stroke="#226592"/>
+<rect x="464.55" y="137" width="56" height="240" fill="#3498db" stroke="#226592"/>
+<rect x="557.89" y="83.67" width="56" height="293.33" fill="#3498db" stroke="#226592"/>
+<path d="M119.22,337 L212.55,297 L305.89,230.33 L399.22,203.67 L492.55,123.67 L585.89,97" fill="none" stroke="#2ecc71" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="72.55" y1="57" x2="72.55" y2="377" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<line x1="72.55" y1="377" x2="632.55" y2="377" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<line x1="67.55" y1="377" x2="72.55" y2="377" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="61.55" y="381.9" fill="#e6e6e6" text-anchor="end">0</text>
+<line x1="67.55" y1="323.67" x2="72.55" y2="323.67" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="61.55" y="328.57" fill="#e6e6e6" text-anchor="end">20</text>
+<line x1="67.55" y1="270.33" x2="72.55" y2="270.33" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="61.55" y="275.23" fill="#e6e6e6" text-anchor="end">40</text>
+<line x1="67.55" y1="217" x2="72.55" y2="217" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="61.55" y="221.9" fill="#e6e6e6" text-anchor="end">60</text>
+<line x1="67.55" y1="163.67" x2="72.55" y2="163.67" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="61.55" y="168.57" fill="#e6e6e6" text-anchor="end">80</text>
+<line x1="67.55" y1="110.33" x2="72.55" y2="110.33" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="61.55" y="115.23" fill="#e6e6e6" text-anchor="end">100</text>
+<line x1="67.55" y1="57" x2="72.55" y2="57" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="61.55" y="61.9" fill="#e6e6e6" text-anchor="end">120</text>
+<line x1="119.22" y1="377" x2="119.22" y2="382" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="119.22" y="399.2" fill="#e6e6e6" text-anchor="middle">jan</text>
+<line x1="212.55" y1="377" x2="212.55" y2="382" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="212.55" y="399.2" fill="#e6e6e6" text-anchor="middle">feb</text>
+<line x1="305.89" y1="377" x2="305.89" y2="382" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="305.89" y="399.2" fill="#e6e6e6" text-anchor="middle">mar</text>
+<line x1="399.22" y1="377" x2="399.22" y2="382" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="399.22" y="399.2" fill="#e6e6e6" text-anchor="middle">apr</text>
+<line x1="492.55" y1="377" x2="492.55" y2="382" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="492.55" y="399.2" fill="#e6e6e6" text-anchor="middle">may</text>
+<line x1="585.89" y1="377" x2="585.89" y2="382" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="585.89" y="399.2" fill="#e6e6e6" text-anchor="middle">jun</text>
+<text x="30" y="217" fill="#e6e6e6" text-anchor="middle" transform="rotate(-90 30 217)">Pages</text>
+</svg>

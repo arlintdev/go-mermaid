@@ -1,0 +1,67 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="863.28" height="393.6" viewBox="0 0 863.28 393.6" font-family="sans-serif" font-size="14">
+<path d="M361.63,199.8 C424.75,199.8 424.75,51.1 487.88,51.1" fill="none" stroke="#a1a136" stroke-width="11" stroke-linecap="round"/>
+<path d="M361.63,199.8 C424.75,199.8 424.75,155.6 487.88,155.6" fill="none" stroke="#7da136" stroke-width="11" stroke-linecap="round"/>
+<path d="M361.63,199.8 C424.75,199.8 424.75,304.3 487.88,304.3" fill="none" stroke="#6b36a1" stroke-width="11" stroke-linecap="round"/>
+<path d="M361.63,199.8 C298.5,199.8 298.5,147.6 235.38,147.6" fill="none" stroke="#a136a1" stroke-width="11" stroke-linecap="round"/>
+<path d="M361.63,199.8 C298.5,199.8 298.5,252 235.38,252" fill="none" stroke="#a1366b" stroke-width="11" stroke-linecap="round"/>
+<path d="M361.63,199.8 C298.5,199.8 298.5,304.2 235.38,304.2" fill="none" stroke="#a13636" stroke-width="11" stroke-linecap="round"/>
+<path d="M571.39,155.6 C601.58,155.6 601.58,129.5 631.78,129.5" fill="none" stroke="#7da136" stroke-width="8" stroke-linecap="round"/>
+<path d="M571.39,155.6 C601.58,155.6 601.58,199.9 631.78,199.9" fill="none" stroke="#7da136" stroke-width="8" stroke-linecap="round"/>
+<path d="M544.04,304.3 C573.52,304.3 573.52,278.2 603,278.2" fill="none" stroke="#6b36a1" stroke-width="8" stroke-linecap="round"/>
+<path d="M544.04,304.3 C573.52,304.3 573.52,356.5 603,356.5" fill="none" stroke="#6b36a1" stroke-width="8" stroke-linecap="round"/>
+<path d="M681.35,278.2 C711.41,278.2 711.41,252.1 741.47,252.1" fill="none" stroke="#6b36a1" stroke-width="5" stroke-linecap="round"/>
+<path d="M681.35,278.2 C711.41,278.2 711.41,304.3 741.47,304.3" fill="none" stroke="#6b36a1" stroke-width="5" stroke-linecap="round"/>
+<path d="M165.16,147.6 C135.31,147.6 135.31,95.4 105.46,95.4" fill="none" stroke="#a136a1" stroke-width="8" stroke-linecap="round"/>
+<path d="M165.16,147.6 C135.31,147.6 135.31,147.6 105.46,147.6" fill="none" stroke="#a136a1" stroke-width="8" stroke-linecap="round"/>
+<path d="M165.16,147.6 C135.31,147.6 135.31,199.8 105.46,199.8" fill="none" stroke="#a136a1" stroke-width="8" stroke-linecap="round"/>
+<path d="M184.39,304.2 C155.05,304.2 155.05,304.2 125.7,304.2" fill="none" stroke="#a13636" stroke-width="8" stroke-linecap="round"/>
+<circle cx="361.63" cy="199.8" r="70.25" fill="#3b3bb8"/>
+<text fill="#ffffff" text-anchor="middle"><tspan x="361.63" y="195.6">A product plan with</tspan><tspan x="361.63" y="213.8">a long root label</tspan></text>
+<path d="M549.17,24 A24.74,24.74 0 0 1 588.58,30.34 A16.37,16.37 0 0 1 609.54,46.39 A12.19,12.19 0 0 1 602.26,64.65 A21.24,21.24 0 0 1 570.14,76.57 A26,26 0 0 1 528.21,76.57 A21.24,21.24 0 0 1 496.09,64.65 A12.19,12.19 0 0 1 488.81,46.39 A16.37,16.37 0 0 1 509.77,30.34 A24.74,24.74 0 0 1 549.17,24 Z" fill="#76762d"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="549.17" y="56">Cloud shape</tspan></text>
+<path d="M487.88,174.7 V141.5 Q487.88,136.5 492.88,136.5 H570.78 Q575.78,136.5 575.78,141.5 V174.7 Z" fill="#5e762d"/>
+<line x1="487.88" y1="174.7" x2="575.78" y2="174.7" stroke="#a4d147" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="531.83" y="160.5">Research</tspan></text>
+<path d="M631.78,166.8 V97.2 Q631.78,92.2 636.78,92.2 H842.28 Q847.28,92.2 847.28,97.2 V166.8 Z" fill="#5e762d"/>
+<line x1="631.78" y1="166.8" x2="847.28" y2="166.8" stroke="#a4d147" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="739.53" y="116.2">Interviews with twelve</tspan><tspan x="739.53" y="134.4">customers across four regions</tspan><tspan x="739.53" y="152.6">and three industries</tspan></text>
+<path d="M631.78,219 V185.8 Q631.78,180.8 636.78,180.8 H705.35 Q710.35,180.8 710.35,185.8 V219 Z" fill="#5e762d"/>
+<line x1="631.78" y1="219" x2="710.35" y2="219" stroke="#a4d147" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="671.07" y="204.8">Surveys</tspan></text>
+<path d="M487.88,323.4 V290.2 Q487.88,285.2 492.88,285.2 H542 Q547,285.2 547,290.2 V323.4 Z" fill="#512d76"/>
+<line x1="487.88" y1="323.4" x2="547" y2="323.4" stroke="#8c47d1" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="517.44" y="309.2">Build</tspan></text>
+<path d="M603,297.3 V264.1 Q603,259.1 608,259.1 H680.47 Q685.47,259.1 685.47,264.1 V297.3 Z" fill="#512d76"/>
+<line x1="603" y1="297.3" x2="685.47" y2="297.3" stroke="#8c47d1" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="644.24" y="283.1">Backend</tspan></text>
+<path d="M741.47,271.2 V238 Q741.47,233 746.47,233 H787.04 Q792.04,233 792.04,238 V271.2 Z" fill="#512d76"/>
+<line x1="741.47" y1="271.2" x2="792.04" y2="271.2" stroke="#8c47d1" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="766.76" y="257">API</tspan></text>
+<path d="M741.47,323.4 V290.2 Q741.47,285.2 746.47,285.2 H824.39 Q829.39,285.2 829.39,290.2 V323.4 Z" fill="#512d76"/>
+<line x1="741.47" y1="323.4" x2="829.39" y2="323.4" stroke="#8c47d1" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="785.43" y="309.2">Database</tspan></text>
+<path d="M603,375.6 V342.4 Q603,337.4 608,337.4 H682.03 Q687.03,337.4 687.03,342.4 V375.6 Z" fill="#512d76"/>
+<line x1="603" y1="375.6" x2="687.03" y2="375.6" stroke="#8c47d1" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="645.01" y="361.4">Frontend</tspan></text>
+<path d="M161.46,166.7 V133.5 Q161.46,128.5 166.46,128.5 H230.38 Q235.38,128.5 235.38,133.5 V166.7 Z" fill="#762d76"/>
+<line x1="161.46" y1="166.7" x2="235.38" y2="166.7" stroke="#d147d1" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="198.42" y="152.5">Launch</tspan></text>
+<path d="M16,114.5 V81.3 Q16,76.3 21,76.3 H100.46 Q105.46,76.3 105.46,81.3 V114.5 Z" fill="#762d76"/>
+<line x1="16" y1="114.5" x2="105.46" y2="114.5" stroke="#d147d1" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="60.73" y="100.3">Marketing</tspan></text>
+<path d="M42.45,166.7 V133.5 Q42.45,128.5 47.45,128.5 H100.46 Q105.46,128.5 105.46,133.5 V166.7 Z" fill="#762d76"/>
+<line x1="42.45" y1="166.7" x2="105.46" y2="166.7" stroke="#d147d1" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="73.95" y="152.5">Sales</tspan></text>
+<path d="M28.43,218.9 V185.7 Q28.43,180.7 33.43,180.7 H100.46 Q105.46,180.7 105.46,185.7 V218.9 Z" fill="#762d76"/>
+<line x1="28.43" y1="218.9" x2="105.46" y2="218.9" stroke="#d147d1" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="66.95" y="204.7">Support</tspan></text>
+<path d="M135,271.1 V237.9 Q135,232.9 140,232.9 H230.38 Q235.38,232.9 235.38,237.9 V271.1 Z" fill="#762d51"/>
+<line x1="135" y1="271.1" x2="235.38" y2="271.1" stroke="#d1478c" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="185.19" y="256.9">Quoted text</tspan></text>
+<path d="M181.7,323.3 V290.1 Q181.7,285.1 186.7,285.1 H230.38 Q235.38,285.1 235.38,290.1 V323.3 Z" fill="#762d2d"/>
+<line x1="181.7" y1="323.3" x2="235.38" y2="323.3" stroke="#d14747" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="208.54" y="309.1">Ops</tspan></text>
+<path d="M53.37,323.3 V290.1 Q53.37,285.1 58.37,285.1 H120.7 Q125.7,285.1 125.7,290.1 V323.3 Z" fill="#762d2d"/>
+<line x1="53.37" y1="323.3" x2="125.7" y2="323.3" stroke="#d14747" stroke-width="3"/>
+<text fill="#f0f0f0" text-anchor="middle"><tspan x="89.54" y="309.1">On-call</tspan></text>
+</svg>

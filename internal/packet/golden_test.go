@@ -19,7 +19,6 @@ func TestHostile(t *testing.T) {
 	o := opts()
 	render := func(s string) ([]byte, error) { return Render(s, o) }
 	goldentest.Hostile(t, render, "packet-beta\ntitle "+inj+"\n0-15: \""+inj+"\"\n16: \""+inj+"\"\n+3: "+inj)
-	o.FontFace = inj
 	goldentest.Hostile(t, render, "packet-beta\n0-7: \"a\"")
 }
 

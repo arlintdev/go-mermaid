@@ -1,0 +1,22 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="622.57" height="384" viewBox="0 0 622.57 384" font-family="sans-serif" font-size="14">
+<rect x="98.57" y="247" width="168" height="96" fill="#3498db" stroke="#226592"/>
+<rect x="378.57" y="119" width="168" height="224" fill="#3498db" stroke="#226592"/>
+<line x1="42.57" y1="23" x2="42.57" y2="343" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<line x1="42.57" y1="343" x2="602.57" y2="343" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<line x1="37.57" y1="343" x2="42.57" y2="343" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="31.57" y="347.9" fill="#e6e6e6" text-anchor="end">0</text>
+<line x1="37.57" y1="279" x2="42.57" y2="279" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="31.57" y="283.9" fill="#e6e6e6" text-anchor="end">2</text>
+<line x1="37.57" y1="215" x2="42.57" y2="215" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="31.57" y="219.9" fill="#e6e6e6" text-anchor="end">4</text>
+<line x1="37.57" y1="151" x2="42.57" y2="151" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="31.57" y="155.9" fill="#e6e6e6" text-anchor="end">6</text>
+<line x1="37.57" y1="87" x2="42.57" y2="87" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="31.57" y="91.9" fill="#e6e6e6" text-anchor="end">8</text>
+<line x1="37.57" y1="23" x2="42.57" y2="23" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="31.57" y="27.9" fill="#e6e6e6" text-anchor="end">10</text>
+<line x1="182.57" y1="343" x2="182.57" y2="348" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="182.57" y="365.2" fill="#e6e6e6" text-anchor="middle">a</text>
+<line x1="462.57" y1="343" x2="462.57" y2="348" stroke="#e6e6e6" stroke-width="2" stroke-linecap="square"/>
+<text x="462.57" y="365.2" fill="#e6e6e6" text-anchor="middle">b</text>
+</svg>

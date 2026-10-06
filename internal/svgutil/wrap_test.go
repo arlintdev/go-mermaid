@@ -58,3 +58,39 @@ func TestWrapBreaksAfterHyphens(t *testing.T) {
 		t.Errorf("no break after a hyphen: %q", got)
 	}
 }
+
+func TestWrapHard(t *testing.T) {
+	tests := []struct {
+		name string
+		in   string
+		max  float64
+		want []string
+	}{
+		{"words fill each line", "The internal Microsoft Exchange e-mail system.", 220,
+			[]string{"The internal Microsoft Exchange", "e-mail system."}},
+		{"explicit breaks", "a<br>b", 200, []string{"a", "b"}},
+		{"empty text", "", 200, []string{""}},
+		{"a word wider than the box is cut", "xxxxxxxxxxxxxxxxxxxx", 60, []string{"xxxxxxxx", "xxxxxxxx", "xxxx"}},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := FaceSans.WrapHard(tc.in, 14, tc.max)
+			if strings.Join(got, "|") != strings.Join(tc.want, "|") {
+				t.Errorf("WrapHard(%q) = %q, want %q", tc.in, got, tc.want)
+			}
+			for _, l := range got {
+				if w := FaceSans.Width(l, 14); w > tc.max {
+					t.Errorf("line %q is %.1f wide, over %.0f", l, w, tc.max)
+				}
+			}
+		})
+	}
+}
+
+func TestCutIsLinear(t *testing.T) {
+	word := strings.Repeat("́", 50000) + strings.Repeat("x", 50000)
+	got := FaceSans.WrapHard(word, 14, 100)
+	if strings.Join(got, "") != word {
+		t.Error("cutting lost text")
+	}
+}

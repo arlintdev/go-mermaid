@@ -3,8 +3,9 @@ package c4
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strings"
+
+	"github.com/arlintdev/go-mermaid/internal/curve"
 
 	"github.com/arlintdev/go-mermaid/internal/domain"
 	"github.com/arlintdev/go-mermaid/internal/layout"
@@ -31,10 +32,10 @@ const (
 )
 
 // look is an element kind's colours and its [type] wording, after
-// Mermaid's C4 defaults.
+// look is how an element is drawn: its colors (escaped) and its [type].
 type look struct{ fill, stroke, text, typ string }
 
-func lookFor(e *Element) look {
+func lookFor(e *Element, cc theme.C4Colors) look {
 	ext := strings.HasSuffix(e.Kind, "_Ext")
 	base := strings.TrimSuffix(e.Kind, "_Ext")
 	techn := func(t string) string {
@@ -43,39 +44,40 @@ func lookFor(e *Element) look {
 		}
 		return t
 	}
-	var l look
+	var c theme.C4Look
+	var typ string
 	switch {
 	case base == "Person":
-		l = look{"#08427b", "#073b6f", "#ffffff", "Person"}
+		c, typ = cc.Person, "Person"
 		if ext {
-			l = look{"#686868", "#8a8a8a", "#ffffff", "External Person"}
+			c, typ = cc.ExternalPerson, "External Person"
 		}
 	case strings.HasPrefix(base, "System"):
-		l = look{"#1168bd", "#3c7fc0", "#ffffff", "Software System"}
+		c, typ = cc.System, "Software System"
 		if ext {
-			l = look{"#999999", "#8a8a8a", "#ffffff", "External System"}
+			c, typ = cc.ExternalSystem, "External System"
 		}
 	case strings.HasPrefix(base, "Container"):
-		l = look{"#438dd5", "#3c7fc0", "#ffffff", techn("Container")}
+		c, typ = cc.Container, techn("Container")
 		if ext {
-			l = look{"#b3b3b3", "#a6a6a6", "#ffffff", techn("External Container")}
+			c, typ = cc.ExternalContainer, techn("External Container")
 		}
 	default:
-		l = look{"#85bbf0", "#78a8d8", "#000000", techn("Component")}
+		c, typ = cc.Component, techn("Component")
 		if ext {
-			l = look{"#cccccc", "#bfbfbf", "#000000", techn("External Component")}
+			c, typ = cc.ExternalComponent, techn("External Component")
 		}
 	}
 	if e.Style.Fill != "" {
-		l.fill = svgutil.Esc(e.Style.Fill)
+		c.Fill, c.Text = e.Style.Fill, theme.TextOn(e.Style.Fill, c.Text)
 	}
 	if e.Style.Stroke != "" {
-		l.stroke = svgutil.Esc(e.Style.Stroke)
+		c.Stroke = e.Style.Stroke
 	}
 	if e.Style.Text != "" {
-		l.text = svgutil.Esc(e.Style.Text)
+		c.Text = e.Style.Text
 	}
-	return l
+	return look{svgutil.Esc(c.Fill), svgutil.Esc(c.Stroke), svgutil.Esc(c.Text), typ}
 }
 
 type metrics struct {
@@ -84,11 +86,11 @@ type metrics struct {
 	ff   string // the font family the layout measures with
 }
 
-func (m metrics) lines(s string, size, maxW float64) []string { return wrap(m.face, s, size, maxW) }
+func (m metrics) lines(s string, size, maxW float64) []string { return m.face.WrapHard(s, size, maxW) }
 
 // elementText is an element's label, [type] and description lines.
 func elementText(e *Element, m metrics) (label, typ, descr []string) {
-	return m.lines(e.Label, m.fs, maxTextW), m.lines("["+lookFor(e).typ+"]", m.fs*0.78, maxTextW), m.lines(e.Descr, m.fs*0.85, maxTextW)
+	return m.lines(e.Label, m.fs, maxTextW), m.lines("["+lookFor(e, theme.C4Colors{}).typ+"]", m.fs*0.78, maxTextW), m.lines(e.Descr, m.fs*0.85, maxTextW)
 }
 
 func headR(m metrics) float64 { return m.fs * 1.25 }
@@ -300,7 +302,7 @@ func (c *ctx) relLines(r *Rel) []string {
 
 type drawnRel struct {
 	r      *Rel
-	sh     edgeShape
+	sh     curve.Shape
 	lx, ly float64
 }
 
@@ -351,15 +353,15 @@ func (c *ctx) route(r *Rel) (drawnRel, bool) {
 					pts[i], pts[j] = pts[j], pts[i]
 				}
 			}
-			var obs []box
+			var obs []curve.Box
 			for id, rr := range c.rects {
 				if id != r.From && id != r.To && c.d.element(id) != nil {
-					obs = append(obs, box{rr.x, rr.y, rr.w, rr.h})
+					obs = append(obs, curve.Box{X: rr.x, Y: rr.y, W: rr.w, H: rr.h})
 				}
 			}
-			sh := shapeEdge(pts, true, obs, 0, 0)
-			lx, ly := sh.mid.X, sh.mid.Y
-			if !sh.curved {
+			sh := curve.Edge(pts, true, obs, 0, 0)
+			lx, ly := sh.Mid.X, sh.Mid.Y
+			if !sh.Curved {
 				lx, ly = e.LabelPos.X+bx+s.ox, e.LabelPos.Y+by+s.oy-c.m.fs*0.3
 			}
 			return drawnRel{r, sh, lx, ly}, true
@@ -396,7 +398,7 @@ func (c *ctx) route(r *Rel) (drawnRel, bool) {
 			}
 		}
 	}
-	sh := edgeShape{start: pts[0], end: pts[len(pts)-1], d: path(pts)}
+	sh := curve.Shape{Start: pts[0], End: pts[len(pts)-1], D: curve.Path(pts)}
 	tw, th := c.textBox(c.relLines(r))
 	best := domain.PolylineMidpoint(pts)
 	total := domain.PolylineLength(pts)
@@ -415,7 +417,7 @@ func (c *ctx) route(r *Rel) (drawnRel, bool) {
 			break
 		}
 	}
-	sh.mid = best
+	sh.Mid = best
 	return drawnRel{r, sh, best.X, best.Y}, true
 }
 
@@ -477,8 +479,8 @@ func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
 		if !ok {
 			continue
 		}
-		bd.Add(dr.sh.start.X, dr.sh.start.Y)
-		bd.Add(dr.sh.end.X, dr.sh.end.Y)
+		bd.Add(dr.sh.Start.X, dr.sh.Start.Y)
+		bd.Add(dr.sh.End.X, dr.sh.End.Y)
 		lines := c.relLines(r)
 		tw, th := c.textBox(lines)
 		bd.AddRect(dr.lx-tw/2-4, dr.ly-th/2-2, tw+8, th+4)
@@ -522,9 +524,9 @@ func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
 	}
 
 	var b strings.Builder
-	edge := "#444444"
+	edge := svgutil.Esc(c.pal.C4.Line)
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(fontFamily(o.FontFace)), svgutil.Num(fs))
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(fs))
 	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(c.pal.Background))
 	fmt.Fprintf(&b, `  <defs><marker id="%s-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="%s"/></marker></defs>`+"\n", id, edge)
 	if o.Title != "" {
@@ -549,7 +551,7 @@ func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
 		default:
 			markers = fmt.Sprintf(` marker-end="url(#%s-arrow)"`, id)
 		}
-		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.2"%s/>`+"\n", dr.sh.d, col, markers)
+		fmt.Fprintf(&b, `    <path d="%s" fill="none" stroke="%s" stroke-width="1.2"%s/>`+"\n", dr.sh.D, col, markers)
 	}
 	for _, e := range c.d.Elements {
 		c.writeElement(&b, e)
@@ -604,8 +606,8 @@ func (c *ctx) writeBoundary(b *strings.Builder, bo *Boundary) {
 		return
 	}
 	n := svgutil.Num
-	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="none" stroke="#444444" stroke-dasharray="7 7"/>`+"\n",
-		n(r.x), n(r.y), n(r.w), n(r.h))
+	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="none" stroke="%s" stroke-dasharray="7 7"/>`+"\n",
+		n(r.x), n(r.y), n(r.w), n(r.h), svgutil.Esc(c.pal.C4.Line))
 	y := r.y + 8 + c.m.fs
 	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" font-weight="bold">%s</text>`+"\n", n(r.x+bPad*0.6), n(y), svgutil.Esc(c.pal.Text), svgutil.Esc(bo.Label))
 	if bo.Type != "" {
@@ -619,7 +621,7 @@ func (c *ctx) writeElement(b *strings.Builder, e *Element) {
 	if !ok {
 		return
 	}
-	l := lookFor(e)
+	l := lookFor(e, c.pal.C4)
 	n := svgutil.Num
 	x, y, w, h := r.x, r.y, r.w, r.h
 	attrs := fmt.Sprintf(`fill="%s" stroke="%s"`, l.fill, l.stroke)
@@ -665,71 +667,4 @@ func (c *ctx) writeElement(b *strings.Builder, e *Element) {
 		ty += 6
 		write(descr, c.m.fs*0.85, "")
 	}
-}
-
-// wrap breaks s into lines no wider than maxW, at spaces where it can and
-// inside a word only when the word alone is too wide.
-func wrap(face svgutil.Face, s string, size, maxW float64) []string {
-	var lines []string
-	for _, para := range svgutil.SplitLines(s) {
-		cur := ""
-		for _, wd := range strings.Fields(para) {
-			for face.Width(wd, size) > maxW && len([]rune(wd)) > 1 {
-				if cur != "" {
-					lines = append(lines, cur)
-					cur = ""
-				}
-				// The longest prefix that fits, measured rune by rune so a
-				// very long word costs linear time.
-				r := []rune(wd)
-				k, w := 0, 0.0
-				for k < len(r) {
-					cw := face.Width(string(r[k]), size)
-					if k > 0 && w+cw > maxW {
-						break
-					}
-					w += cw
-					k++
-				}
-				lines = append(lines, string(r[:k]))
-				wd = string(r[k:])
-			}
-			try := wd
-			if cur != "" {
-				try = cur + " " + wd
-			}
-			if cur != "" && face.Width(try, size) > maxW {
-				lines = append(lines, cur)
-				cur = wd
-				continue
-			}
-			cur = try
-		}
-		lines = append(lines, cur)
-	}
-	return lines
-}
-
-func path(pts []domain.Point) string {
-	var d strings.Builder
-	for i, p := range pts {
-		cmd := "L"
-		if i == 0 {
-			cmd = "M"
-		}
-		fmt.Fprintf(&d, "%s%s,%s ", cmd, svgutil.Num(p.X), svgutil.Num(p.Y))
-	}
-	return strings.TrimSpace(d.String())
-}
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
-
-// fontFamily returns face when it is a plain font list, else sans-serif:
-// a font option is written into an attribute, so it must carry nothing else.
-func fontFamily(face string) string {
-	l := strings.ToLower(face)
-	if !plainFont.MatchString(face) || strings.Contains(l, "javascript") || strings.Contains(l, "expression") {
-		return "sans-serif"
-	}
-	return face
 }

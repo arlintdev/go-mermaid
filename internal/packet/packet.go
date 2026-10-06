@@ -41,12 +41,12 @@ func Parse(src string) (*Diagram, error) {
 	headerSeen := false
 	for i, raw := range strings.Split(src, "\n") {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(raw))
+		line := strings.TrimSpace(syntax.StripComment(raw))
 		if line == "" {
 			continue
 		}
 		if !headerSeen {
-			if w := strings.ToLower(firstWord(line)); w != "packet-beta" && w != "packet" {
+			if w := strings.ToLower(syntax.FirstWord(line)); w != "packet-beta" && w != "packet" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'packet-beta' header")
 			}
 			headerSeen = true
@@ -114,18 +114,4 @@ func parseField(line string, lineNo, next int) (*Field, error) {
 		return nil, syntax.Errorf(lineNo, 1, "bit range too large")
 	}
 	return &Field{Start: start, End: end, Label: strings.Trim(strings.TrimSpace(label), `"`)}, nil
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
-	}
-	return s
 }

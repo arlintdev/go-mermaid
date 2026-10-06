@@ -20,7 +20,7 @@ func TestHostile(t *testing.T) {
 	render := func(s string) ([]byte, error) { return Render(s, o) }
 	goldentest.Hostile(t, render, "mindmap\n  root(("+inj+"))\n    "+inj+"\n    ::icon("+inj+")\n    a["+inj+"]:::"+inj+
 		"\n    b))"+inj+"((\n    c)"+inj+"(\n    d{{"+inj+"}}\n    \""+inj+"\"")
-	o.FontFace, o.Title = inj, inj
+	o.Title = inj
 	goldentest.Hostile(t, render, "mindmap\n  r\n    a")
 }
 

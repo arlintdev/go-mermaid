@@ -1,0 +1,16 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="386" height="178" viewBox="0 0 386 178" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="m17int33-circle-0" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><circle cx="5" cy="5" r="4.5" fill="#bbbbbb"/></marker>
+    <marker id="m17int33-cross-1" viewBox="0 0 11 11" refX="5.5" refY="5.5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><path d="M1.5,1.5 L9.5,9.5 M9.5,1.5 L1.5,9.5" stroke="#bbbbbb" stroke-width="2" fill="none"/></marker>
+  </defs>
+  <g transform="translate(16,16)">
+    <path d="M109,48 L109,55.5 Q109,60.5 104,60.5 L81,60.5 Q76,60.5 76,65.5 L76,85" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m17int33-circle-0)"/>
+    <path d="M245,48 L245,55.5 Q245,60.5 250,60.5 L273,60.5 Q278,60.5 278,65.5 L278,91.5" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m17int33-cross-1)"/>
+    <rect x="101" y="0" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="177" y="29.6">A</tspan></text>
+    <rect x="0" y="98" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="76" y="127.6">B</tspan></text>
+    <rect x="202" y="98" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="278" y="127.6">C</tspan></text>
+  </g>
+</svg>

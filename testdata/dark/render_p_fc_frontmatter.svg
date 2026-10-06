@@ -1,0 +1,14 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="184" height="213.6" viewBox="0 0 184 213.6" font-family="sans-serif" font-size="16">
+  <title>T</title>
+  <defs>
+    <marker id="m1bmb10c-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#bbbbbb"/></marker>
+  </defs>
+  <text x="92" y="34.4" fill="#e6e6e6" text-anchor="middle" font-size="18.4" font-weight="bold">T</text>
+  <g transform="translate(16,51.6)">
+    <path d="M76,48 L76,87" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#m1bmb10c-arrow-0)"/>
+    <rect x="0" y="0" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="76" y="29.6">A</tspan></text>
+    <rect x="0" y="98" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="76" y="127.6">B</tspan></text>
+  </g>
+</svg>

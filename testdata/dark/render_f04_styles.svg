@@ -1,0 +1,20 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="386" height="276" viewBox="0 0 386 276" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="mkva3qk-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#c0392b"/></marker>
+    <marker id="mkva3qk-arrow-1" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#bbbbbb"/></marker>
+    <marker id="mkva3qk-arrow-2" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#d68910"/></marker>
+  </defs>
+  <g transform="translate(16,16)">
+    <path d="M177,48 L177,87" fill="none" stroke="#c0392b" stroke-width="3" marker-end="url(#mkva3qk-arrow-0)"/>
+    <path d="M109,146 L109,153.5 Q109,158.5 104,158.5 L81,158.5 Q76,158.5 76,163.5 L76,185" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-end="url(#mkva3qk-arrow-1)"/>
+    <path d="M245,146 L245,153.5 Q245,158.5 250,158.5 L273,158.5 Q278,158.5 278,163.5 L278,185" fill="none" stroke="#d68910" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#mkva3qk-arrow-2)"/>
+    <rect x="101" y="0" width="152" height="48" fill="#ffcccc" stroke="#c0392b" stroke-width="3"/>
+    <text fill="#7b241c" text-anchor="middle"><tspan x="177" y="29.6">Critical</tspan></text>
+    <rect x="101" y="98" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="177" y="127.6">Normal</tspan></text>
+    <rect x="0" y="196" width="152" height="48" fill="#d5f5e3" stroke="#1e8449"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="76" y="225.6">Done</tspan></text>
+    <rect x="202" y="196" width="152" height="48" fill="#fdebd0" stroke="#d68910" stroke-width="2" stroke-dasharray="5 5"/>
+    <text fill="#333333" text-anchor="middle"><tspan x="278" y="225.6">Warning</tspan></text>
+  </g>
+</svg>

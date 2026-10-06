@@ -79,18 +79,18 @@ func Parse(src string) (*Diagram, error) {
 	headerSeen := false
 	for i, raw := range strings.Split(src, "\n") {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(raw))
+		line := strings.TrimSpace(syntax.StripComment(raw))
 		if line == "" {
 			continue
 		}
 		if !headerSeen {
-			if w := strings.ToLower(firstWord(line)); w != "radar-beta" && w != "radar" {
+			if w := strings.ToLower(syntax.FirstWord(line)); w != "radar-beta" && w != "radar" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'radar-beta' header")
 			}
 			headerSeen = true
 			continue
 		}
-		kw := strings.ToLower(firstWord(line))
+		kw := strings.ToLower(syntax.FirstWord(line))
 		rest := strings.TrimSpace(line[len(kw):])
 		switch kw {
 		case "title":
@@ -229,18 +229,4 @@ func idLabel(tok string) (string, string) {
 		return strings.TrimSpace(tok[:o]), label
 	}
 	return tok, tok
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
-	}
-	return s
 }

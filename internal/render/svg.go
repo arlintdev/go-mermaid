@@ -191,7 +191,10 @@ func (r *renderer) drawClusterTitle(b *strings.Builder, sg *domain.Subgraph, edg
 	}
 	fill, text := r.pal.ClusterFill, r.pal.Text
 	if st := sg.Style; st != nil {
-		fill, text = pick(st.Fill, fill), pick(st.Color, text)
+		if st.Fill != "" {
+			fill, text = st.Fill, theme.TextOn(st.Fill, text)
+		}
+		text = pick(st.Color, text)
 	}
 	lh := r.opts.FontSize * 1.5
 	top := box.Min.Y + 6
@@ -418,7 +421,7 @@ func (r *renderer) drawNode(b *strings.Builder, n *domain.Node) {
 	fill, stroke, text := r.pal.NodeFill, r.pal.NodeStroke, r.pal.Text
 	extra := ""
 	if st := n.Style; st != nil {
-		fill, stroke, text = pick(st.Fill, fill), pick(st.Stroke, stroke), pick(st.Color, text)
+		fill, stroke, text = r.pal.Node(st.Fill, st.Stroke, st.Color)
 		extra = strokeExtras(st)
 	}
 	paint := fmt.Sprintf(` fill="%s" stroke="%s"%s`, esc(fill), esc(stroke), extra)

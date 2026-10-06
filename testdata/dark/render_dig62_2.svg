@@ -1,0 +1,33 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="663.82" height="542" viewBox="0 0 663.82 542" font-family="sans-serif" font-size="16">
+  <defs>
+    <marker id="mksnr85-arrow-0" viewBox="0 0 11 12" refX="0" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="12" orient="auto-start-reverse"><path d="M0,0 L11,6 L0,12 z" fill="#bbbbbb"/></marker>
+  </defs>
+  <g transform="translate(16,16)">
+    <path d="M459.14,59 L459.14,293.5 Q459.14,298.5 454.14,298.5 L451.28,298.5 Q448.03,298.5 448.03,301.75 L448.03,305" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-start="url(#mksnr85-arrow-0)" marker-end="url(#mksnr85-arrow-0)"/>
+    <path d="M491.74,59 L491.74,62.25 Q491.74,65.5 494.99,65.5 L551.23,65.5 Q556.23,65.5 556.23,70.5 L556.23,439.5 Q556.23,444.5 551.23,444.5 L417.72,444.5 Q414.47,444.5 414.47,447.75 L414.47,451" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-start="url(#mksnr85-arrow-0)" marker-end="url(#mksnr85-arrow-0)"/>
+    <path d="M380.03,375 L380.03,451" fill="none" stroke="#bbbbbb" stroke-width="1.5" marker-start="url(#mksnr85-arrow-0)" marker-end="url(#mksnr85-arrow-0)"/>
+    <path d="M355.74,48 L355.74,60.5 Q355.74,65.5 350.74,65.5 L260.85,65.5 Q255.85,65.5 255.85,70.5 L255.85,135" fill="none" stroke="#bbbbbb" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#mksnr85-arrow-0)"/>
+    <path d="M323.85,218 L323.85,230.5 Q323.85,235.5 328.85,235.5 L329.48,235.5 Q334.48,235.5 334.48,240.5 L334.48,305" fill="none" stroke="#bbbbbb" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#mksnr85-arrow-0)"/>
+    <path d="M187.85,218 L187.85,230.5 Q187.85,235.5 182.85,235.5 L108.16,235.5 Q103.16,235.5 103.16,240.5 L103.16,439.5 Q103.16,444.5 108.16,444.5 L275.22,444.5 Q278.47,444.5 278.47,447.75 L278.47,451" fill="none" stroke="#bbbbbb" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#mksnr85-arrow-0)"/>
+    <rect x="383.55" y="83" width="151.18" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="459.14" y="102.6">audio, video, screen</tspan></text>
+    <rect x="480.64" y="253" width="151.18" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="556.23" y="272.6">audio, video, screen</tspan></text>
+    <rect x="304.44" y="399" width="151.18" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="380.03" y="418.6">audio, video, screen</tspan></text>
+    <rect x="153.16" y="83" width="205.39" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="255.85" y="102.6">call setup over HTTP POST</tspan></text>
+    <rect x="231.32" y="253" width="206.32" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="334.48" y="272.6">setup down the SSE stream</tspan></text>
+    <rect x="0" y="253" width="206.32" height="28" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="103.16" y="272.6">setup down the SSE stream</tspan></text>
+    <rect x="347.74" y="0" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="423.74" y="29.6">Browser A</tspan></text>
+    <rect x="304.03" y="316" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="380.03" y="345.6">Browser B</tspan></text>
+    <rect x="270.47" y="462" width="152" height="48" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="346.47" y="491.6">Browser C</tspan></text>
+    <rect x="179.85" y="146" width="152" height="72" fill="#2b2b40" stroke="#8888bb"/>
+    <text fill="#e6e6e6" text-anchor="middle"><tspan x="255.85" y="175.6">Digin server:</tspan><tspan x="255.85" y="199.6">hub</tspan></text>
+  </g>
+</svg>

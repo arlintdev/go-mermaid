@@ -21,12 +21,10 @@ type RenderOptions struct {
 // Mermaid's packet look: grey blocks with a black outline, a small gap
 // between blocks, and the first and last bit numbers above each block.
 const (
-	bitsPerRow  = 32
-	bitW        = 22.0
-	blockH      = 32.0
-	blockGap    = 5.0
-	blockFill   = "#efefef"
-	blockStroke = "#000000"
+	bitsPerRow = 32
+	bitW       = 22.0
+	blockH     = 32.0
+	blockGap   = 5.0
 )
 
 // Render parses and renders packet-beta source to SVG.
@@ -45,8 +43,8 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	if o.FontSize <= 0 {
 		o.FontSize = 14
 	}
-	o.FontFace = fontFamily(o.FontFace)
-	pal := theme.For(o.Theme)
+	pal := theme.For(o.Theme).Escaped()
+	pc := pal.Packet
 	face := svgutil.FaceFor(o.FontFace)
 	labelFs := math.Round(o.FontSize * 0.86)
 	byteFs := math.Round(o.FontSize * 0.72)
@@ -81,16 +79,16 @@ func svg(d *Diagram, o RenderOptions) []byte {
 			y := top + float64(row)*rowH + byteFs + 3
 			bw := float64(segEnd-bit+1)*bitW - blockGap
 			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" fill="%s" stroke="%s"/>`+"\n",
-				svgutil.Num(x), svgutil.Num(y), svgutil.Num(bw), svgutil.Num(blockH), blockFill, blockStroke)
-			writeLabel(&b, face, f.Label, x+bw/2, y+blockH/2, bw-6, labelFs)
+				svgutil.Num(x), svgutil.Num(y), svgutil.Num(bw), svgutil.Num(blockH), pc.Fill, pc.Stroke)
+			writeLabel(&b, face, f.Label, x+bw/2, y+blockH/2, bw-6, labelFs, pc.Text)
 			if bit == segEnd {
-				fmt.Fprintf(&b, `<text x="%s" y="%s" fill="#000000" font-size="%s" text-anchor="middle">%d</text>`+"\n",
-					svgutil.Num(x+bw/2), svgutil.Num(y-3), svgutil.Num(byteFs), bit)
+				fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="middle">%d</text>`+"\n",
+					svgutil.Num(x+bw/2), svgutil.Num(y-3), pc.Text, svgutil.Num(byteFs), bit)
 			} else {
-				fmt.Fprintf(&b, `<text x="%s" y="%s" fill="#000000" font-size="%s">%d</text>`+"\n",
-					svgutil.Num(x), svgutil.Num(y-3), svgutil.Num(byteFs), bit)
-				fmt.Fprintf(&b, `<text x="%s" y="%s" fill="#000000" font-size="%s" text-anchor="end">%d</text>`+"\n",
-					svgutil.Num(x+bw), svgutil.Num(y-3), svgutil.Num(byteFs), segEnd)
+				fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" font-size="%s">%d</text>`+"\n",
+					svgutil.Num(x), svgutil.Num(y-3), pc.Text, svgutil.Num(byteFs), bit)
+				fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="end">%d</text>`+"\n",
+					svgutil.Num(x+bw), svgutil.Num(y-3), pc.Text, svgutil.Num(byteFs), segEnd)
 			}
 			bit = segEnd + 1
 		}
@@ -106,25 +104,25 @@ func svg(d *Diagram, o RenderOptions) []byte {
 // writeLabel fits a field's label in its block: on one line, else wrapped
 // onto two in a smaller size, else turned upright in a narrow block (a
 // one-bit flag), else cut short with an ellipsis.
-func writeLabel(b *strings.Builder, face svgutil.Face, label string, cx, cy, maxW, fs float64) {
+func writeLabel(b *strings.Builder, face svgutil.Face, label string, cx, cy, maxW, fs float64, text string) {
 	if label == "" {
 		return
 	}
 	lines := []string{label}
 	if face.Width(label, fs) > maxW {
 		small := math.Max(9, fs-2)
-		if l := wrap(face, label, small, maxW); len(l) <= 2 && fits(face, l, small, maxW) {
+		if l := face.Wrap(label, small, maxW); len(l) <= 2 && fits(face, l, small, maxW) {
 			lines, fs = l, small
 		} else if face.Width(label, small) <= blockH-6 && small <= maxW+4 {
-			fmt.Fprintf(b, `<text x="%s" y="%s" fill="#000000" font-size="%s" text-anchor="middle" transform="rotate(-90 %s %s)">%s</text>`+"\n",
-				svgutil.Num(cx), svgutil.Num(cy+small*0.35), svgutil.Num(small), svgutil.Num(cx), svgutil.Num(cy), svgutil.Esc(label))
+			fmt.Fprintf(b, `<text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="middle" transform="rotate(-90 %s %s)">%s</text>`+"\n",
+				svgutil.Num(cx), svgutil.Num(cy+small*0.35), text, svgutil.Num(small), svgutil.Num(cx), svgutil.Num(cy), svgutil.Esc(label))
 			return
 		} else {
 			lines, fs = []string{clip(face, label, small, maxW)}, small
 		}
 	}
 	lh := fs * 1.15
-	fmt.Fprintf(b, `<text fill="#000000" font-size="%s" text-anchor="middle">`, svgutil.Num(fs))
+	fmt.Fprintf(b, `<text fill="%s" font-size="%s" text-anchor="middle">`, text, svgutil.Num(fs))
 	for i, ln := range lines {
 		y := cy + fs*0.35 - lh*float64(len(lines)-1)/2 + float64(i)*lh
 		fmt.Fprintf(b, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(cx), svgutil.Num(y), svgutil.Esc(ln))
@@ -152,4 +150,3 @@ func clip(face svgutil.Face, s string, fs, maxW float64) string {
 	}
 	return string(r) + "…"
 }
-

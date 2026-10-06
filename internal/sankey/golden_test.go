@@ -22,7 +22,7 @@ func TestHostile(t *testing.T) {
 	o := opts()
 	render := func(s string) ([]byte, error) { return Render(s, o) }
 	goldentest.Hostile(t, render, "sankey-beta\n"+q+",b,5\nb,"+q+"x,3")
-	o.FontFace, o.Title = inj, inj
+	o.Title = inj
 	goldentest.Hostile(t, render, "sankey-beta\na,b,1")
 }
 

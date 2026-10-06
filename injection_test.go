@@ -12,7 +12,8 @@ import (
 // in its labels, titles and style values, and checks the output against
 // Digin's allow-list: plain static SVG, every value plain, no markup let
 // through. A diagram that refuses the source is safe too, but each of these
-// should render, so a refusal is reported.
+// should render, so a refusal is reported. Every type is drawn in both
+// themes, and with a hostile and a quoted font option.
 func TestEveryTypeEscapes(t *testing.T) {
 	x := goldentest.Injection
 	// Some grammars end a field at a quote or a colon; these variants carry
@@ -44,7 +45,14 @@ func TestEveryTypeEscapes(t *testing.T) {
 	}
 	for name, src := range sources {
 		t.Run(name, func(t *testing.T) {
-			for _, opts := range [][]mermaid.Option{nil, {mermaid.WithTransparentBackground()}} {
+			for _, opts := range [][]mermaid.Option{
+				nil,
+				{mermaid.WithTransparentBackground()},
+				{mermaid.WithTheme(mermaid.Dark), mermaid.WithTransparentBackground()},
+				// The root validates the font option once for every type.
+				{mermaid.WithFont(x, 14)},
+				{mermaid.WithFont(`"Trebuchet MS", Verdana, sans-serif`, 14)},
+			} {
 				out, err := mermaid.Render(src, opts...)
 				if err != nil {
 					t.Errorf("refused: %v", err)
