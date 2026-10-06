@@ -2,6 +2,7 @@ package kanban
 
 import (
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
@@ -17,14 +18,19 @@ type RenderOptions struct {
 	Title    string
 }
 
-var columnColors = []string{"#5B8FF9", "#61DDAA", "#F6BD16", "#7262FD", "#F6903D", "#008685"}
+// columnFills are Mermaid's kanban section colours; the first column takes
+// the second, as Mermaid numbers columns from one.
+var columnFills = []string{"#ffffab", "#e8ffb9", "#dcb9ff", "#ffb9ff", "#ffb9dc", "#ffb9b9", "#ffdcb9", "#dcffb9", "#b9ffdc", "#b9ffff", "#b9dcff"}
+
+// priorityStroke colours a card's left edge by its priority, as Mermaid does.
+var priorityStroke = map[string]string{"Very High": "#ff0000", "High": "#ffa500", "Low": "#0000ff", "Very Low": "#add8e6"}
 
 const (
-	colW    = 160.0
-	colGap  = 14.0
-	headerH = 30.0
-	cardH   = 34.0
-	cardGap = 8.0
+	colW       = 200.0
+	colGap     = 6.0
+	cardInset  = 7.5
+	cardGap    = 6.0
+	cardStroke = "#9370db"
 )
 
 // Render parses and renders kanban source to SVG.
@@ -36,55 +42,125 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	return svg(d, o), nil
 }
 
-func svg(d *Diagram, o RenderOptions) []byte {
-	pal := theme.For(o.Theme)
-	pad := o.Padding
-	titleH := svgutil.TitleHeight(o.Title, o.FontSize)
+type cardLayout struct {
+	lines []string
+	h     float64
+	meta  bool
+}
 
-	maxCards := 0
-	for _, c := range d.Columns {
-		if len(c.Cards) > maxCards {
-			maxCards = len(c.Cards)
+func svg(d *Diagram, o RenderOptions) []byte {
+	if o.FontSize <= 0 {
+		o.FontSize = 14
+	}
+	o.FontFace = fontFamily(o.FontFace)
+	pal := theme.For(o.Theme)
+	face := svgutil.FaceFor(o.FontFace)
+	fs := o.FontSize
+	metaFs := math.Round(fs * 0.86)
+	lh := fs * 1.3
+	pad := o.Padding
+	cardW := colW - 2*cardInset
+	textW := cardW - 20
+
+	titleFs := math.Round(fs * 1.3)
+	top := pad
+	if o.Title != "" {
+		top += titleFs*1.4 + 8
+	}
+	headH := lh + 12
+
+	// Every column is as tall as the fullest one, as in Mermaid.
+	layouts := make([][]cardLayout, len(d.Columns))
+	colTitles := make([][]string, len(d.Columns))
+	colH := 0.0
+	for ci, col := range d.Columns {
+		colTitles[ci] = wrap(face, col.Title, fs, colW-16)
+		h := headH + float64(len(colTitles[ci])-1)*lh
+		for _, c := range col.Cards {
+			cl := cardLayout{lines: wrap(face, c.Text, fs, textW), meta: c.Ticket != "" || c.Assigned != ""}
+			cl.h = float64(len(cl.lines))*lh + 20
+			if cl.meta {
+				cl.h += metaFs*1.3 + 2
+			}
+			cl.h = math.Max(cl.h, 44)
+			layouts[ci] = append(layouts[ci], cl)
+			h += cl.h + cardGap
 		}
+		colH = math.Max(colH, h+cardInset-cardGap+4)
+	}
+	headMax := 0.0
+	for _, t := range colTitles {
+		headMax = math.Max(headMax, float64(len(t)-1)*lh)
 	}
 
-	top := pad + titleH
-	w := pad*2 + float64(len(d.Columns))*(colW+colGap)
-	h := top + headerH + 8 + float64(maxCards)*(cardH+cardGap) + pad
+	w := pad*2 + float64(len(d.Columns))*colW + float64(max(len(d.Columns)-1, 0))*colGap
+	if tw := face.Width(o.Title, titleFs) + 2*pad; tw > w {
+		w = tw
+	}
+	h := top + colH + pad
 
 	var b strings.Builder
-	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`,
-		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(o.FontSize))
-	b.WriteByte('\n')
-	fmt.Fprintf(&b, `  <rect width="100%%" height="100%%" fill="%s"/>`, pal.Background)
-	b.WriteByte('\n')
+	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s" font-family="%s" font-size="%s">`+"\n",
+		svgutil.Num(w), svgutil.Num(h), svgutil.Num(w), svgutil.Num(h), svgutil.Esc(o.FontFace), svgutil.Num(fs))
+	fmt.Fprintf(&b, `<rect width="100%%" height="100%%" fill="%s"/>`+"\n", svgutil.Esc(pal.Background))
 	if o.Title != "" {
-		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle" font-weight="bold">%s</text>`,
-			svgutil.Num(w/2), svgutil.Num(pad+o.FontSize), pal.Text, svgutil.Esc(o.Title))
-		b.WriteByte('\n')
+		fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="middle">%s</text>`+"\n",
+			svgutil.Num(w/2), svgutil.Num(pad+titleFs), pal.Text, svgutil.Num(titleFs), svgutil.Esc(o.Title))
 	}
 
 	for ci, col := range d.Columns {
 		x := pad + float64(ci)*(colW+colGap)
-		color := columnColors[ci%len(columnColors)]
-		fmt.Fprintf(&b, `  <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="%s"/>`,
-			svgutil.Num(x), svgutil.Num(top), svgutil.Num(colW), svgutil.Num(headerH), color)
+		fill := columnFills[(ci+1)%len(columnFills)]
+		fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="5" fill="%s" stroke="%s"/>`+"\n",
+			svgutil.Num(x), svgutil.Num(top), svgutil.Num(colW), svgutil.Num(colH), fill, fill)
+		svgutil.MultilineText(&b, colTitles[ci], x+colW/2, top+6+lh/2+fs*0.35+float64(len(colTitles[ci])-1)*lh/2, lh, "#333333", "")
 		b.WriteByte('\n')
-		fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="#ffffff" text-anchor="middle" font-weight="bold">%s</text>`,
-			svgutil.Num(x+colW/2), svgutil.Num(top+headerH*0.66), svgutil.Esc(col.Title))
-		b.WriteByte('\n')
-		cy := top + headerH + 8
-		for _, card := range col.Cards {
-			fmt.Fprintf(&b, `  <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="%s" stroke="%s"/>`,
-				svgutil.Num(x+6), svgutil.Num(cy), svgutil.Num(colW-12), svgutil.Num(cardH), pal.NodeFill, pal.NodeStroke)
-			b.WriteByte('\n')
-			fmt.Fprintf(&b, `  <text x="%s" y="%s" fill="%s" text-anchor="middle">%s</text>`,
-				svgutil.Num(x+colW/2), svgutil.Num(cy+cardH/2+o.FontSize*0.35), pal.Text, svgutil.Esc(card.Text))
-			b.WriteByte('\n')
-			cy += cardH + cardGap
+		cy := top + headH + headMax
+		for k, c := range col.Cards {
+			cl := layouts[ci][k]
+			cx := x + cardInset
+			fmt.Fprintf(&b, `<rect x="%s" y="%s" width="%s" height="%s" rx="5" fill="#ffffff" stroke="%s"/>`+"\n",
+				svgutil.Num(cx), svgutil.Num(cy), svgutil.Num(cardW), svgutil.Num(cl.h), cardStroke)
+			if s, ok := priorityStroke[c.Priority]; ok {
+				fmt.Fprintf(&b, `<line x1="%s" y1="%s" x2="%s" y2="%s" stroke="%s" stroke-width="4"/>`+"\n",
+					svgutil.Num(cx+2), svgutil.Num(cy+2), svgutil.Num(cx+2), svgutil.Num(cy+cl.h-2), s)
+			}
+			textH := float64(len(cl.lines)) * lh
+			if !cl.meta {
+				textH = cl.h - 20
+			}
+			fmt.Fprintf(&b, `<text fill="%s">`, pal.Text)
+			for i, ln := range cl.lines {
+				ty := cy + 10 + (textH-float64(len(cl.lines))*lh)/2 + float64(i)*lh + lh/2 + fs*0.35
+				fmt.Fprintf(&b, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(cx+10), svgutil.Num(ty), svgutil.Esc(ln))
+			}
+			b.WriteString("</text>\n")
+			if cl.meta {
+				my := cy + cl.h - 10
+				if c.Ticket != "" {
+					fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" font-size="%s">%s</text>`+"\n",
+						svgutil.Num(cx+10), svgutil.Num(my), pal.Text, svgutil.Num(metaFs), svgutil.Esc(clip(face, c.Ticket, metaFs, cardW/2-14)))
+				}
+				if c.Assigned != "" {
+					fmt.Fprintf(&b, `<text x="%s" y="%s" fill="%s" font-size="%s" text-anchor="end">%s</text>`+"\n",
+						svgutil.Num(cx+cardW-10), svgutil.Num(my), pal.Text, svgutil.Num(metaFs), svgutil.Esc(clip(face, c.Assigned, metaFs, cardW/2-14)))
+				}
+			}
+			cy += cl.h + cardGap
 		}
 	}
-
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
+}
+
+// clip shortens s with an ellipsis to fit maxW.
+func clip(face svgutil.Face, s string, fs, maxW float64) string {
+	if face.Width(s, fs) <= maxW {
+		return s
+	}
+	r := []rune(s)
+	for len(r) > 1 && face.Width(string(r)+"…", fs) > maxW {
+		r = r[:len(r)-1]
+	}
+	return string(r) + "…"
 }

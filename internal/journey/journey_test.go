@@ -61,7 +61,7 @@ func TestRender(t *testing.T) {
 			So(svg, ShouldStartWith, "<svg")
 			So(svg, ShouldContainSubstring, "<circle")
 			So(svg, ShouldContainSubstring, ">Tea<")
-			So(svg, ShouldContainSubstring, "#27ae60") // score 5 green
+			So(svg, ShouldContainSubstring, `fill="#fff8dc"`) // a score face
 		})
 	})
 }

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="827" height="223" viewBox="0 0 827 223" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="193.34" y="47.2" width="60" height="138" fill="#eeeeee"/>
+<rect x="403.34" y="47.2" width="60" height="138" fill="#eeeeee"/>
+<rect x="613.34" y="47.2" width="60" height="138" fill="#eeeeee"/>
+<line x1="73.34" y1="47.2" x2="73.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="73.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 01</text>
+<line x1="133.34" y1="47.2" x2="133.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="133.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 03</text>
+<line x1="193.34" y1="47.2" x2="193.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="193.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 05</text>
+<line x1="253.34" y1="47.2" x2="253.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="253.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 07</text>
+<line x1="313.34" y1="47.2" x2="313.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="313.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 09</text>
+<line x1="373.34" y1="47.2" x2="373.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="373.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 11</text>
+<line x1="433.34" y1="47.2" x2="433.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="433.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 13</text>
+<line x1="493.34" y1="47.2" x2="493.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="493.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 15</text>
+<line x1="553.34" y1="47.2" x2="553.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="553.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 17</text>
+<line x1="613.34" y1="47.2" x2="613.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="613.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 19</text>
+<line x1="673.34" y1="47.2" x2="673.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="673.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 21</text>
+<line x1="733.34" y1="47.2" x2="733.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="733.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 23</text>
+<line x1="793.34" y1="47.2" x2="793.34" y2="185.2" stroke="#d3d3d3" stroke-opacity="0.8"/>
+<text x="793.34" y="202.2" fill="#333333" font-size="11" text-anchor="middle">Sep 25</text>
+<rect x="16" y="51.2" width="795" height="26" fill="#6666ff" fill-opacity="0.1"/>
+<rect x="16" y="77.2" width="795" height="26" fill="#6666ff" fill-opacity="0.1"/>
+<rect x="16" y="103.2" width="795" height="26" fill="#ffffff" fill-opacity="0.2"/>
+<rect x="16" y="129.2" width="795" height="26" fill="#ffffff" fill-opacity="0.2"/>
+<rect x="16" y="155.2" width="795" height="26" fill="#ffffff" fill-opacity="0.2"/>
+<rect x="73.34" y="54.2" width="210" height="20" rx="3" fill="#d3d3d3" stroke="#808080" stroke-width="2"/>
+<text x="178.34" y="68.4" fill="#000000" font-size="12" text-anchor="middle">Research</text>
+<rect x="283.34" y="80.2" width="120" height="20" rx="3" fill="#bfc7ff" stroke="#534fbc" stroke-width="2"/>
+<text x="343.34" y="94.4" fill="#000000" font-size="12" text-anchor="middle">Mockups</text>
+<rect x="283.34" y="106.2" width="420" height="20" rx="3" fill="#ff0000" stroke="#ff8888" stroke-width="2"/>
+<text x="493.34" y="120.4" fill="#ffffff" font-size="12" text-anchor="middle">Backend</text>
+<rect x="463.34" y="132.2" width="300" height="20" rx="3" fill="#8a90dd" stroke="#534fbc" stroke-width="2"/>
+<text x="613.34" y="146.4" fill="#ffffff" font-size="12" text-anchor="middle">Frontend</text>
+<polygon points="793.34,157 804.54,168.2 793.34,179.4 782.14,168.2" fill="#8a90dd" stroke="#534fbc" stroke-width="2"/>
+<text x="776.14" y="172.4" fill="#333333" font-size="12" text-anchor="end" font-style="italic">Launch</text>
+<text fill="#333333" font-size="12"><tspan x="24" y="81.4">Design</tspan></text>
+<text fill="#333333" font-size="12"><tspan x="24" y="146.4">Build</tspan></text>
+<text x="413.5" y="34" fill="#333333" font-size="18" text-anchor="middle">Release plan</text>
+</svg>

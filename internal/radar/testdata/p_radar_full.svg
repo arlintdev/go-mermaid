@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="566.43" height="456.4" viewBox="0 0 566.43 456.4" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="258.44" y="32" fill="#333333" font-size="16" text-anchor="middle">Team skills compared across six areas</text>
+<polygon points="258.44,73.4 405.67,158.4 405.67,328.4 258.44,413.4 111.22,328.4 111.22,158.4" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<polygon points="258.44,115.9 368.86,179.65 368.86,307.15 258.44,370.9 148.03,307.15 148.03,179.65" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<polygon points="258.44,158.4 332.06,200.9 332.06,285.9 258.44,328.4 184.83,285.9 184.83,200.9" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<polygon points="258.44,200.9 295.25,222.15 295.25,264.65 258.44,285.9 221.64,264.65 221.64,222.15" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<line x1="258.44" y1="243.4" x2="258.44" y2="73.4" stroke="#333333" stroke-width="2"/>
+<text x="258.44" y="59.4" fill="#333333" font-size="13" text-anchor="middle">Frontend engineering</text>
+<line x1="258.44" y1="243.4" x2="405.67" y2="158.4" stroke="#333333" stroke-width="2"/>
+<text x="417.79" y="151.4" fill="#333333" font-size="13" text-anchor="start">Backend</text>
+<line x1="258.44" y1="243.4" x2="405.67" y2="328.4" stroke="#333333" stroke-width="2"/>
+<text x="417.79" y="345.8" fill="#333333" font-size="13" text-anchor="start">Operations</text>
+<line x1="258.44" y1="243.4" x2="258.44" y2="413.4" stroke="#333333" stroke-width="2"/>
+<text x="258.44" y="437.8" fill="#333333" font-size="13" text-anchor="middle">Security</text>
+<line x1="258.44" y1="243.4" x2="111.22" y2="328.4" stroke="#333333" stroke-width="2"/>
+<text x="99.1" y="345.8" fill="#333333" font-size="13" text-anchor="end">Design</text>
+<line x1="258.44" y1="243.4" x2="111.22" y2="158.4" stroke="#333333" stroke-width="2"/>
+<text x="99.1" y="151.4" fill="#333333" font-size="13" text-anchor="end">Product sense</text>
+<path d="M258.44,98.9 C303.5,98.9 370.92,130.78 390.95,166.9 C410.97,203.03 398.75,278.16 376.22,311.4 C353.7,344.63 297.24,363.12 258.44,362.4 C219.65,361.68 170.55,340.39 148.03,307.15 C125.5,273.92 107.17,202.3 125.94,166.9 C144.71,131.5 213.39,98.9 258.44,98.9 Z" fill="#8686ff" fill-opacity="0.5" stroke="#8686ff" stroke-width="2"/>
+<path d="M258.44,124.4 C293.48,122.96 347.59,147.14 368.86,179.65 C390.14,212.16 402.36,281.69 383.59,315.65 C364.81,349.61 294.74,383.01 258.44,379.4 C222.15,375.79 186.38,326.91 170.11,294.4 C153.84,261.89 147.73,217.05 162.75,188.15 C177.77,159.25 223.41,125.85 258.44,124.4 Z" fill="#ffff78" fill-opacity="0.5" stroke="#aaaa50" stroke-width="2"/>
+<path d="M258.44,175.4 C285.98,173.96 323,167.11 346.78,192.4 C370.56,217.69 413.32,289.47 398.31,324.15 C383.29,358.83 289.73,405.79 258.44,396.4 C227.16,387.01 226.79,302.14 214.28,268.9 C201.76,235.67 177.32,216.8 184.83,200.9 C192.34,185 230.91,176.84 258.44,175.4 Z" fill="#d7ff86" fill-opacity="0.5" stroke="#8faa59" stroke-width="2"/>
+<rect x="501.38" y="46.4" width="12" height="12" fill="#8686ff" fill-opacity="0.5" stroke="#8686ff"/>
+<text x="519.38" y="56.95" fill="#333333" font-size="13">Alice</text>
+<rect x="501.38" y="67.4" width="12" height="12" fill="#ffff78" fill-opacity="0.5" stroke="#aaaa50"/>
+<text x="519.38" y="77.95" fill="#333333" font-size="13">Bob</text>
+<rect x="501.38" y="88.4" width="12" height="12" fill="#d7ff86" fill-opacity="0.5" stroke="#8faa59"/>
+<text x="519.38" y="98.95" fill="#333333" font-size="13">Carol</text>
+</svg>

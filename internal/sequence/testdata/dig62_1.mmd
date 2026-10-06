@@ -1,0 +1,27 @@
+sequenceDiagram
+  participant A as Avery's tab (on the call)
+  participant E as Edith's tab (on the call)
+  participant S as Digin server
+  participant N as Nora's tabs
+  A->>S: POST /office/invite {connId, userId: Nora}
+  S->>S: place = hub.Where(connId); spot(place): Avery may be there
+  S->>S: MayReach(Avery, Nora)? not a bot? may be in this place? not on it? online (workspace-mates only)? rings.allow
+  S->>S: invites.ring: hub.Hold(place, Nora, 10)
+  S->>S: audit call_invited (kind, subject, invitee_id)
+  S-->>N: ring {inviteId, fromUser: Avery, kind, with: [Avery, Edith]}
+  S-->>A: call.ringing {place, ringing: [Nora by Avery]}
+  S-->>E: call.ringing {place, ringing: [Nora by Avery]}
+  S-->>A: {inviteId}
+  N->>S: POST /office/invites/{id}/answer {connId, media}
+  S->>S: invites.take; spot(place) as Nora; joinCall into the kept seat; calls.admit for a call of two
+  S->>S: audit call_invite_answered (invited_by: Avery); hub.Release
+  S-->>N: ring.end {inviteId, reason: answered} (her other tabs stop)
+  S-->>A: call.ringing {ringing: [], outcome: answered}
+  S-->>A: call {occupants: Avery, Edith, Nora}
+  S-->>E: call {occupants: Avery, Edith, Nora}
+  S-->>N: {others: [Avery's tab, Edith's tab], resume, kind, callId}
+  N->>N: connect(Avery), connect(Edith)
+  N->>S: POST /office/signal to Avery, and to Edith
+  S-->>A: signal from Nora
+  S-->>E: signal from Nora
+  Note over A,E: Avery and Edith keep the connection they had to each other: one new connection each, to Nora

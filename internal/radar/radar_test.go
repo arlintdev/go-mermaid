@@ -56,7 +56,7 @@ func TestRender(t *testing.T) {
 			So(err, ShouldBeNil)
 			So(svg, ShouldStartWith, "<svg")
 			So(svg, ShouldContainSubstring, ">a<")
-			So(svg, ShouldContainSubstring, "fill-opacity=\"0.2\"")
+			So(svg, ShouldContainSubstring, "fill-opacity=\"0.5\"")
 		})
 	})
 }

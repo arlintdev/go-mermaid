@@ -1,24 +1,25 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="472" height="503.6" viewBox="0 0 472 503.6" font-family="sans-serif" font-size="14">
-  <rect width="100%" height="100%" fill="#ffffff"/>
-  <text x="236" y="30" fill="#333333" text-anchor="middle" font-weight="bold">Team Skills</text>
-  <path d="M236,230.1 L271.66,256.01 L258.04,297.94 L213.96,297.94 L200.34,256.01 Z" fill="none" stroke="#9370DB" stroke-opacity="0.4"/>
-  <path d="M236,192.6 L307.33,244.42 L280.08,328.28 L191.92,328.28 L164.67,244.42 Z" fill="none" stroke="#9370DB" stroke-opacity="0.4"/>
-  <path d="M236,155.1 L342.99,232.84 L302.13,358.61 L169.87,358.61 L129.01,232.84 Z" fill="none" stroke="#9370DB" stroke-opacity="0.4"/>
-  <path d="M236,117.6 L378.66,221.25 L324.17,388.95 L147.83,388.95 L93.34,221.25 Z" fill="none" stroke="#9370DB" stroke-opacity="0.4"/>
-  <line x1="236" y1="267.6" x2="236" y2="117.6" stroke="#9370DB" stroke-opacity="0.4"/>
-  <text x="236" y="99.6" fill="#333333" text-anchor="middle">Speed</text>
-  <line x1="236" y1="267.6" x2="378.66" y2="221.25" stroke="#9370DB" stroke-opacity="0.4"/>
-  <text x="395.78" y="215.69" fill="#333333" text-anchor="middle">Power</text>
-  <line x1="236" y1="267.6" x2="324.17" y2="388.95" stroke="#9370DB" stroke-opacity="0.4"/>
-  <text x="334.75" y="403.51" fill="#333333" text-anchor="middle">Range</text>
-  <line x1="236" y1="267.6" x2="147.83" y2="388.95" stroke="#9370DB" stroke-opacity="0.4"/>
-  <text x="137.25" y="403.51" fill="#333333" text-anchor="middle">Stealth</text>
-  <line x1="236" y1="267.6" x2="93.34" y2="221.25" stroke="#9370DB" stroke-opacity="0.4"/>
-  <text x="76.22" y="215.69" fill="#333333" text-anchor="middle">Armor</text>
-  <path d="M236,134.27 L331.11,236.7 L324.17,388.95 L196.81,321.53 L125.04,231.55 Z" fill="#5B8FF9" fill-opacity="0.2" stroke="#5B8FF9" stroke-width="2"/>
-  <path d="M236,184.27 L378.66,221.25 L275.19,321.53 L167.43,361.99 L140.89,236.7 Z" fill="#F6903D" fill-opacity="0.2" stroke="#F6903D" stroke-width="2"/>
-  <rect x="16" y="47.6" width="14" height="14" fill="#5B8FF9"/>
-  <text x="35" y="59.5" fill="#333333">Team A</text>
-  <rect x="16" y="67.6" width="14" height="14" fill="#F6903D"/>
-  <text x="35" y="79.5" fill="#333333">Team B</text>
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="537.73" height="431.4" viewBox="0 0 537.73 431.4" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="226.38" y="32" fill="#333333" font-size="16" text-anchor="middle">Team Skills</text>
+<circle cx="226.38" cy="243.4" r="170" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="226.38" cy="243.4" r="136" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="226.38" cy="243.4" r="102" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="226.38" cy="243.4" r="68" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="226.38" cy="243.4" r="34" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<line x1="226.38" y1="243.4" x2="226.38" y2="73.4" stroke="#333333" stroke-width="2"/>
+<text x="226.38" y="59.4" fill="#333333" font-size="13" text-anchor="middle">Speed</text>
+<line x1="226.38" y1="243.4" x2="388.06" y2="190.87" stroke="#333333" stroke-width="2"/>
+<text x="401.37" y="186.54" fill="#333333" font-size="13" text-anchor="start">Power</text>
+<line x1="226.38" y1="243.4" x2="326.3" y2="380.93" stroke="#333333" stroke-width="2"/>
+<text x="334.53" y="402.66" fill="#333333" font-size="13" text-anchor="start">Range</text>
+<line x1="226.38" y1="243.4" x2="126.46" y2="380.93" stroke="#333333" stroke-width="2"/>
+<text x="118.23" y="402.66" fill="#333333" font-size="13" text-anchor="end">Stealth</text>
+<line x1="226.38" y1="243.4" x2="64.7" y2="190.87" stroke="#333333" stroke-width="2"/>
+<text x="51.39" y="186.54" fill="#333333" font-size="13" text-anchor="end">Armor</text>
+<path d="M226.38,92.29 C266.08,93.28 317.18,159.31 334.17,208.38 C351.15,257.45 352.18,364.59 326.3,380.93 C300.43,397.28 220.33,334.85 181.97,304.53 C143.61,274.2 93.08,238.62 100.63,202.54 C108.18,166.46 186.68,91.3 226.38,92.29 Z" fill="#8686ff" fill-opacity="0.5" stroke="#8686ff" stroke-width="2"/>
+<path d="M226.38,148.96 C272.19,145.98 380.51,164.42 388.06,190.87 C395.61,217.31 311.49,277.41 270.79,304.53 C230.09,331.64 174.54,366.72 148.66,350.37 C122.79,334.02 105.38,242.62 118.59,208.38 C131.81,174.14 180.57,151.93 226.38,148.96 Z" fill="#ffff78" fill-opacity="0.5" stroke="#aaaa50" stroke-width="2"/>
+<rect x="458.22" y="46.4" width="12" height="12" fill="#8686ff" fill-opacity="0.5" stroke="#8686ff"/>
+<text x="476.22" y="56.95" fill="#333333" font-size="13">Team A</text>
+<rect x="458.22" y="67.4" width="12" height="12" fill="#ffff78" fill-opacity="0.5" stroke="#aaaa50"/>
+<text x="476.22" y="77.95" fill="#333333" font-size="13">Team B</text>
 </svg>
