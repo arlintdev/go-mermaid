@@ -2,7 +2,6 @@ package quadrant
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
@@ -101,14 +100,14 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	// progressively lighter, as Mermaid shades them.
 	fill := svgutil.Esc(pal.NodeFill)
 	bg := pal.Background
-	fills := [4]string{fill, mix(pal.NodeFill, bg, 0.27, fill), mix(pal.NodeFill, bg, 0.53, fill), mix(pal.NodeFill, bg, 0.79, fill)}
+	fills := [4]string{fill, theme.Mix(pal.NodeFill, bg, 0.27, fill), theme.Mix(pal.NodeFill, bg, 0.53, fill), theme.Mix(pal.NodeFill, bg, 0.79, fill)}
 	origin := [4][2]float64{{midX, top}, {left, top}, {left, midY}, {midX, midY}}
 	for i, q := range origin {
 		fmt.Fprintf(b, `  <rect x="%s" y="%s" width="%s" height="%s" fill="%s"/>`,
 			svgutil.Num(q[0]), svgutil.Num(q[1]), svgutil.Num(halfW), svgutil.Num(halfH), fills[i])
 		b.WriteByte('\n')
 	}
-	border := mix(pal.NodeStroke, pal.NodeFill, 0.6, svgutil.Esc(pal.NodeStroke))
+	border := theme.Mix(pal.NodeStroke, pal.NodeFill, 0.6, svgutil.Esc(pal.NodeStroke))
 	fmt.Fprintf(b, `  <rect x="%s" y="%s" width="%s" height="%s" fill="none" stroke="%s" stroke-width="2"/>`,
 		svgutil.Num(left), svgutil.Num(top), svgutil.Num(plotW), svgutil.Num(plotH), border)
 	b.WriteByte('\n')
@@ -209,33 +208,6 @@ func oneLine(face svgutil.Face, s string, size, maxW float64) string {
 		r = r[:len(r)-1]
 	}
 	return strings.TrimSpace(string(r)) + "…"
-}
-
-// mix blends hex colour a toward hex colour b by t (0 keeps a). When either
-// is not a #rgb or #rrggbb colour it returns fallback.
-func mix(a, b string, t float64, fallback string) string {
-	ra, ga, ba, ok1 := hexRGB(a)
-	rb, gb, bb, ok2 := hexRGB(b)
-	if !ok1 || !ok2 {
-		return fallback
-	}
-	c := func(x, y int) int { return x + int(float64(y-x)*t+0.5) }
-	return fmt.Sprintf("#%02x%02x%02x", c(ra, rb), c(ga, gb), c(ba, bb))
-}
-
-func hexRGB(s string) (r, g, b int, ok bool) {
-	s = strings.TrimPrefix(s, "#")
-	if len(s) == 3 {
-		s = string([]byte{s[0], s[0], s[1], s[1], s[2], s[2]})
-	}
-	if len(s) != 6 {
-		return 0, 0, 0, false
-	}
-	v, err := strconv.ParseUint(s, 16, 32)
-	if err != nil {
-		return 0, 0, 0, false
-	}
-	return int(v >> 16), int(v >> 8 & 0xff), int(v & 0xff), true
 }
 
 func clampUnit(v float64) float64 {
