@@ -1,0 +1,42 @@
+sequenceDiagram
+  autonumber
+  actor U as User
+  participant W as Web app
+  participant API
+  participant DB as Database
+  U->>W: Open page
+  activate W
+  W->>+API: GET /items
+  Note right of API: Checks the session
+  alt signed in
+    API->>DB: SELECT items
+    DB-->>API: rows
+    API-->>W: 200 items
+  else not signed in
+    API-->>W: 401
+  end
+  deactivate API
+  loop every 30s
+    W->>API: poll
+  end
+  opt has draft
+    W->>W: restore draft
+  end
+  par to API
+    W-)API: telemetry
+  and to user
+    W--)U: toast
+  end
+  critical write
+    API->>DB: INSERT
+  option conflict
+    API->>API: retry
+  end
+  break on failure
+    API--xW: 500
+  end
+  rect rgb(200, 220, 255)
+    Note over W,API: Highlighted region
+  end
+  Note left of U: Sees result
+  deactivate W
