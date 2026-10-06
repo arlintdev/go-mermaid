@@ -1,23 +1,33 @@
 // Package requirement parses and renders Mermaid requirement diagrams to SVG,
 // reusing the shared layered layout engine.
 //
-// Syntax (subset):
+// Syntax:
 //
 //	requirementDiagram
+//	    direction LR
 //	    requirement test_req {
 //	        id: 1
-//	        text: the test text
+//	        text: "the test text"
 //	        risk: high
+//	        verifymethod: test
 //	    }
+//	    functionalRequirement "Login" { … }
 //	    element test_entity {
 //	        type: simulation
+//	        docref: reqs/test_entity
 //	    }
 //	    test_entity - satisfies -> test_req
+//	    test_req <- contains - parent_req
+//	    classDef hot fill:#f96
+//	    class test_req hot
 package requirement
 
 import (
+	"regexp"
+	"strconv"
 	"strings"
 
+	"github.com/arlintdev/go-mermaid/internal/cssval"
 	"github.com/arlintdev/go-mermaid/internal/syntax"
 )
 
@@ -27,19 +37,30 @@ type Node struct {
 	Kind      string // requirement type or "element"
 	Fields    map[string]string
 	IsElement bool
+	Defined   bool // declared with a body, not only named by a relationship
+	Classes   []string
 }
 
-// Rel is a typed relationship (satisfies, traces, derives, …).
+// Rel is a typed relationship (satisfies, traces, derives, …), always
+// stored source to target.
 type Rel struct {
 	From string
 	To   string
 	Type string
 }
 
+// Style is a validated look from a classDef or style line; an empty field
+// means "not set".
+type Style struct {
+	Fill, Stroke, StrokeWidth, Dash, Color string
+}
+
 // Diagram is a parsed requirement diagram.
 type Diagram struct {
-	Nodes []*Node
-	Rels  []*Rel
+	Nodes     []*Node
+	Rels      []*Rel
+	Direction string
+	ClassDefs map[string]Style
 }
 
 func (d *Diagram) node(id string) *Node {
@@ -51,12 +72,33 @@ func (d *Diagram) node(id string) *Node {
 	return nil
 }
 
+// kinds are the requirement types Mermaid knows and the stereotype each
+// is drawn with.
+var kinds = map[string]string{
+	"requirement":            "Requirement",
+	"functionalrequirement":  "Functional Requirement",
+	"interfacerequirement":   "Interface Requirement",
+	"performancerequirement": "Performance Requirement",
+	"physicalrequirement":    "Physical Requirement",
+	"designconstraint":       "Design Constraint",
+	"element":                "Element",
+}
+
+var (
+	blockRe   = regexp.MustCompile(`^(\w+)\s+("[^"]*"|[^\s{"]+)\s*(?::::([\w-]+))?\s*\{$`)
+	forwardRe = regexp.MustCompile(`^("[^"]*"|[^\s"]+)\s*-\s*(\w+)\s*->\s*("[^"]*"|[^\s"]+)$`)
+	backRe    = regexp.MustCompile(`^("[^"]*"|[^\s"]+)\s*<-\s*(\w+)\s*-\s*("[^"]*"|[^\s"]+)$`)
+)
+
+const maxNodes = 5000
+
 // Parse builds a Diagram from requirement diagram source.
 func Parse(src string) (*Diagram, error) {
-	d := &Diagram{}
+	d := &Diagram{ClassDefs: map[string]Style{}}
 	lines := strings.Split(src, "\n")
 
 	headerSeen := false
+	var classLines [][2]string
 	for i := 0; i < len(lines); i++ {
 		lineNo := i + 1
 		line := strings.TrimSpace(stripComment(lines[i]))
@@ -70,19 +112,64 @@ func Parse(src string) (*Diagram, error) {
 			headerSeen = true
 			continue
 		}
+		if len(d.Nodes) > maxNodes {
+			return nil, syntax.Errorf(lineNo, 1, "too many requirements")
+		}
+		kw := firstWord(line)
+		rest := strings.TrimSpace(line[len(kw):])
 		switch {
+		case kw == "direction":
+			d.Direction = strings.ToUpper(rest)
+		case kw == "classDef":
+			name := firstWord(rest)
+			st := parseCSS(strings.TrimSpace(rest[len(name):]))
+			for _, n := range strings.Split(name, ",") {
+				if n = strings.TrimSpace(n); n != "" {
+					d.ClassDefs[n] = st
+				}
+			}
+		case kw == "class":
+			ids := firstWord(rest)
+			classLines = append(classLines, [2]string{ids, strings.TrimSpace(rest[len(ids):])})
+		case kw == "style":
+			id := firstWord(rest)
+			name := "\x00style:" + id
+			d.ClassDefs[name] = parseCSS(strings.TrimSpace(rest[len(id):]))
+			classLines = append(classLines, [2]string{id, name})
 		case strings.HasSuffix(line, "{"):
-			kind := firstWord(line)
-			name := strings.TrimSpace(strings.TrimSuffix(line[len(kind):], "{"))
-			n := &Node{ID: name, Kind: kind, Fields: map[string]string{}, IsElement: kind == "element"}
+			m := blockRe.FindStringSubmatch(line)
+			if m == nil {
+				return nil, syntax.Errorf(lineNo, 1, "invalid block %q", clip(line))
+			}
+			kind := strings.ToLower(m[1])
+			if _, ok := kinds[kind]; !ok {
+				return nil, syntax.Errorf(lineNo, 1, "unknown requirement type %q", m[1])
+			}
+			n := d.ensure(unquote(m[2]))
+			n.Kind, n.IsElement, n.Defined = kind, kind == "element", true
+			if m[3] != "" {
+				n.Classes = append(n.Classes, m[3])
+			}
 			i = d.consumeBlock(n, lines, i+1)
-			d.Nodes = append(d.Nodes, n)
-		case strings.Contains(line, "->"):
-			d.parseRel(line)
+		default:
+			if m := forwardRe.FindStringSubmatch(line); m != nil {
+				d.addRel(unquote(m[1]), unquote(m[3]), m[2])
+			} else if m := backRe.FindStringSubmatch(line); m != nil {
+				d.addRel(unquote(m[3]), unquote(m[1]), m[2])
+			} else {
+				return nil, syntax.Errorf(lineNo, 1, "unrecognized statement %q", clip(line))
+			}
 		}
 	}
 	if !headerSeen {
 		return nil, syntax.Errorf(1, 1, "expected 'requirementDiagram' header")
+	}
+	for _, cl := range classLines {
+		for _, id := range strings.Split(cl[0], ",") {
+			if n := d.node(strings.TrimSpace(id)); n != nil && cl[1] != "" {
+				n.Classes = append(n.Classes, cl[1])
+			}
+		}
 	}
 	return d, nil
 }
@@ -97,33 +184,76 @@ func (d *Diagram) consumeBlock(n *Node, lines []string, start int) int {
 			return j
 		}
 		if k, v, ok := strings.Cut(line, ":"); ok {
-			n.Fields[strings.TrimSpace(k)] = strings.TrimSpace(v)
+			n.Fields[strings.ToLower(strings.TrimSpace(k))] = unquote(strings.TrimSpace(v))
 		}
 	}
 	return len(lines) - 1
 }
 
-func (d *Diagram) parseRel(line string) {
-	idx := strings.Index(line, "->")
-	to := strings.TrimSpace(line[idx+2:])
-	lhs := strings.TrimSpace(line[:idx])
-	from, typ := lhs, ""
-	if di := strings.LastIndex(lhs, "-"); di >= 0 {
-		from = strings.TrimSpace(lhs[:di])
-		typ = strings.TrimSpace(lhs[di+1:])
-	}
-	if from == "" || to == "" {
-		return
-	}
+func (d *Diagram) addRel(from, to, typ string) {
 	d.ensure(from)
 	d.ensure(to)
-	d.Rels = append(d.Rels, &Rel{From: from, To: to, Type: typ})
+	d.Rels = append(d.Rels, &Rel{From: from, To: to, Type: strings.ToLower(typ)})
 }
 
-func (d *Diagram) ensure(id string) {
-	if d.node(id) == nil {
-		d.Nodes = append(d.Nodes, &Node{ID: id, Fields: map[string]string{}})
+func (d *Diagram) ensure(id string) *Node {
+	if n := d.node(id); n != nil {
+		return n
 	}
+	n := &Node{ID: id, Fields: map[string]string{}}
+	d.Nodes = append(d.Nodes, n)
+	return n
+}
+
+func unquote(s string) string {
+	if len(s) >= 2 && s[0] == '"' && s[len(s)-1] == '"' {
+		return s[1 : len(s)-1]
+	}
+	return s
+}
+
+// parseCSS reads "fill:#f9f,stroke:#333,stroke-width:4px" keeping only
+// values that validate.
+func parseCSS(s string) Style {
+	var st Style
+	for _, part := range strings.FieldsFunc(s, func(r rune) bool { return r == ',' || r == ';' }) {
+		k, v, ok := strings.Cut(part, ":")
+		if !ok {
+			continue
+		}
+		v = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(v), "!important"))
+		switch strings.ToLower(strings.TrimSpace(k)) {
+		case "fill":
+			if c, ok := cssval.Color(v); ok {
+				st.Fill = c
+			}
+		case "stroke":
+			if c, ok := cssval.Color(v); ok {
+				st.Stroke = c
+			}
+		case "color":
+			if c, ok := cssval.Color(v); ok {
+				st.Color = c
+			}
+		case "stroke-width":
+			if w, ok := cssval.Pixels(v, 20); ok {
+				st.StrokeWidth = strconv.FormatFloat(w, 'f', -1, 64)
+			}
+		case "stroke-dasharray":
+			if dsh, ok := cssval.Dash(v); ok {
+				st.Dash = dsh
+			}
+		}
+	}
+	return st
+}
+
+func clip(s string) string {
+	r := []rune(s)
+	if len(r) > 30 {
+		return string(r[:30]) + "…"
+	}
+	return s
 }
 
 func firstWord(s string) string {

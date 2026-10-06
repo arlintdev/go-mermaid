@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="612" height="678" viewBox="0 0 612 678" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><marker id="m1f3dbpx-arrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1 L11,6 L1,11" fill="none" stroke="#333333" stroke-width="1.3"/></marker><marker id="m1f3dbpx-contains" viewBox="0 0 20 20" refX="1" refY="10" markerWidth="18" markerHeight="18" markerUnits="userSpaceOnUse" orient="auto"><circle cx="10" cy="10" r="8.5" fill="#ffffff" stroke="#333333" stroke-width="1.3"/><path d="M10,2 V18 M2,10 H18" stroke="#333333" stroke-width="1.3"/></marker></defs>
+  <g transform="translate(16,16)">
+    <path d="M517.5,119.5 L517.5,221.25 L431.5,221.25 L431.5,323 L431.5,410 L363,410 L363,497" fill="none" stroke="#333333" stroke-width="1.3" stroke-dasharray="8 5" marker-end="url(#m1f3dbpx-arrow)"/>
+    <path d="M302.67,417 C302.67,457 302,457 302,497" fill="none" stroke="#333333" stroke-width="1.3" stroke-dasharray="8 5" marker-end="url(#m1f3dbpx-arrow)"/>
+    <path d="M224.33,417 C224.33,457 95.5,457 95.5,497" fill="none" stroke="#333333" stroke-width="1.3" marker-start="url(#m1f3dbpx-contains)"/>
+    <path d="M333.62,133.08 C333.62,182.83 280.12,182.83 280.12,232.58" fill="none" stroke="#333333" stroke-width="1.3" stroke-dasharray="8 5" marker-end="url(#m1f3dbpx-arrow)"/>
+    <path d="M95.5,149 C95.5,323 95.5,323 95.5,497" fill="none" stroke="#333333" stroke-width="1.3" stroke-dasharray="8 5" marker-end="url(#m1f3dbpx-arrow)"/>
+    <path d="M300.38,125.92 C300.38,175.67 246.88,175.67 246.88,225.42" fill="none" stroke="#333333" stroke-width="1.3" stroke-dasharray="8 5" marker-end="url(#m1f3dbpx-arrow)"/>
+    <rect x="146" y="229" width="235" height="188" fill="#e3f2fd" stroke="#1565c0"/>
+    <text x="263.5" y="250.42" fill="#333333" font-size="12.6" text-anchor="middle">«Requirement»</text>
+    <text x="263.5" y="270.02" fill="#333333" text-anchor="middle" font-weight="bold">test_req</text>
+    <line x1="146" y1="283.6" x2="381" y2="283.6" stroke="#1565c0"/>
+    <text x="157.2" y="305.02" fill="#333333">ID: 1</text>
+    <text x="157.2" y="324.62" fill="#333333">Text: the test text, which runs long</text>
+    <text x="157.2" y="344.22" fill="#333333">enough that it has to wrap across</text>
+    <text x="157.2" y="363.82" fill="#333333">several lines</text>
+    <text x="157.2" y="383.42" fill="#333333">Risk: High</text>
+    <text x="157.2" y="403.02" fill="#333333">Verification: Test</text>
+    <rect x="241" y="497" width="183" height="149" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="332.5" y="518.42" fill="#333333" font-size="12.6" text-anchor="middle">«Functional Requirement»</text>
+    <text x="332.5" y="538.02" fill="#333333" text-anchor="middle" font-weight="bold">test_req2</text>
+    <line x1="241" y1="551.6" x2="424" y2="551.6" stroke="#9370DB"/>
+    <text x="252.2" y="573.02" fill="#333333">ID: 1.1</text>
+    <text x="252.2" y="592.62" fill="#333333">Text: the second test text.</text>
+    <text x="252.2" y="612.22" fill="#333333">Risk: Low</text>
+    <text x="252.2" y="631.82" fill="#333333">Verification: Inspection</text>
+    <rect x="0" y="497" width="191" height="149" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="95.5" y="518.42" fill="#333333" font-size="12.6" text-anchor="middle">«Performance Requirement»</text>
+    <text x="95.5" y="538.02" fill="#333333" text-anchor="middle" font-weight="bold">test_req3</text>
+    <line x1="0" y1="551.6" x2="191" y2="551.6" stroke="#9370DB"/>
+    <text x="11.2" y="573.02" fill="#333333">ID: 1.2</text>
+    <text x="11.2" y="592.62" fill="#333333">Text: the third test text.</text>
+    <text x="11.2" y="612.22" fill="#333333">Risk: Medium</text>
+    <text x="11.2" y="631.82" fill="#333333">Verification: Demonstration</text>
+    <rect x="12" y="0" width="167" height="149" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="95.5" y="21.42" fill="#333333" font-size="12.6" text-anchor="middle">«Design Constraint»</text>
+    <text x="95.5" y="41.02" fill="#333333" text-anchor="middle" font-weight="bold">test req 6</text>
+    <line x1="12" y1="54.6" x2="179" y2="54.6" stroke="#9370DB"/>
+    <text x="23.2" y="76.02" fill="#333333">ID: 1.5</text>
+    <text x="23.2" y="95.62" fill="#333333">Text: the sixth test text.</text>
+    <text x="23.2" y="115.22" fill="#333333">Risk: Medium</text>
+    <text x="23.2" y="134.82" fill="#333333">Verification: Analysis</text>
+    <rect x="455" y="29.5" width="125" height="90" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="517.5" y="50.92" fill="#333333" font-size="12.6" text-anchor="middle">«Element»</text>
+    <text x="517.5" y="70.52" fill="#333333" text-anchor="middle" font-weight="bold">test_entity</text>
+    <line x1="455" y1="84.1" x2="580" y2="84.1" stroke="#9370DB"/>
+    <text x="466.2" y="105.52" fill="#333333">Type: simulation</text>
+    <rect x="229" y="19.5" width="176" height="110" fill="#ECECFF" stroke="#9370DB"/>
+    <text x="317" y="40.92" fill="#333333" font-size="12.6" text-anchor="middle">«Element»</text>
+    <text x="317" y="60.52" fill="#333333" text-anchor="middle" font-weight="bold">test_entity2</text>
+    <line x1="229" y1="74.1" x2="405" y2="74.1" stroke="#9370DB"/>
+    <text x="240.2" y="95.52" fill="#333333">Type: word doc</text>
+    <text x="240.2" y="115.12" fill="#333333">Doc Ref: reqs/test_entity</text>
+    <rect x="397.18" y="285.53" width="68.63" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text x="431.5" y="300.13" fill="#333333" font-size="12.6" text-anchor="middle">«satisfies»</text>
+    <rect x="273.62" y="446.81" width="57.43" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text x="302.33" y="461.41" fill="#333333" font-size="12.6" text-anchor="middle">«traces»</text>
+    <rect x="124.9" y="446.81" width="70.04" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text x="159.92" y="461.41" fill="#333333" font-size="12.6" text-anchor="middle">«contains»</text>
+    <rect x="277.1" y="172.64" width="59.53" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text x="306.87" y="187.24" fill="#333333" font-size="12.6" text-anchor="middle">«copies»</text>
+    <rect x="63.64" y="312.81" width="63.73" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text x="95.5" y="327.41" fill="#333333" font-size="12.6" text-anchor="middle">«derives»</text>
+    <rect x="242.12" y="150.26" width="63.02" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+    <text x="273.63" y="164.86" fill="#333333" font-size="12.6" text-anchor="middle">«verifies»</text>
+  </g>
+</svg>
