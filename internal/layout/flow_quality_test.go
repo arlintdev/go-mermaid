@@ -68,6 +68,30 @@ func labelBox(e *domain.Edge) box {
 	return box{e.LabelPos.X - s.W/2, e.LabelPos.Y - s.H/2, e.LabelPos.X + s.W/2, e.LabelPos.Y + s.H/2}
 }
 
+// labelOnEdges reports every edge label drawn over a segment of another
+// edge: the label's background would hide that edge where it passes.
+func labelOnEdges(res *Result) []string {
+	var out []string
+	for _, a := range res.Graph.Edges {
+		if a.Label == "" || a.Line == domain.LineInvisible {
+			continue
+		}
+		lb := labelBox(a)
+		for _, b := range res.Graph.Edges {
+			if b == a || b.Line == domain.LineInvisible {
+				continue
+			}
+			for i := 1; i < len(b.Points); i++ {
+				if segmentCrosses(b.Points[i-1], b.Points[i], lb, 1) {
+					out = append(out, fmt.Sprintf("label %q of %s->%s lies on edge %s->%s", a.Label, a.From, a.To, b.From, b.To))
+					break
+				}
+			}
+		}
+	}
+	return out
+}
+
 func TestFlowQuality(t *testing.T) {
 	for name, src := range corpus(t) {
 		t.Run(name, func(t *testing.T) {
@@ -196,6 +220,7 @@ func checkFlow(res *Result) []string {
 			}
 		}
 	}
+	problems = append(problems, labelOnEdges(res)...)
 	return problems
 }
 
