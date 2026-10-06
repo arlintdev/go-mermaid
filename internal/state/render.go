@@ -267,10 +267,6 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 			// LabelPos is the baseline of the label's last line.
 			ly -= float64(len(lines)-1)*c.fs*0.9*1.3/2 + c.fs*0.3
 		}
-		if lines != nil {
-			tw, th := c.textBlock(lines, c.fs*0.9)
-			bd.AddRect(lx-tw/2-4, ly-th/2-2, tw+8, th+4)
-		}
 		drawn = append(drawn, drawnEdge{ed.t, sh, lx, ly, lines})
 	}
 
@@ -332,6 +328,33 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		nodeBoxes = append(nodeBoxes, curve.Box{X: x, Y: y, W: w, H: h})
 		bd.AddRect(x, y, w, h)
 		notes = append(notes, placedNote{nt, x, y, w, h, lines, tn})
+	}
+
+	// Move a label that would hide another line, a state or a note along
+	// its own line; a self-loop's label stays beside its loop.
+	shapes := make([]curve.Shape, len(drawn))
+	var labels []curve.Label
+	var at []int
+	for i, de := range drawn {
+		shapes[i] = de.sh
+		if de.lines == nil {
+			continue
+		}
+		tw, th := c.textBlock(de.lines, c.fs*0.9)
+		line := i
+		if de.t.From == de.t.To {
+			line = -1
+		}
+		labels = append(labels, curve.Label{Line: line, W: tw + 8, H: th + 4, X: de.lx, Y: de.ly})
+		at = append(at, i)
+	}
+	curve.PlaceLabels(shapes, labels, nodeBoxes)
+	for k, l := range labels {
+		de := &drawn[at[k]]
+		de.lx, de.ly = l.X, l.Y
+		if de.t.From != de.t.To {
+			bd.AddRect(l.X-l.W/2, l.Y-l.H/2, l.W, l.H)
+		}
 	}
 
 	if bd.Empty() {

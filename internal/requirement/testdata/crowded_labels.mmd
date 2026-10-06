@@ -1,0 +1,32 @@
+requirementDiagram
+  requirement r1 {
+    id: 1
+    text: login
+  }
+  requirement r2 {
+    id: 2
+    text: audit
+  }
+  requirement r3 {
+    id: 3
+    text: encrypt
+  }
+  element e1 {
+    type: service
+  }
+  element e2 {
+    type: database
+  }
+  element e3 {
+    type: test
+  }
+  e1 - satisfies -> r1
+  e1 - satisfies -> r2
+  e2 - satisfies -> r3
+  e3 - verifies -> r1
+  e3 - verifies -> r2
+  e3 - verifies -> r3
+  r1 - traces -> r2
+  r2 - derives -> r3
+  e1 - refines -> r3
+  e2 - contains -> r2

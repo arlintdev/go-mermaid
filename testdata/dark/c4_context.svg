@@ -78,12 +78,12 @@
     <text x="1722" y="636.98" fill="#ffffff" font-size="11.9" text-anchor="middle">bank accounts.</text>
     <rect x="953.9" y="208.42" width="35.11" height="19.47" rx="2" fill="#1e1e1e" fill-opacity="0.85"/>
     <text x="971.46" y="221.73" fill="blue" font-size="11.9" text-anchor="middle">Uses</text>
-    <rect x="524.45" y="441.31" width="35.11" height="19.47" rx="2" fill="#1e1e1e" fill-opacity="0.85"/>
-    <text x="542" y="454.62" fill="#e6e6e6" font-size="11.9" text-anchor="middle">Uses</text>
-    <rect x="887.5" y="437.22" width="83.39" height="33.12" rx="2" fill="#1e1e1e" fill-opacity="0.85"/>
-    <text x="929.2" y="450.52" fill="#e6e6e6" font-size="11.9" text-anchor="middle">Sends e-mails</text>
-    <text x="929.2" y="464.66" fill="#e6e6e6" font-size="10.5" text-anchor="middle" font-style="italic">[SMTP]</text>
-    <rect x="910.47" y="385.77" width="96.62" height="19.47" rx="2" fill="#1e1e1e" fill-opacity="0.85"/>
-    <text x="958.78" y="399.07" fill="#e6e6e6" font-size="11.9" text-anchor="middle">Sends e-mails to</text>
+    <rect x="572.13" y="425.14" width="35.11" height="19.47" rx="2" fill="#1e1e1e" fill-opacity="0.85"/>
+    <text x="589.68" y="438.45" fill="#e6e6e6" font-size="11.9" text-anchor="middle">Uses</text>
+    <rect x="838.24" y="458.28" width="83.39" height="33.12" rx="2" fill="#1e1e1e" fill-opacity="0.85"/>
+    <text x="879.94" y="471.58" fill="#e6e6e6" font-size="11.9" text-anchor="middle">Sends e-mails</text>
+    <text x="879.94" y="485.72" fill="#e6e6e6" font-size="10.5" text-anchor="middle" font-style="italic">[SMTP]</text>
+    <rect x="961.93" y="391.26" width="96.62" height="19.47" rx="2" fill="#1e1e1e" fill-opacity="0.85"/>
+    <text x="1010.24" y="404.57" fill="#e6e6e6" font-size="11.9" text-anchor="middle">Sends e-mails to</text>
   </g>
 </svg>

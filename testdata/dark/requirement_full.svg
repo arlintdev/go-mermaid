@@ -58,11 +58,11 @@
     <text x="302.33" y="461.41" fill="#e6e6e6" font-size="12.6" text-anchor="middle">«traces»</text>
     <rect x="124.9" y="446.81" width="70.04" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
     <text x="159.92" y="461.41" fill="#e6e6e6" font-size="12.6" text-anchor="middle">«contains»</text>
-    <rect x="277.1" y="172.64" width="59.53" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-    <text x="306.87" y="187.24" fill="#e6e6e6" font-size="12.6" text-anchor="middle">«copies»</text>
+    <rect x="297.42" y="194.39" width="59.53" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="327.19" y="208.99" fill="#e6e6e6" font-size="12.6" text-anchor="middle">«copies»</text>
     <rect x="63.64" y="312.81" width="63.73" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
     <text x="95.5" y="327.41" fill="#e6e6e6" font-size="12.6" text-anchor="middle">«derives»</text>
-    <rect x="242.12" y="150.26" width="63.02" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-    <text x="273.63" y="164.86" fill="#e6e6e6" font-size="12.6" text-anchor="middle">«verifies»</text>
+    <rect x="242.12" y="165.48" width="63.02" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="273.63" y="180.08" fill="#e6e6e6" font-size="12.6" text-anchor="middle">«verifies»</text>
   </g>
 </svg>

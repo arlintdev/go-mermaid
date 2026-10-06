@@ -51,3 +51,22 @@ func TestTextBoxes(t *testing.T) {
 		t.Errorf("off canvas: %v", off)
 	}
 }
+
+func TestHiddenLabels(t *testing.T) {
+	svg := `<svg xmlns="http://www.w3.org/2000/svg"><defs><marker id="m"><path d="M0,0 L10,10" fill="none"/></marker></defs>` +
+		`<g transform="translate(100,0)"><path d="M0,0 L0,100" fill="none"/><path d="M-50,50 L50,50" fill="none"/>` +
+		`<path d="M-50,10 A5,5 0 0 0 50,10" fill="none"/>` +
+		`<rect x="-10" y="40" width="20" height="20" rx="2" fill="#eee" fill-opacity="0.85"/>` +
+		`<rect x="-5" y="45" width="20" height="20" rx="2" fill="#eee" fill-opacity="0.85"/></g></svg>`
+	dr, err := ReadDrawing([]byte(svg))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(dr.Lines) != 2 || dr.Lines[0][0].X != 100 {
+		t.Fatalf("lines: %v (a marker's path and an arc are not relationship lines)", dr.Lines)
+	}
+	on, over, _ := HiddenLabels([]byte(svg))
+	if on != 2 || over != 1 {
+		t.Errorf("on lines %d, overlapping %d; want 2 and 1", on, over)
+	}
+}

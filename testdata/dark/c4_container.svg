@@ -43,9 +43,9 @@
     <text x="256.5" y="40.91" fill="#ffffff" font-size="10.92" text-anchor="middle">[External System]</text>
     <text x="256.5" y="62.03" fill="#ffffff" font-size="11.9" text-anchor="middle">The internal Microsoft Exchange</text>
     <text x="256.5" y="77.5" fill="#ffffff" font-size="11.9" text-anchor="middle">system</text>
-    <rect x="160.21" y="347.52" width="48.26" height="33.12" rx="2" fill="#1e1e1e" fill-opacity="0.85"/>
-    <text x="184.34" y="360.82" fill="#e6e6e6" font-size="11.9" text-anchor="middle">Uses</text>
-    <text x="184.34" y="374.96" fill="#e6e6e6" font-size="10.5" text-anchor="middle" font-style="italic">[HTTPS]</text>
+    <rect x="166.3" y="336.63" width="48.26" height="33.12" rx="2" fill="#1e1e1e" fill-opacity="0.85"/>
+    <text x="190.43" y="349.93" fill="#e6e6e6" font-size="11.9" text-anchor="middle">Uses</text>
+    <text x="190.43" y="364.07" fill="#e6e6e6" font-size="10.5" text-anchor="middle" font-style="italic">[HTTPS]</text>
     <rect x="232.37" y="483.02" width="48.26" height="33.12" rx="2" fill="#1e1e1e" fill-opacity="0.85"/>
     <text x="256.5" y="496.32" fill="#e6e6e6" font-size="11.9" text-anchor="middle">Uses</text>
     <text x="256.5" y="510.46" fill="#e6e6e6" font-size="10.5" text-anchor="middle" font-style="italic">[HTTPS]</text>

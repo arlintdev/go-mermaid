@@ -3,6 +3,7 @@ package c4
 import (
 	"fmt"
 	"math"
+	"sort"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/curve"
@@ -401,7 +402,7 @@ func (c *ctx) route(r *Rel) (drawnRel, bool) {
 			}
 		}
 	}
-	sh := curve.Shape{Start: pts[0], End: pts[len(pts)-1], D: curve.Path(pts)}
+	sh := curve.Shape{Start: pts[0], End: pts[len(pts)-1], D: curve.Path(pts), Pts: pts}
 	tw, th := c.textBox(c.relLines(r))
 	best := domain.PolylineMidpoint(pts)
 	total := domain.PolylineLength(pts)
@@ -488,6 +489,45 @@ func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
 		tw, th := c.textBox(lines)
 		bd.AddRect(dr.lx-tw/2-4, dr.ly-th/2-2, tw+8, th+4)
 		rels = append(rels, dr)
+	}
+	// Move a label that would hide another line, label or element along its
+	// own line.
+	shapes := make([]curve.Shape, len(rels))
+	labels := make([]curve.Label, len(rels))
+	for i, dr := range rels {
+		shapes[i] = dr.sh
+		tw, th := c.textBox(c.relLines(dr.r))
+		labels[i] = curve.Label{Line: i, W: tw + 8, H: th + 4, X: dr.lx, Y: dr.ly}
+	}
+	ids := make([]string, 0, len(c.rects))
+	for id := range c.rects {
+		if c.d.element(id) != nil {
+			ids = append(ids, id)
+		}
+	}
+	sort.Strings(ids)
+	var boxes []curve.Box
+	for _, id := range ids {
+		rr := c.rects[id]
+		boxes = append(boxes, curve.Box{X: rr.x, Y: rr.y, W: rr.w, H: rr.h})
+	}
+	// A boundary's dashed border is a line to keep clear too, and its
+	// title a box.
+	for _, bo := range c.d.Boundaries {
+		r, ok := c.rects[bo.ID]
+		if !ok {
+			continue
+		}
+		shapes = append(shapes, curve.Shape{Pts: []domain.Point{{X: r.x, Y: r.y}, {X: r.x + r.w, Y: r.y}, {X: r.x + r.w, Y: r.y + r.h}, {X: r.x, Y: r.y + r.h}, {X: r.x, Y: r.y}}})
+		th := 8 + c.m.fs*1.3
+		if bo.Type != "" {
+			th += c.m.fs * 0.8 * 1.3
+		}
+		boxes = append(boxes, curve.Box{X: r.x, Y: r.y, W: c.m.face.Bold().Width(bo.Label, c.m.fs) + bPad*1.2, H: th})
+	}
+	curve.PlaceLabels(shapes, labels, boxes)
+	for i, l := range labels {
+		rels[i].lx, rels[i].ly = l.X, l.Y
 	}
 	// Nudge labels apart where two would overlap.
 	type lb struct{ x0, y0, x1, y1 float64 }

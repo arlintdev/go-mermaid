@@ -1,0 +1,12 @@
+stateDiagram-v2
+  [*] --> Idle
+  Idle --> Running : start job
+  Idle --> Failed : bad config
+  Running --> Paused : pause requested
+  Paused --> Running : resume requested
+  Running --> Failed : crash detected
+  Running --> Done : all work finished
+  Paused --> Failed : timeout while paused
+  Failed --> Idle : operator reset
+  Done --> Idle : new batch arrives
+  Done --> [*]

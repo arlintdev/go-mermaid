@@ -168,6 +168,27 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 		}
 		rels = append(rels, drawn{r, sh, lx, ly})
 	}
+	// Move a label that would hide another line, label or node along its
+	// own line.
+	shapes := make([]curve.Shape, len(rels))
+	labels := make([]curve.Label, len(rels))
+	for i, de := range rels {
+		shapes[i] = de.sh
+		line := i
+		if de.r.From == de.r.To {
+			line = -1
+		}
+		tw := m.face.Width("«"+de.r.Type+"»", lfs)
+		labels[i] = curve.Label{Line: line, W: tw + 8, H: lfs*1.3 + 4, X: de.lx, Y: de.ly}
+	}
+	var boxes []curve.Box
+	for _, n := range g.Nodes {
+		boxes = append(boxes, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
+	}
+	curve.PlaceLabels(shapes, labels, boxes)
+	for i, l := range labels {
+		rels[i].lx, rels[i].ly = l.X, l.Y
+	}
 	// Nudge labels apart where two would overlap.
 	type lb struct{ x0, y0, x1, y1 float64 }
 	boxOf := func(de drawn) lb {
