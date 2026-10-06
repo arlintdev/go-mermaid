@@ -3,7 +3,6 @@ package block
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -697,8 +696,6 @@ func writeLines(b *strings.Builder, lines []string, cx, cy, lh, fs float64, fill
 	}
 	b.WriteString("</text>\n")
 }
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
 
 // mix blends hex colour a toward hex colour b by t (0 keeps a). When either
 // is not a #rgb or #rrggbb colour it returns fallback.

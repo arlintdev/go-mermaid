@@ -3,7 +3,6 @@ package timeline
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/svgid"
@@ -203,8 +202,6 @@ func drawBox(b *strings.Builder, x, y, w, h float64, fill, accent, text string, 
 	}
 	b.WriteString("</text>\n")
 }
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
 
 // hsl converts a hue (degrees), saturation and lightness (0..1) to RGB.
 func hsl(h, s, l float64) (r, g, b float64) {

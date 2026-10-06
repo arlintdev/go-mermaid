@@ -2,7 +2,6 @@ package git
 
 import (
 	"fmt"
-	"regexp"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/svgutil"
@@ -437,8 +436,6 @@ func sign(v float64) float64 {
 	}
 	return 1
 }
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
 
 // mix blends hex colour a toward hex colour b by t (0 keeps a). When either
 // is not a #rrggbb colour it returns fallback.

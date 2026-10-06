@@ -3,7 +3,6 @@ package er
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/curve"
@@ -511,8 +510,6 @@ func writeLines(b *strings.Builder, lines []string, x, cy, size float64, fill, a
 	}
 	b.WriteString("</text>\n")
 }
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
 
 // mix blends hex colour a toward hex colour b by t (0 keeps a). When either
 // is not a #rrggbb colour it returns fallback.

@@ -3,7 +3,6 @@ package class
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -395,16 +394,6 @@ func writeHead(b *strings.Builder, kind headKind, tip domain.Point, dx, dy float
 	}
 }
 
-// unit returns the unit vector from a toward b (zero if coincident).
-func unit(a, b domain.Point) (float64, float64) {
-	dx, dy := b.X-a.X, b.Y-a.Y
-	d := math.Hypot(dx, dy)
-	if d == 0 {
-		return 0, 0
-	}
-	return dx / d, dy / d
-}
-
 // writeCardinality draws a multiplicity label just inside the end of a
 // relationship line. tip is the end point and next is the neighbouring
 // waypoint, so the label sits along the line rather than on top of the class.
@@ -480,5 +469,3 @@ func writeNote(b *strings.Builder, i int, nt *Note, g *domain.Graph, edgeBase in
 			svgutil.Num(n.Pos.X+m.padX), svgutil.Num(y-m.lh*0.3), svgutil.Esc(l))
 	}
 }
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)

@@ -3,7 +3,6 @@ package state
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/curve"
@@ -649,8 +648,6 @@ func (c *ctx) svg(root block) []byte {
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
 }
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
 
 // mix blends hex colour a toward hex colour b by t (0 keeps a). When either
 // is not a #rrggbb colour it returns fallback.

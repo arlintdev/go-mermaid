@@ -2,7 +2,6 @@ package sequence
 
 import (
 	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -346,5 +345,3 @@ func (w *writer) note(n *Note) {
 		num(n.X), num(n.Y), num(n.W), num(n.H), c.noteFill, c.noteStroke)
 	w.centred(n.Lines, n.X+n.W/2, n.Y+n.H/2, "middle", c.noteText, "")
 }
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)

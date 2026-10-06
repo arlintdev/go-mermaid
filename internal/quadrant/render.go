@@ -2,7 +2,6 @@ package quadrant
 
 import (
 	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -238,8 +237,6 @@ func hexRGB(s string) (r, g, b int, ok bool) {
 	}
 	return int(v >> 16), int(v >> 8 & 0xff), int(v & 0xff), true
 }
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
 
 func clampUnit(v float64) float64 {
 	if v < 0 {

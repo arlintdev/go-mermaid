@@ -3,7 +3,6 @@ package c4
 import (
 	"fmt"
 	"math"
-	"regexp"
 	"strings"
 
 	"github.com/arlintdev/go-mermaid/internal/curve"
@@ -668,5 +667,3 @@ func (c *ctx) writeElement(b *strings.Builder, e *Element) {
 		write(descr, c.m.fs*0.85, "")
 	}
 }
-
-var plainFont = regexp.MustCompile(`^[A-Za-z0-9 ,'"_-]{1,200}$`)
