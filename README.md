@@ -183,7 +183,7 @@ Flowchart extras: curved edges (`WithCurvedEdges`), clickable nodes
 
 Unsupported types return `ErrUnsupported`. A `---`/`title:` front-matter block
 and `accTitle:`/`accDescr:` (SVG `<title>`/`<desc>`) are honored for all types.
-Themes: `default`, `dark`, `neutral`, `forest`, `base`, plus custom palettes (`WithCustomTheme`). Background is configurable (`WithBackground`, `WithTransparentBackground`).
+Themes: `default`, `dark`, `neutral`, `forest`, `base`, plus custom palettes (`WithCustomTheme`). Every diagram type takes all its colors from the palette, so `dark` draws every type for a dark page; a custom palette's unset colors come from `dark` or `default` by its background. Background is configurable (`WithBackground`, `WithTransparentBackground`).
 
 Rendering is fast — roughly 10–50µs per diagram with no external processes.
 
