@@ -4,6 +4,7 @@ import (
 	"math"
 	"regexp"
 	"strings"
+	"unicode"
 )
 
 var breakTag = regexp.MustCompile(`(?i)<br\s*/?\s*>`)
@@ -19,23 +20,33 @@ func Breaks(s string) []string {
 
 // Wrap breaks text into lines no wider than maxWidth at the given font size,
 // the way a browser wraps a label: at its explicit breaks first, then
-// between words, and inside a word only after a hyphen. A piece
-// wider than maxWidth stays whole unless it is far wider, when it is cut.
+// between words, and inside a word after a hyphen. A token still wider than
+// A token a little too wide stays whole, as in a browser; one far wider
+// (over twice maxWidth, and over 360) may also break after '/', '-' or '_'
+// and between wide (CJK) characters. Letters are never split from each
+// other, so a token with no such place stays whole on a line of its own.
 // maxWidth <= 0 only splits at explicit breaks.
 func (f Face) Wrap(text string, fontSize, maxWidth float64) []string {
 	return f.wrap(text, fontSize, maxWidth, math.Max(maxWidth*2, 360), true)
 }
 
-// WrapHard is for text drawn inside a box of fixed width: it breaks only
-// between words, and cuts a word wider than maxWidth so that no line is
-// wider than maxWidth.
+// WrapHard is for text drawn inside a box: it breaks between words, and
+// breaks a token wider than maxWidth only after '/', '-' or '_' or between
+// wide (CJK) characters. A token with no such place stays whole, so a caller
+// sizing a box should measure the lines it gets back (see MinWidth).
 func (f Face) WrapHard(text string, fontSize, maxWidth float64) []string {
 	return f.wrap(text, fontSize, maxWidth, maxWidth, false)
 }
 
-// wrap breaks between words, after hyphens when hyphens is set, and cuts
-// any piece of a word wider than cutAt.
-func (f Face) wrap(text string, fontSize, maxWidth, cutAt float64, hyphens bool) []string {
+// MinWidth returns the width of the widest piece of text that WrapHard cannot
+// break: the narrowest a box can be and still hold every line.
+func (f Face) MinWidth(text string, fontSize float64) float64 {
+	return f.LinesWidth(f.WrapHard(text, fontSize, 1), fontSize)
+}
+
+// wrap breaks between words, after hyphens when hyphens is set, and at the
+// soft break places of any token wider than softAt.
+func (f Face) wrap(text string, fontSize, maxWidth, softAt float64, hyphens bool) []string {
 	var out []string
 	for _, line := range Breaks(text) {
 		line = strings.Join(strings.Fields(line), " ")
@@ -45,7 +56,7 @@ func (f Face) wrap(text string, fontSize, maxWidth, cutAt float64, hyphens bool)
 		}
 		cur := ""
 		for _, word := range strings.Fields(line) {
-			for i, piece := range f.pieces(word, fontSize, cutAt, hyphens) {
+			for i, piece := range f.pieces(word, fontSize, softAt, hyphens) {
 				joined := cur + piece
 				if i == 0 && cur != "" {
 					joined = cur + " " + piece
@@ -66,23 +77,56 @@ func (f Face) wrap(text string, fontSize, maxWidth, cutAt float64, hyphens bool)
 	return out
 }
 
-// pieces splits a word after each hyphen when hyphens is set, and cuts any
-// piece wider than cutAt.
-func (f Face) pieces(word string, fontSize, cutAt float64, hyphens bool) []string {
-	var parts []string
-	start := 0
-	for i, r := range word {
-		if hyphens && r == '-' && i > start && i+1 < len(word) {
-			parts = append(parts, word[start:i+1])
-			start = i + 1
-		}
+// pieces splits a word after each hyphen when hyphens is set, then splits any
+// piece wider than softAt at its soft break places.
+func (f Face) pieces(word string, fontSize, softAt float64, hyphens bool) []string {
+	parts := []string{word}
+	if hyphens {
+		parts = splitAfter(word, func(r rune) bool { return r == '-' }, false)
 	}
-	parts = append(parts, word[start:])
 	var out []string
 	for _, p := range parts {
-		out = append(out, f.cut(p, fontSize, cutAt)...)
+		if f.Width(p, fontSize) <= softAt {
+			out = append(out, p)
+			continue
+		}
+		out = append(out, splitAfter(p, isSoftBreak, true)...)
 	}
 	return out
+}
+
+// zeroWidth reports a combining mark or format control, which belongs to the
+// character before it.
+func zeroWidth(r rune) bool {
+	return unicode.Is(unicode.Mn, r) || unicode.Is(unicode.Me, r) || unicode.Is(unicode.Cf, r)
+}
+
+func isSoftBreak(r rune) bool { return r == '/' || r == '-' || r == '_' }
+
+// splitAfter splits word after each run of runes matching after, where the
+// piece so far holds some other rune and more follows, and, when wide is
+// set, on either side of a wide (CJK) character. It never splits between
+// two letters.
+func splitAfter(word string, after func(rune) bool, wide bool) []string {
+	var parts []string
+	start, prev, body := 0, rune(-1), false
+	for i, r := range word {
+		if prev >= 0 {
+			breakHere := body && after(prev) && !after(r)
+			if wide && (inRanges(wideRanges, prev) || inRanges(wideRanges, r)) && !zeroWidth(r) {
+				breakHere = true
+			}
+			if breakHere {
+				parts = append(parts, word[start:i])
+				start, body = i, false
+			}
+		}
+		if !after(r) {
+			body = true
+		}
+		prev = r
+	}
+	return append(parts, word[start:])
 }
 
 // WrapWidthFor returns the width to wrap text at: base, widened for long
@@ -114,27 +158,4 @@ func JoinBreaks(s string) string { return strings.Join(Breaks(s), "\n") }
 // with sans-serif metrics; see Face.Wrap.
 func Wrap(text string, maxWidth, fontSize float64) []string {
 	return FaceSans.Wrap(text, fontSize, maxWidth)
-}
-
-// cut splits a word wider than limit into pieces no wider than limit. It
-// measures rune by rune, so a very long word costs linear time.
-func (f Face) cut(word string, fontSize, limit float64) []string {
-	if f.Width(word, fontSize) <= limit {
-		return []string{word}
-	}
-	var pieces []string
-	start, em, joined := 0, 0.0, false
-	for i, r := range word {
-		rw := 0.0
-		if !joined {
-			rw = f.runeWidth(r)
-		}
-		joined = r == zeroWidthJoiner
-		if i > start && (em+rw)*fontSize > limit {
-			pieces = append(pieces, word[start:i])
-			start, em = i, 0
-		}
-		em += rw
-	}
-	return append(pieces, word[start:])
 }

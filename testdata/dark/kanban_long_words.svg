@@ -1,0 +1,12 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="823.76" height="180.1" viewBox="0 0 823.76 180.1" font-family="sans-serif" font-size="14">
+<rect x="16" y="16" width="392.88" height="148.1" rx="5" fill="#43502b" stroke="#43502b"/>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="212.44" y="36">Todo</tspan></text>
+<rect x="23.5" y="46.2" width="377.88" height="56.4" rx="5" fill="#262626" stroke="#8888bb"/>
+<text fill="#e6e6e6"><tspan x="33.5" y="70.2">Fix https://identity.example.com/realms/organisation/</tspan><tspan x="33.5" y="88.4">protocol/openid-connect/auth</tspan></text>
+<rect x="23.5" y="108.6" width="377.88" height="44" rx="5" fill="#262626" stroke="#8888bb"/>
+<text fill="#e6e6e6"><tspan x="33.5" y="135.5">Pneumonoultramicroscopicsilicovolcanoconiosisdiagnosis</tspan></text>
+<rect x="414.88" y="16" width="392.88" height="148.1" rx="5" fill="#3d2b50" stroke="#3d2b50"/>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="611.32" y="36">Done</tspan></text>
+<rect x="422.38" y="46.2" width="377.88" height="44" rx="5" fill="#262626" stroke="#8888bb"/>
+<text fill="#e6e6e6"><tspan x="432.38" y="73.1">ok</tspan></text>
+</svg>

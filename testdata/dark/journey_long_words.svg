@@ -1,0 +1,25 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="951.21" height="456.4" viewBox="0 0 951.21 456.4" font-family="sans-serif" font-size="14">
+<defs><marker id="m1wsxjjw-arrowhead" refX="5" refY="2" markerWidth="6" markerHeight="4" orient="auto"><path d="M0,0 V4 L6,2 Z" fill="#e6e6e6"/></marker></defs>
+<text x="83.45" y="38" fill="#e6e6e6" font-size="22" font-weight="bold">Long words</text>
+<circle cx="23" cy="64.4" r="7" fill="#8fbc8f" stroke="#1e1e1e"/>
+<text x="40" y="69.3" fill="#e6e6e6">Me</text>
+<rect x="83.45" y="54.4" width="797.76" height="50" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="482.33" y="84.3">Sign in</tspan></text>
+<line x1="270.39" y1="175.4" x2="270.39" y2="440.4" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="270.39" cy="290.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="265.39" cy="285.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="275.39" cy="285.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<path d="M263.89,292.4 A7.5,7.5 0 0 0 276.89,292.4" fill="none" stroke="#666666" stroke-width="1.2"/>
+<rect x="83.45" y="114.4" width="373.88" height="61" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="97.45" cy="114.4" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="270.39" y="144.05">Open identity.example.com/realms/organisation/protocol/</tspan><tspan x="270.39" y="161.55">openid-connect/auth</tspan></text>
+<line x1="694.27" y1="175.4" x2="694.27" y2="440.4" stroke="#8a8a8a" stroke-dasharray="4 2"/>
+<circle cx="694.27" cy="350.4" r="15" fill="#fff8dc" stroke="#999999" stroke-width="2"/>
+<circle cx="689.27" cy="345.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<circle cx="699.27" cy="345.4" r="1.5" fill="#666666" stroke="#666666" stroke-width="2"/>
+<line x1="689.27" y1="357.4" x2="699.27" y2="357.4" stroke="#666666"/>
+<rect x="507.33" y="114.4" width="373.88" height="61" rx="3" fill="#30305a" stroke="#8a8a8a"/>
+<circle cx="521.33" cy="114.4" r="7" fill="#8fbc8f" stroke="#1e1e1e"><title>Me</title></circle>
+<text fill="#e6e6e6" text-anchor="middle"><tspan x="694.27" y="152.8">Pneumonoultramicroscopicsilicovolcanoconiosisdiagnosis</tspan></text>
+<line x1="83.45" y1="215.4" x2="927.21" y2="215.4" stroke="#e6e6e6" stroke-width="4" marker-end="url(#m1wsxjjw-arrowhead)"/>
+</svg>

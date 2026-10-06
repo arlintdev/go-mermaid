@@ -3,6 +3,7 @@ package svgutil
 import (
 	"strings"
 	"testing"
+	"unicode/utf8"
 )
 
 func TestWrap(t *testing.T) {
@@ -29,8 +30,18 @@ func TestWrap(t *testing.T) {
 			t.Errorf("Wrap(%q) = %q, want %d lines", c.in, got, c.want)
 		}
 	}
-	if got := FaceSans.Wrap(strings.Repeat("x", 200), 16, 100); len(got) < 2 {
-		t.Errorf("a very long word is cut, got %q", got)
+	if got := FaceSans.Wrap(strings.Repeat("x", 200), 16, 100); len(got) != 1 {
+		t.Errorf("a long word is never cut between letters, got %q", got)
+	}
+	url := "https://identity.example.com/realms/organisation/protocol/openid-connect/auth"
+	got := FaceSans.Wrap(url, 16, 150)
+	if len(got) < 2 || strings.Join(got, "") != url {
+		t.Errorf("a far too wide path breaks after its slashes, got %q", got)
+	}
+	for _, l := range got[:len(got)-1] {
+		if !strings.HasSuffix(l, "/") && !strings.HasSuffix(l, "-") {
+			t.Errorf("line %q does not end at a slash or hyphen", l)
+		}
 	}
 	if got := FaceSans.Wrap("DIGIN_DATA_DIR/files", 16, 120); len(got) != 1 {
 		t.Errorf("a word a little too wide stays whole, got %q", got)
@@ -70,7 +81,6 @@ func TestWrapHard(t *testing.T) {
 			[]string{"The internal Microsoft Exchange", "e-mail system."}},
 		{"explicit breaks", "a<br>b", 200, []string{"a", "b"}},
 		{"empty text", "", 200, []string{""}},
-		{"a word wider than the box is cut", "xxxxxxxxxxxxxxxxxxxx", 60, []string{"xxxxxxxx", "xxxxxxxx", "xxxx"}},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
@@ -92,5 +102,65 @@ func TestCutIsLinear(t *testing.T) {
 	got := FaceSans.WrapHard(word, 14, 100)
 	if strings.Join(got, "") != word {
 		t.Error("cutting lost text")
+	}
+}
+
+func TestWrapHardLongTokens(t *testing.T) {
+	tests := []struct {
+		name string
+		in   string
+		max  float64
+		want []string
+	}{
+		{"a word wider than the box stays whole", "xxxxxxxxxxxxxxxxxxxx", 60, []string{"xxxxxxxxxxxxxxxxxxxx"}},
+		{"a path breaks after its slashes", "/var/lib/app/data", 60, []string{"/var/lib/", "app/data"}},
+		{"an identifier breaks after underscores", "svc_auth_gateway_primary", 90, []string{"svc_auth_", "gateway_", "primary"}},
+		{"a short word fits beside it", "see /.well-known/oauth-protected-resource", 120,
+			[]string{"see /.well-known/", "oauth-protected-", "resource"}},
+		{"wide characters break anywhere", "東京都渋谷区神南一丁目", 60, []string{"東京都渋", "谷区神南", "一丁目"}},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := FaceSans.WrapHard(tc.in, 14, tc.max)
+			if strings.Join(got, "|") != strings.Join(tc.want, "|") {
+				t.Errorf("WrapHard(%q) = %q, want %q", tc.in, got, tc.want)
+			}
+		})
+	}
+}
+
+// TestWrapNeverSplitsLetters checks every line break of both wrappers falls
+// at a space, after '/', '-' or '_', or beside a wide character.
+func TestWrapNeverSplitsLetters(t *testing.T) {
+	texts := []string{
+		"401, WWW-Authenticate points to /.well-known/oauth-protected-resource",
+		"authorization_servers: https://auth.example.com/realms/main",
+		strings.Repeat("abcdefghij", 40) + " tail",
+		"DIGIN_DATA_DIR/files/attachments/2024/very-long-file-name_with_parts.tar.gz",
+		"日本語のテキストは空白なしで続きます",
+	}
+	for _, text := range texts {
+		for _, w := range []float64{30, 60, 120, 200} {
+			for name, lines := range map[string][]string{
+				"Wrap":     FaceSans.Wrap(text, 14, w),
+				"WrapHard": FaceSans.WrapHard(text, 14, w),
+			} {
+				if strings.Join(strings.Fields(strings.Join(lines, " ")), "") != strings.Join(strings.Fields(text), "") {
+					t.Errorf("%s(%q, %v) lost text: %q", name, text, w, lines)
+				}
+				rest := text
+				for _, l := range lines[:len(lines)-1] {
+					rest = strings.TrimLeft(rest[len(l):], " ")
+					if strings.HasPrefix(text[len(text)-len(rest)-1:], " ") {
+						continue
+					}
+					last, _ := utf8.DecodeLastRuneInString(l)
+					next, _ := utf8.DecodeRuneInString(rest)
+					if !isSoftBreak(last) && !inRanges(wideRanges, last) && !inRanges(wideRanges, next) {
+						t.Errorf("%s(%q, %v) split %q from %q", name, text, w, l, rest)
+					}
+				}
+			}
+		}
 	}
 }
