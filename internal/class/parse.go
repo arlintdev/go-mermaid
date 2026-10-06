@@ -30,12 +30,12 @@ func Parse(src string) (*Diagram, error) {
 	var styleLines, classLines [][2]string
 	for i := 0; i < len(lines); i++ {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(lines[i]))
+		line := strings.TrimSpace(syntax.StripComment(lines[i]))
 		if line == "" {
 			continue
 		}
 		if !headerSeen {
-			if firstWord(line) != "classDiagram" && firstWord(line) != "classDiagram-v2" {
+			if syntax.FirstWord(line) != "classDiagram" && syntax.FirstWord(line) != "classDiagram-v2" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'classDiagram' header")
 			}
 			headerSeen = true
@@ -44,7 +44,7 @@ func Parse(src string) (*Diagram, error) {
 		if len(d.Classes) > maxClasses {
 			return nil, syntax.Errorf(lineNo, 1, "too many classes")
 		}
-		kw := firstWord(line)
+		kw := syntax.FirstWord(line)
 		rest := strings.TrimSpace(line[len(kw):])
 
 		switch {
@@ -94,11 +94,11 @@ func Parse(src string) (*Diagram, error) {
 			}
 
 		case kw == "style":
-			id := firstWord(rest)
+			id := syntax.FirstWord(rest)
 			styleLines = append(styleLines, [2]string{id, strings.TrimSpace(rest[len(id):])})
 
 		case kw == "classDef":
-			n := firstWord(rest)
+			n := syntax.FirstWord(rest)
 			st := cssval.Parse(strings.TrimSpace(rest[len(n):]))
 			for _, one := range strings.Split(n, ",") {
 				if one = strings.TrimSpace(one); one != "" {
@@ -108,8 +108,8 @@ func Parse(src string) (*Diagram, error) {
 
 		case kw == "cssClass":
 			// cssClass "A,B" name
-			q := strings.Trim(firstWord(rest), `"`)
-			classLines = append(classLines, [2]string{q, strings.TrimSpace(rest[len(firstWord(rest)):])})
+			q := strings.Trim(syntax.FirstWord(rest), `"`)
+			classLines = append(classLines, [2]string{q, strings.TrimSpace(rest[len(syntax.FirstWord(rest)):])})
 
 		case kw == "click" || kw == "link" || kw == "callback":
 			// Interactive bindings: a static picture has nothing to bind.
@@ -198,7 +198,7 @@ func head(s string) headKind {
 // that closing line so the caller's loop continues after it.
 func (d *Diagram) consumeBlock(c *Class, lines []string, start int) int {
 	for j := start; j < len(lines); j++ {
-		line := strings.TrimSpace(stripComment(lines[j]))
+		line := strings.TrimSpace(syntax.StripComment(lines[j]))
 		if line == "" {
 			continue
 		}
@@ -334,20 +334,6 @@ func clip(s string) string {
 	r := []rune(s)
 	if len(r) > 30 {
 		return string(r[:30]) + "…"
-	}
-	return s
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
 	}
 	return s
 }

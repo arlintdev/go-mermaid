@@ -78,7 +78,7 @@ func Parse(src string) (*Diagram, error) {
 			continue
 		}
 		if !headerSeen {
-			if firstWord(line) != "sequenceDiagram" {
+			if syntax.FirstWord(line) != "sequenceDiagram" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'sequenceDiagram' header")
 			}
 			headerSeen = true
@@ -96,7 +96,7 @@ func Parse(src string) (*Diagram, error) {
 }
 
 func (p *parser) statement(line string, lineNo int) error {
-	word := firstWord(line)
+	word := syntax.FirstWord(line)
 	kw := strings.ToLower(word)
 	rest := strings.TrimSpace(line[len(word):])
 	if kw == "title:" {
@@ -106,7 +106,7 @@ func (p *parser) statement(line string, lineNo int) error {
 	case kw == "participant" || kw == "actor":
 		return p.parseParticipant(kw, rest, lineNo, false)
 	case kw == "create":
-		w := firstWord(rest)
+		w := syntax.FirstWord(rest)
 		k := strings.ToLower(w)
 		if k != "participant" && k != "actor" {
 			return syntax.Errorf(lineNo, 1, "create needs 'participant' or 'actor'")
@@ -229,7 +229,7 @@ func splitColor(s string) (color, rest string) {
 			return "", s
 		}
 	}
-	w := firstWord(s)
+	w := syntax.FirstWord(s)
 	if strings.EqualFold(w, "transparent") {
 		return w, strings.TrimSpace(s[len(w):])
 	}
@@ -405,13 +405,6 @@ func findArrow(s string) (idx int, tok string, arrow Arrow) {
 		}
 	}
 	return -1, "", Arrow{}
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
 }
 
 func stripComment(s string) string {

@@ -47,7 +47,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		fs = 14
 	}
 	c := &ctx{d: d, o: o, pal: theme.For(o.Theme), face: svgutil.FaceFor(o.FontFace), fs: fs, lh: fs * 1.3,
-		id: svgid.Prefix(src), dir: directionOf(d.Direction), done: map[string]bool{}}
+		id: svgid.Prefix(src), dir: domain.DirectionOf(d.Direction), done: map[string]bool{}}
 	root, err := c.region("", 0, c.dir)
 	if err != nil {
 		return nil, err
@@ -72,21 +72,6 @@ type ctx struct {
 type block struct {
 	w, h float64
 	body string
-}
-
-// directionOf maps a `direction` line onto a layout direction, defaulting to
-// top-to-bottom when the source does not ask for one.
-func directionOf(dir string) domain.Direction {
-	switch dir {
-	case "LR":
-		return domain.LeftRight
-	case "RL":
-		return domain.RightLeft
-	case "BT":
-		return domain.BottomTop
-	default:
-		return domain.TopBottom
-	}
 }
 
 func vertical(dir domain.Direction) bool { return dir == domain.TopBottom || dir == domain.BottomTop }

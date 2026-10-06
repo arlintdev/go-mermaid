@@ -19,8 +19,6 @@ type RenderOptions struct {
 	Title    string
 }
 
-
-
 // Render parses and renders pie chart source to SVG.
 func Render(src string, o RenderOptions) ([]byte, error) {
 	d, err := Parse(src)

@@ -57,7 +57,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	m := newMetrics(o)
 	o.FontSize = m.fs
 
-	g := &domain.Graph{Direction: directionOf(d.Direction)}
+	g := &domain.Graph{Direction: domain.DirectionOf(d.Direction)}
 	for _, c := range d.Classes {
 		n := &domain.Node{ID: c.Name, Label: c.Name, Shape: domain.ShapeRect}
 		n.Size = classSize(c, m)
@@ -107,20 +107,6 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		return nil, err
 	}
 	return svg(d, g, res, o, m), nil
-}
-
-// directionOf maps a `direction` line onto a layout direction.
-func directionOf(dir string) domain.Direction {
-	switch dir {
-	case "LR":
-		return domain.LeftRight
-	case "RL":
-		return domain.RightLeft
-	case "BT":
-		return domain.BottomTop
-	default:
-		return domain.TopBottom
-	}
 }
 
 // namespaceBox returns the box enclosing a namespace's classes, with room for

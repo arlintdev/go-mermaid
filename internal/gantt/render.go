@@ -25,7 +25,6 @@ const chartW = 720.0
 
 const sectionTitleMaxW = 150.0
 
-
 // Render parses and renders gantt source to SVG.
 func Render(src string, o RenderOptions) ([]byte, error) {
 	d, err := Parse(src)

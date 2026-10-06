@@ -93,7 +93,7 @@ func Parse(src string) (*Diagram, error) {
 	headerSeen := false
 	for i, raw := range strings.Split(src, "\n") {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(raw))
+		line := strings.TrimSpace(syntax.StripComment(raw))
 		if line == "" {
 			continue
 		}
@@ -108,7 +108,7 @@ func Parse(src string) (*Diagram, error) {
 			headerSeen = true
 			continue
 		}
-		kw := firstWord(line)
+		kw := syntax.FirstWord(line)
 		rest := strings.TrimSpace(line[len(kw):])
 		if len(d.Commits) >= maxCommits {
 			return nil, syntax.Errorf(lineNo, 1, "too many commits")
@@ -277,7 +277,7 @@ func branchName(s string) (name, rest string) {
 			return s[1 : e+1], s[e+2:]
 		}
 	}
-	name = firstWord(s)
+	name = syntax.FirstWord(s)
 	return name, s[len(name):]
 }
 
@@ -293,20 +293,6 @@ func clip(s string) string {
 	r := []rune(s)
 	if len(r) > 20 {
 		return string(r[:20]) + "…"
-	}
-	return s
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
 	}
 	return s
 }

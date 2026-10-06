@@ -3,8 +3,35 @@
 // dependencies, so it can be reasoned about and tested in isolation.
 package domain
 
+import "strings"
+
 // Direction is the flow direction of a flowchart.
 type Direction string
+
+// ParseDirection reads a direction as a source writes it: TB, TD, BT, LR
+// or RL, in any case.
+func ParseDirection(s string) (Direction, bool) {
+	switch strings.ToUpper(s) {
+	case "TD", "TB":
+		return TopBottom, true
+	case "BT":
+		return BottomTop, true
+	case "LR":
+		return LeftRight, true
+	case "RL":
+		return RightLeft, true
+	}
+	return "", false
+}
+
+// DirectionOf is ParseDirection, with TopBottom for anything it does not
+// read.
+func DirectionOf(s string) Direction {
+	if d, ok := ParseDirection(s); ok {
+		return d
+	}
+	return TopBottom
+}
 
 const (
 	// TopBottom lays ranks out top to bottom (graph TD / graph TB).

@@ -105,7 +105,7 @@ func (p *parser) parse() (*domain.Graph, error) {
 			continue
 		case t.Kind == lexer.Keyword && t.Val == "direction":
 			p.next()
-			if d, ok := direction(p.cur().Val); ok && p.at(lexer.Ident) {
+			if d, ok := domain.ParseDirection(p.cur().Val); ok && p.at(lexer.Ident) {
 				if n := len(p.open); n > 0 {
 					p.open[n-1].sg.Direction = d
 				} else {
@@ -229,7 +229,7 @@ func (p *parser) parseHeader() error {
 	}
 	p.next()
 	if dir := p.cur(); dir.Kind == lexer.Ident {
-		d, ok := direction(dir.Val)
+		d, ok := domain.ParseDirection(dir.Val)
 		if !ok {
 			return p.errAt(dir, "unknown direction %q", dir.Val)
 		}
@@ -429,20 +429,6 @@ func (p *parser) errAt(t lexer.Token, format string, args ...any) error {
 }
 
 // --- mappings ---
-
-func direction(s string) (domain.Direction, bool) {
-	switch strings.ToUpper(s) {
-	case "TD", "TB":
-		return domain.TopBottom, true
-	case "BT":
-		return domain.BottomTop, true
-	case "LR":
-		return domain.LeftRight, true
-	case "RL":
-		return domain.RightLeft, true
-	}
-	return "", false
-}
 
 func shapeKind(open, closer string) domain.Shape {
 	switch open {

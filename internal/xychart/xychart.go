@@ -51,7 +51,7 @@ func Parse(src string) (*Diagram, error) {
 	headerSeen := false
 	for i, raw := range strings.Split(src, "\n") {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(raw))
+		line := strings.TrimSpace(syntax.StripComment(raw))
 		if line == "" {
 			continue
 		}
@@ -221,13 +221,6 @@ func unquote(s string) string {
 
 func firstWord(s string) string {
 	if i := strings.IndexAny(s, " \t[\""); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
 		return s[:i]
 	}
 	return s

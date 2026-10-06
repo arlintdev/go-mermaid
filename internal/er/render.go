@@ -44,7 +44,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	}
 	m := metrics{face: svgutil.FaceFor(o.FontFace), fs: fs, cellPad: fs * 0.6, headH: fs * 2.3, rowH: fs * 1.9}
 
-	g := &domain.Graph{Direction: directionOf(d.Direction)}
+	g := &domain.Graph{Direction: domain.DirectionOf(d.Direction)}
 	vert := g.Direction == domain.TopBottom || g.Direction == domain.BottomTop
 	cols := map[*Entity][]float64{}
 	// A relationship of an entity to itself loops out of its side; the
@@ -144,20 +144,6 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	}
 	spreadEnds(g, edgeOf)
 	return svg(d, g, res, edgeOf, cols, o, m), nil
-}
-
-// directionOf maps a `direction` line onto a layout direction.
-func directionOf(dir string) domain.Direction {
-	switch dir {
-	case "LR":
-		return domain.LeftRight
-	case "RL":
-		return domain.RightLeft
-	case "BT":
-		return domain.BottomTop
-	default:
-		return domain.TopBottom
-	}
 }
 
 // entitySize sizes an entity's table and returns its column widths: type,

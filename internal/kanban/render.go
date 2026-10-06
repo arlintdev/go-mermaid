@@ -19,10 +19,10 @@ type RenderOptions struct {
 }
 
 const (
-	colW       = 200.0
-	colGap     = 6.0
-	cardInset  = 7.5
-	cardGap    = 6.0
+	colW      = 200.0
+	colGap    = 6.0
+	cardInset = 7.5
+	cardGap   = 6.0
 )
 
 // Render parses and renders kanban source to SVG.

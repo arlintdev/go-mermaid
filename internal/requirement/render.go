@@ -43,7 +43,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	}
 	m := metrics{face: svgutil.FaceFor(o.FontFace), fs: fs, lh: fs * 1.4, padX: fs * 0.8, padY: fs * 0.55, headGap: fs * 0.4}
 
-	g := &domain.Graph{Direction: directionOf(d.Direction)}
+	g := &domain.Graph{Direction: domain.DirectionOf(d.Direction)}
 	for _, n := range d.Nodes {
 		w, h := nodeSize(n, m)
 		g.Nodes = append(g.Nodes, &domain.Node{ID: n.ID, Label: " ", Shape: domain.ShapeRect, Size: domain.Size{W: w, H: h}})
@@ -56,19 +56,6 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		return nil, err
 	}
 	return svg(d, g, res, o, m, svgid.Prefix(src)), nil
-}
-
-func directionOf(dir string) domain.Direction {
-	switch dir {
-	case "LR":
-		return domain.LeftRight
-	case "RL":
-		return domain.RightLeft
-	case "BT":
-		return domain.BottomTop
-	default:
-		return domain.TopBottom
-	}
 }
 
 // header is the stereotype and name lines of a node.

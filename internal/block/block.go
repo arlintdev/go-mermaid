@@ -116,19 +116,19 @@ func Parse(src string) (*Diagram, error) {
 	var classLines, styleLines [][2]string
 	for i, raw := range strings.Split(src, "\n") {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(raw))
+		line := strings.TrimSpace(syntax.StripComment(raw))
 		if line == "" {
 			continue
 		}
 		if !headerSeen {
-			if w := strings.ToLower(firstWord(line)); w != "block-beta" && w != "block" {
+			if w := strings.ToLower(syntax.FirstWord(line)); w != "block-beta" && w != "block" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'block-beta' header")
 			}
 			headerSeen = true
 			continue
 		}
 		cur := stack[len(stack)-1]
-		key := firstWord(line)
+		key := syntax.FirstWord(line)
 		rest := strings.TrimSpace(line[len(key):])
 		switch {
 		case key == "columns":
@@ -164,11 +164,11 @@ func Parse(src string) (*Diagram, error) {
 			stack = append(stack, c)
 			continue
 		case key == "style":
-			id := firstWord(rest)
+			id := syntax.FirstWord(rest)
 			styleLines = append(styleLines, [2]string{id, strings.TrimSpace(rest[len(id):])})
 			continue
 		case key == "classDef":
-			name := firstWord(rest)
+			name := syntax.FirstWord(rest)
 			css := cssval.Parse(strings.TrimSpace(rest[len(name):]))
 			for _, n := range strings.Split(name, ",") {
 				if n = strings.TrimSpace(n); n != "" {
@@ -177,7 +177,7 @@ func Parse(src string) (*Diagram, error) {
 			}
 			continue
 		case key == "class":
-			ids := firstWord(rest)
+			ids := syntax.FirstWord(rest)
 			classLines = append(classLines, [2]string{ids, strings.TrimSpace(rest[len(ids):])})
 			continue
 		}
@@ -387,20 +387,6 @@ func clip(s string) string {
 	r := []rune(s)
 	if len(r) > 20 {
 		return string(r[:20]) + "…"
-	}
-	return s
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
 	}
 	return s
 }

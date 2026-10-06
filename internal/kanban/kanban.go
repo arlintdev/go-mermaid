@@ -49,7 +49,7 @@ func Parse(src string) (*Diagram, error) {
 	headerSeen := false
 	for i, raw := range strings.Split(src, "\n") {
 		lineNo := i + 1
-		if strings.TrimSpace(stripComment(raw)) == "" {
+		if strings.TrimSpace(syntax.StripComment(raw)) == "" {
 			continue
 		}
 		if !headerSeen {
@@ -59,7 +59,7 @@ func Parse(src string) (*Diagram, error) {
 			headerSeen = true
 			continue
 		}
-		items = append(items, item{indent: leadingSpaces(raw), text: strings.TrimSpace(stripComment(raw))})
+		items = append(items, item{indent: leadingSpaces(raw), text: strings.TrimSpace(syntax.StripComment(raw))})
 	}
 	if !headerSeen {
 		return nil, syntax.Errorf(1, 1, "expected 'kanban' header")
@@ -149,11 +149,4 @@ func leadingSpaces(s string) int {
 		}
 	}
 	return n
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
-	}
-	return s
 }

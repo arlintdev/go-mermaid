@@ -21,11 +21,11 @@ type RenderOptions struct {
 }
 
 const (
-	taskW      = 150.0
-	taskGap    = 50.0
-	minBoxH    = 50.0
-	faceR      = 15.0
-	scoreStep  = 30.0
+	taskW     = 150.0
+	taskGap   = 50.0
+	minBoxH   = 50.0
+	faceR     = 15.0
+	scoreStep = 30.0
 )
 
 // Render parses and renders journey source to SVG.

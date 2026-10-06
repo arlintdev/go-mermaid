@@ -32,12 +32,12 @@ func Parse(src string) (*Diagram, error) {
 	var classLines [][2]string
 	for i := 0; i < len(lines); i++ {
 		lineNo := i + 1
-		line := strings.TrimSpace(stripComment(lines[i]))
+		line := strings.TrimSpace(syntax.StripComment(lines[i]))
 		if line == "" {
 			continue
 		}
 		if !headerSeen {
-			w := strings.ToLower(firstWord(line))
+			w := strings.ToLower(syntax.FirstWord(line))
 			if w != "statediagram-v2" && w != "statediagram" {
 				return nil, syntax.Errorf(lineNo, 1, "expected 'stateDiagram-v2' header")
 			}
@@ -49,7 +49,7 @@ func Parse(src string) (*Diagram, error) {
 		}
 
 		sc := scopes[len(scopes)-1]
-		kw := firstWord(line)
+		kw := syntax.FirstWord(line)
 
 		switch {
 		case line == "}":
@@ -83,7 +83,7 @@ func Parse(src string) (*Diagram, error) {
 
 		case kw == "classDef":
 			rest := strings.TrimSpace(line[len(kw):])
-			name := firstWord(rest)
+			name := syntax.FirstWord(rest)
 			st := cssval.Parse(strings.TrimSpace(rest[len(name):]))
 			for _, n := range strings.Split(name, ",") {
 				if n = strings.TrimSpace(n); n != "" {
@@ -93,13 +93,13 @@ func Parse(src string) (*Diagram, error) {
 
 		case kw == "class":
 			rest := strings.TrimSpace(line[len(kw):])
-			ids := firstWord(rest)
+			ids := syntax.FirstWord(rest)
 			classLines = append(classLines, [2]string{ids, strings.TrimSpace(rest[len(ids):])})
 
 		case kw == "style":
 			// style S fill:… applies like an anonymous class.
 			rest := strings.TrimSpace(line[len(kw):])
-			id := firstWord(rest)
+			id := syntax.FirstWord(rest)
 			name := "\x00style:" + id
 			d.ClassDefs[name] = cssval.Parse(strings.TrimSpace(rest[len(id):]))
 			classLines = append(classLines, [2]string{id, name})
@@ -118,7 +118,7 @@ func Parse(src string) (*Diagram, error) {
 			var text []string
 			for i+1 < len(lines) {
 				i++
-				n := strings.TrimSpace(stripComment(lines[i]))
+				n := strings.TrimSpace(syntax.StripComment(lines[i]))
 				if strings.EqualFold(n, "end note") {
 					break
 				}
@@ -371,20 +371,6 @@ func clip(s string) string {
 	r := []rune(s)
 	if len(r) > 30 {
 		return string(r[:30]) + "…"
-	}
-	return s
-}
-
-func firstWord(s string) string {
-	if i := strings.IndexAny(s, " \t"); i >= 0 {
-		return s[:i]
-	}
-	return s
-}
-
-func stripComment(s string) string {
-	if i := strings.Index(s, "%%"); i >= 0 {
-		return s[:i]
 	}
 	return s
 }
