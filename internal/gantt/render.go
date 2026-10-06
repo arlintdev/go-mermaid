@@ -341,8 +341,14 @@ func (l *layout) pickTicks(d *Diagram) ([]time.Time, int, string) {
 		if span/iv.approx() > 60 {
 			continue
 		}
-		if ts := iv.ticks(l.lo, l.hi, d.weekStartsOn); fits(ts, 1) {
+		ts := iv.ticks(l.lo, l.hi, d.weekStartsOn)
+		if fits(ts, 1) {
 			return ts, 1, format
+		}
+		// d3 steps from weeks straight to months; label every other week
+		// before giving up the weekly grid.
+		if iv.unit == 'w' && fits(ts, 2) {
+			return ts, 2, format
 		}
 	}
 	return nil, 1, format
