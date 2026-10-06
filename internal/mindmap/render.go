@@ -82,12 +82,19 @@ func (l *layout) measure(n *Node, depth int) {
 	}
 }
 
-// span is the height a subtree needs.
-func span(n *Node) float64 {
-	if len(n.Children) == 0 {
-		return n.H
+// span is the height a subtree needs, worked out once by measure.
+func span(n *Node) float64 { return n.span }
+
+// setSpan stores every subtree's height, bottom up, so layout stays linear
+// in the number of nodes however deep the map is.
+func setSpan(n *Node) {
+	for _, c := range n.Children {
+		setSpan(c)
 	}
-	return math.Max(n.H, childrenSpan(n.Children))
+	n.span = n.H
+	if len(n.Children) > 0 {
+		n.span = math.Max(n.H, childrenSpan(n.Children))
+	}
 }
 
 func childrenSpan(cs []*Node) float64 {
@@ -124,6 +131,7 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	pad := o.Padding
 	root := d.Root
 	l.measure(root, 0)
+	setSpan(root)
 	root.section = -1
 
 	// Split the branches between the two sides, about half the height on

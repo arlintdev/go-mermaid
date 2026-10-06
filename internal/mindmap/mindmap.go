@@ -43,6 +43,7 @@ type Node struct {
 	lines      []string
 	section    int
 	side       float64
+	span       float64
 }
 
 // Diagram is a parsed mindmap.

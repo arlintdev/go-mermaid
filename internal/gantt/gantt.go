@@ -69,7 +69,12 @@ type Diagram struct {
 	weekStartsOn  time.Weekday
 	excludesSrc   string
 	includesSrc   string
+	steps         int // days walked by skipExcluded, bounded by maxSteps
 }
+
+// maxSteps bounds the day-by-day exclusion walk across all tasks, so a
+// hostile chart of many long tasks cannot keep the parser busy.
+const maxSteps = 2_000_000
 
 type dayRules struct {
 	weekends bool
@@ -350,6 +355,9 @@ func (d *Diagram) resolveTask(t *Task, idx int, byID map[string]*Task) (bool, er
 	t.Start, t.End, t.RenderEnd = start, end, end
 	if !t.manualEnd && !d.excl.empty() {
 		t.End, t.RenderEnd = d.skipExcluded(start, end)
+		if d.steps > maxSteps {
+			return false, syntax.Errorf(t.Line, 1, "chart has too many excluded days to work out")
+		}
 	}
 	t.resolved = true
 	return true, nil
@@ -362,6 +370,7 @@ func (d *Diagram) skipExcluded(start, end time.Time) (time.Time, time.Time) {
 	renderEnd := end
 	invalid := false
 	for steps := 0; !start.After(end) && steps < 200*366; steps++ {
+		d.steps++
 		if !invalid {
 			renderEnd = end
 		}
@@ -396,7 +405,10 @@ func (r dayRules) matches(d *Diagram, t time.Time) bool {
 			return true
 		}
 	}
-	return r.days[wd] || r.dates[t.Format("2006-01-02")]
+	if r.days[wd] {
+		return true
+	}
+	return len(r.dates) > 0 && r.dates[t.Format("2006-01-02")]
 }
 
 var weekdays = map[string]time.Weekday{
