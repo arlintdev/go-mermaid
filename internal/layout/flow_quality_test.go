@@ -259,3 +259,36 @@ func TestFlowQualityRandom(t *testing.T) {
 		}
 	}
 }
+
+func TestFlowSubgraphDirection(t *testing.T) {
+	g, err := parser.Flowchart("flowchart LR\n  A --> B\n  subgraph S[Steps]\n    direction TB\n    s1 --> s2 --> s3\n  end\n  subgraph T[Linked, so it follows the chart]\n    direction TB\n    t1 --> t2\n  end\n  B --> t1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	res, err := Flow(g, Options{FontSize: 16})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if ps := checkFlow(res); len(ps) > 0 {
+		t.Fatal(ps)
+	}
+	s1, s2, s3 := g.NodeByID("s1"), g.NodeByID("s2"), g.NodeByID("s3")
+	if !(s1.Pos.X == s2.Pos.X && s2.Pos.X == s3.Pos.X && s1.Pos.Y < s2.Pos.Y && s2.Pos.Y < s3.Pos.Y) {
+		t.Errorf("an unlinked subgraph's own direction was not kept: %v %v %v", s1.Pos, s2.Pos, s3.Pos)
+	}
+	t1, t2 := g.NodeByID("t1"), g.NodeByID("t2")
+	if !(t1.Pos.Y == t2.Pos.Y && t1.Pos.X < t2.Pos.X) {
+		t.Errorf("a linked subgraph should follow the chart's direction: %v %v", t1.Pos, t2.Pos)
+	}
+	box := g.SubgraphByID("S").Box
+	for _, n := range []*domain.Node{s1, s2, s3} {
+		if !nodeBox(n).inside(box2(box)) {
+			t.Errorf("node %s outside its box", n.ID)
+		}
+	}
+	if len(g.Nodes) != 7 || len(g.Subgraphs) != 2 {
+		t.Errorf("the graph was not restored: %d nodes, %d subgraphs", len(g.Nodes), len(g.Subgraphs))
+	}
+}
+
+func box2(r domain.Rect) box { return box{r.Min.X, r.Min.Y, r.Min.X + r.Size.W, r.Min.Y + r.Size.H} }

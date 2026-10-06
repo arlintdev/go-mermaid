@@ -27,12 +27,24 @@ import (
 func Flow(g *domain.Graph, opts Options) (*Result, error) {
 	opts = opts.withFlowDefaults()
 	measure(g, opts)
+	w, h := flowLayout(g, opts)
+	return &Result{Graph: g, Width: w, Height: h}, nil
+}
+
+// flowLayout lays out g and returns its size. A subgraph that sets its own
+// direction and has no edge crossing its border is laid out first, on its
+// own, in that direction (as mermaid.js does), and then placed as one block.
+func flowLayout(g *domain.Graph, opts Options) (w, h float64) {
+	blocks := extractIsolated(g, opts)
 	f := newFlowGraph(g, opts, g.Direction)
 	f.run()
 	f.writeBack()
-	w, h := f.normalize()
+	w, h = f.normalize()
 	f.placeTitles()
-	return &Result{Graph: g, Width: w, Height: h}, nil
+	for i := len(blocks) - 1; i >= 0; i-- {
+		blocks[i].restore(g)
+	}
+	return w, h
 }
 
 // Flow layout defaults, matching mermaid.js's flowchart look at 16 px.
