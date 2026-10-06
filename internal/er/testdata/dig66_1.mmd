@@ -1,0 +1,69 @@
+erDiagram
+  users ||--o| organisation_roles : "may hold"
+  users ||--o{ workspace_members : "is in"
+  workspaces ||--o{ workspace_members : has
+  workspaces ||--o{ workspace_invites : sends
+  workspaces ||--o{ projects : holds
+  projects ||--o{ issues : holds
+  projects ||--o{ cycles : "runs in"
+  projects ||--o{ milestones : "aims at"
+  projects ||--o{ pages : holds
+  projects ||--o{ labels : defines
+  cycles |o--o{ issues : contains
+  milestones |o--o{ issues : groups
+  issues |o--o{ issues : "parent of"
+  issues ||--o{ comments : has
+  issues ||--o{ issue_labels : tagged
+  labels ||--o{ issue_labels : tags
+  pages |o--o{ pages : "parent of"
+  users |o--o{ issues : "assigned"
+  users ||--o{ sessions : "signed in by"
+  users ||--o{ api_tokens : owns
+  users ||--o{ oauth_tokens : "granted to"
+  workspaces |o--o{ api_tokens : "reach"
+  projects |o--o{ api_tokens : "reach"
+
+  users {
+    bigint id PK
+    text email UK
+    boolean bot
+    timestamptz disabled_at
+  }
+  workspaces {
+    bigint id PK
+    text uuid
+    text name
+    timestamptz archived_at
+  }
+  workspace_members {
+    bigint workspace_id PK
+    bigint user_id PK
+    text role
+  }
+  projects {
+    bigint id PK
+    bigint workspace_id FK
+    text key
+    bigint next_number
+  }
+  issues {
+    bigint id PK
+    bigint project_id FK
+    bigint number
+    text status
+    date due_date
+    bigint cycle_id FK
+  }
+  pages {
+    bigint id PK
+    bigint project_id FK
+    bigint parent_id FK
+    bigint revision
+  }
+  api_tokens {
+    bigint id PK
+    bigint user_id FK
+    text reach
+    text permits
+    timestamptz expires_at
+  }
