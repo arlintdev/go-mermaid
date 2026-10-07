@@ -2,6 +2,7 @@ package state
 
 import (
 	"fmt"
+	"maps"
 	"math"
 	"strings"
 
@@ -108,8 +109,23 @@ func (c *ctx) textBlock(lines []string, size float64) (w, h float64) {
 }
 
 // region lays out the states of one region of a composite (or the whole
-// diagram) and the transitions between them.
+// diagram) and the transitions between them: by the layered layout, or,
+// when that leaves a label on another line or label, as a flowchart.
 func (c *ctx) region(parent string, region int, dir domain.Direction) (block, error) {
+	done := maps.Clone(c.done)
+	bl, hidden, err := c.layRegion(parent, region, dir, false)
+	if err != nil || !hidden {
+		return bl, err
+	}
+	c.done = done
+	bl, _, err = c.layRegion(parent, region, dir, true)
+	return bl, err
+}
+
+// layRegion is region with the layout chosen: layout.Flow when flow is
+// set, which gives every label room of its own on its line, else the
+// layered layout. hidden reports a label left on another line or label.
+func (c *ctx) layRegion(parent string, region int, dir domain.Direction, flow bool) (_ block, hidden bool, _ error) {
 	g := &domain.Graph{Direction: dir}
 	inner := map[string]block{}
 	var members []*State
@@ -127,7 +143,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 			c.done[comp.ID] = true
 			bl, err := c.composite(comp, dir)
 			if err != nil {
-				return block{}, err
+				return block{}, false, err
 			}
 			inner[s.ID] = bl
 			n.Shape = domain.ShapeRect
@@ -179,6 +195,10 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 			// Reserve the label's room in the layout.
 			lines := c.wrap(t.Label, c.fs*0.9)
 			e.Label = strings.Join(lines, "\n")
+			if flow {
+				tw, th := c.textBlock(lines, c.fs*0.9)
+				e.LabelSize = domain.Size{W: tw + 16, H: th + 12}
+			}
 		}
 		g.Edges = append(g.Edges, e)
 		edges = append(edges, edge{t: t, e: e})
@@ -190,8 +210,14 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		if labelled {
 			rankSep = 60
 		}
-		if _, err := layout.Compute(g, layout.Options{NodeSep: 40, RankSep: rankSep, FontSize: c.fs * 0.9, FontFace: c.o.FontFace}); err != nil {
-			return block{}, err
+		lo := layout.Options{NodeSep: 40, RankSep: rankSep, FontSize: c.fs * 0.9, FontFace: c.o.FontFace}
+		if flow {
+			lo.NodeSep, lo.RankSep, lo.Measured = 50, 50, true
+			if _, err := layout.Flow(g, lo); err != nil {
+				return block{}, false, err
+			}
+		} else if _, err := layout.Compute(g, lo); err != nil {
+			return block{}, false, err
 		}
 		for _, n := range g.Nodes {
 			nodeBoxes = append(nodeBoxes, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
@@ -255,12 +281,16 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 				obs = append(obs, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 			}
 		}
-		pts := c.barEnds(g, ed.e, dir)
-		sh := curve.Edge(pts, vertical(dir), obs, 0, 0)
 		for _, p := range ed.e.Points {
 			bd.Add(p.X, p.Y)
 		}
 		lx, ly := ed.e.LabelPos.X, ed.e.LabelPos.Y
+		if flow {
+			drawn = append(drawn, drawnEdge{ed.t, curve.Routed(ed.e.Points, ed.e.LabelPos, 0, 0), lx, ly, lines})
+			continue
+		}
+		pts := c.barEnds(g, ed.e, dir)
+		sh := curve.Edge(pts, vertical(dir), obs, 0, 0)
 		if sh.Curved {
 			lx, ly = sh.Mid.X, sh.Mid.Y
 		} else if len(lines) > 0 {
@@ -349,6 +379,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		at = append(at, i)
 	}
 	curve.PlaceLabels(shapes, labels, nodeBoxes)
+	hidden = curve.Hidden(shapes, labels)
 	for k, l := range labels {
 		de := &drawn[at[k]]
 		de.lx, de.ly = l.X, l.Y
@@ -358,7 +389,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 	}
 
 	if bd.Empty() {
-		return block{w: 40, h: 20}, nil
+		return block{w: 40, h: 20}, hidden, nil
 	}
 	ox, oy := -bd.MinX, -bd.MinY
 	var b strings.Builder
@@ -412,7 +443,7 @@ func (c *ctx) region(parent string, region int, dir domain.Direction) (block, er
 		c.lines(&b, de.lines, de.lx, de.ly, c.fs*0.9, svgutil.Esc(c.pal.Text), "")
 	}
 	b.WriteString("</g>\n")
-	return block{w: bd.MaxX - bd.MinX, h: bd.MaxY - bd.MinY, body: b.String()}, nil
+	return block{w: bd.MaxX - bd.MinX, h: bd.MaxY - bd.MinY, body: b.String()}, hidden, nil
 }
 
 // barEnds spreads the arrows that meet a fork or join bar along it, each

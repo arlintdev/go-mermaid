@@ -1,0 +1,15 @@
+stateDiagram-v2
+  direction LR
+  [*] --> Active
+  state Active {
+    [*] --> Idle
+    Idle --> Running : start job
+    Idle --> Failed : bad config
+    Running --> Paused : pause requested
+    Paused --> Running : resume requested
+    Running --> Failed : crash detected
+    Paused --> Failed : timeout while paused
+    Failed --> Idle : operator reset
+  }
+  Active --> Archived : retire
+  Archived --> [*]
