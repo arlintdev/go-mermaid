@@ -25,6 +25,12 @@ type Options struct {
 	// wrap at 200 or WrapWidth, whichever is wider. The older Compute
 	// ignores it.
 	WrapWidth float64
+
+	// Measured tells Flow the caller has already sized the picture's parts:
+	// a node with a Size, an edge with a LabelSize and a subgraph with a
+	// TitleSize keep them, and a label is not wrapped again. The diagram
+	// types that draw their own boxes (class, state, C4) set it.
+	Measured bool
 }
 
 // face returns the metric table that matches the font family the renderer

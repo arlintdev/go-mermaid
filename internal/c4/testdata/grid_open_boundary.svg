@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="313.66" height="1231.63" viewBox="0 0 313.66 1231.63" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><marker id="me7air7-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#444444"/></marker></defs>
+  <g transform="translate(16,16)">
+    <rect x="0" y="196.47" width="206" height="1003.16" rx="4" fill="none" stroke="#444444" stroke-dasharray="7 7"/>
+    <text x="151.84" y="218.47" fill="#333333" font-weight="bold" text-anchor="middle">Pipeline</text>
+    <text x="151.84" y="233.03" fill="#333333" font-size="11.2" text-anchor="middle">[System]</text>
+    <path d="M103,85 L103,252.63" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#me7air7-arrow)"/>
+    <path d="M103,309.63 L103,421.1" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#me7air7-arrow)"/>
+    <path d="M103,478.1 L103,603.22" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#me7air7-arrow)"/>
+    <path d="M103,660.22 L103,771.69" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#me7air7-arrow)"/>
+    <path d="M103,828.69 L103,940.16" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#me7air7-arrow)"/>
+    <path d="M103,997.16 L103,1108.63" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#me7air7-arrow)"/>
+    <path d="M252.83,85 L252.83,1082.63 Q252.83,1087.63 247.83,1087.63 L185,1087.63 Q180,1087.63 180,1092.63 L180,1108.63" fill="none" stroke="#444444" stroke-width="1.2" marker-end="url(#me7air7-arrow)"/>
+    <rect x="92.92" y="28" width="170" height="57" rx="14" fill="#08427b" stroke="#073b6f"/>
+    <circle cx="177.92" cy="17.5" r="17.5" fill="#08427b" stroke="#073b6f"/>
+    <text x="177.92" y="53.6" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Operator</text>
+    <text x="177.92" y="68.88" fill="#ffffff" font-size="10.92" text-anchor="middle">[Person]</text>
+    <rect x="18" y="252.63" width="170" height="57" rx="4" fill="#438dd5" stroke="#3c7fc0"/>
+    <text x="103" y="278.23" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Ingest</text>
+    <text x="103" y="293.51" fill="#ffffff" font-size="10.92" text-anchor="middle">[Container: Go]</text>
+    <rect x="18" y="421.1" width="170" height="57" rx="4" fill="#438dd5" stroke="#3c7fc0"/>
+    <text x="103" y="446.7" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Parse</text>
+    <text x="103" y="461.98" fill="#ffffff" font-size="10.92" text-anchor="middle">[Container: Go]</text>
+    <rect x="18" y="603.22" width="170" height="57" rx="4" fill="#438dd5" stroke="#3c7fc0"/>
+    <text x="103" y="628.82" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Clean</text>
+    <text x="103" y="644.1" fill="#ffffff" font-size="10.92" text-anchor="middle">[Container: Python]</text>
+    <rect x="18" y="771.69" width="170" height="57" rx="4" fill="#438dd5" stroke="#3c7fc0"/>
+    <text x="103" y="797.29" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Enrich</text>
+    <text x="103" y="812.57" fill="#ffffff" font-size="10.92" text-anchor="middle">[Container: Python]</text>
+    <rect x="18" y="940.16" width="170" height="57" rx="4" fill="#438dd5" stroke="#3c7fc0"/>
+    <text x="103" y="965.76" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Score</text>
+    <text x="103" y="981.04" fill="#ffffff" font-size="10.92" text-anchor="middle">[Container: Rust]</text>
+    <path d="M18,1116.63 A85,8 0 0 1 188,1116.63 V1173.63 A85,8 0 0 1 18,1173.63 Z" fill="#438dd5" stroke="#3c7fc0"/>
+    <path d="M18,1116.63 A85,8 0 0 0 188,1116.63" fill="none" stroke="#3c7fc0"/>
+    <text x="103" y="1150.23" fill="#ffffff" font-size="14" text-anchor="middle" font-weight="bold">Store</text>
+    <text x="103" y="1165.51" fill="#ffffff" font-size="10.92" text-anchor="middle">[Container: Postgres]</text>
+    <rect x="83.46" y="131" width="39.08" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="103" y="144.31" fill="#333333" font-size="11.9" text-anchor="middle">Starts</text>
+    <rect x="85.44" y="355.63" width="35.12" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="103" y="368.94" fill="#333333" font-size="11.9" text-anchor="middle">Feed</text>
+    <rect x="76.85" y="530.93" width="52.3" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="103" y="544.23" fill="#333333" font-size="11.9" text-anchor="middle">Records</text>
+    <rect x="84.12" y="706.22" width="37.75" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="103" y="719.53" fill="#333333" font-size="11.9" text-anchor="middle">Rows</text>
+    <rect x="84.12" y="874.69" width="37.75" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="103" y="888" fill="#333333" font-size="11.9" text-anchor="middle">Rows</text>
+    <rect x="80.48" y="1043.16" width="45.03" height="19.47" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="103" y="1056.47" fill="#333333" font-size="11.9" text-anchor="middle">Scores</text>
+    <rect x="228" y="524.1" width="49.66" height="33.12" rx="2" fill="#ffffff" fill-opacity="0.85"/>
+    <text x="252.83" y="537.41" fill="#333333" font-size="11.9" text-anchor="middle">Queries</text>
+    <text x="252.83" y="551.55" fill="#333333" font-size="10.5" text-anchor="middle" font-style="italic">[SQL]</text>
+  </g>
+</svg>

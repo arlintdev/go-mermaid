@@ -80,7 +80,7 @@ func ReadDrawing(svg []byte) (Drawing, error) {
 	}
 }
 
-// pathPoints samples a path of one M followed by L and C commands; any
+// pathPoints samples a path of one M followed by L, Q and C commands; any
 // other path (a second M, an arc) yields nothing.
 func pathPoints(d string, m affine) []domain.Point {
 	toks := pathTok.FindAllString(d, -1)
@@ -105,12 +105,20 @@ func pathPoints(d string, m affine) []domain.Point {
 			for i := 0; i+5 < len(nums); i += 6 {
 				pts = append(pts, curve.Bezier(pts[len(pts)-1], pt(i), pt(i+2), pt(i+4))[1:]...)
 			}
+		case "Q":
+			for i := 0; i+3 < len(nums); i += 4 {
+				a, c, z := pts[len(pts)-1], pt(i), pt(i+2)
+				// The cubic through the same curve as the quadratic a-c-z.
+				c1 := domain.Point{X: a.X + 2*(c.X-a.X)/3, Y: a.Y + 2*(c.Y-a.Y)/3}
+				c2 := domain.Point{X: z.X + 2*(c.X-z.X)/3, Y: z.Y + 2*(c.Y-z.Y)/3}
+				pts = append(pts, curve.Bezier(a, c1, c2, z)[1:]...)
+			}
 		}
 		return true
 	}
 	for _, tk := range toks {
 		if unicode.IsLetter(rune(tk[0])) {
-			if tk != "M" && tk != "L" && tk != "C" {
+			if tk != "M" && tk != "L" && tk != "C" && tk != "Q" {
 				return nil
 			}
 			if cmd != "" && !flush() {

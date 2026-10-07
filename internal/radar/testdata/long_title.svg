@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660.24" height="431.4" viewBox="0 0 660.24 431.4" font-family="sans-serif" font-size="14">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="330.12" y="32" fill="#333333" font-size="16" text-anchor="middle">How each of the three teams rated the new release on every axis we track</text>
+<circle cx="330.12" cy="243.4" r="170" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="330.12" cy="243.4" r="136" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="330.12" cy="243.4" r="102" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="330.12" cy="243.4" r="68" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<circle cx="330.12" cy="243.4" r="34" fill="#dedede" fill-opacity="0.3" stroke="#dedede"/>
+<line x1="330.12" y1="243.4" x2="330.12" y2="73.4" stroke="#333333" stroke-width="2"/>
+<text x="330.12" y="59.4" fill="#333333" font-size="13" text-anchor="middle">Speed</text>
+<line x1="330.12" y1="243.4" x2="491.8" y2="190.87" stroke="#333333" stroke-width="2"/>
+<text x="505.12" y="186.54" fill="#333333" font-size="13" text-anchor="start">Reliability</text>
+<line x1="330.12" y1="243.4" x2="430.04" y2="380.93" stroke="#333333" stroke-width="2"/>
+<text x="438.27" y="402.66" fill="#333333" font-size="13" text-anchor="start">Cost</text>
+<line x1="330.12" y1="243.4" x2="230.2" y2="380.93" stroke="#333333" stroke-width="2"/>
+<text x="221.97" y="402.66" fill="#333333" font-size="13" text-anchor="end">Usability</text>
+<line x1="330.12" y1="243.4" x2="168.44" y2="190.87" stroke="#333333" stroke-width="2"/>
+<text x="155.13" y="186.54" fill="#333333" font-size="13" text-anchor="end">Docs</text>
+<path d="M330.12,107.4 C363.1,107.4 420.33,179.41 427.13,211.88 C433.92,244.35 403.57,269.67 370.09,298.41 C336.61,327.15 253.48,395.64 230.2,380.93 C206.91,366.22 216.13,258.38 233.11,211.88 C250.1,165.38 297.14,107.4 330.12,107.4 Z" fill="#8686ff" fill-opacity="0.5" stroke="#8686ff" stroke-width="2"/>
+<path d="M330.12,175.4 C379.6,173.61 478.21,160.6 491.8,190.87 C505.39,221.13 447.74,330.47 410.06,353.43 C372.38,376.39 305.75,351.77 270.17,325.92 C234.59,300.07 190.59,226.96 200.78,201.37 C210.97,175.79 280.65,177.19 330.12,175.4 Z" fill="#ffff78" fill-opacity="0.5" stroke="#aaaa50" stroke-width="2"/>
+<rect x="580.73" y="46.4" width="12" height="12" fill="#8686ff" fill-opacity="0.5" stroke="#8686ff"/>
+<text x="598.73" y="56.95" fill="#333333" font-size="13">Team A</text>
+<rect x="580.73" y="67.4" width="12" height="12" fill="#ffff78" fill-opacity="0.5" stroke="#aaaa50"/>
+<text x="598.73" y="77.95" fill="#333333" font-size="13">Team B</text>
+</svg>

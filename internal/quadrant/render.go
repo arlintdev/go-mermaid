@@ -56,6 +56,33 @@ func (dr *drawer) text(s string, x, y, size, maxW float64, fill, anchor, extra s
 	dr.b.WriteString("</text>\n")
 }
 
+// lines writes lines as one <text>, the first at y and each next one a
+// line below.
+func (dr *drawer) lines(lines []string, x, y, size float64, fill, anchor, extra string) {
+	lh := size * 1.2
+	fmt.Fprintf(&dr.b, `  <text fill="%s" font-size="%s" text-anchor="%s"%s>`, fill, svgutil.Num(size), anchor, extra)
+	for i, ln := range lines {
+		fmt.Fprintf(&dr.b, `<tspan x="%s" y="%s">%s</tspan>`, svgutil.Num(x), svgutil.Num(y+float64(i)*lh), svgutil.Esc(ln))
+	}
+	dr.b.WriteString("</text>\n")
+}
+
+// fitted is a label fitted to its room (see svgutil.Face.Fit).
+type fitted struct {
+	lines []string
+	size  float64
+}
+
+func (f fitted) n() int { return len(f.lines) }
+
+// fit fits s into a room maxW wide and at most maxLines tall, shrinking
+// its size by at most a fifth before it breaks a word, and cutting it
+// short only when even that does not fit.
+func (dr *drawer) fit(s string, size, maxW float64, maxLines int) fitted {
+	l, sz := dr.face.Fit(s, size, size*0.8, maxW, maxLines)
+	return fitted{l, sz}
+}
+
 func svg(d *Diagram, o RenderOptions) []byte {
 	pal := theme.For(o.Theme)
 	fs := o.FontSize
@@ -71,19 +98,40 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 	// Plot box: room on the left for the rotated y-axis labels, below for
 	// the x-axis labels, above for the title.
-	left := pad + edge + axisSize*1.4
-	if d.YBottom == "" && d.YTop == "" {
-		left = pad + edge
-	}
 	top := pad + edge
 	if o.Title != "" {
 		n := len(dr.face.WrapWithin(o.Title, titleSize, chartSize-2*edge))
 		top += titleSize*1.2*float64(n) + 2*edge
 	}
-	plotW := chartSize - (left - pad) - edge
 	plotH := chartSize - (top - pad) - edge
+	left := pad + edge
+	var xl, xr, yb, yt fitted
+	yLines := 0
+	if d.YBottom != "" || d.YTop != "" {
+		// A rotated label takes up to two lines, the chart narrowing to
+		// hold the second.
+		room := plotH
+		if d.XLeft != "" || d.XRight != "" {
+			room -= axisSize * 1.6
+		}
+		if d.YTop != "" {
+			room = room/2 - 3*edge
+		}
+		yb, yt = dr.fit(d.YBottom, axisSize, room, 2), dr.fit(d.YTop, axisSize, room, 2)
+		yLines = max(yb.n(), yt.n())
+		left += axisSize*1.4 + float64(yLines-1)*axisSize*1.2
+	}
+	plotW := chartSize - (left - pad) - edge
 	if d.XLeft != "" || d.XRight != "" {
+		room := plotW
+		if d.XRight != "" {
+			room = plotW/2 - 3*edge
+		}
+		xl, xr = dr.fit(d.XLeft, axisSize, room, 2), dr.fit(d.XRight, axisSize, room, 2)
 		plotH -= axisSize * 1.6
+		if n := max(xl.n(), xr.n()); n > 1 {
+			plotH -= float64(n-1) * axisSize * 1.2
+		}
 	}
 	w := chartSize + 2*pad
 	h := chartSize + 2*pad
@@ -128,12 +176,12 @@ func svg(d *Diagram, o RenderOptions) []byte {
 		if name == "" {
 			continue
 		}
-		y := q[1] + edge + fs*0.85
+		f := dr.fit(name, fs, halfW-2*edge, max(1, int(halfH/2/(fs*1.2))))
+		y := q[1] + edge + f.size*0.85
 		if len(d.Points) == 0 {
-			n := len(dr.face.WrapWithin(name, fs, halfW-2*edge))
-			y = q[1] + halfH/2 - float64(n-1)*fs*0.6 + fs*0.35
+			y = q[1] + halfH/2 - float64(f.n()-1)*f.size*0.6 + f.size*0.35
 		}
-		dr.text(name, q[0]+halfW/2, y, fs, halfW-2*edge, text, "middle", "")
+		dr.lines(f.lines, q[0]+halfW/2, y, f.size, text, "middle", "")
 	}
 
 	// Axis labels: each end centred under (or beside) its half of the plot;
@@ -141,24 +189,26 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	ax := top + plotH + edge + axisSize*0.85
 	switch {
 	case d.XRight != "":
-		dr.text(d.XLeft, left+halfW/2, ax, axisSize, halfW-edge, text, "middle", "")
-		dr.text(d.XRight, midX+halfW/2, ax, axisSize, halfW-edge, text, "middle", "")
+		dr.lines(xl.lines, left+halfW/2, ax, xl.size, text, "middle", "")
+		dr.lines(xr.lines, midX+halfW/2, ax, xr.size, text, "middle", "")
 	case d.XLeft != "":
-		dr.text(d.XLeft, midX, ax, axisSize, plotW, text, "middle", "")
+		dr.lines(xl.lines, midX, ax, xl.size, text, "middle", "")
 	}
 	ay := left - edge - axisSize*0.3
-	axisY := func(s string, cy, maxW float64) {
-		if s == "" {
+	axisY := func(f fitted, cy float64) {
+		if f.n() == 0 || f.lines[0] == "" {
 			return
 		}
+		// Rotated, each next line lies toward the plot: start the first
+		// far enough out for the last to end where one line would.
 		rot := fmt.Sprintf(` transform="rotate(-90 %s %s)"`, svgutil.Num(ay), svgutil.Num(cy))
-		dr.text(oneLine(dr.face, s, axisSize, maxW), ay, cy, axisSize, maxW*2, text, "middle", rot)
+		dr.lines(f.lines, ay, cy-float64(f.n()-1)*f.size*1.2, f.size, text, "middle", rot)
 	}
 	if d.YTop == "" {
-		axisY(d.YBottom, midY, plotH)
+		axisY(yb, midY)
 	} else {
-		axisY(d.YTop, top+halfH/2, halfH-edge)
-		axisY(d.YBottom, midY+halfH/2, halfH-edge)
+		axisY(yt, top+halfH/2)
+		axisY(yb, midY+halfH/2)
 	}
 
 	// Points: X right, Y up. Labels go under the dot, kept inside the plot.
@@ -229,21 +279,6 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
-}
-
-// oneLine keeps a rotated axis label on one line, shortened with an ellipsis
-// when it is longer than its half of the axis: a wrapped rotated label would
-// run into the plot.
-func oneLine(face svgutil.Face, s string, size, maxW float64) string {
-	s = strings.Join(strings.Fields(strings.Join(svgutil.SplitLines(s), " ")), " ")
-	if face.Width(s, size) <= maxW {
-		return s
-	}
-	r := []rune(s)
-	for len(r) > 1 && face.Width(string(r)+"…", size) > maxW {
-		r = r[:len(r)-1]
-	}
-	return strings.TrimSpace(string(r)) + "…"
 }
 
 func clampUnit(v float64) float64 {

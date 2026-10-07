@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1236.71" height="322.1" viewBox="0 0 1236.71 322.1" font-family="sans-serif" font-size="14">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><marker id="m1653ivw-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333333"/></marker></defs>
+  <g transform="translate(16,16)">
+<g transform="translate(0,0)">
+<path d="M14,145.05 C44,145.05 44,145.05 74,145.05" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<path d="M982.71,145.05 C1012.71,145.05 1012.71,145.05 1042.71,145.05" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<path d="M1128.71,145.05 C1158.71,145.05 1158.71,145.05 1188.71,145.05" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<circle cx="7" cy="145.05" r="7" fill="#333333"/>
+<g transform="translate(74,0)">
+<rect x="0" y="0" width="908.71" height="290.1" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<rect x="1" y="28.2" width="906.71" height="260.9" fill="#ffffff"/>
+<line x1="0" y1="28.2" x2="908.71" y2="28.2" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="454.36" y="19">Active</tspan></text>
+<g transform="translate(14,42.2)">
+<g transform="translate(0,-4)">
+<path d="M14,164.62 L64,164.62" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<path d="M127,155.62 L133.67,155.62 Q138.67,155.62 138.67,150.62 L138.67,96.83 Q138.67,91.83 143.67,91.83 L257.82,91.83" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<path d="M127,164.62 L145.48,164.62 Q150.33,164.62 150.33,169.48 L150.33,169.48 Q150.33,174.33 155.19,174.33 L783.38,174.33 Q788.38,174.33 788.38,169.33 L788.38,156.23 Q788.38,151.23 793.38,151.23 L811.71,151.23" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<path d="M340.82,82.83 L347.48,82.83 Q352.48,82.83 352.48,77.83 L352.48,19.19 Q352.48,14.19 357.48,14.19 L505.86,14.19 Q510.86,14.19 510.86,19.19 L510.86,55.95 Q510.86,60.95 515.86,60.95 L528.36,60.95" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<path d="M528.36,74.95 L514.55,74.95 Q510.86,74.95 510.86,71.26 L510.86,71.26 Q510.86,67.57 507.17,67.57 L369.15,67.57 Q364.15,67.57 364.15,72.57 L364.15,86.83 Q364.15,91.83 359.15,91.83 L340.82,91.83" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<path d="M340.82,100.83 L347.48,100.83 Q352.48,100.83 352.48,105.83 L352.48,115.95 Q352.48,120.95 357.48,120.95 L783.38,120.95 Q788.38,120.95 788.38,125.95 L788.38,140.23 Q788.38,145.23 793.38,145.23 L811.71,145.23" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<path d="M607.36,69.95 L795.05,69.95 Q800.05,69.95 800.05,74.95 L800.05,134.23 Q800.05,139.23 805.05,139.23 L811.71,139.23" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<path d="M811.71,157.23 L805.05,157.23 Q800.05,157.23 800.05,162.23 L800.05,222.71 Q800.05,227.71 795.05,227.71 L143.67,227.71 Q138.67,227.71 138.67,222.71 L138.67,178.62 Q138.67,173.62 133.67,173.62 L127,173.62" fill="none" stroke="#333333" stroke-width="1.3" marker-end="url(#m1653ivw-arrow)"/>
+<circle cx="7" cy="164.62" r="7" fill="#333333"/>
+<rect x="64" y="147.62" width="63" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="95.5" y="169.52">Idle</tspan></text>
+<rect x="257.82" y="74.83" width="83" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="299.32" y="96.73">Running</tspan></text>
+<rect x="811.71" y="131.23" width="69" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="846.21" y="153.13">Failed</tspan></text>
+<rect x="528.36" y="52.95" width="79" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="567.86" y="74.85">Paused</tspan></text>
+<rect x="166" y="81.64" width="52.82" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="192.41" y="96.24">start job</tspan></text>
+<rect x="401.52" y="164.14" width="66.14" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="434.59" y="178.74">bad config</tspan></text>
+<rect x="383.66" y="4" width="101.86" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="434.59" y="18.6">pause requested</tspan></text>
+<rect x="379.82" y="57.38" width="109.54" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="434.59" y="71.98">resume requested</tspan></text>
+<rect x="389.27" y="110.76" width="90.64" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="434.59" y="125.36">crash detected</tspan></text>
+<rect x="646.36" y="59.76" width="126.35" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="709.54" y="74.36">timeout while paused</tspan></text>
+<rect x="391.37" y="217.52" width="86.44" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="434.59" y="232.12">operator reset</tspan></text>
+</g>
+</g>
+</g>
+<rect x="1042.71" y="128.05" width="86" height="34" rx="5" fill="#ECECFF" stroke="#9370DB"/>
+<text fill="#333333" font-size="14" text-anchor="middle"><tspan x="1085.71" y="149.95">Archived</tspan></text>
+<circle cx="1196.71" cy="145.05" r="7.25" fill="none" stroke="#333333" stroke-width="1.5"/>
+<circle cx="1196.71" cy="145.05" r="4.5" fill="#333333"/>
+<rect x="994.36" y="134.86" width="36.7" height="20.38" rx="2" fill="#e8e8e8" fill-opacity="0.85"/>
+<text fill="#333333" font-size="12.6" text-anchor="middle"><tspan x="1012.71" y="149.46">retire</tspan></text>
+</g>
+  </g>
+</svg>

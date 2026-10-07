@@ -1,49 +1,49 @@
-<svg role="img" xmlns="http://www.w3.org/2000/svg" width="446.66" height="422" viewBox="0 0 446.66 422" font-family="sans-serif" font-size="14">
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="828.11" height="532.14" viewBox="0 0 828.11 532.14" font-family="sans-serif" font-size="14">
   <defs><marker id="m5f4hso-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#bbbbbb"/></marker></defs>
   <g transform="translate(16,16)">
-<g transform="translate(1,0)">
-<path d="M233.18,14 C233.18,44 233.18,44 233.18,74" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<path d="M222.68,108 C222.68,138 140.93,138 140.93,168" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<path d="M218.64,99.19 L218.64,137.69 L208.39,137.69 L208.39,176.19 L208.39,223.19 L168.64,223.19 L168.64,270.19 L168.64,308.69 L47.64,308.69 L47.64,347.19" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<path d="M127.89,191.08 C127.89,221.08 49.14,221.08 49.14,251.08" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<path d="M75.21,272.92 C75.21,242.92 153.96,242.92 153.96,212.92" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<path d="M127.09,202 L127.09,240.5 L142.18,240.5 L142.18,279 L142.18,317.5 L62.18,317.5 L62.18,356" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<path d="M154.76,202 C154.76,232 286.34,232 286.34,262" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<path d="M62.18,296 C62.18,326 62.18,326 62.18,356" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<path d="M76.71,364.81 L76.71,326.31 L238.71,326.31 L238.71,287.81 L238.71,240.81 L278.46,240.81 L278.46,193.81 L278.46,155.31 L247.71,155.31 L247.71,116.81" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<path d="M308.01,262 L308.01,223.5 L304.93,223.5 L304.93,185 L304.93,146.5 L243.68,146.5 L243.68,108" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<path d="M297.18,296 C297.18,330.5 206.43,330.5 206.43,365" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
-<circle cx="233.18" cy="7" r="7" fill="#bbbbbb"/>
-<rect x="201.68" y="74" width="63" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
-<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="233.18" y="95.9">Idle</tspan></text>
-<rect x="99.43" y="168" width="83" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
-<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="140.93" y="189.9">Running</tspan></text>
-<rect x="27.68" y="356" width="69" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
-<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="62.18" y="377.9">Failed</tspan></text>
-<rect x="22.68" y="262" width="79" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
-<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="62.18" y="283.9">Paused</tspan></text>
-<rect x="264.68" y="262" width="65" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
-<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="297.18" y="283.9">Done</tspan></text>
-<circle cx="206.43" cy="373" r="7.25" fill="none" stroke="#bbbbbb" stroke-width="1.5"/>
-<circle cx="206.43" cy="373" r="4.5" fill="#bbbbbb"/>
-<rect x="155.39" y="127.81" width="52.82" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="181.8" y="142.41">start job</tspan></text>
-<rect x="210.39" y="187.69" width="66.14" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="243.46" y="202.29">bad config</tspan></text>
-<rect x="37.59" y="210.89" width="101.86" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="88.52" y="225.49">pause requested</tspan></text>
-<rect x="59.81" y="232.73" width="109.54" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="114.58" y="247.33">resume requested</tspan></text>
-<rect x="144.18" y="301.27" width="90.64" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="189.5" y="315.87">crash detected</tspan></text>
-<rect x="171.74" y="221.81" width="97.62" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="220.55" y="236.41">all work finished</tspan></text>
-<rect x="-1" y="315.81" width="126.35" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="62.18" y="330.41">timeout while paused</tspan></text>
-<rect x="235.24" y="162.36" width="86.44" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="278.46" y="176.96">operator reset</tspan></text>
-<rect x="306.93" y="198.13" width="106.73" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
-<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="360.29" y="212.73">new batch arrives</tspan></text>
+<g transform="translate(-4,0)">
+<path d="M521.52,14 L521.52,64" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<path d="M498.02,98 L498.02,104.67 Q498.02,109.67 493.02,109.67 L358.85,109.67 Q353.85,109.67 353.85,114.67 L353.85,196.38" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<path d="M512.02,98 L512.02,116.33 Q512.02,121.33 507.02,121.33 L443.11,121.33 Q438.11,121.33 438.11,126.33 L438.11,437.81 Q438.11,442.81 433.11,442.81 L397.98,442.81 Q392.98,442.81 392.98,447.81 L392.98,466.14" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<path d="M320.35,230.38 L320.35,235.38 Q320.35,240.38 315.35,240.38 L59.93,240.38 Q54.93,240.38 54.93,245.38 L54.93,311.26 Q54.93,316.26 59.93,316.26 L173.18,316.26 Q178.18,316.26 178.18,321.26 L178.18,333.76" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<path d="M193.63,333.76 L193.63,255.38 Q193.63,250.38 198.63,250.38 L329.35,250.38 Q334.35,250.38 334.35,245.38 L334.35,230.38" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<path d="M348.35,230.38 L348.35,255.38 Q348.35,260.38 343.35,260.38 L331.72,260.38 Q326.72,260.38 326.72,265.38 L326.72,437.81 Q326.72,442.81 331.72,442.81 L362.98,442.81 Q367.98,442.81 367.98,447.81 L367.98,466.14" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<path d="M387.35,230.38 L387.35,235.38 Q387.35,240.38 392.35,240.38 L667.43,240.38 Q672.43,240.38 672.43,245.38 L672.43,311.26 Q672.43,316.26 677.43,316.26 L680.08,316.26 Q685.08,316.26 685.08,321.26 L685.08,333.76" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<path d="M209.68,367.76 L209.68,449.47 Q209.68,454.47 214.68,454.47 L348.98,454.47 Q353.98,454.47 353.98,459.47 L353.98,466.14" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<path d="M406.98,466.14 L406.98,459.47 Q406.98,454.47 411.98,454.47 L542.4,454.47 Q547.4,454.47 547.4,449.47 L547.4,126.33 Q547.4,121.33 542.4,121.33 L536.02,121.33 Q531.02,121.33 531.02,116.33 L531.02,98" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<path d="M734.08,333.76 L734.08,321.26 Q734.08,316.26 739.08,316.26 L741.74,316.26 Q746.74,316.26 746.74,311.26 L746.74,114.67 Q746.74,109.67 741.74,109.67 L550.02,109.67 Q545.02,109.67 545.02,104.67 L545.02,98" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<path d="M709.58,367.76 L709.58,466.14" fill="none" stroke="#bbbbbb" stroke-width="1.3" marker-end="url(#m5f4hso-arrow)"/>
+<circle cx="521.52" cy="7" r="7" fill="#bbbbbb"/>
+<rect x="490.02" y="64" width="63" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
+<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="521.52" y="85.9">Idle</tspan></text>
+<rect x="312.35" y="196.38" width="83" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
+<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="353.85" y="218.28">Running</tspan></text>
+<rect x="345.98" y="466.14" width="69" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
+<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="380.48" y="488.04">Failed</tspan></text>
+<rect x="170.18" y="333.76" width="79" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
+<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="209.68" y="355.66">Paused</tspan></text>
+<rect x="677.08" y="333.76" width="65" height="34" rx="5" fill="#2b2b40" stroke="#8888bb"/>
+<text fill="#e6e6e6" font-size="14" text-anchor="middle"><tspan x="709.58" y="355.66">Done</tspan></text>
+<circle cx="709.58" cy="474.14" r="7.25" fill="none" stroke="#bbbbbb" stroke-width="1.5"/>
+<circle cx="709.58" cy="474.14" r="4.5" fill="#bbbbbb"/>
+<rect x="327.44" y="137" width="52.82" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="353.85" y="151.6">start job</tspan></text>
+<rect x="405.04" y="274.38" width="66.14" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="438.11" y="288.98">bad config</tspan></text>
+<rect x="4" y="274.38" width="101.86" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="54.93" y="288.98">pause requested</tspan></text>
+<rect x="138.86" y="274.38" width="109.54" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="193.63" y="288.98">resume requested</tspan></text>
+<rect x="281.4" y="274.38" width="90.64" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="326.72" y="288.98">crash detected</tspan></text>
+<rect x="623.62" y="274.38" width="97.62" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="672.43" y="288.98">all work finished</tspan></text>
+<rect x="146.5" y="406.76" width="126.35" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="209.68" y="421.36">timeout while paused</tspan></text>
+<rect x="504.18" y="274.38" width="86.44" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="547.4" y="288.98">operator reset</tspan></text>
+<rect x="693.37" y="137" width="106.73" height="20.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+<text fill="#e6e6e6" font-size="12.6" text-anchor="middle"><tspan x="746.74" y="151.6">new batch arrives</tspan></text>
 </g>
   </g>
 </svg>

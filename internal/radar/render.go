@@ -105,9 +105,15 @@ func svg(d *Diagram, o RenderOptions) []byte {
 	}
 	titleX := cx
 	if tw := face.Width(o.Title, titleFs); cx-tw/2 < pad || cx+tw/2 > w-pad {
-		// Too wide to centre over the chart: centre it on a canvas wide
-		// enough to hold it.
-		w = max(w, tw+2*pad)
+		// Too wide to centre over the plot: centre it on the canvas. When
+		// the canvas must widen to hold it, centre the plot under it too,
+		// as Mermaid does, with room on either side for the wider of its
+		// two sides (the legend counts on the right).
+		if tw+2*pad > w {
+			rightW := w - pad - cx
+			w = max(tw+2*pad, 2*(max(left, rightW)+pad))
+			cx = w / 2
+		}
 		titleX = w / 2
 	}
 

@@ -264,6 +264,9 @@ func (f *flowGraph) placeTitles() {
 		b := sg.Box
 		y0, y1 := b.Min.Y, b.Min.Y+c.titleH
 		tw := face.LinesWidth(sg.TitleLines, fs) + 8
+		if f.opts.Measured && sg.TitleSize.W > 0 {
+			tw = sg.TitleSize.W
+		}
 		var blocked [][2]float64
 		for _, e := range f.g.Edges {
 			for i := 1; i < len(e.Points); i++ {

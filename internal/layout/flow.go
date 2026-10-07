@@ -87,6 +87,9 @@ func (o Options) lineHeight() float64 { return o.FontSize * 1.5 }
 func measure(g *domain.Graph, opts Options) {
 	face, fs, lh := opts.face(), opts.FontSize, opts.lineHeight()
 	for _, n := range g.Nodes {
+		if opts.Measured && (n.Size.W > 0 || n.Size.H > 0) {
+			continue
+		}
 		label := n.Label
 		if label == "" && n.Shape != domain.ShapeSmallCircle && n.Shape != domain.ShapeFramedCircle {
 			label = n.ID
@@ -115,6 +118,9 @@ func measure(g *domain.Graph, opts Options) {
 		n.Size = shapeSize(n.Shape, tw, th)
 	}
 	for _, e := range g.Edges {
+		if opts.Measured && e.LabelSize.W > 0 {
+			continue
+		}
 		e.LabelLines, e.LabelSize = nil, domain.Size{}
 		if e.Label == "" {
 			continue
@@ -338,7 +344,9 @@ func (f *flowGraph) buildClusters() {
 		f.clByID[sg.ID] = len(f.clusters)
 		c := &fcluster{sg: sg, parent: -1}
 		face, fs := f.opts.face(), f.opts.FontSize
-		if len(sg.TitleLines) > 0 {
+		if f.opts.Measured && sg.TitleSize.H > 0 {
+			c.titleW, c.titleH = sg.TitleSize.W, sg.TitleSize.H
+		} else if len(sg.TitleLines) > 0 {
 			c.titleW = face.LinesWidth(sg.TitleLines, fs) + 2*clusterPad
 			c.titleH = f.opts.lineHeight()*float64(len(sg.TitleLines)) + 2*clusterTitlePadY
 		}
