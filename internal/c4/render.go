@@ -3,6 +3,7 @@ package c4
 import (
 	"fmt"
 	"math"
+	"slices"
 	"sort"
 	"strings"
 
@@ -136,6 +137,12 @@ type ctx struct {
 	pal   theme.Palette
 	rects map[string]rect   // absolute boxes of elements and boundaries
 	local map[*Boundary]sub // each boundary's own layout
+	// flow holds each relationship's route when the whole diagram was
+	// laid out at once by layout.Flow; nil for the layered layout.
+	flow map[*Rel]*domain.Edge
+	// heads is where the flow layout centred each boundary's head, clear
+	// of the lines entering the boundary.
+	heads map[string]float64
 }
 
 type sub struct {
@@ -164,7 +171,77 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		return nil, err
 	}
 	c.place(d.Root, 0, 0)
-	return c.svg(o, w, h, svgid.For(o.IDPrefix, src)), nil
+	rels, bd, hidden := c.relations(w, h)
+	if hidden {
+		// The layered layouts (one per boundary, joined by straight lines)
+		// left a label on another line or label: lay the whole diagram out
+		// as one flowchart, boundaries as subgraphs, where every label has
+		// room of its own on its line.
+		if w, h, err = c.flowLayout(); err != nil {
+			return nil, err
+		}
+		rels, bd, _ = c.relations(w, h)
+	}
+	return c.svg(o, rels, bd, svgid.For(o.IDPrefix, src)), nil
+}
+
+// flowLayout lays out the whole diagram with layout.Flow and returns its
+// size.
+func (c *ctx) flowLayout() (float64, float64, error) {
+	g := &domain.Graph{Direction: domain.TopBottom}
+	for _, e := range c.d.Elements {
+		w, h := elementSize(e, c.m)
+		g.Nodes = append(g.Nodes, &domain.Node{ID: e.ID, Label: " ", Shape: domain.ShapeRect, Size: domain.Size{W: w, H: h}})
+	}
+	for _, b := range c.d.Boundaries {
+		sg := &domain.Subgraph{ID: b.ID, Title: b.Label}
+		if b.parent != nil && b.parent != c.d.Root {
+			sg.Parent = b.parent.ID
+		}
+		for _, it := range b.Children {
+			if e, ok := it.(*Element); ok {
+				sg.NodeIDs = append(sg.NodeIDs, e.ID)
+			}
+		}
+		sg.TitleSize = domain.Size{W: c.headWidth(b) + 2*bPad, H: c.boundaryHead(b)}
+		g.Subgraphs = append(g.Subgraphs, sg)
+	}
+	c.flow = map[*Rel]*domain.Edge{}
+	for _, r := range c.d.Rels {
+		if r.From == r.To || c.d.element(r.From) == nil && c.d.boundary(r.From) == nil || c.d.element(r.To) == nil && c.d.boundary(r.To) == nil {
+			continue
+		}
+		e := &domain.Edge{From: r.From, To: r.To}
+		if r.Kind == "Rel_U" || r.Kind == "Rel_Up" || r.Kind == "Rel_Back" {
+			e.From, e.To = r.To, r.From
+		}
+		if lines := c.relLines(r); len(lines) > 0 {
+			e.Label = strings.Join(lines, "\n")
+			tw, th := c.textBox(lines)
+			e.LabelSize = domain.Size{W: tw + 16, H: th + 12}
+		}
+		g.Edges = append(g.Edges, e)
+		c.flow[r] = e
+	}
+	res, err := layout.Flow(g, layout.Options{NodeSep: 50, RankSep: 60, FontSize: c.m.fs * 0.85, FontFace: c.m.ff, Measured: true})
+	if err != nil {
+		return 0, 0, err
+	}
+	c.rects = map[string]rect{}
+	for _, n := range g.Nodes {
+		c.rects[n.ID] = rect{n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H}
+	}
+	c.heads = map[string]float64{}
+	for _, sg := range g.Subgraphs {
+		if b := sg.Box; b.Size.W > 0 {
+			c.rects[sg.ID] = rect{b.Min.X, b.Min.Y, b.Size.W, b.Size.H}
+			c.heads[sg.ID] = b.Min.X + b.Size.W/2
+			if sg.TitleX != 0 {
+				c.heads[sg.ID] = sg.TitleX
+			}
+		}
+	}
+	return res.Width, res.Height, nil
 }
 
 func childID(it any) string {
@@ -194,6 +271,15 @@ func (c *ctx) lift(id string, b *Boundary) string {
 		return ""
 	}
 	return parentOf(b)
+}
+
+// headWidth is the width of a boundary's label and [type].
+func (c *ctx) headWidth(b *Boundary) float64 {
+	w := c.m.face.Bold().Width(b.Label, c.m.fs)
+	if b.Type != "" {
+		w = max(w, c.m.face.Width("["+b.Type+"]", c.m.fs*0.8))
+	}
+	return w
 }
 
 // boundaryHead is the height of a boundary's label and [type].
@@ -317,6 +403,17 @@ func (c *ctx) route(r *Rel) (drawnRel, bool) {
 	tr, ok2 := c.rects[r.To]
 	if !ok1 || !ok2 || r.From == r.To {
 		return drawnRel{}, false
+	}
+	if c.flow != nil {
+		e := c.flow[r]
+		if e == nil || len(e.Points) < 2 {
+			return drawnRel{}, false
+		}
+		pts := append([]domain.Point(nil), e.Points...)
+		if e.From != r.From {
+			slices.Reverse(pts)
+		}
+		return drawnRel{r, curve.Routed(pts, e.LabelPos, 0, 0), e.LabelPos.X, e.LabelPos.Y}, true
 	}
 	// Find the scope that lays out both ends directly.
 	var scope *Boundary
@@ -468,15 +565,11 @@ func clipRect(r rect, p, q domain.Point) domain.Point {
 	return domain.Point{X: p.X + dx*t, Y: p.Y + dy*t}
 }
 
-func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
-	pad := o.Padding
-	fs := c.m.fs
-	titleH := 0.0
-	if o.Title != "" {
-		titleH = fs*1.3*1.4 + 8
-	}
-	var rels []drawnRel
-	var bd svgutil.Bounds
+// relations draws every relationship over the laid-out boxes and places
+// its label, and returns them with the bounds of the whole picture (cw by
+// ch from the origin, and what the lines and labels add). hidden reports a
+// label left on another relationship's line or on another label.
+func (c *ctx) relations(cw, ch float64) (rels []drawnRel, bd svgutil.Bounds, hidden bool) {
 	bd.AddRect(0, 0, cw, ch)
 	for _, r := range c.d.Rels {
 		dr, ok := c.route(r)
@@ -523,7 +616,12 @@ func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
 		if bo.Type != "" {
 			th += c.m.fs * 0.8 * 1.3
 		}
-		boxes = append(boxes, curve.Box{X: r.x, Y: r.y, W: c.m.face.Bold().Width(bo.Label, c.m.fs) + bPad*1.2, H: th})
+		head := curve.Box{X: r.x, Y: r.y, W: c.m.face.Bold().Width(bo.Label, c.m.fs) + bPad*1.2, H: th}
+		if hx, ok := c.heads[bo.ID]; ok {
+			hw := c.headWidth(bo) + 8
+			head.X, head.W = hx-hw/2, hw
+		}
+		boxes = append(boxes, head)
 	}
 	curve.PlaceLabels(shapes, labels, boxes)
 	for i, l := range labels {
@@ -557,6 +655,19 @@ func (c *ctx) svg(o RenderOptions, cw, ch float64, id string) []byte {
 		}
 		a := boxOf(rels[i])
 		bd.AddRect(a.x0, a.y0, a.x1-a.x0, a.y1-a.y0)
+	}
+	for i := range rels {
+		labels[i].X, labels[i].Y = rels[i].lx, rels[i].ly
+	}
+	return rels, bd, curve.Hidden(shapes[:len(rels)], labels)
+}
+
+func (c *ctx) svg(o RenderOptions, rels []drawnRel, bd svgutil.Bounds, id string) []byte {
+	pad := o.Padding
+	fs := c.m.fs
+	titleH := 0.0
+	if o.Title != "" {
+		titleH = fs*1.3*1.4 + 8
 	}
 	sx, sy := bd.Offset()
 	w0, h0 := bd.Size()
@@ -652,10 +763,14 @@ func (c *ctx) writeBoundary(b *strings.Builder, bo *Boundary) {
 	fmt.Fprintf(b, `    <rect x="%s" y="%s" width="%s" height="%s" rx="4" fill="none" stroke="%s" stroke-dasharray="7 7"/>`+"\n",
 		n(r.x), n(r.y), n(r.w), n(r.h), svgutil.Esc(c.pal.C4.Line))
 	y := r.y + 8 + c.m.fs
-	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" font-weight="bold">%s</text>`+"\n", n(r.x+bPad*0.6), n(y), svgutil.Esc(c.pal.Text), svgutil.Esc(bo.Label))
+	x, anchor := r.x+bPad*0.6, ""
+	if hx, ok := c.heads[bo.ID]; ok {
+		x, anchor = hx, ` text-anchor="middle"`
+	}
+	fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" font-weight="bold"%s>%s</text>`+"\n", n(x), n(y), svgutil.Esc(c.pal.Text), anchor, svgutil.Esc(bo.Label))
 	if bo.Type != "" {
 		y += c.m.fs * 0.8 * 1.3
-		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" font-size="%s">%s</text>`+"\n", n(r.x+bPad*0.6), n(y), svgutil.Esc(c.pal.Text), n(c.m.fs*0.8), svgutil.Esc("["+bo.Type+"]"))
+		fmt.Fprintf(b, `    <text x="%s" y="%s" fill="%s" font-size="%s"%s>%s</text>`+"\n", n(x), n(y), svgutil.Esc(c.pal.Text), n(c.m.fs*0.8), anchor, svgutil.Esc("["+bo.Type+"]"))
 	}
 }
 

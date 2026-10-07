@@ -1,0 +1,22 @@
+C4Container
+  title Orders, nested boundaries
+  Person(user, "Customer")
+  Enterprise_Boundary(ent, "Acme") {
+    System_Boundary(shop, "Shop") {
+      Container(web, "Web", "React")
+      Container(api, "API", "Go")
+    }
+    System_Boundary(data, "Data") {
+      ContainerDb(db, "DB", "Postgres")
+      ContainerQueue(q, "Queue", "NATS")
+    }
+  }
+  System_Ext(mail, "Mail", "Resend")
+  Rel(user, web, "Uses", "HTTPS")
+  Rel(web, api, "Calls", "JSON")
+  Rel(api, db, "Reads and writes", "SQL")
+  Rel(api, q, "Publishes", "NATS")
+  Rel(q, mail, "Triggers email", "SMTP")
+  Rel(user, api, "Calls directly", "HTTPS")
+  Rel_Back(db, q, "Feeds", "CDC")
+  Rel(user, mail, "Receives", "IMAP")
