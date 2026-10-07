@@ -106,7 +106,9 @@ func svg(d *Diagram, o RenderOptions) []byte {
 
 // writeLabel fits a field's label in its block: on one line, else wrapped
 // onto two in a smaller size, else turned upright in a narrow block (a
-// one-bit flag), else cut short with an ellipsis.
+// one-bit flag), else smaller still or broken inside a word onto two
+// lines, and only when even that does not fit, cut short with an
+// ellipsis.
 func writeLabel(b *strings.Builder, face svgutil.Face, label string, cx, cy, maxW, fs float64, text string) {
 	if label == "" {
 		return
@@ -121,7 +123,7 @@ func writeLabel(b *strings.Builder, face svgutil.Face, label string, cx, cy, max
 				svgutil.Num(cx), svgutil.Num(cy+small*0.35), text, svgutil.Num(small), svgutil.Num(cx), svgutil.Num(cy), svgutil.Esc(label))
 			return
 		} else {
-			lines, fs = []string{clip(face, label, small, maxW)}, small
+			lines, fs = face.Fit(label, small, math.Max(9, small*0.85), maxW, 2)
 		}
 	}
 	lh := fs * 1.15
@@ -140,16 +142,4 @@ func fits(face svgutil.Face, lines []string, fs, maxW float64) bool {
 		}
 	}
 	return true
-}
-
-// clip shortens s with an ellipsis to fit maxW.
-func clip(face svgutil.Face, s string, fs, maxW float64) string {
-	r := []rune(s)
-	for len(r) > 1 && face.Width(string(r)+"…", fs) > maxW {
-		r = r[:len(r)-1]
-	}
-	if len(r) == len([]rune(s)) {
-		return s
-	}
-	return string(r) + "…"
 }
