@@ -60,6 +60,52 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	m := newMetrics(o)
 	o.FontSize = m.fs
 
+	g := graph(d, m)
+	res, err := layout.Compute(g, layout.Options{NodeSep: 50, RankSep: rankSep(d, m), FontSize: m.fs * 0.9, FontFace: o.FontFace})
+	if err != nil {
+		return nil, err
+	}
+	l := &laid{g: g, res: res}
+	l.shapes, l.labelAt, l.moved = relationShapes(d, l, m)
+	if l.hidden {
+		// The layered layout ran one line along another, or a label over
+		// one: route the diagram as a flowchart, where every label has
+		// room of its own on its line.
+		g = graph(d, m)
+		for i, r := range d.Relations {
+			if r.Label != "" {
+				fs := m.fs * 0.9
+				g.Edges[i].LabelSize = domain.Size{W: m.face.Width(generics(r.Label), fs) + 16, H: fs*1.3 + 8}
+			}
+		}
+		for _, sg := range g.Subgraphs {
+			sg.TitleSize = domain.Size{W: m.face.Width(sg.Title, m.fs) + 20, H: m.fs + 8}
+		}
+		res, err := layout.Flow(g, layout.Options{NodeSep: 50, RankSep: 50, FontSize: m.fs * 0.9, FontFace: o.FontFace, Measured: true})
+		if err != nil {
+			return nil, err
+		}
+		l = &laid{g: g, res: res, flow: true}
+		l.shapes, l.labelAt, l.moved = relationShapes(d, l, m)
+	}
+	return svg(d, l, o, m), nil
+}
+
+// laid is a class diagram after layout: by the layered layout, or by
+// layout.Flow when that hid a label (flow is then true).
+type laid struct {
+	g       *domain.Graph
+	res     *layout.Result
+	flow    bool
+	shapes  []curve.Shape
+	labelAt []domain.Point
+	moved   []bool
+	hidden  bool // a label still lies on another line or label
+}
+
+// graph is the layout graph of d: a node per class and note, an edge per
+// relationship (in order) and per note attached to a class.
+func graph(d *Diagram, m metrics) *domain.Graph {
 	g := &domain.Graph{Direction: domain.DirectionOf(d.Direction)}
 	for _, c := range d.Classes {
 		n := &domain.Node{ID: c.Name, Label: c.Name, Shape: domain.ShapeRect}
@@ -83,9 +129,13 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 			g.Subgraphs = append(g.Subgraphs, &domain.Subgraph{ID: ns.Name, Title: ns.Name, NodeIDs: ns.Members})
 		}
 	}
+	return g
+}
 
-	// Multiplicities sit at both ends of a line and the label between
-	// them; give such lines the length to hold all three.
+// rankSep is the layered layout's gap between ranks. Multiplicities sit at
+// both ends of a line and the label between them; give such lines the
+// length to hold all three.
+func rankSep(d *Diagram, m metrics) float64 {
 	rankSep := 60.0
 	across := d.Direction == "LR" || d.Direction == "RL"
 	for _, r := range d.Relations {
@@ -105,16 +155,16 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 		}
 		rankSep = max(rankSep, need)
 	}
-	res, err := layout.Compute(g, layout.Options{NodeSep: 50, RankSep: rankSep, FontSize: m.fs * 0.9, FontFace: o.FontFace})
-	if err != nil {
-		return nil, err
-	}
-	return svg(d, g, res, o, m), nil
+	return rankSep
 }
 
 // namespaceBox returns the box enclosing a namespace's classes, with room for
 // its title. ok is false when no member was placed.
 func namespaceBox(ns *Namespace, g *domain.Graph, m metrics) (x, y, w, h float64, ok bool) {
+	if sg := g.SubgraphByID(ns.Name); sg != nil && sg.Box.Size.W > 0 {
+		b := sg.Box
+		return b.Min.X, b.Min.Y, b.Size.W, b.Size.H, true
+	}
 	var bd svgutil.Bounds
 	for _, name := range ns.Members {
 		n := g.NodeByID(name)
@@ -132,7 +182,8 @@ func namespaceBox(ns *Namespace, g *domain.Graph, m metrics) (x, y, w, h float64
 	return cx - w/2, bd.MinY - clusterPad - titleH, w, bd.MaxY - bd.MinY + clusterPad*2 + titleH, true
 }
 
-func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m metrics) []byte {
+func svg(d *Diagram, l *laid, o RenderOptions, m metrics) []byte {
+	g, res := l.g, l.res
 	pal := theme.For(o.Theme)
 	pad := o.Padding
 	titleH := svgutil.TitleHeight(o.Title, m.fs)
@@ -146,7 +197,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 			bd.AddRect(nx, ny, nw, nh)
 		}
 	}
-	shapes, labelAt, moved := relationShapes(d, g, m)
+	shapes, labelAt, moved := l.shapes, l.labelAt, l.moved
 	for i, r := range d.Relations {
 		e := g.Edges[i]
 		if r.Label != "" {
@@ -191,7 +242,7 @@ func svg(d *Diagram, g *domain.Graph, res *layout.Result, o RenderOptions, m met
 		writeRelation(&b, r, shapes[i], pal, m)
 	}
 	for i, nt := range d.Notes {
-		writeNote(&b, i, nt, g, len(d.Relations), pal, m)
+		writeNote(&b, i, nt, l, len(d.Relations), pal, m)
 	}
 	for _, c := range d.Classes {
 		writeClass(&b, d, c, g.NodeByID(c.Name), pal, m)
@@ -328,7 +379,8 @@ func writeEdgeLabel(b *strings.Builder, r *Relation, e *domain.Edge, at domain.P
 // the layout's label position (the text baseline), or a curved line's
 // middle, then moved along its own line where it would hide another line,
 // label or class. moved reports the labels that left their first spot.
-func relationShapes(d *Diagram, g *domain.Graph, m metrics) (shapes []curve.Shape, at []domain.Point, moved []bool) {
+func relationShapes(d *Diagram, l *laid, m metrics) (shapes []curve.Shape, at []domain.Point, moved []bool) {
+	g := l.g
 	shapes = make([]curve.Shape, len(d.Relations))
 	at = make([]domain.Point, len(d.Relations))
 	moved = make([]bool, len(d.Relations))
@@ -347,8 +399,15 @@ func relationShapes(d *Diagram, g *domain.Graph, m metrics) (shapes []curve.Shap
 				obs = append(obs, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 			}
 		}
-		shapes[i] = curve.Edge(e.Points, vertical, obs, headLen(r.Left), headLen(r.Right))
-		at[i] = e.LabelPos
+		if l.flow {
+			// The layout gives the label's centre; the text sits on a
+			// baseline 0.3em below it.
+			shapes[i] = curve.Routed(e.Points, e.LabelPos, headLen(r.Left), headLen(r.Right))
+			at[i] = domain.Point{X: e.LabelPos.X, Y: e.LabelPos.Y + fs*0.3}
+		} else {
+			shapes[i] = curve.Edge(e.Points, vertical, obs, headLen(r.Left), headLen(r.Right))
+			at[i] = e.LabelPos
+		}
 		if shapes[i].Curved {
 			at[i] = domain.Point{X: shapes[i].Mid.X, Y: shapes[i].Mid.Y + fs*0.35}
 		}
@@ -369,9 +428,10 @@ func relationShapes(d *Diagram, g *domain.Graph, m metrics) (shapes []curve.Shap
 		boxes = append(boxes, curve.Box{X: n.Pos.X, Y: n.Pos.Y, W: n.Size.W, H: n.Size.H})
 	}
 	curve.PlaceLabels(shapes, labels, boxes)
-	for k, l := range labels {
+	l.hidden = curve.Hidden(shapes, labels)
+	for k, lb := range labels {
 		i := idx[k]
-		if p := (domain.Point{X: l.X, Y: l.Y + fs*0.3}); math.Abs(p.X-at[i].X) > 1e-9 || math.Abs(p.Y-at[i].Y) > 1e-9 {
+		if p := (domain.Point{X: lb.X, Y: lb.Y + fs*0.3}); math.Abs(p.X-at[i].X) > 1e-9 || math.Abs(p.Y-at[i].Y) > 1e-9 {
 			at[i], moved[i] = p, true
 		}
 	}
@@ -467,7 +527,8 @@ func noteSize(text string, m metrics) (float64, float64) {
 }
 
 // writeNote draws a note box and the dashed line to its class.
-func writeNote(b *strings.Builder, i int, nt *Note, g *domain.Graph, edgeBase int, pal theme.Palette, m metrics) {
+func writeNote(b *strings.Builder, i int, nt *Note, l *laid, edgeBase int, pal theme.Palette, m metrics) {
+	g := l.g
 	n := g.NodeByID(noteID(i))
 	if n == nil {
 		return
@@ -482,7 +543,9 @@ func writeNote(b *strings.Builder, i int, nt *Note, g *domain.Graph, edgeBase in
 					}
 				}
 				sh := curve.Edge([]domain.Point{e.Points[0], e.Points[len(e.Points)-1]}, g.Direction == domain.TopBottom || g.Direction == domain.BottomTop, obs, 0, 0)
-				if !sh.Curved {
+				if l.flow {
+					sh = curve.Routed(e.Points, e.Points[0], 0, 0)
+				} else if !sh.Curved {
 					sh.D = curve.Path(e.Points)
 				}
 				fmt.Fprintf(b, `    <path d="%s" fill="none" stroke="%s" stroke-dasharray="3 3"/>`+"\n", sh.D, svgutil.Esc(pal.Edge))

@@ -68,6 +68,10 @@ type Subgraph struct {
 	// moved it off the middle to keep it clear of the edges entering the
 	// box; zero means the middle.
 	TitleX float64
+	// TitleSize is the room a diagram that draws its own subgraph heads
+	// needs at the top of the box: the width the head takes and the height
+	// of its band. Read by layouts told the picture is already measured.
+	TitleSize Size
 }
 
 // Graph is a parsed flowchart, independent of layout or rendering.

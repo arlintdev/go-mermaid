@@ -6,9 +6,9 @@ import (
 	"github.com/arlintdev/go-mermaid/internal/goldentest"
 )
 
-// TestLabelsOffOtherLines checks that a relationship label is moved along
-// its own line off other lines, labels and boxes where it can be. The
-// counts left are labels whose whole line runs beside or across another.
+// TestLabelsOffOtherLines checks that no relationship label lies on a line
+// other than its own or on another label: a diagram whose layered layout
+// would put one there is routed by layout.Flow instead.
 func TestLabelsOffOtherLines(t *testing.T) {
-	goldentest.LabelsClear(t, "testdata", func(src string) ([]byte, error) { return Render(src, defaultOptions) }, map[string]int{"crowded_labels": 2})
+	goldentest.LabelsClear(t, "testdata", func(src string) ([]byte, error) { return Render(src, defaultOptions) }, map[string]int{})
 }

@@ -1,0 +1,68 @@
+<svg role="img" xmlns="http://www.w3.org/2000/svg" width="1082.77" height="414.95" viewBox="0 0 1082.77 414.95" font-family="sans-serif" font-size="14">
+  <g transform="translate(16,16)">
+    <rect x="247" y="0" width="565.34" height="161.38" rx="4" fill="#2a2a33" stroke="#77775a"/>
+    <text x="529.67" y="18" fill="#e6e6e6" text-anchor="middle">Shop</text>
+    <rect x="482.44" y="221.76" width="568.33" height="111" rx="4" fill="#2a2a33" stroke="#77775a"/>
+    <text x="766.61" y="239.76" fill="#e6e6e6" text-anchor="middle">People</text>
+    <path d="M328,57 L362.52,57 Q367.52,57 367.52,62 L367.52,86.69 Q367.52,91.69 372.52,91.69 L500.44,91.69" fill="none" stroke="#bbbbbb"/>
+    <path d="M500.44,91.69 L490.44,86.69 L490.44,96.69 Z" fill="#bbbbbb"/>
+    <text x="346" y="67.35" fill="#e6e6e6" text-anchor="middle" font-size="11.9">1</text>
+    <text x="482.44" y="90.27" fill="#e6e6e6" text-anchor="middle" font-size="11.9">*</text>
+    <path d="M328,71 L352.52,71 Q357.52,71 357.52,76 L357.52,283.26 Q357.52,288.26 362.52,288.26 L500.44,288.26" fill="none" stroke="#bbbbbb"/>
+    <path d="M500.44,288.26 L490.44,283.26 L490.44,293.26 Z" fill="#bbbbbb"/>
+    <path d="M587.44,283.76 L605.87,283.76 Q610.78,283.76 610.78,278.85 L610.78,278.85 Q610.78,273.95 615.68,273.95 L927.53,273.95 Q932.44,273.95 932.44,278.85 L932.44,278.85 Q932.44,283.76 937.34,283.76 L955.77,283.76" fill="none" stroke="#bbbbbb"/>
+    <path d="M955.77,283.76 L945.77,278.76 L945.77,288.76 Z" fill="#bbbbbb"/>
+    <text x="605.44" y="294.11" fill="#e6e6e6" text-anchor="middle" font-size="11.9">1</text>
+    <text x="937.77" y="278.37" fill="#e6e6e6" text-anchor="middle" font-size="11.9">1..*</text>
+    <path d="M328,85 L342.52,85 Q347.52,85 347.52,90 L347.52,357.95 Q347.52,362.95 352.52,362.95 L927.44,362.95 Q932.44,362.95 932.44,357.95 L932.44,311.76 Q932.44,306.76 937.44,306.76 L955.77,306.76" fill="none" stroke="#bbbbbb"/>
+    <path d="M955.77,306.76 L945.77,301.76 L945.77,311.76 Z" fill="#bbbbbb"/>
+    <path d="M579.44,91.69 L699.5,91.69 Q702.84,91.69 702.84,95.03 L702.84,95.03 Q702.84,98.38 706.19,98.38 L720.34,98.38" fill="none" stroke="#bbbbbb"/>
+    <path d="M720.34,98.38 L710.34,93.38 L710.34,103.38 Z" fill="#bbbbbb"/>
+    <path d="M587.44,269.76 L594.11,269.76 Q599.11,269.76 599.11,264.76 L599.11,196.57 Q599.11,191.57 604.11,191.57 L697.84,191.57 Q702.84,191.57 702.84,186.57 L702.84,140.38 Q702.84,135.38 707.84,135.38 L720.34,135.38" fill="none" stroke="#bbbbbb"/>
+    <path d="M720.34,135.38 L710.34,130.38 L710.34,140.38 Z" fill="#bbbbbb"/>
+    <path d="M794.34,116.88 L939.11,116.88 Q944.11,116.88 944.11,121.88 L944.11,264.76 Q944.11,269.76 949.11,269.76 L955.77,269.76" fill="none" stroke="#bbbbbb"/>
+    <path d="M955.77,269.76 L945.77,264.76 L945.77,274.76 Z" fill="#bbbbbb"/>
+    <path d="M280.75,93 L280.75,106 Q280.75,111 285.75,111 L307.25,111 Q312.25,111 312.25,106 L312.25,93" fill="none" stroke="#bbbbbb"/>
+    <path d="M312.25,93 L307.25,103 L317.25,103 Z" fill="#bbbbbb"/>
+    <path d="M197,66.5 L265,66.5" fill="none" stroke="#bbbbbb" stroke-dasharray="3 3"/>
+    <rect x="0" y="37.5" width="197" height="58" fill="#4a4630" stroke="#8a8350"/>
+    <text x="11.2" y="60.01" fill="#eeeadc">An order is placed once and</text>
+    <text x="11.2" y="80.31" fill="#eeeadc">never edited</text>
+    <rect x="265" y="40" width="63" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="296.5" y="62.61" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Order</text>
+    <line x1="265" y1="77.1" x2="328" y2="77.1" stroke="#8888bb"/>
+    <line x1="265" y1="84.8" x2="328" y2="84.8" stroke="#8888bb"/>
+    <rect x="500.44" y="65.19" width="79" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="539.94" y="87.8" fill="#e6e6e6" text-anchor="middle" font-weight="bold">LineItem</text>
+    <line x1="500.44" y1="102.29" x2="579.44" y2="102.29" stroke="#8888bb"/>
+    <line x1="500.44" y1="109.99" x2="579.44" y2="109.99" stroke="#8888bb"/>
+    <rect x="720.34" y="90.38" width="74" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="757.34" y="112.99" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Product</text>
+    <line x1="720.34" y1="127.48" x2="794.34" y2="127.48" stroke="#8888bb"/>
+    <line x1="720.34" y1="135.18" x2="794.34" y2="135.18" stroke="#8888bb"/>
+    <rect x="500.44" y="261.76" width="87" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="543.94" y="284.37" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Customer</text>
+    <line x1="500.44" y1="298.86" x2="587.44" y2="298.86" stroke="#8888bb"/>
+    <line x1="500.44" y1="306.56" x2="587.44" y2="306.56" stroke="#8888bb"/>
+    <rect x="955.77" y="261.76" width="77" height="53" fill="#2b2b40" stroke="#8888bb"/>
+    <text x="994.27" y="284.37" fill="#e6e6e6" text-anchor="middle" font-weight="bold">Address</text>
+    <line x1="955.77" y1="298.86" x2="1032.77" y2="298.86" stroke="#8888bb"/>
+    <line x1="955.77" y1="306.56" x2="1032.77" y2="306.56" stroke="#8888bb"/>
+    <rect x="385.02" y="83.5" width="54.92" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="412.48" y="95.47" fill="#e6e6e6" text-anchor="middle" font-size="12.6">contains</text>
+    <rect x="381.52" y="280.07" width="61.93" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="412.48" y="292.04" fill="#e6e6e6" text-anchor="middle" font-size="12.6">placed by</text>
+    <rect x="630.29" y="265.76" width="47.21" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="653.89" y="277.73" fill="#e6e6e6" text-anchor="middle" font-size="12.6">lives at</text>
+    <rect x="628.18" y="354.76" width="51.42" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="653.89" y="366.73" fill="#e6e6e6" text-anchor="middle" font-size="12.6">ships to</text>
+    <rect x="626.78" y="83.5" width="54.22" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="653.89" y="95.47" fill="#e6e6e6" text-anchor="middle" font-size="12.6">refers to</text>
+    <rect x="626.44" y="183.38" width="54.9" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="653.89" y="195.35" fill="#e6e6e6" text-anchor="middle" font-size="12.6">wishlists</text>
+    <rect x="851.34" y="108.69" width="65.43" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="884.06" y="120.66" fill="#e6e6e6" text-anchor="middle" font-size="12.6">stocked at</text>
+    <rect x="271" y="123" width="60.52" height="16.38" rx="2" fill="#3a3a3a" fill-opacity="0.85"/>
+    <text x="301.26" y="134.97" fill="#e6e6e6" text-anchor="middle" font-size="12.6">splits into</text>
+  </g>
+</svg>

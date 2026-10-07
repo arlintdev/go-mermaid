@@ -74,3 +74,17 @@ func TestCrosses(t *testing.T) {
 		}
 	}
 }
+
+func TestHidden(t *testing.T) {
+	lines := []Shape{line(0, 0, 0, 100), line(30, 0, 30, 100)}
+	clear := []Label{{Line: 0, W: 20, H: 10, X: 0, Y: 50}}
+	if Hidden(lines, clear) {
+		t.Error("a label on its own line alone is not hidden")
+	}
+	if !Hidden(lines, []Label{{Line: 0, W: 80, H: 10, X: 0, Y: 50}}) {
+		t.Error("a label across another line hides it")
+	}
+	if !Hidden(lines, []Label{{Line: 0, W: 20, H: 10, X: 0, Y: 50}, {Line: 1, W: 20, H: 10, X: 10, Y: 52}}) {
+		t.Error("two labels that overlap hide each other")
+	}
+}

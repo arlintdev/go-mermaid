@@ -1,0 +1,20 @@
+classDiagram
+  direction LR
+  namespace Shop {
+    class Order
+    class LineItem
+    class Product
+  }
+  namespace People {
+    class Customer
+    class Address
+  }
+  Order "1" --> "*" LineItem : contains
+  Order --> Customer : placed by
+  Customer "1" --> "1..*" Address : lives at
+  Order --> Address : ships to
+  LineItem --> Product : refers to
+  Customer --> Product : wishlists
+  Product --> Address : stocked at
+  Order --> Order : splits into
+  note for Order "An order is placed once and never edited"
