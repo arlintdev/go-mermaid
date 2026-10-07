@@ -1,0 +1,17 @@
+C4Container
+  Person(u, "Operator")
+  System_Boundary(p, "Pipeline") {
+    Container(a, "Ingest", "Go")
+    Container(b, "Parse", "Go")
+    Container(c, "Clean", "Python")
+    Container(d, "Enrich", "Python")
+    Container(e, "Score", "Rust")
+    ContainerDb(f, "Store", "Postgres")
+  }
+  Rel(u, a, "Starts")
+  Rel(a, b, "Feed")
+  Rel(b, c, "Records")
+  Rel(c, d, "Rows")
+  Rel(d, e, "Rows")
+  Rel(e, f, "Scores")
+  Rel(u, f, "Queries", "SQL")

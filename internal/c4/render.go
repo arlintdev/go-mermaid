@@ -140,6 +140,9 @@ type ctx struct {
 	// flow holds each relationship's route when the whole diagram was
 	// laid out at once by layout.Flow; nil for the layered layout.
 	flow map[*Rel]*domain.Edge
+	// gridded is set when some boundary's shapes were put in rows; the
+	// whole-diagram flowchart would undo that, so it is not tried.
+	gridded bool
 	// heads is where the flow layout centred each boundary's head, clear
 	// of the lines entering the boundary.
 	heads map[string]float64
@@ -149,6 +152,7 @@ type sub struct {
 	g      *domain.Graph
 	w, h   float64
 	ox, oy float64 // where the layout's origin sits inside the boundary
+	grid   bool    // laid out in rows (see grid), routes drawn as they are
 }
 
 // Render parses and renders C4 source to SVG.
@@ -172,7 +176,7 @@ func Render(src string, o RenderOptions) ([]byte, error) {
 	}
 	c.place(d.Root, 0, 0)
 	rels, bd, hidden := c.relations(w, h)
-	if hidden {
+	if hidden && !c.gridded {
 		// The layered layouts (one per boundary, joined by straight lines)
 		// left a label on another line or label: lay the whole diagram out
 		// as one flowchart, boundaries as subgraphs, where every label has
@@ -333,18 +337,18 @@ func (c *ctx) layout(b *Boundary, root bool) (float64, float64, error) {
 		if err != nil {
 			return 0, 0, err
 		}
-		var bd svgutil.Bounds
-		for _, n := range g.Nodes {
-			bd.AddRect(n.Pos.X, n.Pos.Y, n.Size.W, n.Size.H)
-		}
-		for _, e := range g.Edges {
-			for _, p := range e.Points {
-				bd.Add(p.X, p.Y)
-			}
+		bd := graphBounds(g)
+		gridded := false
+		if w, h := bd.Size(); len(g.Nodes) > gridRow && h > 2.5*w && c.closed(b) {
+			// A long chain of shapes: put them in rows, as Mermaid does,
+			// rather than one tall column. Only where no line comes in
+			// from outside, which the rows would leave no clear way in for.
+			c.grid(g)
+			bd, gridded, c.gridded = graphBounds(g), true, true
 		}
 		ox, oy := bd.Offset()
 		w, h = bd.Size()
-		s := sub{g: g, w: w, h: h, ox: ox, oy: oy}
+		s := sub{g: g, w: w, h: h, ox: ox, oy: oy, grid: gridded}
 		if !root {
 			s.ox += bPad
 			s.oy += bPad + c.boundaryHead(b)
@@ -356,6 +360,18 @@ func (c *ctx) layout(b *Boundary, root bool) (float64, float64, error) {
 	}
 	lw := c.m.face.Width(b.Label, c.m.fs) * 1.07
 	return max(w, lw, 120) + 2*bPad, h + 2*bPad + c.boundaryHead(b), nil
+}
+
+// closed reports whether every relationship that touches b's contents
+// runs between two of its direct children.
+func (c *ctx) closed(b *Boundary) bool {
+	for _, r := range c.d.Rels {
+		from, to := c.lift(r.From, b), c.lift(r.To, b)
+		if (from != "" || to != "") && (from != r.From || to != r.To) {
+			return false
+		}
+	}
+	return true
 }
 
 // place records absolute boxes for b's children, with b's top-left at
@@ -453,6 +469,10 @@ func (c *ctx) route(r *Rel) (drawnRel, bool) {
 				for i, j := 0, len(pts)-1; i < j; i, j = i+1, j-1 {
 					pts[i], pts[j] = pts[j], pts[i]
 				}
+			}
+			if s.grid {
+				mid := domain.Point{X: e.LabelPos.X + bx + s.ox, Y: e.LabelPos.Y + by + s.oy}
+				return drawnRel{r, curve.Routed(pts, mid, 0, 0), mid.X, mid.Y}, true
 			}
 			var obs []curve.Box
 			for id, rr := range c.rects {
